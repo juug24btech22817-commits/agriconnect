@@ -113,7 +113,7 @@ const cropsData = [
     { 
         id: 7, name: 'Crisp Cucumber', category: 'Vegetables', price: '₹30', unit: 'kg', 
         farmer: 'Rajesh Kumar', location: 'Panipat, Haryana', rating: '4.7', 
-        image: 'https://images.unsplash.com/photo-1590665413185-1d58df0d94a9?w=500&h=500&fit=crop',
+        image: '/images/crops/crisp_cucumber.png',
         mandiPrice: '₹14', retailPrice: '₹45',
         farmerDetails: {
             phone: '+91 32109 87654',
@@ -126,7 +126,7 @@ const cropsData = [
     { 
         id: 8, name: 'Fresh Ridge Gourd', category: 'Vegetables', price: '₹40', unit: 'kg', 
         farmer: 'Mallayya Reddy', location: 'Medak, Telangana', rating: '4.6', 
-        image: 'https://images.unsplash.com/photo-1597361719262-bc46c6eb5324?w=500&h=500&fit=crop',
+        image: '/images/crops/fresh_ridge_gourd.png',
         mandiPrice: '₹22', retailPrice: '₹60',
         farmerDetails: {
             phone: '+91 21098 76543',
@@ -136,12 +136,12 @@ const cropsData = [
             farmName: 'Deccan Greens'
         }
     },
-    { id: 9, name: 'Nagpur Oranges', category: 'Fruits', price: '₹60', unit: 'kg', farmer: 'Orange City Orchards', location: 'Maharashtra, India', rating: '4.8', image: 'https://images.unsplash.com/photo-1557800636-894a64c1696f?w=500&h=500&fit=crop', mandiPrice: '₹35', retailPrice: '₹95' },
-    { id: 10, name: 'Finger Millet (Ragi)', category: 'Grains', price: '₹45', unit: 'kg', farmer: 'Deccan Roots', location: 'Karnataka, India', rating: '4.7', image: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=500&h=500&fit=crop', mandiPrice: '₹32', retailPrice: '₹75' },
-    { id: 11, name: 'Hybrid Red Onions', category: 'Vegetables', price: '₹35', unit: 'kg', farmer: 'Nashik Valley Farms', location: 'Maharashtra, India', rating: '4.6', image: 'https://images.unsplash.com/photo-1508747703725-719777637510?w=500&h=500&fit=crop', mandiPrice: '₹18', retailPrice: '₹55' },
-    { id: 12, name: 'Samba Masuri Rice', category: 'Grains', price: '₹55', unit: 'kg', farmer: 'Cauvery Delta Farms', location: 'Tamil Nadu, India', rating: '4.8', image: 'https://images.unsplash.com/photo-1543321594-e3505b8bc00a?w=500&h=500&fit=crop', mandiPrice: '₹38', retailPrice: '₹85' },
-    { id: 13, name: 'Guntur Red Chillies', category: 'Vegetables', price: '₹180', unit: 'kg', farmer: 'Andhra Spice Hub', location: 'Andhra Pradesh, India', rating: '4.9', image: 'https://images.unsplash.com/photo-1582408917838-89c565d3ecad?w=500&h=500&fit=crop', mandiPrice: '₹130', retailPrice: '₹260' },
-    { id: 14, name: 'Coorg Robusta Coffee', category: 'Grains', price: '₹450', unit: 'kg', farmer: 'Western Ghats Estates', location: 'Karnataka, India', rating: '4.9', image: 'https://images.unsplash.com/photo-1559525839-b184a4d698c7?w=500&h=500&fit=crop', mandiPrice: '₹320', retailPrice: '₹650' },
+    { id: 9, name: 'Nagpur Oranges', category: 'Fruits', price: '₹60', unit: 'kg', farmer: 'Orange City Orchards', location: 'Maharashtra, India', rating: '4.8', image: '/images/crops/nagpur_oranges.png', mandiPrice: '₹35', retailPrice: '₹95' },
+    { id: 10, name: 'Finger Millet (Ragi)', category: 'Grains', price: '₹45', unit: 'kg', farmer: 'Deccan Roots', location: 'Karnataka, India', rating: '4.7', image: '/images/crops/finger_millet_ragi.png', mandiPrice: '₹32', retailPrice: '₹75' },
+    { id: 11, name: 'Hybrid Red Onions', category: 'Vegetables', price: '₹35', unit: 'kg', farmer: 'Nashik Valley Farms', location: 'Maharashtra, India', rating: '4.6', image: '/images/crops/red_onions.png', mandiPrice: '₹18', retailPrice: '₹55' },
+    { id: 12, name: 'Samba Masuri Rice', category: 'Grains', price: '₹55', unit: 'kg', farmer: 'Cauvery Delta Farms', location: 'Tamil Nadu, India', rating: '4.8', image: '/images/crops/samba_masuri_rice.png', mandiPrice: '₹38', retailPrice: '₹85' },
+    { id: 13, name: 'Guntur Red Chillies', category: 'Vegetables', price: '₹180', unit: 'kg', farmer: 'Andhra Spice Hub', location: 'Andhra Pradesh, India', rating: '4.9', image: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=500&h=500&fit=crop', mandiPrice: '₹130', retailPrice: '₹260' },
+    { id: 14, name: 'Coorg Robusta Coffee', category: 'Grains', price: '₹450', unit: 'kg', farmer: 'Western Ghats Estates', location: 'Karnataka, India', rating: '4.9', image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&h=500&fit=crop', mandiPrice: '₹320', retailPrice: '₹650' },
 ];
 
 const categories = ['All', 'Vegetables', 'Fruits', 'Grains', 'Dairy', 'Subscription'];

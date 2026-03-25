@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const mockListings = [
     { id: 1, name: 'Alphonso Mangoes', quantity: '120 dozen', price: '₹800/dozen', status: 'Active', image: '/images/crops/alphonso_mangoes_1773328054659.png' },
     { id: 2, name: 'Basmati Rice', quantity: '1500 kg', price: '₹120/kg', status: 'Active', image: '/images/crops/basmati_rice_organic_1773328180216.png' },
-    { id: 3, name: 'Red Onions', quantity: '800 kg', price: '₹35/kg', status: 'Low Stock', image: 'https://images.unsplash.com/photo-1508747703725-719777637510?w=500&h=500&fit=crop' },
+    { id: 3, name: 'Red Onions', quantity: '800 kg', price: '₹35/kg', status: 'Low Stock', image: '/images/crops/red_onions.png' },
 ];
 
 const mockOrders = [
@@ -22,7 +22,7 @@ const DashboardPage = () => {
     const [listings, setListings] = useState([
         { id: 1, name: 'Alphonso Mangoes', quantity: '120 dozen', price: '₹800/dozen', status: 'Active', image: '/images/crops/alphonso_mangoes_1773328054659.png' },
         { id: 2, name: 'Basmati Rice', quantity: '1500 kg', price: '₹120/kg', status: 'Active', image: '/images/crops/basmati_rice_organic_1773328180216.png' },
-        { id: 3, name: 'Red Onions', quantity: '800 kg', price: '₹35/kg', status: 'Low Stock', image: 'https://images.unsplash.com/photo-1508747703725-719777637510?w=500&h=500&fit=crop' },
+        { id: 3, name: 'Red Onions', quantity: '800 kg', price: '₹35/kg', status: 'Low Stock', image: '/images/crops/red_onions.png' },
     ]);
 
     const handleDeleteListing = (id) => {
