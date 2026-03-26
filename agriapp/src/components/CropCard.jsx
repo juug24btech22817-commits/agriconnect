@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ShoppingCart, Star, MapPin, Check, Zap, Plus, Minus, X, User, ShieldCheck, Phone, PhoneCall, Info } from 'lucide-react';
+import { ShoppingCart, Star, MapPin, Check, Zap, Plus, Minus, X, User, ShieldCheck, Phone, PhoneCall, Info, HeartPulse } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 const FarmerProfileModal = ({ farmer, onClose }) => {
@@ -181,11 +181,131 @@ const PriceAnalysisModal = ({ crop, onClose }) => {
     );
 };
 
+const healthMap = {
+    'Vegetables': ["High in Fiber & Antioxidants", "Supports Digestive Health", "Natural Immune Booster"],
+    'Fruits': ["Rich in Vit C & Potassium", "Natural Sugar (Low GI)", "Vitalizing Energy Source"],
+    'Grains': ["Complex Carbs for Energy", "High in Essential Minerals", "Lowers Cholesterol Risk"],
+    'Dairy': ["Superior Calcium Source", "Healthy Fats (A2 Milk)", "Muscular Recovery Protein"],
+    'Subscription': ["Complete Weekly Nutrition", "Balanced Seasonal Diet", "Sustainable Sourcing"],
+    'All': ["Traceable Origins", "Freshness Guarantee", "Fair Farmer Pricing"]
+};
+
+const ProductDetailModal = ({ crop, onClose, onAdd, weight, setWeight, weightOptions }) => {
+    if (!crop) return null;
+    const health = healthMap[crop.category] || healthMap['All'];
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md"
+            onClick={onClose}
+        >
+            <motion.div
+                initial={{ scale: 0.9, y: 30 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 30 }}
+                className="bg-white dark:bg-gray-800 rounded-[2.5rem] overflow-hidden shadow-2xl max-w-2xl w-full flex flex-col md:flex-row relative"
+                onClick={e => e.stopPropagation()}
+            >
+                <button 
+                    onClick={onClose}
+                    className="absolute top-6 right-6 z-10 p-2 bg-black/10 hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/20 text-gray-800 dark:text-white rounded-full transition-colors"
+                >
+                    <X size={24} />
+                </button>
+
+                {/* Left: Image Section */}
+                <div className="md:w-1/2 h-64 md:h-auto relative bg-gray-100 dark:bg-gray-900">
+                    <img src={crop.image} alt={crop.name} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                </div>
+
+                {/* Right: Info Section */}
+                <div className="md:w-1/2 p-8 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                    <div className="flex items-center gap-2 mb-4">
+                        <span className="text-agri-green font-black uppercase tracking-widest text-[10px] py-1 px-3 bg-agri-green/10 rounded-full">
+                            {crop.category}
+                        </span>
+                        {crop.isLiveValue && (
+                            <span className="bg-red-500 text-white text-[8px] font-black uppercase px-2 py-1 rounded-md animate-pulse">LIVE</span>
+                        )}
+                    </div>
+
+                    <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-2 leading-tight">
+                        {crop.name}
+                    </h2>
+
+                    <div className="flex items-baseline gap-2 mb-6">
+                        <p className="text-3xl font-black text-agri-green">{crop.price}</p>
+                        <p className="text-gray-400 font-bold text-sm">/ {crop.unit}</p>
+                    </div>
+
+                    <div className="space-y-6 mb-8">
+                        <div>
+                            <h3 className="text-xs font-black uppercase tracking-wider text-gray-400 mb-3 flex items-center gap-2">
+                                <HeartPulse size={14} className="text-agri-green" />
+                                Health Advantages
+                            </h3>
+                            <div className="grid grid-cols-1 gap-2">
+                                {health.map((h, i) => (
+                                    <div key={i} className="flex items-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-xl border border-gray-100 dark:border-gray-700">
+                                        <Check size={14} className="text-agri-green" />
+                                        {h}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="p-5 bg-agri-light/30 dark:bg-gray-700/30 rounded-2xl border border-agri-green/10">
+                            <h3 className="text-xs font-black uppercase tracking-wider text-agri-green mb-2">Farmer's Story</h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 italic leading-relaxed">
+                                "{crop.farmerDetails?.bio || 'Passionate about farming and delivering fresh crops directly to your table.'}"
+                            </p>
+                            <p className="text-xs font-black text-gray-400 mt-4">— {crop.farmer}, {crop.location}</p>
+                        </div>
+
+                        <div>
+                            <h3 className="text-xs font-black uppercase tracking-wider text-gray-400 mb-3">Select Quantity</h3>
+                            <div className="grid grid-cols-4 gap-2">
+                                {weightOptions.map((opt) => (
+                                    <button
+                                        key={opt}
+                                        onClick={() => setWeight(opt)}
+                                        className={`py-3 rounded-xl text-sm font-black transition-all ${
+                                            weight === opt 
+                                            ? 'bg-agri-green text-white shadow-lg ring-4 ring-agri-green/20' 
+                                            : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-600 hover:border-agri-green'
+                                        }`}
+                                    >
+                                        {opt}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-4">
+                        <button
+                            onClick={onAdd}
+                            className="flex-grow py-5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-[1.25rem] font-black text-sm uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-black/10"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+};
+
 const CropCard = ({ crop, index }) => {
     const [phase, setPhase] = useState('initial'); // 'initial', 'selecting', 'confirming'
     const [weight, setWeight] = useState(1);
     const [showFarmerModal, setShowFarmerModal] = useState(false);
     const [showPriceModal, setShowPriceModal] = useState(false);
+    const [showDetailModal, setShowDetailModal] = useState(false);
     const { addToCart } = useCart();
     const navigate = useNavigate();
 
@@ -195,6 +315,7 @@ const CropCard = ({ crop, index }) => {
     const handleAddToCart = () => {
         addToCart(crop, weight);
         setPhase('confirming');
+        setShowDetailModal(false);
     };
 
     const reset = () => {
@@ -252,7 +373,10 @@ const CropCard = ({ crop, index }) => {
                 </AnimatePresence>
 
                 {/* Decorative Image Container */}
-                <div className="relative h-48 overflow-hidden shrink-0">
+                <div 
+                    className="relative h-48 overflow-hidden shrink-0 cursor-pointer"
+                    onClick={() => setShowDetailModal(true)}
+                >
                     <div className="absolute top-3 right-3 z-10 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1 shadow-sm border border-gray-100 dark:border-gray-700">
                         <Star size={14} className="text-yellow-400 fill-yellow-400" />
                         <span className="text-xs font-bold text-gray-800 dark:text-gray-100">{crop.rating}</span>
@@ -270,8 +394,11 @@ const CropCard = ({ crop, index }) => {
                 </div>
 
                 <div className="p-5 flex flex-col flex-grow">
-                    <div className="flex justify-between items-start mb-2 gap-2">
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-1">{crop.name}</h3>
+                    <div 
+                        className="flex justify-between items-start mb-2 gap-2 cursor-pointer"
+                        onClick={() => setShowDetailModal(true)}
+                    >
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-2 hover:text-agri-green transition-colors">{crop.name}</h3>
                         <div className="flex flex-col items-end gap-1">
                             <span className="text-[10px] font-black uppercase tracking-wider text-agri-green dark:text-agri-yellow bg-agri-light/50 dark:bg-gray-700/50 px-2 py-1 rounded-md shrink-0 border border-agri-green/10">
                                 {crop.category}
@@ -290,7 +417,7 @@ const CropCard = ({ crop, index }) => {
                             {crop.price} <span className="text-sm text-gray-400 font-medium">/ {crop.unit}</span>
                         </p>
                         <button 
-                            onClick={() => setShowPriceModal(true)}
+                            onClick={(e) => { e.stopPropagation(); setShowPriceModal(true); }}
                             className="p-2 text-agri-green hover:bg-agri-green/10 rounded-full transition-colors group/price"
                             title="Why this price?"
                         >
@@ -299,7 +426,7 @@ const CropCard = ({ crop, index }) => {
                     </div>
 
                     <button 
-                        onClick={() => setShowFarmerModal(true)}
+                        onClick={(e) => { e.stopPropagation(); setShowFarmerModal(true); }}
                         className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-4 hover:text-agri-green transition-colors w-fit group/farmer"
                     >
                         <div className="relative">
@@ -325,7 +452,7 @@ const CropCard = ({ crop, index }) => {
                             >
                                 <div className="flex justify-between items-center mb-3">
                                     <label className="text-[10px] uppercase tracking-wider font-bold text-gray-500 dark:text-gray-400">Select Weight</label>
-                                    <button onClick={reset} className="text-gray-400 hover:text-gray-600 transition-colors">
+                                    <button onClick={(e) => { e.stopPropagation(); reset(); }} className="text-gray-400 hover:text-gray-600 transition-colors">
                                         <X size={16} />
                                     </button>
                                 </div>
@@ -333,7 +460,7 @@ const CropCard = ({ crop, index }) => {
                                     {weightOptions.map((opt) => (
                                         <button
                                             key={opt}
-                                            onClick={() => setWeight(opt)}
+                                            onClick={(e) => { e.stopPropagation(); setWeight(opt); }}
                                             className={`py-2 rounded-lg text-xs font-bold transition-all ${
                                                 weight === opt 
                                                 ? 'bg-agri-green text-white shadow-sm ring-2 ring-agri-green/20' 
@@ -345,7 +472,7 @@ const CropCard = ({ crop, index }) => {
                                     ))}
                                 </div>
                                 <button
-                                    onClick={handleAddToCart}
+                                    onClick={(e) => { e.stopPropagation(); handleAddToCart(); }}
                                     className="w-full py-4 bg-agri-green text-white rounded-xl font-bold hover:bg-agri-dark transition-all shadow-lg active:scale-95"
                                 >
                                     Confirm {weight} {crop.unit}
@@ -354,14 +481,14 @@ const CropCard = ({ crop, index }) => {
                         ) : (
                             <div className="grid grid-cols-2 gap-2">
                                 <button
-                                    onClick={() => setPhase('selecting')}
+                                    onClick={(e) => { e.stopPropagation(); setPhase('selecting'); }}
                                     className="flex items-center justify-center gap-2 py-3 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-600 rounded-xl font-black text-xs uppercase tracking-tighter transition-all"
                                 >
                                     <ShoppingCart size={18} />
                                     Add
                                 </button>
                                 <button
-                                    onClick={() => { addToCart(crop, 1); navigate('/cart'); }}
+                                    onClick={(e) => { e.stopPropagation(); addToCart(crop, 1); navigate('/cart'); }}
                                     className="flex items-center justify-center gap-2 py-3 bg-agri-green hover:bg-agri-dark text-white rounded-xl font-black text-xs uppercase tracking-tighter transition-all shadow-md shadow-agri-green/20"
                                 >
                                     <Zap size={18} className="fill-white" />
@@ -383,6 +510,16 @@ const CropCard = ({ crop, index }) => {
                     <PriceAnalysisModal
                         crop={crop}
                         onClose={() => setShowPriceModal(false)}
+                    />
+                )}
+                {showDetailModal && (
+                    <ProductDetailModal
+                        crop={crop}
+                        weight={weight}
+                        setWeight={setWeight}
+                        weightOptions={weightOptions}
+                        onAdd={handleAddToCart}
+                        onClose={() => setShowDetailModal(false)}
                     />
                 )}
             </AnimatePresence>
