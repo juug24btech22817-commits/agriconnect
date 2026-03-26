@@ -19,19 +19,7 @@ const initialCropsData = [
             farmName: 'AgriConnect Hub'
         }
     },
-    { 
-        id: 103, name: 'Family Feast Subscription Box', category: 'Subscription', price: '₹1499', unit: 'box', 
-        farmer: 'AgriConnect Curated', location: 'Multiple Farms', rating: '4.9', 
-        image: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&q=80&w=1000',
-        mandiPrice: '₹1100', retailPrice: '₹2100',
-        farmerDetails: {
-            phone: '+91 00000 00000',
-            bio: 'A massive 15kg variety pack designed for large families. Includes staples, seasonal items, and a weekly "surprise" harvest.',
-            verified: true,
-            experience: 'Curated by Experts',
-            farmName: 'AgriConnect Hub'
-        }
-    },
+
     { 
         id: 1, name: 'Alphonso Mangoes', category: 'Fruits', price: '₹800', unit: 'kg', 
         farmer: 'Ramesh Rao', location: 'Ratnagiri, Maharashtra', rating: '5.0', 
@@ -139,9 +127,11 @@ const initialCropsData = [
     { id: 9, name: 'Nagpur Oranges', category: 'Fruits', price: '₹60', unit: 'kg', farmer: 'Orange City Orchards', location: 'Maharashtra, India', rating: '4.8', image: '/images/crops/nagpur_oranges.png', mandiPrice: '₹35', retailPrice: '₹95' },
     { id: 10, name: 'Finger Millet (Ragi)', category: 'Grains', price: '₹45', unit: 'kg', farmer: 'Deccan Roots', location: 'Karnataka, India', rating: '4.7', image: '/images/crops/finger_millet_ragi.png', mandiPrice: '₹32', retailPrice: '₹75' },
     { id: 11, name: 'Hybrid Red Onions', category: 'Vegetables', price: '₹35', unit: 'kg', farmer: 'Nashik Valley Farms', location: 'Maharashtra, India', rating: '4.6', image: '/images/crops/red_onions.png', mandiPrice: '₹18', retailPrice: '₹55' },
-    { id: 12, name: 'Samba Masuri Rice', category: 'Grains', price: '₹55', unit: 'kg', farmer: 'Cauvery Delta Farms', location: 'Tamil Nadu, India', rating: '4.8', image: '/images/crops/samba_masuri_rice.png', mandiPrice: '₹38', retailPrice: '₹85' },
-    { id: 13, name: 'Guntur Red Chillies', category: 'Vegetables', price: '₹180', unit: 'kg', farmer: 'Andhra Spice Hub', location: 'Andhra Pradesh, India', rating: '4.9', image: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=500&h=500&fit=crop', mandiPrice: '₹130', retailPrice: '₹260' },
-    { id: 14, name: 'Coorg Robusta Coffee', category: 'Grains', price: '₹450', unit: 'kg', farmer: 'Western Ghats Estates', location: 'Karnataka, India', rating: '4.9', image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&h=500&fit=crop', mandiPrice: '₹320', retailPrice: '₹650' },
+    { id: 12, name: 'Sona Masuri Rice', category: 'Grains', price: '₹55', unit: 'kg', farmer: 'Tungabhadra Farms', location: 'Raichur, Karnataka', rating: '4.8', image: '/images/crops/samba_masuri_rice.png', mandiPrice: '₹38', retailPrice: '₹85' },
+    { id: 13, name: 'Byadgi Red Chillies', category: 'Vegetables', price: '₹220', unit: 'kg', farmer: 'Haveri Spice Co', location: 'Haveri, Karnataka', rating: '4.9', image: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=500&h=500&fit=crop', mandiPrice: '₹160', retailPrice: '₹320' },
+    { id: 14, name: 'Chikkamagaluru Arabica', category: 'Grains', price: '₹550', unit: 'kg', farmer: 'Baba Budangiri Estates', location: 'Chikkamagaluru, Karnataka', rating: '4.9', image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&h=500&fit=crop', mandiPrice: '₹380', retailPrice: '₹750' },
+    { id: 15, name: 'Mysore Nanjangud Bananas', category: 'Fruits', price: '₹70', unit: 'kg', farmer: 'Srirangapatna Orchards', location: 'Mysore, Karnataka', rating: '5.0', image: 'https://images.unsplash.com/photo-1528825876394-c8cdd4ef9901?w=500&h=500&fit=crop', mandiPrice: '₹45', retailPrice: '₹110' },
+    { id: 16, name: 'Dharwad Green Gram', category: 'Grains', price: '₹110', unit: 'kg', farmer: 'Gadag Growers', location: 'Gadag, Karnataka', rating: '4.7', image: 'https://images.unsplash.com/photo-1585993439219-11104d3ff5c4?w=500&h=500&fit=crop', mandiPrice: '₹85', retailPrice: '₹160' },
 ];
 
 const categories = ['All', 'Vegetables', 'Fruits', 'Grains', 'Dairy', 'Subscription'];
@@ -203,9 +193,11 @@ const commodityMapping = {
     'Nagpur Oranges': 'Orange',
     'Finger Millet (Ragi)': 'Ragi (Finger Millet)',
     'Hybrid Red Onions': 'Onion',
-    'Samba Masuri Rice': 'Rice',
-    'Guntur Red Chillies': 'Chilli Red',
-    'Coorg Robusta Coffee': 'Coffee'
+    'Sona Masuri Rice': 'Rice',
+    'Byadgi Red Chillies': 'Chilli Red',
+    'Chikkamagaluru Arabica': 'Coffee',
+    'Mysore Nanjangud Bananas': 'Banana',
+    'Dharwad Green Gram': 'Green Gram (Moong)'
 };
 
 const MarketplacePage = () => {
