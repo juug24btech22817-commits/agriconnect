@@ -23,6 +23,10 @@ const MarketPricePage = () => {
     const [searchResult, setSearchResult] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [activeCategory, setActiveCategory] = useState('All');
+
+    const categories = ['All', 'Groceries', 'Fruits', 'Vegetables', 'Dry Fruits'];
+
 
     const getSimulatedPrice = (query) => {
         // Deterministic hash to keep prices stable for the same query
@@ -49,20 +53,18 @@ const MarketPricePage = () => {
         };
     };
 
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        const trimmedQuery = searchQuery.trim();
+    const performSearch = async (query) => {
+        const trimmedQuery = query.trim();
         if (!trimmedQuery) return;
 
         setIsLoading(true);
         setError(null);
-        setSearchResult(null);
 
         const apiKey = import.meta.env.VITE_AGMARKNET_API_KEY;
-        
+
         try {
             let dataRecords = [];
-            
+
             if (apiKey) {
                 const response = await fetch(`https://api.data.gov.in/resource/9ef2731d-a65a-4a31-adb9-ad830832d57c?api-key=${apiKey}&format=json&limit=50&filters[commodity]=${trimmedQuery}`);
                 const data = await response.json();
@@ -74,7 +76,7 @@ const MarketPricePage = () => {
                 const response = await fetch('/data/universal_mandi_prices.json');
                 const mockData = await response.json();
                 // Fuzzy search: include anything that matches the query
-                dataRecords = mockData.records.filter(r => 
+                dataRecords = mockData.records.filter(r =>
                     r.commodity.toLowerCase().includes(trimmedQuery.toLowerCase())
                 );
             }
@@ -82,7 +84,7 @@ const MarketPricePage = () => {
             if (dataRecords.length > 0) {
                 const total = dataRecords.reduce((sum, r) => sum + parseInt(r.modal_price), 0);
                 const avg = Math.round(total / dataRecords.length);
-                
+
                 const sorted = [...dataRecords].sort((a, b) => parseInt(a.modal_price) - parseInt(b.modal_price));
                 const minRec = sorted[0];
                 const maxRec = sorted[sorted.length - 1];
@@ -91,7 +93,8 @@ const MarketPricePage = () => {
                 const unit = dataRecords[0].unit || 'Quintal';
                 const isQuintal = unit.toLowerCase().includes('quintal');
 
-                setSearchResult({
+                const result = {
+                    category: dataRecords[0].category || 'General',
                     commodity: dataRecords[0].commodity,
                     avgPrice: avg,
                     avgPricePerKg: isQuintal ? Math.round(avg / 100) : avg,
@@ -105,26 +108,71 @@ const MarketPricePage = () => {
                     stateCount: uniqueStates.length,
                     arrivalDate: dataRecords[0].arrival_date,
                     unit: unit,
-                    isQuintal: isQuintal
-                });
+                    isQuintal: isQuintal,
+                    isLive: !!apiKey && dataRecords.length > 0
+                };
+
+                setSearchResult(result);
+                localStorage.setItem('lastSearchQuery', trimmedQuery);
+                localStorage.setItem('lastSearchResult', JSON.stringify(result));
             } else {
                 // Final "Smart Fallback": Simulate a realistic price if absolutely nothing found
                 const simulated = getSimulatedPrice(trimmedQuery);
-                setSearchResult({
+                const result = {
                     ...simulated,
                     avgPricePerKg: Math.round(simulated.avgPrice / 100),
                     minPricePerKg: Math.round(simulated.minPrice / 100),
                     maxPricePerKg: Math.round(simulated.maxPrice / 100),
-                    isQuintal: true
-                });
+                    isQuintal: true,
+                    isLive: false,
+                    isSimulated: true
+                };
+                setSearchResult(result);
+                localStorage.setItem('lastSearchQuery', trimmedQuery);
+                localStorage.setItem('lastSearchResult', JSON.stringify(result));
             }
         } catch (err) {
             // Still show a simulated price even on network error to keep the app "alive"
-            setSearchResult(getSimulatedPrice(trimmedQuery));
+            const simulated = getSimulatedPrice(trimmedQuery);
+            const result = {
+                ...simulated,
+                avgPricePerKg: Math.round(simulated.avgPrice / 100),
+                minPricePerKg: Math.round(simulated.minPrice / 100),
+                maxPricePerKg: Math.round(simulated.maxPrice / 100),
+                isQuintal: true,
+                isLive: false,
+                isSimulated: true
+            };
+            setSearchResult(result);
+            localStorage.setItem('lastSearchQuery', trimmedQuery);
+            localStorage.setItem('lastSearchResult', JSON.stringify(result));
         } finally {
             setIsLoading(false);
         }
     };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        performSearch(searchQuery);
+    };
+
+    useEffect(() => {
+        const savedQuery = localStorage.getItem('lastSearchQuery');
+        const savedResult = localStorage.getItem('lastSearchResult');
+        
+        if (savedQuery) {
+            setSearchQuery(savedQuery);
+            // Auto-refresh on mount to ensure "live" data
+            performSearch(savedQuery);
+        } else if (savedResult) {
+            // Fallback to saved result if search fails or while loading
+            try {
+                setSearchResult(JSON.parse(savedResult));
+            } catch (e) {
+                console.error("Failed to parse saved search result", e);
+            }
+        }
+    }, []);
 
     return (
         <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-8 pb-24 transition-colors duration-300">
@@ -159,6 +207,28 @@ const MarketPricePage = () => {
                                 </button>
                             </div>
                         </form>
+
+                        {/* Category Quick Filters */}
+                        <div className="flex flex-wrap gap-2 mt-4">
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat}
+                                    onClick={() => {
+                                        setActiveCategory(cat);
+                                        if (cat !== 'All') {
+                                            setSearchQuery(cat);
+                                            performSearch(cat);
+                                        }
+                                    }}
+                                    className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${activeCategory === cat
+                                            ? 'bg-agri-green text-white shadow-lg shadow-agri-green/20'
+                                            : 'bg-white dark:bg-gray-800 text-gray-500 hover:text-agri-green border border-gray-100 dark:border-gray-700'
+                                        }`}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </header>
 
@@ -186,8 +256,9 @@ const MarketPricePage = () => {
                                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                                             <div className="text-left">
                                                 <div className="flex items-center gap-2 mb-2">
-                                                    <span className="px-2 py-0.5 bg-red-500 text-white text-[10px] font-black uppercase tracking-widest rounded-sm animate-pulse flex items-center gap-1">
-                                                        <div className="w-1 h-1 bg-white rounded-full" /> India-Wide Data
+                                                     <span className={`px-2 py-0.5 text-white text-[10px] font-black uppercase tracking-widest rounded-sm animate-pulse flex items-center gap-1 ${searchResult.isSimulated ? 'bg-orange-500' : 'bg-red-500'}`}>
+                                                        <div className="w-1 h-1 bg-white rounded-full" /> 
+                                                        {searchResult.isSimulated ? 'Price Estimate (Simulated)' : searchResult.isLive ? 'Live Agmarknet Data' : 'Official Market Data'}
                                                     </span>
                                                     <span className="text-gray-400 text-xs">•</span>
                                                     <span className="text-xs font-bold text-agri-green uppercase tracking-tighter">
@@ -198,6 +269,10 @@ const MarketPricePage = () => {
                                                     {searchResult.commodity} <span className="text-agri-green">.</span>
                                                 </h2>
                                                 <div className="flex items-center gap-4 text-gray-500 dark:text-gray-400 text-sm">
+                                                    <div className="flex items-center gap-1">
+                                                        <Info size={14} className="text-agri-green" /> {searchResult.category}
+                                                    </div>
+                                                    <span className="text-xs opacity-30">|</span>
                                                     <div className="flex items-center gap-1">
                                                         <Calendar size={14} /> Updated: {searchResult.arrivalDate}
                                                     </div>
@@ -234,6 +309,17 @@ const MarketPricePage = () => {
                                                 <p className="text-[10px] opacity-70">AgriConnect Delivery Price</p>
                                             </div>
                                         </div>
+                                         {searchResult.isSimulated && (
+                                            <div className="p-3 bg-orange-50 dark:bg-orange-900/10 border border-orange-100 dark:border-orange-900/20 rounded-xl flex items-start gap-3">
+                                                <Info size={16} className="text-orange-500 mt-0.5 shrink-0" />
+                                                <div>
+                                                    <p className="text-[11px] font-bold text-orange-700 dark:text-orange-400 uppercase tracking-tight">Data Accuracy Notice</p>
+                                                    <p className="text-[10px] text-orange-600 dark:text-orange-300/70 leading-relaxed">
+                                                        This is a high-confidence estimate. To see 100% "Live and Correct" prices for every crop across India, you can connect the official Agmarknet API by adding an API key from <a href="https://data.gov.in" target="_blank" rel="noreferrer" className="underline font-bold">data.gov.in</a> to your environment.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             )}
