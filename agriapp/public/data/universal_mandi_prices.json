@@ -1,0 +1,30 @@
+{
+    "records": [
+        { "commodity": "Tomato", "market": "Kolar", "state": "Karnataka", "district": "Kolar", "modal_price": "2400", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Potato", "market": "Agra", "state": "Uttar Pradesh", "district": "Agra", "modal_price": "1800", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Onion", "market": "Lasalgaon", "state": "Maharashtra", "district": "Nashik", "modal_price": "3200", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Apple", "market": "Shimla", "state": "Himachal Pradesh", "district": "Shimla", "modal_price": "8500", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Banana", "market": "Jalgaon", "state": "Maharashtra", "district": "Jalgaon", "modal_price": "2200", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Pomegranate", "market": "Anantapur", "state": "Andhra Pradesh", "district": "Anantapur", "modal_price": "9500", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Grapes", "market": "Nasik", "state": "Maharashtra", "district": "Nashik", "modal_price": "4500", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Watermelon", "market": "Chennai", "state": "Tamil Nadu", "district": "Chennai", "modal_price": "1200", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Papaya", "market": "Bangalore", "state": "Karnataka", "district": "Bangalore", "modal_price": "2800", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Orange", "market": "Nagpur", "state": "Maharashtra", "district": "Nagpur", "modal_price": "5400", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Mango", "market": "Ratnagiri", "state": "Maharashtra", "district": "Ratnagiri", "modal_price": "12000", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Wheat", "market": "Ludhiana", "state": "Punjab", "district": "Ludhiana", "modal_price": "2400", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Rice", "market": "Nellore", "state": "Andhra Pradesh", "district": "Nellore", "modal_price": "4200", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Maize", "market": "Kurnool", "state": "Andhra Pradesh", "district": "Kurnool", "modal_price": "1900", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Cabbage", "market": "Pune", "state": "Maharashtra", "district": "Pune", "modal_price": "1500", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Cauliflower", "market": "Jaipur", "state": "Rajasthan", "district": "Jaipur", "modal_price": "1800", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Okra", "market": "Surat", "state": "Gujarat", "district": "Surat", "modal_price": "3500", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Ginger", "market": "Kochi", "state": "Kerala", "district": "Ernakulam", "modal_price": "18000", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Garlic", "market": "Mandsaur", "state": "Madhya Pradesh", "district": "Mandsaur", "modal_price": "14000", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Chillies", "market": "Guntur", "state": "Andhra Pradesh", "district": "Guntur", "modal_price": "22000", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Jackfruit", "market": "Idukki", "state": "Kerala", "district": "Idukki", "modal_price": "4500", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Lemon", "market": "Vijayawada", "state": "Andhra Pradesh", "district": "Krishna", "modal_price": "6000", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Spinach", "market": "Ahmedabad", "state": "Gujarat", "district": "Ahmedabad", "modal_price": "1200", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Black Pepper", "market": "Wayanad", "state": "Kerala", "district": "Wayanad", "modal_price": "55000", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Turmeric", "market": "Erode", "state": "Tamil Nadu", "district": "Erode", "modal_price": "12000", "arrival_date": "26/03/2026", "unit": "Quintal" },
+        { "commodity": "Coconut", "market": "Kozhikode", "state": "Kerala", "district": "Kozhikode", "modal_price": "3500", "arrival_date": "26/03/2026", "unit": "Quintal" }
+    ]
+}

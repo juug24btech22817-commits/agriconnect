@@ -272,9 +272,17 @@ const CropCard = ({ crop, index }) => {
                 <div className="p-5 flex flex-col flex-grow">
                     <div className="flex justify-between items-start mb-2 gap-2">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-1">{crop.name}</h3>
-                        <span className="text-[10px] font-black uppercase tracking-wider text-agri-green dark:text-agri-yellow bg-agri-light/50 dark:bg-gray-700/50 px-2 py-1 rounded-md shrink-0 border border-agri-green/10">
-                            {crop.category}
-                        </span>
+                        <div className="flex flex-col items-end gap-1">
+                            <span className="text-[10px] font-black uppercase tracking-wider text-agri-green dark:text-agri-yellow bg-agri-light/50 dark:bg-gray-700/50 px-2 py-1 rounded-md shrink-0 border border-agri-green/10">
+                                {crop.category}
+                            </span>
+                            {crop.isLiveValue && (
+                                <span className="flex items-center gap-1 text-[8px] font-black uppercase tracking-widest text-white bg-red-500 px-1.5 py-0.5 rounded-sm animate-pulse">
+                                    <div className="w-1 h-1 bg-white rounded-full" />
+                                    Live
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                     <div className="flex items-center justify-between mb-3">

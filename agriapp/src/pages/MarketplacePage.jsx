@@ -1,32 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, SlidersHorizontal, X } from 'lucide-react';
+import { Search, SlidersHorizontal, X, Activity, HeartPulse, Sparkles, Zap } from 'lucide-react';
 import CropCard from '../components/CropCard';
 import DeliveryOptions from '../components/DeliveryOptions';
 
 // Dummy Data
-const cropsData = [
+const initialCropsData = [
     { 
         id: 101, name: 'Farmer’s Choice Box (Small)', category: 'Subscription', price: '₹499', unit: 'box', 
         farmer: 'AgriConnect Curated', location: 'Multiple Farms', rating: '4.9', 
-        image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&h=500&fit=crop',
+        image: 'https://images.unsplash.com/photo-1610348725531-843dff563e2c?auto=format&fit=crop&q=80&w=1000',
         mandiPrice: '₹350', retailPrice: '₹650',
         farmerDetails: {
             phone: '+91 00000 00000',
-            bio: 'A curated mix of 5kg seasonal vegetables, harvested fresh from 3 local organic farms.',
+            bio: 'A curated mix of 5kg seasonal vegetables, harvested fresh from local organic farms.',
             verified: true,
             experience: 'Curated by Experts',
             farmName: 'AgriConnect Hub'
         }
     },
     { 
-        id: 102, name: 'Premium Essentials Box', category: 'Subscription', price: '₹999', unit: 'box', 
-        farmer: 'AgriConnect Curated', location: 'Multiple Farms', rating: '5.0', 
-        image: 'https://images.unsplash.com/photo-1574316071802-0d68494bc20d?w=500&h=500&fit=crop',
-        mandiPrice: '₹750', retailPrice: '₹1400',
+        id: 103, name: 'Family Feast Subscription Box', category: 'Subscription', price: '₹1499', unit: 'box', 
+        farmer: 'AgriConnect Curated', location: 'Multiple Farms', rating: '4.9', 
+        image: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&q=80&w=1000',
+        mandiPrice: '₹1100', retailPrice: '₹2100',
         farmerDetails: {
             phone: '+91 00000 00000',
-            bio: '10kg of premium veggies and fruits. Includes exotic vegetables and seasonal fruits.',
+            bio: 'A massive 15kg variety pack designed for large families. Includes staples, seasonal items, and a weekly "surprise" harvest.',
             verified: true,
             experience: 'Curated by Experts',
             farmName: 'AgriConnect Hub'
@@ -146,26 +146,154 @@ const cropsData = [
 
 const categories = ['All', 'Vegetables', 'Fruits', 'Grains', 'Dairy', 'Subscription'];
 
+const categoryData = {
+    'All': { 
+        title: "Full Harvest", 
+        tagline: "Total transparency, direct from the source.",
+        description: "Browse our entire collection of fresh produce from verified Indian farmers. From the hills of Shimla to the fields of Kolar.",
+        benefit: "Verified Farmers Only",
+        health: ["Traceable Origins", "Freshness Guarantee", "Fair Farmer Pricing"]
+    },
+    'Vegetables': { 
+        title: "Vital Vegetables", 
+        tagline: "Harvested at peak nutrition.",
+        description: "Grown using sustainable methods and delivered within 24 hours of harvest to ensure maximum crunch and vitamin retention.",
+        benefit: "24h Farm-to-Table",
+        health: ["High in Fiber & Antioxidants", "Supports Digestive Health", "Natural Immune Booster"]
+    },
+    'Fruits': { 
+        title: "Sun-Ripened Fruits", 
+        tagline: "100% Naturally Ripened.",
+        description: "Our fruits are allowed to ripen on the tree/vine, resulting in superior sweetness and flavor without toxic ripening agents.",
+        benefit: "Chemical-Free Ripening",
+        health: ["Rich in Vit C & Potassium", "Natural Sugar (Low GI)", "Vitalizing Energy Source"]
+    },
+    'Grains': { 
+        title: "Golden Grains", 
+        tagline: "India's heritage harvests.",
+        description: "Sourcing premium Basmati and ancient millets (Ragi, Bajra) directly from Punjab and Deccan cooperatives.",
+        benefit: "GI Tagged Varieties",
+        health: ["Complex Carbs for Energy", "High in Essential Minerals", "Lowers Cholesterol Risk"]
+    },
+    'Dairy': { 
+        title: "Pure Dairy", 
+        tagline: "Pure, local, and fresh.",
+        description: "Working with local cooperatives to bring you fresh A2 milk and artisanal dairy products. (Expansion in progress).",
+        benefit: "Cooperative Sourced",
+        health: ["Superior Calcium Source", "Healthy Fats (A2 Milk)", "Muscular Recovery Protein"]
+    },
+    'Subscription': { 
+        title: "Box Subscriptions", 
+        tagline: "Affordable healthy living.",
+        description: "The most convenient way to get a balanced variety of seasonal produce delivered weekly. Curated by nutrition experts.",
+        benefit: "Save up to 30%",
+        health: ["Complete Weekly Nutrition", "Balanced Seasonal Diet", "Sustainable Sourcing"]
+    }
+};
+
+const commodityMapping = {
+    'Alphonso Mangoes': 'Mango',
+    'Basmati Rice (Organic)': 'Rice',
+    'Fresh Tomatoes': 'Tomato',
+    'Organic Carrots': 'Carrot',
+    'Red Beetroot': 'Beetroot',
+    'Round Brinjal': 'Brinjal',
+    'Crisp Cucumber': 'Cucumber',
+    'Fresh Ridge Gourd': 'Ridgeguard(Turai)',
+    'Nagpur Oranges': 'Orange',
+    'Finger Millet (Ragi)': 'Ragi (Finger Millet)',
+    'Hybrid Red Onions': 'Onion',
+    'Samba Masuri Rice': 'Rice',
+    'Guntur Red Chillies': 'Chilli Red',
+    'Coorg Robusta Coffee': 'Coffee'
+};
+
 const MarketplacePage = () => {
+    const [crops, setCrops] = useState(initialCropsData);
     const [activeCategory, setActiveCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+    const [isLive, setIsLive] = useState(false);
 
-    const filteredCrops = cropsData.filter(crop => {
+    useEffect(() => {
+        const fetchLivePrices = async () => {
+            const apiKey = import.meta.env.VITE_AGMARKNET_API_KEY;
+            
+            try {
+                let data;
+                if (apiKey) {
+                    const response = await fetch(`https://api.data.gov.in/resource/9ef2731d-a65a-4a31-adb9-ad830832d57c?api-key=${apiKey}&format=json&limit=100`);
+                    data = await response.json();
+                } else {
+                    // Demo Mode: Fetch from local mock file
+                    const response = await fetch('/data/mock_mandi_prices.json');
+                    data = await response.json();
+                }
+                
+                if (data.records && data.records.length > 0) {
+                    const latestPrices = {};
+                    data.records.forEach(record => {
+                        // Keep the highest (modal) price found for each commodity
+                        if (!latestPrices[record.commodity] || parseInt(record.modal_price) > parseInt(latestPrices[record.commodity].modal_price)) {
+                            latestPrices[record.commodity] = record;
+                        }
+                    });
+
+                    const updatedCrops = crops.map(crop => {
+                        const apiCommodity = commodityMapping[crop.name];
+                        if (apiCommodity && latestPrices[apiCommodity]) {
+                            const marketPrice = parseInt(latestPrices[apiCommodity].modal_price);
+                            return {
+                                ...crop,
+                                mandiPrice: `₹${marketPrice}`,
+                                retailPrice: `₹${Math.round(marketPrice * 1.6)}`, // Typical 60% retail markup
+                                isLiveValue: true
+                            };
+                        }
+                        return crop;
+                    });
+
+                    setCrops(updatedCrops);
+                    setIsLive(true);
+                }
+            } catch (error) {
+                console.error("Failed to fetch live prices:", error);
+            }
+        };
+
+        fetchLivePrices();
+    }, []);
+
+    const filteredCrops = crops.filter(crop => {
         const matchesCategory = activeCategory === 'All' || crop.category === activeCategory;
         const matchesSearch = crop.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             crop.farmer.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
     });
 
+    const activeInfo = categoryData[activeCategory];
+
     return (
         <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-8 pb-24 transition-colors duration-300">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header Strings */}
-                <div className="text-center md:text-left mb-8">
-                    <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Fresh Marketplace</h1>
-                    <p className="text-gray-600 dark:text-gray-400 text-lg">Buy directly from Indian farmers. Freshness guaranteed.</p>
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                    <div className="text-center md:text-left">
+                        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Fresh Marketplace</h1>
+                        <p className="text-gray-600 dark:text-gray-400 text-lg">Buy directly from Indian farmers. Freshness guaranteed.</p>
+                    </div>
+                    {isLive && (
+                        <div className="flex items-center gap-2 px-4 py-2 bg-agri-green/10 border border-agri-green/20 rounded-2xl w-fit self-center md:self-auto shadow-sm">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-agri-green opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-agri-green"></span>
+                            </span>
+                            <span className="text-xs font-black text-agri-green uppercase tracking-widest">
+                                Live Market Prices Active
+                            </span>
+                        </div>
+                    )}
                 </div>
 
                 {/* Delivery & Logistics Info */}
@@ -192,7 +320,7 @@ const MarketplacePage = () => {
                 </div>
 
                 {/* Category Pills */}
-                <div className="flex overflow-x-auto hide-scrollbar gap-3 mb-10 pb-2">
+                <div className="flex overflow-x-auto hide-scrollbar gap-3 mb-6 pb-2">
                     {categories.map((category) => (
                         <button
                             key={category}
@@ -206,6 +334,71 @@ const MarketplacePage = () => {
                         </button>
                     ))}
                 </div>
+
+                {/* Category Information Card */}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={activeCategory}
+                        initial={{ opacity: 0, scale: 0.98, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.98, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="mb-10 p-8 bg-white dark:bg-gray-800 rounded-3xl border border-gray-100 dark:border-gray-700 shadow-xl shadow-agri-green/5 relative overflow-hidden"
+                    >
+                        {/* Decorative Background Icon */}
+                        <div className="absolute top-0 right-0 -mt-8 -mr-8 w-48 h-48 bg-agri-green/5 dark:bg-agri-green/10 rounded-full blur-3xl pointer-events-none" />
+                        
+                        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                            <div className="max-w-xl text-left">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className="text-agri-green font-black uppercase tracking-widest text-[10px] py-1 px-3 bg-agri-green/10 rounded-full">
+                                        Market Insight
+                                    </span>
+                                    <span className="text-gray-400 text-xs">•</span>
+                                    <span className="text-gray-500 dark:text-gray-400 font-bold text-[10px] uppercase">
+                                        {activeCategory}
+                                    </span>
+                                </div>
+                                <h2 className="text-4xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">
+                                    {activeInfo.title} <span className="text-agri-green">.</span>
+                                </h2>
+                                <p className="text-agri-green font-black text-base mb-4">
+                                    {activeInfo.tagline}
+                                </p>
+                                <p className="text-gray-600 dark:text-gray-400 leading-relaxed text-base italic">
+                                    "{activeInfo.description}"
+                                </p>
+                            </div>
+                            
+                            <div className="flex-grow flex flex-col sm:flex-row gap-4">
+                                <div className="flex-1 p-6 bg-agri-light dark:bg-gray-700/50 rounded-2xl border border-agri-green/10 flex flex-col justify-center">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="p-2 bg-agri-green/20 text-agri-green rounded-lg">
+                                            <HeartPulse size={20} />
+                                        </div>
+                                        <h3 className="font-black text-gray-900 dark:text-white uppercase tracking-wider text-xs">Health Advantages</h3>
+                                    </div>
+                                    <ul className="space-y-2">
+                                        {activeInfo.health.map((h, i) => (
+                                            <li key={i} className="flex items-center gap-2 text-sm font-bold text-gray-700 dark:text-gray-300">
+                                                <div className="w-1.5 h-1.5 bg-agri-green rounded-full shadow-[0_0_5px_rgba(46,125,50,0.5)]" />
+                                                {h}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                
+                                <div className="shrink-0 p-6 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl flex flex-col items-center justify-center text-center">
+                                    <Sparkles size={24} className="text-agri-yellow dark:text-agri-green mb-2" />
+                                    <p className="text-[10px] font-black uppercase tracking-widest mb-1 opacity-70">Top Promise</p>
+                                    <p className="text-lg font-black tracking-tighter leading-tight">
+                                        {activeInfo.benefit}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                </AnimatePresence>
 
                 {/* Product Grid */}
                 {filteredCrops.length > 0 ? (
@@ -234,6 +427,7 @@ const MarketplacePage = () => {
                 )}
 
             </div>
+
 
             {/* Filters Modal */}
             <AnimatePresence>
