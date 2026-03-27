@@ -66,7 +66,7 @@ const HomePage = () => {
                         {[
                             { number: '10K+', label: 'Active Farmers' },
                             { number: '50K+', label: 'Happy Buyers' },
-                            { number: '$2M+', label: 'Farmer Earnings' },
+                            { number: '₹15Cr+', label: 'Farmer Earnings' },
                             { number: '100%', label: 'Transparency' }
                         ].map((stat, index) => (
                             <motion.div

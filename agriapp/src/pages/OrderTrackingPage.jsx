@@ -74,9 +74,9 @@ const OrderTrackingPage = () => {
                                 alt="Farmer"
                                 className="w-24 h-24 rounded-full mx-auto object-cover mb-4 ring-4 ring-agri-light dark:ring-gray-700 shadow-md"
                             />
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white">Johnathan Fields</h3>
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white">Arjun Singh</h3>
                             <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 flex items-center justify-center gap-1">
-                                <MapPin size={14} /> Green Valley Farm, USA
+                                <MapPin size={14} /> Green Valley Farm, Kolar, Karnataka
                             </p>
 
                             <div className="flex flex-col gap-3">
@@ -104,7 +104,7 @@ const OrderTrackingPage = () => {
                             />
                             <div>
                                 <p className="font-bold text-gray-900 dark:text-white text-sm">Organic Tomatoes</p>
-                                <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">50 kg • $125.00 total</p>
+                                <p className="text-gray-500 dark:text-gray-400 text-xs mt-1">50 kg • ₹4,200.00 total</p>
                             </div>
                         </div>
                     </div>
