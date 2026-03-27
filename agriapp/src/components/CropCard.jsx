@@ -1,3 +1,7 @@
+/**
+ * CropCard.jsx - Handles individual product display, modals for farmer/price details,
+ * and the "Add to Cart" interaction flow.
+ */
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -300,8 +304,12 @@ const ProductDetailModal = ({ crop, onClose, onAdd, weight, setWeight, weightOpt
     );
 };
 
+/**
+ * Main CropCard Component
+ * Manages local states for different interaction phases (initial -> selecting -> confirming)
+ */
 const CropCard = ({ crop, index }) => {
-    const [phase, setPhase] = useState('initial'); // 'initial', 'selecting', 'confirming'
+    const [phase, setPhase] = useState('initial'); // 'initial' (Show buttons), 'selecting' (Show weight grid), 'confirming' (Show success overlay)
     const [weight, setWeight] = useState(1);
     const [showFarmerModal, setShowFarmerModal] = useState(false);
     const [showPriceModal, setShowPriceModal] = useState(false);

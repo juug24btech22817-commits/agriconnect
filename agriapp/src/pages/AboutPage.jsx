@@ -1,3 +1,6 @@
+/**
+ * AboutPage.jsx - Static page detailing the mission, values, and origin story of AgriConnect.
+ */
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Target, Heart, Globe, ArrowRight } from 'lucide-react';
@@ -55,7 +58,7 @@ const AboutPage = () => {
                 <div className="flex flex-col md:flex-row items-center gap-16">
                     <div className="w-full md:w-1/2">
                         <img
-                            src="https://images.unsplash.com/photo-1595804365737-12681fbfa968?w=800&h=1000&fit=crop"
+                            src="/images/about_farmer.png"
                             alt="Farmer in field"
                             className="rounded-3xl shadow-2xl object-cover"
                         />

@@ -1,3 +1,7 @@
+/**
+ * App.jsx - Root component of AgriConnect.
+ * Sets up routing, global context providers, and base layout.
+ */
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';

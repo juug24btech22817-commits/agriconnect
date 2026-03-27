@@ -4,7 +4,8 @@ import { Search, SlidersHorizontal, X, Activity, HeartPulse, Sparkles, Zap } fro
 import CropCard from '../components/CropCard';
 import DeliveryOptions from '../components/DeliveryOptions';
 
-// Dummy Data
+// The following data represents the core product catalog for the marketplace.
+// Each crop contains pricing, farmer info, and local image paths.
 const initialCropsData = [
     { 
         id: 101, name: 'Farmer’s Choice Box (Small)', category: 'Subscription', price: '₹499', unit: 'box', 
@@ -128,10 +129,9 @@ const initialCropsData = [
     { id: 10, name: 'Finger Millet (Ragi)', category: 'Grains', price: '₹45', unit: 'kg', farmer: 'Deccan Roots', location: 'Karnataka, India', rating: '4.7', image: '/images/crops/finger_millet_ragi.png', mandiPrice: '₹32', retailPrice: '₹75' },
     { id: 11, name: 'Hybrid Red Onions', category: 'Vegetables', price: '₹35', unit: 'kg', farmer: 'Nashik Valley Farms', location: 'Maharashtra, India', rating: '4.6', image: '/images/crops/red_onions.png', mandiPrice: '₹18', retailPrice: '₹55' },
     { id: 12, name: 'Sona Masuri Rice', category: 'Grains', price: '₹55', unit: 'kg', farmer: 'Tungabhadra Farms', location: 'Raichur, Karnataka', rating: '4.8', image: '/images/crops/samba_masuri_rice.png', mandiPrice: '₹38', retailPrice: '₹85' },
-    { id: 13, name: 'Byadgi Red Chillies', category: 'Vegetables', price: '₹220', unit: 'kg', farmer: 'Haveri Spice Co', location: 'Haveri, Karnataka', rating: '4.9', image: 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=500&h=500&fit=crop', mandiPrice: '₹160', retailPrice: '₹320' },
+    { id: 13, name: 'Byadgi Red Chillies', category: 'Vegetables', price: '₹220', unit: 'kg', farmer: 'Haveri Spice Co', location: 'Haveri, Karnataka', rating: '4.9', image: '/images/crops/red_chilli.png', mandiPrice: '₹160', retailPrice: '₹320' },
     { id: 14, name: 'Chikkamagaluru Arabica', category: 'Grains', price: '₹550', unit: 'kg', farmer: 'Baba Budangiri Estates', location: 'Chikkamagaluru, Karnataka', rating: '4.9', image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&h=500&fit=crop', mandiPrice: '₹380', retailPrice: '₹750' },
-    { id: 15, name: 'Mysore Nanjangud Bananas', category: 'Fruits', price: '₹70', unit: 'kg', farmer: 'Srirangapatna Orchards', location: 'Mysore, Karnataka', rating: '5.0', image: 'https://images.unsplash.com/photo-1528825876394-c8cdd4ef9901?w=500&h=500&fit=crop', mandiPrice: '₹45', retailPrice: '₹110' },
-    { id: 16, name: 'Dharwad Green Gram', category: 'Grains', price: '₹110', unit: 'kg', farmer: 'Gadag Growers', location: 'Gadag, Karnataka', rating: '4.7', image: 'https://images.unsplash.com/photo-1585993439219-11104d3ff5c4?w=500&h=500&fit=crop', mandiPrice: '₹85', retailPrice: '₹160' },
+    { id: 15, name: 'Mysore Nanjangud Bananas', category: 'Fruits', price: '₹70', unit: 'kg', farmer: 'Srirangapatna Orchards', location: 'Mysore, Karnataka', rating: '5.0', image: '/images/crops/nanjangud_banana.png', mandiPrice: '₹45', retailPrice: '₹110' },
 ];
 
 const categories = ['All', 'Vegetables', 'Fruits', 'Grains', 'Dairy', 'Subscription'];
@@ -181,6 +181,10 @@ const categoryData = {
     }
 };
 
+/**
+ * Mapping between local product names and Agmarknet API commodity names.
+ * This is used to align live prices with the correct marketplace products.
+ */
 const commodityMapping = {
     'Alphonso Mangoes': 'Mango',
     'Basmati Rice (Organic)': 'Rice',
@@ -196,8 +200,7 @@ const commodityMapping = {
     'Sona Masuri Rice': 'Rice',
     'Byadgi Red Chillies': 'Chilli Red',
     'Chikkamagaluru Arabica': 'Coffee',
-    'Mysore Nanjangud Bananas': 'Banana',
-    'Dharwad Green Gram': 'Green Gram (Moong)'
+    'Mysore Nanjangud Bananas': 'Banana'
 };
 
 const MarketplacePage = () => {
@@ -263,6 +266,7 @@ const MarketplacePage = () => {
         return matchesCategory && matchesSearch;
     });
 
+    // Derive category info from static categoryData mapping
     const activeInfo = categoryData[activeCategory];
 
     return (
