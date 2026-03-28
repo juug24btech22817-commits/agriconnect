@@ -7,19 +7,24 @@ import { Link, useNavigate } from 'react-router-dom';
 const CartPage = () => {
     const { cart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart();
     const navigate = useNavigate();
-    const [deliveryMethod, setDeliveryMethod] = React.useState('standard');
+    const [deliveryMethod, setDeliveryMethod] = React.useState('shiprocket');
 
     const subtotal = cart.reduce((acc, item) => {
         const price = parseFloat(item.price.replace('₹', '').replace(',', ''));
         return acc + (price * item.quantity);
     }, 0);
 
-    const deliveryCharge = deliveryMethod === 'apartment' ? 0 : 40;
-    const discount = deliveryMethod === 'apartment' ? Math.round(subtotal * 0.05) : 0;
-    const total = subtotal + deliveryCharge - discount;
+    const partners = {
+        shiprocket: { cost: 40, name: 'Shiprocket' },
+        shadowfax: { cost: 60, name: 'Shadowfax' },
+        porter: { cost: 150, name: 'Porter' }
+    };
+
+    const deliveryCharge = partners[deliveryMethod]?.cost || 0;
+    const total = subtotal + deliveryCharge;
 
     const handleCheckout = () => {
-        alert('Proceeding to secure payment... Order total: ₹' + total);
+        alert(`Proceeding to secure payment via ${partners[deliveryMethod].name}... Order total: ₹${total.toLocaleString()}`);
         clearCart();
         navigate('/dashboard');
     };
@@ -115,49 +120,49 @@ const CartPage = () => {
 
                     {/* Summary Sidebar */}
                     <div className="lg:col-span-1 space-y-6">
-                        {/* Delivery Method Selector */}
+                        {/* Delivery Partner Selection */}
                         <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
-                            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Delivery Method</h3>
+                            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Delivery Partner</h3>
                             <div className="space-y-3">
-                                <button
-                                    onClick={() => setDeliveryMethod('standard')}
-                                    className={`w-full p-4 rounded-2xl border-2 transition-all flex items-center justify-between ${
-                                        deliveryMethod === 'standard' 
-                                        ? 'border-agri-green bg-agri-green/5' 
-                                        : 'border-gray-100 dark:border-gray-700 hover:border-gray-200'
-                                    }`}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div className={`p-2 rounded-lg ${deliveryMethod === 'standard' ? 'bg-agri-green text-white' : 'bg-gray-100 text-gray-500'}`}>
-                                            <Truck size={20} />
+                                {[
+                                    { id: 'shiprocket', name: 'Shiprocket', cost: 40, time: '2-3 Days', desc: 'Standard Pan-India' },
+                                    { id: 'shadowfax', name: 'Shadowfax', cost: 60, time: '2-4 Hours', desc: 'Hyper-local fresh' },
+                                    { id: 'porter', name: 'Porter', cost: 150, time: 'Same Day', desc: 'Bulk/Heavy (50kg+)' }
+                                ].map((p) => (
+                                    <button
+                                        key={p.id}
+                                        onClick={() => setDeliveryMethod(p.id)}
+                                        className={`w-full p-4 rounded-2xl border-2 transition-all flex items-center justify-between ${
+                                            deliveryMethod === p.id 
+                                            ? 'border-agri-green bg-agri-green/5' 
+                                            : 'border-gray-100 dark:border-gray-700 hover:border-gray-200'
+                                        }`}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <div className="text-left">
+                                                <p className="font-bold text-sm text-gray-900 dark:text-white">{p.name}</p>
+                                                <p className="text-[10px] text-gray-500">{p.desc} • {p.time}</p>
+                                            </div>
                                         </div>
-                                        <div className="text-left">
-                                            <p className="font-bold text-sm text-gray-900 dark:text-white">Standard Home</p>
-                                            <p className="text-[10px] text-gray-500">₹40 • Next Day</p>
+                                        <div className="text-right">
+                                            <p className="font-bold text-agri-green text-sm">₹{p.cost}</p>
+                                            {deliveryMethod === p.id && <div className="w-2 h-2 bg-agri-green rounded-full ml-auto mt-1" />}
                                         </div>
-                                    </div>
-                                    {deliveryMethod === 'standard' && <div className="w-2 h-2 bg-agri-green rounded-full" />}
-                                </button>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
 
-                                <button
-                                    onClick={() => setDeliveryMethod('apartment')}
-                                    className={`w-full p-4 rounded-2xl border-2 transition-all flex items-center justify-between ${
-                                        deliveryMethod === 'apartment' 
-                                        ? 'border-agri-green bg-agri-green/5' 
-                                        : 'border-gray-100 dark:border-gray-700 hover:border-gray-200'
-                                    }`}
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div className={`p-2 rounded-lg ${deliveryMethod === 'apartment' ? 'bg-agri-green text-white' : 'bg-gray-100 text-gray-500'}`}>
-                                            <Building2 size={20} />
-                                        </div>
-                                        <div className="text-left">
-                                            <p className="font-bold text-sm text-gray-900 dark:text-white">Apartment Cluster</p>
-                                            <p className="text-[10px] text-green-600 font-bold">FREE • 5% Bonus Disc.</p>
-                                        </div>
-                                    </div>
-                                    {deliveryMethod === 'apartment' && <div className="w-2 h-2 bg-agri-green rounded-full" />}
-                                </button>
+                        {/* Serviceability Check */}
+                        <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+                            <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2 uppercase tracking-wide">Check Serviceability</h3>
+                            <div className="flex gap-2">
+                                <input 
+                                    type="text" 
+                                    placeholder="Enter PIN Code" 
+                                    className="flex-grow bg-gray-50 dark:bg-gray-700 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-agri-green transition-all"
+                                />
+                                <button className="bg-agri-green text-white px-4 py-2 rounded-xl text-sm font-bold">Check</button>
                             </div>
                         </div>
 

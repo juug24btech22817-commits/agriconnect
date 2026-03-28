@@ -132,6 +132,19 @@ const initialCropsData = [
     { id: 13, name: 'Byadgi Red Chillies', category: 'Vegetables', price: '₹220', unit: 'kg', farmer: 'Haveri Spice Co', location: 'Haveri, Karnataka', rating: '4.9', image: '/images/crops/red_chilli.png', mandiPrice: '₹160', retailPrice: '₹320' },
     { id: 14, name: 'Chikkamagaluru Arabica', category: 'Grains', price: '₹550', unit: 'kg', farmer: 'Baba Budangiri Estates', location: 'Chikkamagaluru, Karnataka', rating: '4.9', image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&h=500&fit=crop', mandiPrice: '₹380', retailPrice: '₹750' },
     { id: 15, name: 'Mysore Nanjangud Bananas', category: 'Fruits', price: '₹70', unit: 'kg', farmer: 'Srirangapatna Orchards', location: 'Mysore, Karnataka', rating: '5.0', image: '/images/crops/nanjangud_banana.png', mandiPrice: '₹45', retailPrice: '₹110' },
+    { 
+        id: 16, name: 'Organic Potatoes', category: 'Vegetables', price: '₹30', unit: 'kg', 
+        farmer: 'Sandeep Hedge', location: 'Hassan, Karnataka', rating: '4.7', 
+        image: '/images/crops/fresh_potatoes_organic.png',
+        mandiPrice: '₹18', retailPrice: '₹50',
+        farmerDetails: {
+            phone: '+91 91234 56789',
+            bio: 'Specialist in soil-grown tubers. Our potatoes are rich in starch and free from heavy chemicals.',
+            verified: true,
+            experience: '18 years',
+            farmName: 'Hassan Roots'
+        }
+    },
 ];
 
 const categories = ['All', 'Vegetables', 'Fruits', 'Grains', 'Dairy', 'Subscription'];
@@ -200,7 +213,8 @@ const commodityMapping = {
     'Sona Masuri Rice': 'Rice',
     'Byadgi Red Chillies': 'Chilli Red',
     'Chikkamagaluru Arabica': 'Coffee',
-    'Mysore Nanjangud Bananas': 'Banana'
+    'Mysore Nanjangud Bananas': 'Banana',
+    'Organic Potatoes': 'Potato'
 };
 
 const MarketplacePage = () => {

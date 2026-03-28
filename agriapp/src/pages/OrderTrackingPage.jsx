@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Check, Clock, Phone, MessageSquare, MapPin } from 'lucide-react';
+import { Check, Clock, Phone, MessageSquare, MapPin, Truck, Package, ShieldCheck, ShoppingBag } from 'lucide-react';
 
 const OrderTrackingPage = () => {
-    const steps = [
-        { id: 1, name: 'Order Placed', status: 'complete', time: '10:00 AM' },
-        { id: 2, name: 'Harvesting', status: 'complete', time: '11:30 AM' },
-        { id: 3, name: 'Quality Check', status: 'current', time: 'In Progress' },
-        { id: 4, name: 'Out for Delivery', status: 'upcoming', time: 'Pending' },
-        { id: 5, name: 'Delivered', status: 'upcoming', time: 'Pending' },
-    ];
+    const [orderData, setOrderData] = useState({
+        id: 'AGR-839201',
+        partner: 'Shiprocket',
+        trackingId: 'SR-92837482',
+        estimatedDelivery: 'Today, 2:00 PM',
+        currentStatus: 'Quality Check',
+        steps: [
+            { id: 1, name: 'Order Placed', status: 'complete', time: '10:00 AM', icon: ShoppingBag },
+            { id: 2, name: 'Harvesting', status: 'complete', time: '11:30 AM', icon: Package },
+            { id: 3, name: 'Quality Check', status: 'current', time: 'In Progress', icon: ShieldCheck },
+            { id: 4, name: 'Out for Delivery', status: 'upcoming', time: 'Pending', icon: Truck },
+            { id: 5, name: 'Delivered', status: 'upcoming', time: 'Pending', icon: Check },
+        ]
+    });
+
+    // Simulate real-time tracking update
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            // In real app, fetch /api/delivery/track/${orderData.trackingId}
+            console.log('Fetching latest tracking data...');
+        }, 2000);
+        return () => clearTimeout(timer);
+    }, []);
 
     return (
         <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-8 pb-24 transition-colors duration-300">
@@ -18,7 +34,11 @@ const OrderTrackingPage = () => {
                 {/* Header content */}
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Track Your Order</h1>
-                    <p className="text-gray-500 dark:text-gray-400">Order ID: #AGR-839201</p>
+                    <div className="flex items-center justify-center gap-2">
+                        <span className="text-gray-500 dark:text-gray-400">Order ID: #{orderData.id}</span>
+                        <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                        <span className="text-agri-green font-bold text-sm uppercase">{orderData.partner}</span>
+                    </div>
                 </div>
 
                 {/* Delivery ETA Card */}
@@ -29,7 +49,8 @@ const OrderTrackingPage = () => {
                 >
                     <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
                     <p className="text-agri-light/80 text-sm font-semibold uppercase tracking-wider mb-2 relative z-10">Estimated Delivery</p>
-                    <h2 className="text-4xl md:text-5xl font-black relative z-10">Today, 2:00 PM</h2>
+                    <h2 className="text-4xl md:text-5xl font-black relative z-10">{orderData.estimatedDelivery}</h2>
+                    <p className="text-xs mt-4 opacity-70 relative z-10 font-mono tracking-widest">TRACKING ID: {orderData.trackingId}</p>
                 </motion.div>
 
                 <div className="grid md:grid-cols-5 gap-8">
@@ -42,7 +63,7 @@ const OrderTrackingPage = () => {
                             <div className="absolute left-6 top-8 bottom-8 w-0.5 bg-gray-200 dark:bg-gray-700"></div>
 
                             <div className="space-y-8 relative z-10">
-                                {steps.map((step, stepIdx) => (
+                                {orderData.steps.map((step, stepIdx) => (
                                     <div key={step.name} className="flex items-start gap-6">
                                         <div className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-4 ${step.status === 'complete' ? 'bg-agri-green border-agri-light dark:border-gray-800 text-white shadow-md' :
                                             step.status === 'current' ? 'bg-yellow-400 border-yellow-100 dark:border-gray-800 text-yellow-900 shadow-md shadow-yellow-400/30' :
@@ -81,16 +102,16 @@ const OrderTrackingPage = () => {
 
                             <div className="flex flex-col gap-3">
                                 <button
-                                    onClick={() => alert('Initiating call to Johnathan Fields...')}
+                                    onClick={() => alert(`Initiating call to ${orderData.partner} Support...`)}
                                     className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border-2 border-agri-green text-agri-green dark:text-agri-light hover:bg-agri-light dark:hover:bg-agri-green/20 font-bold transition-colors"
                                 >
-                                    <Phone size={18} /> Call Farmer
+                                    <Phone size={18} /> Support
                                 </button>
                                 <button
-                                    onClick={() => alert('Opening chat with Johnathan Fields...')}
+                                    onClick={() => alert('Message sent to delivery agent...')}
                                     className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 font-bold transition-colors"
                                 >
-                                    <MessageSquare size={18} /> Message
+                                    <MessageSquare size={18} /> Agent
                                 </button>
                             </div>
                         </div>
