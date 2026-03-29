@@ -216,7 +216,7 @@ const initialCropsData = [
     { 
         id: 16, name: 'Pure Cow Ghee', category: 'Dairy', price: '₹750', unit: 'kg', 
         farmer: 'Desi Dairy Farm', location: 'Aarey Colony, Mumbai', rating: '4.9', 
-        image: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=1000&auto=format&fit=crop',
+        image: '/images/crops/pure_cow_ghee.png',
         mandiPrice: '₹550', retailPrice: '₹950',
         farmerDetails: {
             phone: '+91 33221 10099',
