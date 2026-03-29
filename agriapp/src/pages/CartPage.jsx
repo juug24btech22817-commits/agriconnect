@@ -10,8 +10,9 @@ const CartPage = () => {
     const [deliveryMethod, setDeliveryMethod] = React.useState('shiprocket');
 
     const subtotal = cart.reduce((acc, item) => {
-        const price = parseFloat(item.price.replace('₹', '').replace(',', ''));
-        return acc + (price * item.quantity);
+        const priceStr = typeof item.price === 'string' ? item.price : String(item.price || 0);
+        const price = parseFloat(priceStr.replace('₹', '').replace(',', ''));
+        return acc + (isNaN(price) ? 0 : price) * item.quantity;
     }, 0);
 
     const partners = {
@@ -21,7 +22,8 @@ const CartPage = () => {
     };
 
     const deliveryCharge = partners[deliveryMethod]?.cost || 0;
-    const total = subtotal + deliveryCharge;
+    const discount = 0; // Planned: Cluster discount logic
+    const total = subtotal + deliveryCharge - discount;
 
     const handleCheckout = () => {
         alert(`Proceeding to secure payment via ${partners[deliveryMethod].name}... Order total: ₹${total.toLocaleString()}`);

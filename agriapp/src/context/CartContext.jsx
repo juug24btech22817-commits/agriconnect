@@ -55,8 +55,9 @@ export const CartProvider = ({ children }) => {
     };
 
     const cartTotal = cart.reduce((total, item) => {
-        const price = parseFloat(item.price.replace('₹', '').replace(',', ''));
-        return total + price * item.quantity;
+        const priceStr = typeof item.price === 'string' ? item.price : String(item.price || 0);
+        const price = parseFloat(priceStr.replace('₹', '').replace(',', ''));
+        return total + (isNaN(price) ? 0 : price) * item.quantity;
     }, 0);
 
     const cartCount = cart.reduce((count, item) => count + item.quantity, 0);

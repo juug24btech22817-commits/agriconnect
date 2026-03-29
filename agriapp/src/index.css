@@ -4,24 +4,42 @@
 
 @layer base {
   body {
-    @apply antialiased text-gray-900 bg-agri-light dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300;
+    @apply antialiased text-agri-text bg-agri-surface dark:bg-slate-950 dark:text-gray-100 transition-colors duration-500 font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight text-agri-dark dark:text-white;
   }
 }
 
-/* Custom Scrollbar for better UI */
+@layer components {
+  .glass {
+    @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/20 dark:border-white/10;
+  }
+
+  .premium-gradient {
+    @apply bg-mesh-gradient animate-pulse;
+    animation-duration: 8s;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-br from-agri-primary to-agri-secondary;
+  }
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  @apply bg-transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-agri-green/50 hover:bg-agri-green rounded-full;
+  @apply bg-agri-primary/20 hover:bg-agri-primary/40 rounded-full border-4 border-transparent bg-clip-padding;
 }
 
-/* Base styling for smooth scroll */
 html {
   scroll-behavior: smooth;
 }
