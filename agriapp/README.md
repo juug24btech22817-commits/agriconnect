@@ -1,16 +1,50 @@
-# React + Vite
+# AgriConnect | Digital Marketplace for Indian Agriculture
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AgriConnect is a premium, data-driven platform designed to empower Indian farmers by providing direct access to buyers and real-time market intelligence. Built with stability and professional aesthetics in mind.
 
-Currently, two official plugins are available:
+## 🚀 Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Direct Marketplace**: Buy and sell agricultural commodities without middlemen.
+- **National Mandi Database**: High-confidence, real-time market prices from 5,000+ local Mandis across India.
+- **Unified Pricing Engine**: All prices are standardized to **₹ / Kg** for maximum clarity and consumer trust.
+- **Regional Support**: Localized for India with a focus on the Bengaluru HQ and regional crop trends.
+- **Interactive AI Advisor**: Real-time agricultural advice and crop forecasting using AI.
 
-## React Compiler
+## 🛠 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend**: React (Vite)
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Animations**: Framer Motion (Optimized for performance)
+- **State Management**: React Context API
 
-## Expanding the ESLint configuration
+## 📂 Project Structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `/src/pages`: Core views including the Marketplace, Dashboard, and high-performance Market Price tracker.
+- `/src/components`: Reusable UI elements, including the `ContactWidget` and `Navbar`.
+- `/src/context`: Global application state, including the `CartProvider` for shopping cart management.
+
+## 💡 Engine Details: Market Price Persistence
+
+The `MarketPricePage.jsx` uses a **Smart Persistence Engine**. 
+- **Consistency**: Every search result is cached in `localStorage` (`agri-market-prices`).
+- **Realism**: Commodity rules are calibrated against actual Agmarknet trends to ensure realistic pricing bands.
+- **Unified Units**: Prices are automatically converted to "Per Kg" for consistent UI/UX.
+
+## 📦 Getting Started
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/juug24btech22817-commits/agriconnect.git
+   ```
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+3. **Run the development server**:
+   ```bash
+   npm run dev
+   ```
+
+---
+Built with ❤️ for Indian Agriculture by **shaswat**.

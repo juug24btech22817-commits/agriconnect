@@ -43,6 +43,11 @@ class ErrorBoundary extends React.Component {
   }
 }
 
+/**
+ * App.js - Entry point for the AgriConnect React Application.
+ * Manages global routing, Context Providers, and high-level layout.
+ * Includes a global ErrorBoundary for maximum application stability.
+ */
 function App() {
   return (
     <ErrorBoundary>

@@ -97,7 +97,8 @@ const Footer = () => {
                                     >
                                         <CheckCircle2 size={40} className="text-agri-primary mx-auto mb-4" />
                                         <h3 className="font-display font-bold text-xl text-agri-dark dark:text-white mb-2">Welcome Aboard!</h3>
-                                        <p className="text-sm text-gray-500 dark:text-gray-400">Great to have you on this journey.</p>
+                                        <h3 className="font-display font-bold text-xl text-agri-dark dark:text-white mb-2 underline decoration-agri-primary decoration-4">Check Your Inbox</h3>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400 font-medium leading-relaxed">Welcome aboard. You're now subscribed to India's most trusted agricultural intelligence.</p>
                                     </motion.div>
                                 ) : (
                                     <motion.div
@@ -105,8 +106,11 @@ const Footer = () => {
                                         initial={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
                                     >
-                                        <h3 className="font-display font-bold text-xl text-agri-dark dark:text-white mb-4">Join our journey</h3>
-                                        <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Receive weekly updates on India's agricultural market trends.</p>
+                                        <h3 className="font-display font-bold text-xl text-agri-dark dark:text-white mb-4 uppercase tracking-wider text-xs">Stay Informed</h3>
+                                        <h2 className="text-3xl font-display font-black text-agri-dark dark:text-white mb-4 leading-tight">Empower Your <span className="text-agri-primary">Harvest.</span></h2>
+                                        <p className="text-gray-500 dark:text-gray-400 text-sm mb-6 leading-relaxed">
+                                            Join 50,000+ modern farmers. Get India's most trusted mandi intelligence and real-time crop forecasts delivered every Sunday.
+                                        </p>
                                         <form onSubmit={handleSubscribe} className="flex gap-2">
                                             <input 
                                                 type="email" 

@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { PhoneCall, MessageCircle, Mail, MapPin, X } from 'lucide-react';
 
+/**
+ * ContactWidget - A high-stability global floating support button.
+ * Note: Refactored to remove framer-motion dependencies to prevent rendering crashes 
+ * on complex mobile viewports. Uses standard React state for maximum reliability.
+ */
 const ContactWidget = () => {
     const [isOpen, setIsOpen] = useState(false);
 
