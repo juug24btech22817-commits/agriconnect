@@ -16,6 +16,8 @@ import AboutPage from './pages/AboutPage';
 import CartPage from './pages/CartPage';
 import AdvisorPage from './pages/AdvisorPage';
 import CommunityPage from './pages/CommunityPage';
+import ContactPage from './pages/ContactPage';
+import ContactWidget from './components/ContactWidget';
 
 import { CartProvider } from './context/CartContext';
 
@@ -60,10 +62,12 @@ function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/advisor" element={<AdvisorPage />} />
               <Route path="/community" element={<CommunityPage />} />
+              <Route path="/contact" element={<ContactPage />} />
               <Route path="*" element={<HomePage />} />
             </Routes>
           </main>
           <Footer />
+          <ContactWidget />
         </div>
       </CartProvider>
     </Router>

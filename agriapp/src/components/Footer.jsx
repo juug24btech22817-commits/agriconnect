@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Leaf, ArrowRight, Twitter, Facebook, Instagram } from 'lucide-react';
+import { Leaf, ArrowRight, Twitter, Facebook, Instagram, Phone, Mail, MapPin, CheckCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Footer = () => {
+    const [email, setEmail] = useState('');
+    const [subscribed, setSubscribed] = useState(false);
+
+    const handleSubscribe = (e) => {
+        e.preventDefault();
+        if (email) {
+            setSubscribed(true);
+            setEmail('');
+            setTimeout(() => setSubscribed(false), 5000);
+        }
+    };
+
     return (
         <footer className="bg-white dark:bg-slate-950 border-t border-gray-100 dark:border-gray-900 pt-24 pb-12 transition-colors duration-500 overflow-hidden relative">
             {/* Background Decoration */}
@@ -22,7 +35,7 @@ const Footer = () => {
                             </span>
                         </Link>
                         <p className="text-gray-500 dark:text-gray-400 text-lg leading-relaxed mb-8">
-                            Transforming Indian agriculture through direct trade, transparent pricing, and sustainable growth for every farmer.
+                            Empowering Indian farmers through direct trade, transparent pricing, and sustainable growth for every harvest.
                         </p>
                         <div className="flex gap-4">
                             {[Twitter, Facebook, Instagram].map((Icon, i) => (
@@ -37,10 +50,15 @@ const Footer = () => {
                     <div className="lg:col-span-2">
                         <h3 className="font-display font-bold text-agri-dark dark:text-white uppercase tracking-widest text-xs mb-8">Platform</h3>
                         <ul className="space-y-4">
-                            {['Marketplace', 'Live Prices', 'For Farmers', 'Track Order'].map(item => (
-                                <li key={item}>
-                                    <Link to={`/${item.toLowerCase().replace(' ', '-')}`} className="text-gray-500 dark:text-gray-400 hover:text-agri-primary transition-colors font-medium">
-                                        {item}
+                            {[
+                                { name: 'Marketplace', path: '/marketplace' },
+                                { name: 'Live Prices', path: '/prices' },
+                                { name: 'For Farmers', path: '/dashboard' },
+                                { name: 'Track Order', path: '/tracking' }
+                            ].map(item => (
+                                <li key={item.name}>
+                                    <Link to={item.path} className="text-gray-500 dark:text-gray-400 hover:text-agri-primary transition-colors font-medium">
+                                        {item.name}
                                     </Link>
                                 </li>
                             ))}
@@ -50,10 +68,15 @@ const Footer = () => {
                     <div className="lg:col-span-2">
                         <h3 className="font-display font-bold text-agri-dark dark:text-white uppercase tracking-widest text-xs mb-8">Company</h3>
                         <ul className="space-y-4">
-                            {['About Us', 'Farmer Stories', 'Careers', 'Contact'].map(item => (
-                                <li key={item}>
-                                    <Link to={`/${item.toLowerCase().replace(' ', '-')}`} className="text-gray-500 dark:text-gray-400 hover:text-agri-primary transition-colors font-medium">
-                                        {item}
+                            {[
+                                { name: 'About Us', path: '/about' },
+                                { name: 'Farmer Stories', path: '/stories' },
+                                { name: 'AI Advisor', path: '/advisor' },
+                                { name: 'Contact', path: '/contact' }
+                            ].map(item => (
+                                <li key={item.name}>
+                                    <Link to={item.path} className="text-gray-500 dark:text-gray-400 hover:text-agri-primary transition-colors font-medium">
+                                        {item.name}
                                     </Link>
                                 </li>
                             ))}
@@ -62,31 +85,74 @@ const Footer = () => {
 
                     {/* Newsletter / Contact */}
                     <div className="lg:col-span-4">
-                        <div className="p-8 rounded-3xl bg-agri-primary/5 border border-agri-primary/10">
-                            <h3 className="font-display font-bold text-xl text-agri-dark dark:text-white mb-4">Join our journey</h3>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Receive weekly updates on market trends and farmer success stories.</p>
-                            <div className="flex gap-2">
-                                <input 
-                                    type="email" 
-                                    placeholder="your@email.com" 
-                                    className="flex-grow bg-white dark:bg-slate-900 border border-agri-primary/20 dark:border-gray-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-agri-primary/30"
-                                />
-                                <button className="p-3 bg-agri-primary text-white rounded-xl shadow-glow transition-all hover:bg-agri-dark">
-                                    <ArrowRight size={20} />
-                                </button>
+                        <div className="p-8 rounded-[2.5rem] bg-agri-primary/5 border border-agri-primary/10 relative overflow-hidden group">
+                            <AnimatePresence mode="wait">
+                                {subscribed ? (
+                                    <motion.div
+                                        key="thanks"
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.9 }}
+                                        className="py-4 text-center"
+                                    >
+                                        <CheckCircle2 size={40} className="text-agri-primary mx-auto mb-4" />
+                                        <h3 className="font-display font-bold text-xl text-agri-dark dark:text-white mb-2">Welcome Aboard!</h3>
+                                        <p className="text-sm text-gray-500 dark:text-gray-400">Great to have you on this journey.</p>
+                                    </motion.div>
+                                ) : (
+                                    <motion.div
+                                        key="form"
+                                        initial={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                    >
+                                        <h3 className="font-display font-bold text-xl text-agri-dark dark:text-white mb-4">Join our journey</h3>
+                                        <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">Receive weekly updates on India's agricultural market trends.</p>
+                                        <form onSubmit={handleSubscribe} className="flex gap-2">
+                                            <input 
+                                                type="email" 
+                                                required
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                placeholder="your@email.com" 
+                                                className="flex-grow bg-white dark:bg-slate-900 border border-agri-primary/20 dark:border-gray-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-agri-primary/30 text-agri-dark dark:text-white"
+                                            />
+                                            <button className="p-3 bg-agri-primary text-white rounded-xl shadow-glow transition-all hover:bg-agri-dark">
+                                                <ArrowRight size={20} />
+                                            </button>
+                                        </form>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                        
+                        {/* India Contact Quick Glance */}
+                        <div className="mt-8 grid grid-cols-2 gap-4">
+                            <div className="flex items-center gap-3 p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50">
+                                <Phone size={16} className="text-agri-primary" />
+                                <span className="text-[10px] md:text-sm font-bold text-gray-600 dark:text-gray-300 tracking-tight">1800-419-8444</span>
+                            </div>
+                            <div className="flex items-center gap-3 p-4 rounded-2xl bg-gray-50 dark:bg-gray-900/50">
+                                <Mail size={16} className="text-agri-secondary" />
+                                <span className="text-[10px] md:text-sm font-bold text-gray-600 dark:text-gray-300 tracking-tight">support@agri.in</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div className="pt-12 border-t border-gray-100 dark:border-gray-900 flex flex-col md:flex-row justify-between items-center gap-8">
-                    <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                        &copy; {new Date().getFullYear()} AgriConnect. Empowering Indian Agriculture.
-                    </p>
+                    <div className="flex items-center gap-4">
+                        <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+                            &copy; {new Date().getFullYear()} AgriConnect. Empowering Indian Agriculture.
+                        </p>
+                        <div className="flex items-center gap-2 px-3 py-1 bg-agri-primary/10 rounded-full">
+                            <MapPin size={12} className="text-agri-primary" />
+                            <span className="text-[10px] font-bold text-agri-primary uppercase tracking-widest">Base: Bengaluru</span>
+                        </div>
+                    </div>
                     <div className="flex gap-8 text-sm font-medium">
-                        <a href="#" className="text-gray-500 dark:text-gray-400 hover:text-agri-primary transition-colors">Privacy</a>
-                        <a href="#" className="text-gray-500 dark:text-gray-400 hover:text-agri-primary transition-colors">Terms</a>
-                        <a href="#" className="text-gray-500 dark:text-gray-400 hover:text-agri-primary transition-colors">Cookies</a>
+                        <Link to="/about" className="text-gray-500 dark:text-gray-400 hover:text-agri-primary transition-colors">Privacy</Link>
+                        <Link to="/about" className="text-gray-500 dark:text-gray-400 hover:text-agri-primary transition-colors">Terms</Link>
+                        <Link to="/contact" className="text-gray-500 dark:text-gray-400 hover:text-agri-primary transition-colors">Support</Link>
                     </div>
                 </div>
             </div>
@@ -95,3 +161,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

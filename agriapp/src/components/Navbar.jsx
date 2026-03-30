@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Leaf, Sun, Moon, Bell, User, ShoppingCart } from 'lucide-react';
+import { Menu, X, Leaf, Sun, Moon, Bell, User, ShoppingCart, PhoneCall } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 
@@ -27,6 +27,7 @@ const Navbar = () => {
         { name: language === 'EN' ? 'Community' : 'समुदाय', path: '/community' },
         { name: language === 'EN' ? 'Prices' : 'कीमतें', path: '/prices' },
         { name: language === 'EN' ? 'Stories' : 'कहानियां', path: '/stories' },
+        { name: language === 'EN' ? 'Contact' : 'संपर्क', path: '/contact' },
     ];
 
     const isActive = (path) => location.pathname === path;
@@ -93,12 +94,26 @@ const Navbar = () => {
                                     )}
                                 </Link>
 
+                                <Link
+                                    to="/contact"
+                                    className="p-2.5 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-agri-primary/10 hover:text-agri-primary transition-all"
+                                >
+                                    <PhoneCall size={20} />
+                                </Link>
+
                                 <button
                                     onClick={() => setDarkMode(!darkMode)}
                                     className="p-2.5 rounded-xl text-gray-500 dark:text-gray-400 hover:bg-agri-primary/10 hover:text-agri-primary transition-all"
                                 >
                                     {darkMode ? <Sun size={20} /> : <Moon size={20} />}
                                 </button>
+
+                                <Link
+                                    to="/contact"
+                                    className="hidden lg:block text-agri-primary hover:text-agri-dark font-bold text-sm px-4"
+                                >
+                                    {language === 'EN' ? 'Contact US' : 'संपर्क करें'}
+                                </Link>
 
                                 <Link
                                     to="/dashboard"
