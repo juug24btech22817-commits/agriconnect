@@ -238,6 +238,19 @@ const initialCropsData = [
             experience: '40 years',
             farmName: 'Baba Budangiri'
         }
+    },
+    { 
+        id: 18, name: 'Fresh Green Apple', category: 'Fruits', price: '₹150', unit: 'kg', 
+        farmer: 'Shimla Orchards', location: 'Shimla, Himachal Pradesh', rating: '4.8', 
+        image: '/images/crops/fresh_green_apple.png', 
+        mandiPrice: '₹100', retailPrice: '₹200',
+        farmerDetails: {
+            phone: '+91 11223 34455',
+            bio: 'Crisp and sweet green apples straight from the hills of Shimla.',
+            verified: true,
+            experience: '15 years',
+            farmName: 'Himalayan Harvests'
+        }
     }
 ];
 
