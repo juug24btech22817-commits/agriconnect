@@ -6,7 +6,11 @@ const AdvisorPage = () => {
     const [selectedImage, setSelectedImage] = useState(null);
     const [isScanning, setIsScanning] = useState(false);
     const [result, setResult] = useState(null);
+    const [isCameraOpen, setIsCameraOpen] = useState(false);
     const fileInputRef = useRef(null);
+    const videoRef = useRef(null);
+    const canvasRef = useRef(null);
+    const cameraInputRef = useRef(null); // Back-up native camera trigger
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
@@ -17,6 +21,64 @@ const AdvisorPage = () => {
                 startScan();
             };
             reader.readAsDataURL(file);
+        }
+    };
+
+    const openCamera = async () => {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            alert("Camera API is not supported in your browser or you are not on a secure connection (HTTPS/localhost).");
+            return;
+        }
+
+        try {
+            // First try environment (back) camera
+            let stream;
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            } catch (err) {
+                // If back camera fails (e.g. on desktop), fallback to default camera
+                console.warn("Environment camera failed, falling back to default camera");
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            }
+
+            setIsCameraOpen(true);
+            setTimeout(() => {
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                    videoRef.current.play().catch(e => console.error("Error playing video:", e));
+                }
+            }, 100); 
+        } catch (err) {
+            console.warn("Live stream blocked or unavailable, falling back to secure System Camera...", err);
+            // If the browser blocks the live-feed (Permission Denied), seamlessly fallback 
+            // to the Mac/iOS/Android native secure camera picker modal!
+            if (cameraInputRef.current) {
+                cameraInputRef.current.click();
+            } else {
+                alert(`Camera access failed: ${err.message}`);
+            }
+        }
+    };
+
+    const closeCamera = () => {
+        if (videoRef.current && videoRef.current.srcObject) {
+            videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+        }
+        setIsCameraOpen(false);
+    };
+
+    const capturePhoto = () => {
+        if (videoRef.current && canvasRef.current) {
+            const video = videoRef.current;
+            const canvas = canvasRef.current;
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+            
+            closeCamera();
+            setSelectedImage(imageData);
+            startScan();
         }
     };
 
@@ -99,9 +161,20 @@ const AdvisorPage = () => {
                                         onChange={handleImageUpload}
                                         accept="image/*"
                                     />
+                                    <input 
+                                        type="file" 
+                                        className="hidden" 
+                                        ref={cameraInputRef} 
+                                        onChange={handleImageUpload}
+                                        accept="image/*"
+                                        capture="environment"
+                                    />
                                 </div>
                                 <div className="mt-8 flex items-center justify-center gap-4">
-                                    <button className="flex items-center gap-2 px-6 py-3 bg-agri-dark text-white rounded-xl font-bold hover:bg-black transition-all">
+                                    <button 
+                                        onClick={openCamera}
+                                        className="flex items-center gap-2 px-6 py-3 bg-agri-dark text-white rounded-xl font-bold hover:bg-black transition-all"
+                                    >
                                         <Camera size={20} /> Use Camera
                                     </button>
                                 </div>
@@ -208,6 +281,43 @@ const AdvisorPage = () => {
                                         </div>
                                     </motion.div>
                                 )}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
+                    {/* Camera Modal overlay */}
+                    <AnimatePresence>
+                        {isCameraOpen && (
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center"
+                            >
+                                <div className="relative w-full max-w-2xl h-[80vh] flex items-center justify-center bg-black">
+                                    <video 
+                                        ref={videoRef} 
+                                        className="w-full h-full object-contain"
+                                        playsInline
+                                    />
+                                    <canvas ref={canvasRef} className="hidden" />
+                                    
+                                    <button 
+                                        onClick={closeCamera}
+                                        className="absolute top-6 right-6 p-4 bg-white/20 hover:bg-white/40 backdrop-blur-md rounded-full text-white transition-colors"
+                                    >
+                                        <X size={24} />
+                                    </button>
+
+                                    <div className="absolute bottom-10 left-0 right-0 flex justify-center">
+                                        <button 
+                                            onClick={capturePhoto}
+                                            className="w-20 h-20 bg-white border-4 border-gray-300 rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+                                        >
+                                            <div className="w-16 h-16 bg-agri-primary rounded-full outline outline-4 outline-white"></div>
+                                        </button>
+                                    </div>
+                                </div>
                             </motion.div>
                         )}
                     </AnimatePresence>
