@@ -17,9 +17,13 @@ import CartPage from './pages/CartPage';
 import AdvisorPage from './pages/AdvisorPage';
 import CommunityPage from './pages/CommunityPage';
 import ContactPage from './pages/ContactPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import AdminDashboardPage from './pages/AdminDashboardPage';
 import ContactWidget from './components/ContactWidget';
 
 import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -52,6 +56,7 @@ function App() {
   return (
     <ErrorBoundary>
     <Router>
+      <AuthProvider>
       <CartProvider>
         <div className="min-h-screen flex flex-col font-sans transition-colors duration-300">
           <Navbar />
@@ -68,6 +73,9 @@ function App() {
               <Route path="/advisor" element={<AdvisorPage />} />
               <Route path="/community" element={<CommunityPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/admin" element={<AdminDashboardPage />} />
               <Route path="*" element={<HomePage />} />
             </Routes>
           </main>
@@ -75,6 +83,7 @@ function App() {
           <ContactWidget />
         </div>
       </CartProvider>
+      </AuthProvider>
     </Router>
     </ErrorBoundary>
   );

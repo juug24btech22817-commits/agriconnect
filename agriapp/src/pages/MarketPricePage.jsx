@@ -6,6 +6,7 @@ import {
   Activity, Zap, Globe, BarChart3 
 } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import { api } from '../services/api';
 
 // Dummy Chart Data
 const chartData = [
@@ -153,6 +154,27 @@ const MarketPricePage = () => {
         setIsLoading(true);
         setError(null);
         try {
+            // First, try the real backend
+            try {
+                const backendPrices = await api.getMarketPrices();
+                // Check if the backend has our commodity
+                const found = backendPrices.find(p => p.commodity.toLowerCase() === trimmedQuery.toLowerCase());
+                if (found) {
+                     setSearchResult({
+                         ...found,
+                         avgPricePerKg: found.avgPrice,
+                         minPricePerKg: found.minPrice,
+                         maxPricePerKg: found.maxPrice,
+                         isLive: true
+                     });
+                     setIsLoading(false);
+                     return;
+                }
+            } catch (err) {
+                console.log("Backend price fetch failed or missing commodity, falling back to simulated engine.");
+            }
+
+            // Fallback to simulated prices
             await new Promise(r => setTimeout(r, 600)); 
             const simulated = getSimulatedPrice(trimmedQuery);
             

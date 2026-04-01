@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, X, Activity, HeartPulse, Sparkles, Zap, ShoppingBag, Filter, LayoutGrid } from 'lucide-react';
 import CropCard from '../components/CropCard';
 import DeliveryOptions from '../components/DeliveryOptions';
+import { api } from '../services/api';
 
+// Fallback data if backend is not available
 const initialCropsData = [
     { 
         id: 101, name: 'Farmer’s Choice Box (Small)', category: 'Subscription', price: '₹499', unit: 'box', 
@@ -302,10 +304,29 @@ const categoryData = {
 };
 
 const MarketplacePage = () => {
-    const [crops, setCrops] = useState(initialCropsData);
+    const [crops, setCrops] = useState([]);
     const [activeCategory, setActiveCategory] = useState('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+    
+    // Fetch products from backend
+    useEffect(() => {
+        const fetchCrops = async () => {
+            try {
+                const data = await api.getProducts();
+                // If backend has no data, use fallback
+                if (data && data.length > 0) {
+                    setCrops(data);
+                } else {
+                    setCrops(initialCropsData);
+                }
+            } catch (err) {
+                console.error("Failed to load backend crops, using offline data.");
+                setCrops(initialCropsData);
+            }
+        };
+        fetchCrops();
+    }, []);
 
     const filteredCrops = crops.filter(crop => {
         const matchesCategory = activeCategory === 'All' || crop.category === activeCategory;

@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag, CreditCard, Truck, Building2, ChevronRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import { api } from '../services/api';
 
 const CartPage = () => {
     const { cart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart();
@@ -21,14 +23,35 @@ const CartPage = () => {
         porter: { cost: 150, name: 'Porter' }
     };
 
+    const { user } = React.useContext(AuthContext);
+
     const deliveryCharge = partners[deliveryMethod]?.cost || 0;
     const discount = 0; // Planned: Cluster discount logic
     const total = subtotal + deliveryCharge - discount;
 
-    const handleCheckout = () => {
-        alert(`Proceeding to secure payment via ${partners[deliveryMethod].name}... Order total: ₹${total.toLocaleString()}`);
-        clearCart();
-        navigate('/dashboard');
+    const handleCheckout = async () => {
+        if (!user) {
+            alert('Please log in to place an order.');
+            navigate('/login');
+            return;
+        }
+
+        try {
+            const orderPayload = {
+                items: cart.map(item => ({ product: item.id || item._id, quantity: item.quantity })),
+                totalAmount: total,
+                shippingAddress: "Default User Address", // In a real app we'd ask for this
+                status: "Pending"
+            };
+
+            await api.createOrder(orderPayload);
+            alert(`Order Placed Successfully via ${partners[deliveryMethod].name}! Your total was ₹${total.toLocaleString()}`);
+            clearCart();
+            navigate('/dashboard');
+        } catch (err) {
+            console.error(err);
+            alert('Failed to place order. Please try again.');
+        }
     };
 
     if (cart.length === 0) {
