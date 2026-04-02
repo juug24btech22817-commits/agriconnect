@@ -48,16 +48,106 @@ const postsData = [
 const categories = ["General", "Expert Advice", "Market Trends", "Success Stories", "Tech Support"];
 
 const CommunityPage = () => {
+    const [posts, setPosts] = useState([
+        {
+            id: 1,
+            author: "Farmer Gurdeep",
+            avatar: null,
+            location: "Amritsar, Punjab",
+            time: "2h ago",
+            content: "Just started the organic transition for my 5-acre wheat farm. Any tips on natural pest control for the early stages?",
+            likes: 24,
+            liked: false,
+            comments: 12,
+            tags: ["OrganicTransition", "WheatFarming"],
+            category: "General",
+            isVerified: true
+        },
+        {
+            id: 2,
+            author: "Dr. Ananya Rao",
+            avatar: null,
+            location: "AgriTech Expert",
+            time: "5h ago",
+            content: "High moisture levels detected in Southern Karnataka this week. Farmers should monitor for fungal growth in paddy fields.",
+            likes: 56,
+            liked: false,
+            comments: 8,
+            tags: ["WeatherAlert", "PaddyHealth"],
+            category: "Expert Advice",
+            isExpert: true
+        },
+        {
+            id: 3,
+            author: "Venkatesh K.",
+            avatar: null,
+            location: "Kolar, Karnataka",
+            time: "1d ago",
+            content: "Successfully harvested the first batch of hybrid tomatoes. The yield is 20% higher thanks to the new drip irrigation setup!",
+            likes: 89,
+            liked: false,
+            comments: 45,
+            tags: ["SuccessStory", "SmartIrrigation"],
+            category: "Success Stories",
+            isVerified: true
+        }
+    ]);
+
+    const categories = ["General", "Expert Advice", "Market Trends", "Success Stories", "Tech Support"];
     const [activeCategory, setActiveCategory] = useState("General");
     const [searchQuery, setSearchQuery] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newPostContent, setNewPostContent] = useState("");
+
+    const handleLike = (id) => {
+        setPosts(posts.map(post => {
+            if (post.id === id) {
+                return {
+                    ...post,
+                    likes: post.liked ? post.likes - 1 : post.likes + 1,
+                    liked: !post.liked
+                };
+            }
+            return post;
+        }));
+    };
+
+    const handleAddPost = (e) => {
+        e.preventDefault();
+        if (!newPostContent.trim()) return;
+
+        const newPost = {
+            id: Date.now(),
+            author: "Farmer Shaswat",
+            avatar: null,
+            location: "Karnal, Haryana",
+            time: "Just now",
+            content: newPostContent,
+            likes: 0,
+            liked: false,
+            comments: 0,
+            tags: ["Community", "AgriConnect"],
+            category: activeCategory,
+            isVerified: true
+        };
+
+        setPosts([newPost, ...posts]);
+        setNewPostContent("");
+        setIsModalOpen(false);
+    };
+
+    const filteredPosts = posts.filter(post => {
+        const matchesCategory = activeCategory === "General" || post.category === activeCategory;
+        const matchesSearch = post.content.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                             post.author.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+    });
 
     return (
         <div className="bg-agri-surface dark:bg-slate-950 min-h-screen pt-24 pb-24 transition-colors duration-500 overflow-x-hidden">
-            {/* Background Mesh */}
             <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-agri-primary/5 to-transparent blur-3xl opacity-50" />
             
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                
                 <header className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-10">
                     <div className="max-w-2xl">
                         <motion.div 
@@ -71,20 +161,21 @@ const CommunityPage = () => {
                             Grow <span className="text-agri-primary">Together</span>
                         </h1>
                         <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
-                            Connect with 50,000+ verified farmers and experts. Share insights, solve challenges, and access professional guidance.
+                            Connect with {50000 + posts.length} verified farmers and experts. Share insights, solve challenges, and access professional guidance.
                         </p>
                     </div>
 
                     <div className="flex gap-4">
-                        <button className="px-8 py-5 bg-agri-primary text-white rounded-[1.25rem] font-black text-sm uppercase tracking-widest shadow-glow hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
+                        <button 
+                            onClick={() => setIsModalOpen(true)}
+                            className="px-8 py-5 bg-agri-primary text-white rounded-[1.25rem] font-black text-sm uppercase tracking-widest shadow-glow hover:scale-105 active:scale-95 transition-all flex items-center gap-3"
+                        >
                             <Plus size={20} /> New Discussion
                         </button>
                     </div>
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                    
-                    {/* Left: Sidebar (3 cols) */}
                     <div className="lg:col-span-3 space-y-6">
                         <div className="glass p-8 rounded-[2.5rem] border-agri-primary/10">
                             <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-6">Discovery</h3>
@@ -115,9 +206,7 @@ const CommunityPage = () => {
                         </div>
                     </div>
 
-                    {/* Middle: Feed (6 cols) */}
                     <div className="lg:col-span-6 space-y-8">
-                        {/* Compact Search */}
                         <div className="relative group">
                             <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none group-focus-within:text-agri-primary transition-colors">
                                 <Search className="h-5 w-5 text-gray-400" />
@@ -132,56 +221,67 @@ const CommunityPage = () => {
                         </div>
 
                         <div className="space-y-6">
-                            {postsData.map((post) => (
-                                <motion.div 
-                                    key={post.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="glass p-8 rounded-[2.5rem] border-agri-primary/10 relative overflow-hidden group hover:shadow-premium transition-all"
-                                >
-                                    <div className="flex justify-between items-start mb-6">
-                                        <div className="flex gap-4">
-                                            <div className="w-12 h-12 bg-agri-primary/10 rounded-2xl flex items-center justify-center text-agri-primary">
-                                                <User size={24} />
+                            <AnimatePresence mode="popLayout">
+                                {filteredPosts.map((post) => (
+                                    <motion.div 
+                                        key={post.id}
+                                        layout
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.9 }}
+                                        className="glass p-8 rounded-[2.5rem] border-agri-primary/10 relative overflow-hidden group hover:shadow-premium transition-all"
+                                    >
+                                        {post.likes > 70 && (
+                                            <div className="absolute top-0 right-0 px-6 py-2 bg-agri-secondary text-agri-dark font-black text-[10px] uppercase tracking-widest rounded-bl-3xl">
+                                                Trending
                                             </div>
-                                            <div>
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <h4 className="font-black text-agri-dark dark:text-white uppercase tracking-tighter">{post.author}</h4>
-                                                    {post.isVerified && <CheckCircle size={14} className="text-blue-500" />}
-                                                    {post.isExpert && <Sparkles size={14} className="text-agri-secondary" />}
+                                        )}
+                                        <div className="flex justify-between items-start mb-6">
+                                            <div className="flex gap-4">
+                                                <div className="w-12 h-12 bg-agri-primary/10 rounded-2xl flex items-center justify-center text-agri-primary">
+                                                    <User size={24} />
                                                 </div>
-                                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{post.location} • {post.time}</p>
+                                                <div>
+                                                    <div className="flex items-center gap-2 mb-1">
+                                                        <h4 className="font-black text-agri-dark dark:text-white uppercase tracking-tighter">{post.author}</h4>
+                                                        {post.isVerified && <CheckCircle size={14} className="text-blue-500" />}
+                                                        {post.isExpert && <Sparkles size={14} className="text-agri-secondary" />}
+                                                    </div>
+                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{post.location} • {post.time}</p>
+                                                </div>
                                             </div>
+                                            <button className="p-2 text-gray-300 hover:text-agri-primary transition-colors">
+                                                <Share2 size={18} />
+                                            </button>
                                         </div>
-                                        <button className="p-2 text-gray-300 hover:text-agri-primary transition-colors">
-                                            <Share2 size={18} />
-                                        </button>
-                                    </div>
 
-                                    <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6 font-medium">
-                                        {post.content}
-                                    </p>
+                                        <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6 font-medium">
+                                            {post.content}
+                                        </p>
 
-                                    <div className="flex gap-2 mb-8">
-                                        {post.tags.map(tag => (
-                                            <span key={tag} className="px-3 py-1 bg-gray-50 dark:bg-slate-800 text-[10px] font-black text-gray-500 uppercase tracking-widest rounded-lg">#{tag}</span>
-                                        ))}
-                                    </div>
+                                        <div className="flex gap-2 mb-8">
+                                            {post.tags.map(tag => (
+                                                <span key={tag} className="px-3 py-1 bg-gray-50 dark:bg-slate-800 text-[10px] font-black text-gray-500 uppercase tracking-widest rounded-lg">#{tag}</span>
+                                            ))}
+                                        </div>
 
-                                    <div className="flex items-center gap-8 pt-6 border-t border-gray-100 dark:border-gray-800">
-                                        <button className="flex items-center gap-2 text-gray-400 hover:text-rose-500 transition-colors font-bold text-sm">
-                                            <Heart size={18} /> {post.likes}
-                                        </button>
-                                        <button className="flex items-center gap-2 text-gray-400 hover:text-agri-primary transition-colors font-bold text-sm">
-                                            <MessageCircle size={18} /> {post.comments}
-                                        </button>
-                                    </div>
-                                </motion.div>
-                            ))}
+                                        <div className="flex items-center gap-8 pt-6 border-t border-gray-100 dark:border-gray-800">
+                                            <button 
+                                                onClick={() => handleLike(post.id)}
+                                                className={`flex items-center gap-2 transition-colors font-bold text-sm ${post.liked ? 'text-rose-500' : 'text-gray-400 hover:text-rose-500'}`}
+                                            >
+                                                <Heart size={18} fill={post.liked ? "currentColor" : "none"} /> {post.likes}
+                                            </button>
+                                            <button className="flex items-center gap-2 text-gray-400 hover:text-agri-primary transition-colors font-bold text-sm">
+                                                <MessageCircle size={18} /> {post.comments}
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
                         </div>
                     </div>
 
-                    {/* Right: Trending (3 cols) */}
                     <div className="lg:col-span-3 space-y-8">
                         <div className="glass p-8 rounded-[2.5rem] border-agri-primary/10">
                             <h3 className="text-xs font-black uppercase tracking-widest text-agri-primary mb-8 flex items-center gap-2">
@@ -213,11 +313,74 @@ const CommunityPage = () => {
                             <p className="font-black text-agri-dark dark:text-white text-sm">Sunil Verma</p>
                         </div>
                     </div>
-
                 </div>
             </div>
+
+            {/* New Discussion Modal */}
+            <AnimatePresence>
+                {isModalOpen && (
+                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+                        <motion.div 
+                            initial={{ opacity: 0 }} 
+                            animate={{ opacity: 1 }} 
+                            exit={{ opacity: 0 }}
+                            onClick={() => setIsModalOpen(false)}
+                            className="absolute inset-0 bg-agri-dark/60 backdrop-blur-md" 
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl w-full max-w-xl overflow-hidden relative z-[70] border border-white/20"
+                        >
+                            <form onSubmit={handleAddPost} className="p-10">
+                                <div className="flex justify-between items-center mb-10">
+                                    <h2 className="text-3xl font-display font-black text-agri-dark dark:text-white">Start Discussion</h2>
+                                    <button type="button" onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-xl transition-colors">
+                                        <X size={24} className="text-gray-400" />
+                                    </button>
+                                </div>
+                                
+                                <div className="space-y-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Your Post</label>
+                                        <textarea 
+                                            rows="4"
+                                            value={newPostContent}
+                                            onChange={(e) => setNewPostContent(e.target.value)}
+                                            className="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-5 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary resize-none" 
+                                            placeholder="What's happening on your farm? Ask for advice or share your success..."
+                                            required
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Category</label>
+                                        <div className="flex flex-wrap gap-2">
+                                            {categories.map(cat => (
+                                                <button
+                                                    key={cat}
+                                                    type="button"
+                                                    onClick={() => setActiveCategory(cat)}
+                                                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${activeCategory === cat ? 'bg-agri-primary text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-500'}`}
+                                                >
+                                                    {cat}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="pt-8">
+                                    <button type="submit" className="w-full bg-agri-primary text-white font-bold py-5 rounded-2xl shadow-glow hover:bg-agri-dark transition-all transform hover:-translate-y-1">
+                                        Publish Discussion
+                                    </button>
+                                </div>
+                            </form>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
-
 export default CommunityPage;
