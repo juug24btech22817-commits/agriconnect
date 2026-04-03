@@ -2,6 +2,57 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Search, Bot, User, Send, Paperclip, X } from 'lucide-react';
 
+const TypewriterMessage = ({ text }) => {
+    const [displayedText, setDisplayedText] = useState('');
+
+    useEffect(() => {
+        // Split by whitespace but keep the whitespace tokens so words type naturally
+        const tokens = text.split(/(\s+)/); 
+        let i = 0;
+        
+        const timer = setInterval(() => {
+            if (i < tokens.length) {
+                setDisplayedText(prev => prev + tokens[i]);
+                i++;
+                
+                // Keep scroll anchored to bottom as we type
+                const container = document.getElementById('chat-scroll-container');
+                if (container) {
+                    container.scrollTop = container.scrollHeight;
+                }
+            } else {
+                clearInterval(timer);
+            }
+        }, 60); // 60ms is a medium-fast natural token speed
+
+        return () => clearInterval(timer);
+    }, [text]);
+
+    return (
+        <div className="whitespace-pre-wrap text-sm md:text-base break-words font-medium">
+            {displayedText.split('\n').map((line, i) => {
+                // Bold text formatting
+                const parts = line.split(/(\*\*.*?\*\*)/g);
+                return (
+                    <div key={i} className="min-h-[1.5rem]">
+                        {parts.map((p, j) => {
+                            const isCompleteBold = p.startsWith('**') && p.endsWith('**') && p.length >= 4;
+                            const isIncompleteBold = p.startsWith('**') && !isCompleteBold;
+                            
+                            if (isCompleteBold) {
+                                return <strong key={j} className="font-extrabold text-agri-dark dark:text-white">{p.slice(2, -2)}</strong>;
+                            } else if (isIncompleteBold) {
+                                return <strong key={j} className="font-extrabold text-agri-dark dark:text-white">{p.slice(2)}</strong>;
+                            }
+                            return <span key={j}>{p}</span>;
+                        })}
+                    </div>
+                );
+            })}
+        </div>
+    );
+};
+
 const AdvisorPage = () => {
     const [messages, setMessages] = useState([
         { role: 'bot', text: 'Hello! I am your AI Crop Advisor powered by Lyzr. You can ask me any farming questions or upload an image of your crop for immediate disease diagnosis.' }
@@ -172,7 +223,7 @@ const AdvisorPage = () => {
                 <div className="glass rounded-[2rem] shadow-premium border-white/40 flex flex-col flex-grow overflow-hidden h-[600px] mb-8 relative">
                     
                     {/* Messages Area */}
-                    <div ref={chatContainerRef} className="flex-grow overflow-y-auto p-6 space-y-6 scrollbar-hide">
+                    <div id="chat-scroll-container" ref={chatContainerRef} className="flex-grow overflow-y-auto p-6 space-y-6 scrollbar-hide">
                         <AnimatePresence initial={false}>
                             {messages.map((msg, index) => (
                                 <motion.div
@@ -203,21 +254,7 @@ const AdvisorPage = () => {
                                                 msg.role === 'user' ? (
                                                     <span className="whitespace-pre-wrap">{msg.text}</span>
                                                 ) : (
-                                                    <div className="whitespace-pre-wrap text-sm md:text-base break-words font-medium">
-                                                        {msg.text.split('\n').map((line, i) => {
-                                                            // Bold text formatting
-                                                            const parts = line.split(/(\*\*.*?\*\*)/g);
-                                                            return (
-                                                                <div key={i} className="min-h-[1.5rem]">
-                                                                    {parts.map((p, j) => 
-                                                                        p.startsWith('**') && p.endsWith('**') ? 
-                                                                            <strong key={j} className="font-extrabold text-agri-dark dark:text-white">{p.slice(2, -2)}</strong> : 
-                                                                            <span key={j}>{p}</span>
-                                                                    )}
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
+                                                    <TypewriterMessage text={msg.text} />
                                                 )
                                             )}
                                         </div>
