@@ -32,13 +32,16 @@ const DashboardPage = () => {
         if (!query) return;
         setWeather(prev => ({ ...prev, isLoading: true, error: "" }));
         try {
-            // Geocoding
-            const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`);
+            // Geocoding with address details
+            const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1&addressdetails=1`);
             const geoData = await geoRes.json();
             
             if (geoData.length === 0) throw new Error("Location not found");
-            const { lat, lon, display_name } = geoData[0];
-            const cityName = display_name.split(',')[0];
+            const { lat, lon, display_name, address } = geoData[0];
+            
+            // Extract the most relevant city/area name
+            const city = address.city || address.town || address.village || address.suburb || address.state_district || "";
+            const locationLabel = query.match(/^\d+$/) ? `${query}, ${city}` : city || display_name.split(',')[0];
             
             // Weather
             const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,rain`);
@@ -66,7 +69,7 @@ const DashboardPage = () => {
                 condition: cond,
                 humidity: `${humVal}%`,
                 soilMoisture: humVal > 60 ? "High" : humVal > 35 ? "Medium" : "Low",
-                location: cityName,
+                location: locationLabel,
                 rain: `${rainVal}mm`,
                 advice: adv,
                 isLoading: false,
