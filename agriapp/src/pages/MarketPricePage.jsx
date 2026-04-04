@@ -38,14 +38,10 @@ const MarketPricePage = () => {
     const [error, setError] = useState(null);
     const [activeCategory, setActiveCategory] = useState('All');
 
-    // Persistence: Load last search from localStorage
+    // Initial State: No auto-load of last search to keep it clean and fresh
     useEffect(() => {
+        // We still keep the dictionary for consistency, but don't auto-select the last search
         const savedPrices = JSON.parse(localStorage.getItem('agri-market-prices') || '{}');
-        const lastQuery = localStorage.getItem('agri-last-search');
-        if (lastQuery && savedPrices[lastQuery]) {
-            setSearchQuery(lastQuery);
-            setSearchResult(savedPrices[lastQuery]);
-        }
     }, []);
 
     const categories = ['All', 'Groceries', 'Fruits', 'Vegetables', 'Dry Fruits'];
@@ -252,7 +248,7 @@ const MarketPricePage = () => {
                             <input
                                 type="text"
                                 className="block w-full pl-12 pr-32 py-5 glass dark:bg-slate-900 border-gray-200 dark:border-gray-800 rounded-2xl text-agri-dark dark:text-white shadow-premium focus:ring-2 focus:ring-agri-primary transition-all font-medium"
-                                placeholder="Search commodity..."
+                                placeholder="Enter a fruit or crop name..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -273,9 +269,10 @@ const MarketPricePage = () => {
                     
                     <div className="lg:col-span-8 space-y-8">
                         
-                        <AnimatePresence>
-                            {searchResult && (
+                        <AnimatePresence mode="wait">
+                            {searchResult ? (
                                 <motion.div
+                                    key="result"
                                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                                     animate={{ opacity: 1, scale: 1, y: 0 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
@@ -319,6 +316,37 @@ const MarketPricePage = () => {
                                                 <span>{searchResult.stateCount} States</span>
                                             </div>
                                         </div>
+                                    </div>
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="empty"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="glass p-16 rounded-[2.5rem] shadow-premium border-2 border-dashed border-gray-200 dark:border-gray-800 flex flex-col items-center text-center space-y-6"
+                                >
+                                    <div className="w-24 h-24 bg-agri-primary/10 rounded-full flex items-center justify-center text-agri-primary">
+                                        <Sparkles size={40} />
+                                    </div>
+                                    <div className="max-w-md">
+                                        <h3 className="text-2xl font-display font-bold text-agri-dark dark:text-white mb-2">Ready to Check Prices?</h3>
+                                        <p className="text-gray-500 dark:text-gray-400 font-medium">
+                                            Enter the name of a fruit, vegetable, or grain in the search box above to see real-time market trends across India.
+                                        </p>
+                                    </div>
+                                    <div className="flex flex-wrap justify-center gap-3">
+                                        {['Mango', 'Basmati Rice', 'Red Onion', 'Banana'].map(tag => (
+                                            <button 
+                                                key={tag}
+                                                onClick={() => {
+                                                    setSearchQuery(tag);
+                                                    performSearch(tag);
+                                                }}
+                                                className="px-4 py-2 bg-gray-100 dark:bg-slate-800 hover:bg-agri-primary hover:text-white rounded-xl text-xs font-bold text-gray-500 transition-all"
+                                            >
+                                                {tag}
+                                            </button>
+                                        ))}
                                     </div>
                                 </motion.div>
                             )}
