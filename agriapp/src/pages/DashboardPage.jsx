@@ -60,17 +60,23 @@ const DashboardPage = () => {
             else if (code >= 95) cond = "Stormy";
 
             let adv = "Weather conditions are optimal for your crops.";
-            if (rainVal === 0 && tempVal > 28) adv = "High temperature and no rain. Water your wheat crops tonight for optimal moisture retention.";
-            else if (rainVal > 0) adv = "Rain is expected. Avoid irrigation today to prevent waterlogging.";
-            else if (tempVal < 10) adv = "Low temperature detected. Protecting sensitive crops from frost is recommended.";
+            if (rainVal === 0 && tempVal > 28) adv = "No rain and high heat. It is a good time to water your crops for better growth.";
+            else if (rainVal > 0) adv = "Rain is falling or expected. Save your water and stop irrigation to avoid flooding the roots.";
+            else if (tempVal < 10) adv = "It's getting cold. Consider covering sensitive plants to protect them from frost.";
+
+            // Human-readable rain info
+            let rainStatus = "No Rain";
+            if (rainVal > 0 && rainVal <= 2) rainStatus = "Drizzle";
+            else if (rainVal > 2 && rainVal <= 10) rainStatus = "Rainy";
+            else if (rainVal > 10) rainStatus = "Heavy Rain";
 
             setWeather({
                 temp: `${tempVal}°C`,
                 condition: cond,
                 humidity: `${humVal}%`,
-                soilMoisture: humVal > 60 ? "High" : humVal > 35 ? "Medium" : "Low",
+                soilMoisture: humVal > 70 ? "Very Moist" : humVal > 40 ? "Good Moisture" : "Dry Soil",
                 location: locationLabel,
-                rain: `${rainVal}mm`,
+                rain: rainVal > 0 ? `${rainVal}mm (${rainStatus})` : "No Rain (0mm)",
                 advice: adv,
                 isLoading: false,
                 error: ""
