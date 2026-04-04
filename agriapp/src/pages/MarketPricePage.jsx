@@ -329,9 +329,9 @@ const MarketPricePage = () => {
                                         <Sparkles size={40} />
                                     </div>
                                     <div className="max-w-md">
-                                        <h3 className="text-2xl font-display font-bold text-agri-dark dark:text-white mb-2">Ready to Check Prices?</h3>
+                                        <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white mb-2">Find the Best Price for Your Harvest</h3>
                                         <p className="text-gray-500 dark:text-gray-400 font-medium">
-                                            Enter the name of a fruit, vegetable, or grain in the search box above to see real-time market trends across India.
+                                            Search for any crop to see today's live prices from over 5,000 mandis nationwide. Sell smarter with real-time data.
                                         </p>
                                     </div>
                                     <div className="flex flex-wrap justify-center gap-3">
