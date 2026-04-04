@@ -248,7 +248,7 @@ const MarketPricePage = () => {
                             <input
                                 type="text"
                                 className="block w-full pl-12 pr-32 py-5 glass dark:bg-slate-900 border-gray-200 dark:border-gray-800 rounded-2xl text-agri-dark dark:text-white shadow-premium focus:ring-2 focus:ring-agri-primary transition-all font-medium"
-                                placeholder="Search for any crop (e.g. Mango, Rice, Onion)..."
+                                placeholder="Search crop..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
