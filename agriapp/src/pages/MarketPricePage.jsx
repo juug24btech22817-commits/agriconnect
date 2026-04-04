@@ -276,42 +276,34 @@ const MarketPricePage = () => {
                                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                                     animate={{ opacity: 1, scale: 1, y: 0 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
-                                    className="glass p-10 rounded-[2.5rem] shadow-premium border-agri-primary/20 relative overflow-hidden"
+                                    className="glass p-6 rounded-[2rem] shadow-premium border-agri-primary/20 relative overflow-hidden"
                                 >
-                                    <div className="absolute top-0 right-0 p-10 opacity-5">
-                                        <Sparkles size={120} className="text-agri-primary" />
-                                    </div>
-                                    <div className="relative z-10 grid md:grid-cols-2 gap-10">
-                                        <div className="space-y-6">
+                                    <div className="relative z-10 grid md:grid-cols-2 gap-6 items-center">
+                                        <div className="space-y-4">
                                             <div>
-                                                <span className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-lg text-[10px] font-black uppercase tracking-widest mb-4 inline-block border border-emerald-500/20">
-                                                    100% Live Status: Verified
-                                                </span>
-                                                <h2 className="text-4xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter">
+                                                <h2 className="text-2xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter mb-1">
                                                     {searchResult.commodity}
                                                 </h2>
-                                                <p className="text-gray-400 font-medium">Last updated: {searchResult.arrivalDate}</p>
+                                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{searchResult.arrivalDate}</p>
                                             </div>
-                                            <div className="grid grid-cols-2 gap-6">
-                                                <div className="p-4 bg-gray-50 dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-gray-800">
-                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Min Price</p>
-                                                    <p className="text-2xl font-black text-red-500">₹{searchResult.minPricePerKg}</p>
-                                                    <p className="text-[10px] text-gray-500 truncate">{searchResult.minLocation}</p>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl">
+                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Min</p>
+                                                    <p className="text-lg font-black text-red-500">₹{searchResult.minPricePerKg}</p>
                                                 </div>
-                                                <div className="p-4 bg-gray-50 dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-gray-800">
-                                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Max Price</p>
-                                                    <p className="text-2xl font-black text-agri-primary">₹{searchResult.maxPricePerKg}</p>
-                                                    <p className="text-[10px] text-gray-500 truncate">{searchResult.maxLocation}</p>
+                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl">
+                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Max</p>
+                                                    <p className="text-lg font-black text-agri-primary">₹{searchResult.maxPricePerKg}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="bg-agri-primary dark:bg-agri-primary/20 p-8 rounded-[2rem] flex flex-col justify-center text-center text-white border border-white/10 group">
-                                            <div className="mb-2 opacity-60 font-bold uppercase tracking-widest text-[10px]">National Average</div>
-                                            <div className="text-6xl font-display font-black group-hover:scale-105 transition-transform">
-                                                ₹{searchResult.isQuintal ? searchResult.avgPrice : searchResult.avgPrice}
+                                        <div className="bg-agri-primary dark:bg-agri-primary/10 p-6 rounded-2xl flex flex-col justify-center text-center text-white border border-white/10">
+                                            <div className="text-[9px] opacity-60 font-bold uppercase tracking-widest mb-1">Avg Price</div>
+                                            <div className="text-4xl font-display font-black">
+                                                ₹{searchResult.avgPrice}
                                             </div>
-                                            <div className="mt-2 font-medium opacity-80">Per {searchResult.unit}</div>
-                                            <div className="mt-6 pt-6 border-t border-white/10 flex justify-between items-center text-xs font-bold uppercase tracking-wider">
+                                            <div className="text-[10px] mt-1 font-bold opacity-80 decoration-secondary">Per {searchResult.unit}</div>
+                                            <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-center text-[10px] font-bold uppercase">
                                                 <span>{searchResult.mandiCount} Mandis</span>
                                                 <span>{searchResult.stateCount} States</span>
                                             </div>
@@ -329,9 +321,9 @@ const MarketPricePage = () => {
                                         <Sparkles size={40} />
                                     </div>
                                     <div className="max-w-md">
-                                        <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white mb-2">Find the Best Price for Your Harvest</h3>
-                                        <p className="text-gray-500 dark:text-gray-400 font-medium">
-                                            Search for any crop to see today's live prices from over 5,000 mandis nationwide. Sell smarter with real-time data.
+                                        <h3 className="text-xl font-display font-black text-agri-dark dark:text-white mb-1">Find the Best Prices</h3>
+                                        <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
+                                            Search any crop to see live rates across India.
                                         </p>
                                     </div>
                                     <div className="flex flex-wrap justify-center gap-3">

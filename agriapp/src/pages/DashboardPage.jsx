@@ -124,76 +124,73 @@ const DashboardPage = () => {
                     {/* Left Column: Stats & Weather (col-span-4) */}
                     <aside className="lg:col-span-4 space-y-8">
                         
-                        {/* Weather Widget */}
                         <motion.div 
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="bg-gradient-to-br from-agri-primary to-agri-dark p-8 rounded-[2.5rem] text-white shadow-premium relative overflow-hidden"
+                            className="bg-gradient-to-br from-agri-primary to-agri-dark p-6 rounded-[2rem] text-white shadow-premium relative overflow-hidden"
                         >
                             <div className="absolute top-0 right-0 p-4 opacity-10">
-                                <Sun size={120} />
+                                <Sun size={80} />
                             </div>
                             <div className="relative z-10">
-                                <div className="flex justify-between items-start mb-6">
+                                <div className="flex justify-between items-start mb-4">
                                     <div className="flex-grow">
-                                        <p className="text-agri-light/60 font-bold uppercase tracking-widest text-[10px] mb-1">Live Forecast</p>
-                                        <div className="relative group max-w-[200px]">
+                                        <p className="text-agri-light/60 font-bold uppercase tracking-widest text-[9px] mb-1">Live Forecast</p>
+                                        <div className="relative max-w-[160px]">
                                             <input 
                                                 type="text" 
-                                                placeholder="Enter city or pincode"
+                                                placeholder="City or Pincode"
                                                 value={searchQuery}
                                                 onChange={(e) => setSearchQuery(e.target.value)}
                                                 onKeyDown={handleSearch}
-                                                className="w-full bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl px-4 py-2 text-sm text-white placeholder-white/40 outline-none transition-all pr-10"
+                                                className="w-full bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg px-3 py-1.5 text-xs text-white placeholder-white/40 outline-none transition-all pr-8"
                                             />
                                             <button 
                                                 onClick={() => fetchWeather(searchQuery)}
-                                                className="absolute right-2 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
+                                                className="absolute right-2 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
                                             >
-                                                <Search size={16} />
+                                                <Search size={14} />
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl">
-                                        <Sun className={`${weather.isLoading ? 'animate-spin' : ''} text-agri-secondary`} />
+                                    <div className="p-3 bg-white/10 backdrop-blur-md rounded-xl">
+                                        <Sun size={20} className={`${weather.isLoading ? 'animate-spin' : ''} text-agri-secondary`} />
                                     </div>
                                 </div>
 
-                                <div className="mb-8">
+                                <div className="mb-6">
                                     {weather.error ? (
-                                        <p className="text-red-300 text-xs font-bold">{weather.error}</p>
+                                        <p className="text-red-300 text-[10px] font-bold">{weather.error}</p>
                                     ) : (
                                         <>
-                                            <h3 className="text-5xl font-display font-black leading-none mb-1">{weather.isLoading ? "..." : weather.temp}</h3>
-                                            <p className="text-agri-light/80 font-bold uppercase tracking-widest text-xs flex items-center gap-2">
+                                            <h3 className="text-4xl font-display font-black leading-none mb-1">{weather.isLoading ? "..." : weather.temp}</h3>
+                                            <p className="text-agri-light/80 font-bold uppercase tracking-widest text-[10px]">
                                                 {weather.condition} • {weather.location}
                                             </p>
                                         </>
                                     )}
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4 mb-8">
-                                    <div className="p-4 bg-white/10 rounded-2xl flex items-center gap-3">
-                                        <Droplets size={20} className="text-blue-300" />
+                                <div className="grid grid-cols-2 gap-3 mb-6">
+                                    <div className="p-3 bg-white/10 rounded-xl flex items-center gap-2">
+                                        <Droplets size={16} className="text-blue-300" />
                                         <div>
-                                            <p className="text-[10px] text-white/50 uppercase font-bold">Moisture</p>
-                                            <p className="font-bold">{weather.soilMoisture}</p>
+                                            <p className="text-[8px] text-white/50 uppercase font-bold">Soil</p>
+                                            <p className="text-xs font-bold">{weather.soilMoisture}</p>
                                         </div>
                                     </div>
-                                    <div className="p-4 bg-white/10 rounded-2xl flex items-center gap-3">
-                                        <CloudRain size={20} className="text-agri-light" />
+                                    <div className="p-3 bg-white/10 rounded-xl flex items-center gap-2">
+                                        <CloudRain size={16} className="text-agri-light" />
                                         <div>
-                                            <p className="text-[10px] text-white/50 uppercase font-bold">Rain</p>
-                                            <p className="font-bold">{weather.rain || "0mm"}</p>
+                                            <p className="text-[8px] text-white/50 uppercase font-bold">Rain</p>
+                                            <p className="text-xs font-bold whitespace-nowrap">{weather.rain || "0mm"}</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-5 bg-black/20 rounded-2xl border border-white/10 flex gap-4 transition-all">
-                                    <div className="bg-agri-secondary/20 p-2 rounded-lg shrink-0">
-                                        <AlertCircle size={20} className="text-agri-secondary" />
-                                    </div>
-                                    <p className="text-[11px] font-medium leading-relaxed italic text-agri-light/90">
-                                        {weather.isLoading ? "Fetching agricultural advice..." : weather.advice}
+                                <div className="p-4 bg-black/20 rounded-xl border border-white/10 flex gap-3">
+                                    <AlertCircle size={16} className="text-agri-secondary shrink-0" />
+                                    <p className="text-[10px] font-medium leading-tight text-agri-light/90 italic">
+                                        {weather.isLoading ? "Analyzing..." : weather.advice}
                                     </p>
                                 </div>
                             </div>
