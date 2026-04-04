@@ -81,6 +81,9 @@ const DashboardPage = () => {
                 isLoading: false,
                 error: ""
             });
+
+            // Remember this location for next time
+            localStorage.setItem('lastWeatherLocation', query);
         } catch (err) {
             setWeather(prev => ({ ...prev, isLoading: false, error: "Location not found." }));
         }
@@ -93,7 +96,8 @@ const DashboardPage = () => {
     };
 
     useEffect(() => {
-        fetchWeather("Karnal, Haryana");
+        const savedLocation = localStorage.getItem('lastWeatherLocation') || "Karnal, Haryana";
+        fetchWeather(savedLocation);
     }, []);
 
     return (
