@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, Edit2, Trash2, Package, TrendingUp, Clock, 
@@ -16,14 +16,76 @@ const DashboardPage = () => {
         { id: 3, name: 'Red Onions', quantity: '800 kg', price: '₹35/kg', status: 'Low Stock', image: '/images/crops/red_onions.png' },
     ]);
 
-    const weatherData = {
+    const [weather, setWeather] = useState({
         temp: "32°C",
         condition: "Sunny",
         humidity: "45%",
         soilMoisture: "Low",
         location: "Karnal, Haryana",
-        advice: "Water your wheat crops tonight for optimal moisture retention."
+        advice: "Water your wheat crops tonight for optimal moisture retention.",
+        isLoading: false,
+        error: ""
+    });
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const fetchWeather = async (query) => {
+        if (!query) return;
+        setWeather(prev => ({ ...prev, isLoading: true, error: "" }));
+        try {
+            // Geocoding
+            const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`);
+            const geoData = await geoRes.json();
+            
+            if (geoData.length === 0) throw new Error("Location not found");
+            const { lat, lon, display_name } = geoData[0];
+            const cityName = display_name.split(',')[0];
+            
+            // Weather
+            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,rain`);
+            const data = await weatherRes.json();
+            
+            const tempVal = Math.round(data.current.temperature_2m);
+            const humVal = data.current.relative_humidity_2m;
+            const rainVal = data.current.rain;
+            const code = data.current.weather_code;
+            
+            let cond = "Sunny";
+            if (code > 0 && code < 4) cond = "Partly Cloudy";
+            else if (code >= 45 && code <= 48) cond = "Foggy";
+            else if (code >= 51 && code <= 67) cond = "Rainy";
+            else if (code >= 80 && code <= 82) cond = "Showers";
+            else if (code >= 95) cond = "Stormy";
+
+            let adv = "Weather conditions are optimal for your crops.";
+            if (rainVal === 0 && tempVal > 28) adv = "High temperature and no rain. Water your wheat crops tonight for optimal moisture retention.";
+            else if (rainVal > 0) adv = "Rain is expected. Avoid irrigation today to prevent waterlogging.";
+            else if (tempVal < 10) adv = "Low temperature detected. Protecting sensitive crops from frost is recommended.";
+
+            setWeather({
+                temp: `${tempVal}°C`,
+                condition: cond,
+                humidity: `${humVal}%`,
+                soilMoisture: humVal > 60 ? "High" : humVal > 35 ? "Medium" : "Low",
+                location: cityName,
+                rain: `${rainVal}mm`,
+                advice: adv,
+                isLoading: false,
+                error: ""
+            });
+        } catch (err) {
+            setWeather(prev => ({ ...prev, isLoading: false, error: "Location not found." }));
+        }
     };
+
+    const handleSearch = (e) => {
+        if (e.key === 'Enter') {
+            fetchWeather(searchQuery);
+        }
+    };
+
+    useEffect(() => {
+        fetchWeather("Karnal, Haryana");
+    }, []);
 
     return (
         <div className="bg-agri-surface dark:bg-slate-950 min-h-screen pt-24 pb-20 transition-colors duration-500">
@@ -34,7 +96,7 @@ const DashboardPage = () => {
                     <div>
                         <h1 className="text-4xl font-display font-black text-agri-dark dark:text-white mb-2 tracking-tight">Farmer <span className="text-agri-primary">Dashboard</span></h1>
                         <p className="text-gray-500 dark:text-gray-400 font-medium flex items-center gap-2">
-                           <MapPin size={16} className="text-agri-primary" /> Welcome back, Farmer Shaswat. {weatherData.location}
+                           <MapPin size={16} className="text-agri-primary" /> Welcome back, Farmer Shaswat. {weather.location}
                         </p>
                     </div>
                     <button onClick={() => setIsAddModalOpen(true)} className="group flex items-center gap-2 bg-agri-primary hover:bg-agri-dark text-white px-8 py-4 rounded-2xl font-bold shadow-glow transition-all transform hover:-translate-y-1">
@@ -59,35 +121,67 @@ const DashboardPage = () => {
                                 <Sun size={120} />
                             </div>
                             <div className="relative z-10">
-                                <div className="flex justify-between items-start mb-8">
-                                    <div>
-                                        <p className="text-agri-light/60 font-bold uppercase tracking-widest text-[10px] mb-1">Today's Forecast</p>
-                                        <h3 className="text-3xl font-display font-black">{weatherData.temp}</h3>
-                                        <p className="text-agri-light/80 font-medium">{weatherData.condition}</p>
+                                <div className="flex justify-between items-start mb-6">
+                                    <div className="flex-grow">
+                                        <p className="text-agri-light/60 font-bold uppercase tracking-widest text-[10px] mb-1">Live Forecast</p>
+                                        <div className="relative group max-w-[200px]">
+                                            <input 
+                                                type="text" 
+                                                placeholder="Enter city or pincode"
+                                                value={searchQuery}
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                                onKeyDown={handleSearch}
+                                                className="w-full bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl px-4 py-2 text-sm text-white placeholder-white/40 outline-none transition-all pr-10"
+                                            />
+                                            <button 
+                                                onClick={() => fetchWeather(searchQuery)}
+                                                className="absolute right-2 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
+                                            >
+                                                <Search size={16} />
+                                            </button>
+                                        </div>
                                     </div>
                                     <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl">
-                                        <Sun className="text-agri-secondary" />
+                                        <Sun className={`${weather.isLoading ? 'animate-spin' : ''} text-agri-secondary`} />
                                     </div>
                                 </div>
+
+                                <div className="mb-8">
+                                    {weather.error ? (
+                                        <p className="text-red-300 text-xs font-bold">{weather.error}</p>
+                                    ) : (
+                                        <>
+                                            <h3 className="text-5xl font-display font-black leading-none mb-1">{weather.isLoading ? "..." : weather.temp}</h3>
+                                            <p className="text-agri-light/80 font-bold uppercase tracking-widest text-xs flex items-center gap-2">
+                                                {weather.condition} • {weather.location}
+                                            </p>
+                                        </>
+                                    )}
+                                </div>
+
                                 <div className="grid grid-cols-2 gap-4 mb-8">
                                     <div className="p-4 bg-white/10 rounded-2xl flex items-center gap-3">
                                         <Droplets size={20} className="text-blue-300" />
                                         <div>
                                             <p className="text-[10px] text-white/50 uppercase font-bold">Moisture</p>
-                                            <p className="font-bold">{weatherData.soilMoisture}</p>
+                                            <p className="font-bold">{weather.soilMoisture}</p>
                                         </div>
                                     </div>
                                     <div className="p-4 bg-white/10 rounded-2xl flex items-center gap-3">
                                         <CloudRain size={20} className="text-agri-light" />
                                         <div>
                                             <p className="text-[10px] text-white/50 uppercase font-bold">Rain</p>
-                                            <p className="font-bold">0%</p>
+                                            <p className="font-bold">{weather.rain || "0mm"}</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-4 bg-black/20 rounded-2xl border border-white/10 flex gap-3">
-                                    <AlertCircle size={20} className="text-agri-secondary shrink-0" />
-                                    <p className="text-xs font-medium leading-relaxed">{weatherData.advice}</p>
+                                <div className="p-5 bg-black/20 rounded-2xl border border-white/10 flex gap-4 transition-all">
+                                    <div className="bg-agri-secondary/20 p-2 rounded-lg shrink-0">
+                                        <AlertCircle size={20} className="text-agri-secondary" />
+                                    </div>
+                                    <p className="text-[11px] font-medium leading-relaxed italic text-agri-light/90">
+                                        {weather.isLoading ? "Fetching agricultural advice..." : weather.advice}
+                                    </p>
                                 </div>
                             </div>
                         </motion.div>
