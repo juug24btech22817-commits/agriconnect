@@ -103,12 +103,9 @@ const DashboardPage = () => {
     };
 
     useEffect(() => {
-        let savedLocation = localStorage.getItem('lastWeatherLocation');
-        // Migrate from old default if found
-        if (!savedLocation || savedLocation.includes("Karnal")) {
-            savedLocation = "Bengaluru, Karnataka";
-        }
-        fetchWeather(savedLocation);
+        // Always reset to the real default location (Bengaluru) on a fresh open
+        const defaultLoc = "Bengaluru, Karnataka";
+        fetchWeather(defaultLoc);
     }, []);
 
     return (
