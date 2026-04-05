@@ -61,10 +61,14 @@ const DashboardPage = () => {
             else if (code >= 80 && code <= 82) cond = "Showers";
             else if (code >= 95) cond = "Stormy";
 
-            let adv = "Weather conditions are optimal for your crops.";
-            if (rainVal === 0 && tempVal > 28) adv = "No rain and high heat. It is a good time to water your crops for better growth.";
-            else if (rainVal > 0) adv = "Rain is falling or expected. Save your water and stop irrigation to avoid flooding the roots.";
-            else if (tempVal < 10) adv = "It's getting cold. Consider covering sensitive plants to protect them from frost.";
+            let adv = isDay ? "Weather conditions are optimal for your crops today." : "Optimal evening conditions for crop health.";
+            if (rainVal === 0 && tempVal > 28) {
+                adv = isDay ? "High heat today. Consider extra watering to keep soil moist." : "Warm night ahead. Ensure your storage areas are well ventilated.";
+            } else if (rainVal > 0) {
+                adv = isDay ? "Rain is falling. No need for irrigation today." : "Night rain detected. Check your drainage to prevent waterlogging.";
+            } else if (tempVal < 15) {
+                adv = isDay ? "Cool day ahead. Good for rabi crops." : "Cool night falling. Protect sensitive young saplings from the chill.";
+            }
 
             // Human-readable rain info
             let rainStatus = "No Rain";
