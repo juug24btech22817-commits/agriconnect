@@ -151,10 +151,14 @@ const DashboardPage = () => {
                         <motion.div 
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="bg-gradient-to-br from-agri-primary to-agri-dark p-6 rounded-[2rem] text-white shadow-premium relative overflow-hidden"
+                            className={`p-6 rounded-[2rem] text-white shadow-premium relative overflow-hidden transition-all duration-1000 ${
+                                weather.isDay 
+                                    ? 'bg-gradient-to-br from-agri-primary to-agri-dark shadow-agri-primary/20' 
+                                    : 'bg-gradient-to-br from-indigo-900 to-slate-900 shadow-indigo-900/20'
+                            }`}
                         >
                             <div className="absolute top-0 right-0 p-4 opacity-10">
-                                <Sun size={80} />
+                                {weather.isDay ? <Sun size={80} /> : <Moon size={80} />}
                             </div>
                             <div className="relative z-10">
                                 <div className="flex justify-between items-start mb-4">
