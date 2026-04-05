@@ -253,6 +253,19 @@ const initialCropsData = [
             experience: '15 years',
             farmName: 'Himalayan Harvests'
         }
+    },
+    { 
+        id: 19, name: 'Organic Garlic', category: 'Vegetables', price: '₹180', unit: 'kg', 
+        farmer: 'Sunil Kulkarni', location: 'Nashik, Maharashtra', rating: '4.9', 
+        image: '/images/crops/garlic_in_bowl.png',
+        mandiPrice: '₹120', retailPrice: '₹250',
+        farmerDetails: {
+            phone: '+91 91234 56789',
+            bio: 'Premium organic garlic grown using traditional methods. High potency and rich flavor.',
+            verified: true,
+            experience: '15 years',
+            farmName: 'Kulkarni Organic'
+        }
     }
 ];
 
