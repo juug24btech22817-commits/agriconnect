@@ -120,7 +120,7 @@ const CommunityPage = () => {
             id: Date.now(),
             author: "Farmer Shaswat",
             avatar: null,
-            location: "Karnal, Haryana",
+            location: "Bengaluru, Karnataka",
             time: "Just now",
             content: newPostContent,
             likes: 0,

@@ -21,7 +21,7 @@ const DashboardPage = () => {
         condition: "Sunny",
         humidity: "45%",
         soilMoisture: "Low",
-        location: "Karnal, Haryana",
+        location: "Bengaluru, Karnataka",
         advice: "Water your wheat crops tonight for optimal moisture retention.",
         isLoading: false,
         error: ""
@@ -96,7 +96,7 @@ const DashboardPage = () => {
     };
 
     useEffect(() => {
-        const savedLocation = localStorage.getItem('lastWeatherLocation') || "Karnal, Haryana";
+        const savedLocation = localStorage.getItem('lastWeatherLocation') || "Bengaluru, Karnataka";
         fetchWeather(savedLocation);
     }, []);
 
