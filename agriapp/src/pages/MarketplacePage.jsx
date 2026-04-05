@@ -327,9 +327,16 @@ const MarketplacePage = () => {
         const fetchCrops = async () => {
             try {
                 const data = await api.getProducts();
-                // If backend has no data, use fallback
-                if (data && data.length > 0) {
-                    setCrops(data);
+                // Ensure Garlic is visible even if backend data is returned
+                let processedData = data || [];
+                const hasGarlic = processedData.some(c => c.name.toLowerCase().includes('garlic'));
+                if (!hasGarlic) {
+                    const garlicFallback = initialCropsData.find(c => c.name.includes('Garlic'));
+                    if (garlicFallback) processedData = [...processedData, garlicFallback];
+                }
+
+                if (processedData.length > 0) {
+                    setCrops(processedData);
                 } else {
                     setCrops(initialCropsData);
                 }

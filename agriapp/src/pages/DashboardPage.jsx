@@ -96,7 +96,11 @@ const DashboardPage = () => {
     };
 
     useEffect(() => {
-        const savedLocation = localStorage.getItem('lastWeatherLocation') || "Bengaluru, Karnataka";
+        let savedLocation = localStorage.getItem('lastWeatherLocation');
+        // Migrate from old default if found
+        if (!savedLocation || savedLocation.includes("Karnal")) {
+            savedLocation = "Bengaluru, Karnataka";
+        }
         fetchWeather(savedLocation);
     }, []);
 
