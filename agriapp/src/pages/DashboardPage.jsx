@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, Edit2, Trash2, Package, TrendingUp, Clock, 
-  DollarSign, Search, Filter, X, Sun, CloudRain, 
+  DollarSign, Search, Filter, X, Sun, Moon, CloudRain, 
   Thermometer, Droplets, MapPin, ChevronRight, AlertCircle 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -18,11 +18,12 @@ const DashboardPage = () => {
 
     const [weather, setWeather] = useState({
         temp: "32°C",
-        condition: "Sunny",
+        condition: "Clear",
         humidity: "45%",
         soilMoisture: "Low",
         location: "Bengaluru, Karnataka",
         advice: "Water your wheat crops tonight for optimal moisture retention.",
+        isDay: true,
         isLoading: false,
         error: ""
     });
@@ -44,16 +45,17 @@ const DashboardPage = () => {
             const locationLabel = query.match(/^\d+$/) ? `${query}, ${city}` : city || display_name.split(',')[0];
             
             // Weather
-            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,rain`);
+            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,rain,is_day`);
             const data = await weatherRes.json();
             
             const tempVal = Math.round(data.current.temperature_2m);
             const humVal = data.current.relative_humidity_2m;
             const rainVal = data.current.rain;
             const code = data.current.weather_code;
+            const isDay = data.current.is_day !== 0; // 1 for day, 0 for night
             
-            let cond = "Sunny";
-            if (code > 0 && code < 4) cond = "Partly Cloudy";
+            let cond = isDay ? "Sunny" : "Clear Night";
+            if (code > 0 && code < 4) cond = isDay ? "Partly Cloudy" : "Cloudy Night";
             else if (code >= 45 && code <= 48) cond = "Foggy";
             else if (code >= 51 && code <= 67) cond = "Rainy";
             else if (code >= 80 && code <= 82) cond = "Showers";
@@ -78,6 +80,7 @@ const DashboardPage = () => {
                 location: locationLabel,
                 rain: rainVal > 0 ? `${rainVal}mm (${rainStatus})` : "No Rain (0mm)",
                 advice: adv,
+                isDay: isDay,
                 isLoading: false,
                 error: ""
             });
@@ -158,7 +161,11 @@ const DashboardPage = () => {
                                         </div>
                                     </div>
                                     <div className="p-3 bg-white/10 backdrop-blur-md rounded-xl">
-                                        <Sun size={20} className={`${weather.isLoading ? 'animate-spin' : ''} text-agri-secondary`} />
+                                        {weather.isDay ? (
+                                            <Sun size={20} className={`${weather.isLoading ? 'animate-spin' : ''} text-agri-secondary`} />
+                                        ) : (
+                                            <Moon size={20} className={`${weather.isLoading ? 'animate-spin' : ''} text-blue-200`} />
+                                        )}
                                     </div>
                                 </div>
 
