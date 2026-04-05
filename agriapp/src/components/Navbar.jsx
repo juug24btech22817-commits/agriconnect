@@ -6,7 +6,10 @@ import { useCart } from '../context/CartContext';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(() => {
+        const hour = new Date().getHours();
+        return hour >= 18 || hour < 6; // Auto-dark mode from 6 PM to 6 AM
+    });
     const [language, setLanguage] = useState('EN');
     const location = useLocation();
     const { cartCount } = useCart();

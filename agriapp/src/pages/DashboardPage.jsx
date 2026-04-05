@@ -112,7 +112,20 @@ const DashboardPage = () => {
     }, []);
 
     return (
-        <div className="bg-agri-surface dark:bg-slate-950 min-h-screen pt-24 pb-20 transition-colors duration-500">
+        <div className={`min-h-screen pt-24 pb-20 transition-all duration-1000 ${
+            weather.isDay 
+                ? 'bg-agri-surface dark:bg-slate-950' 
+                : 'bg-slate-900 dark:bg-black text-white'
+        }`}>
+            {/* Dynamic Atmosphere Gradient Layer */}
+            <div className={`fixed inset-0 pointer-events-none transition-opacity duration-1000 ${weather.isDay ? 'opacity-30' : 'opacity-60'}`}>
+                <div className={`absolute inset-0 ${
+                    weather.isDay 
+                        ? 'bg-gradient-to-tr from-orange-200/20 via-transparent to-blue-200/20' 
+                        : 'bg-gradient-to-b from-indigo-900/40 via-transparent to-transparent'
+                }`} />
+            </div>
+            
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header section */}
