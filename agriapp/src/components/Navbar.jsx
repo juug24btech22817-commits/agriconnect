@@ -7,6 +7,8 @@ import { useCart } from '../context/CartContext';
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [darkMode, setDarkMode] = useState(() => {
+        const saved = localStorage.getItem('themePreference');
+        if (saved) return saved === 'dark';
         const hour = new Date().getHours();
         return hour >= 18 || hour < 6; // Auto-dark mode from 6 PM to 6 AM
     });
@@ -17,8 +19,10 @@ const Navbar = () => {
     useEffect(() => {
         if (darkMode) {
             document.documentElement.classList.add('dark');
+            localStorage.setItem('themePreference', 'dark');
         } else {
             document.documentElement.classList.remove('dark');
+            localStorage.setItem('themePreference', 'light');
         }
     }, [darkMode]);
 
