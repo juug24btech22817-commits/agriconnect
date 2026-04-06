@@ -209,16 +209,20 @@ const MarketPricePage = () => {
     return (
         <div className="bg-agri-surface dark:bg-slate-950 min-h-screen pt-24 pb-24 transition-colors duration-500 overflow-x-hidden">
             
-            <div className="absolute top-16 left-0 w-full bg-agri-primary/10 backdrop-blur-md border-y border-agri-primary/20 py-2 z-30">
+            {/* High-Contrast Seamless Price Ticker */}
+            <div className="sticky top-16 lg:top-20 left-0 w-full bg-agri-dark dark:bg-black border-y border-white/5 py-3 z-40 shadow-xl">
                 <motion.div 
-                    animate={{ x: [0, -1000] }}
-                    transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
-                    className="flex whitespace-nowrap gap-12"
+                    animate={{ x: [0, "-50%"] }}
+                    transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
+                    className="flex whitespace-nowrap gap-16 items-center px-4"
                 >
                     {[...tickerItems, ...tickerItems].map((item, i) => (
-                        <span key={i} className="flex items-center gap-2 text-xs font-black text-agri-primary uppercase tracking-widest">
-                            <Activity size={14} /> {item}
-                        </span>
+                        <div key={i} className="flex items-center gap-3 shrink-0">
+                            <div className="w-2 h-2 rounded-full bg-agri-primary animate-pulse shadow-glow-sm" />
+                            <span className="text-sm font-black text-white/90 uppercase tracking-widest flex items-center gap-2">
+                                {item}
+                            </span>
+                        </div>
                     ))}
                 </motion.div>
             </div>
