@@ -143,58 +143,51 @@ const WeatherPage = () => {
         : "from-slate-900 via-indigo-950 to-black";
 
     return (
-        <div className={`min-h-screen pt-24 pb-20 transition-colors duration-1000 bg-gradient-to-br ${bgGradient} text-white selection:bg-agri-primary selection:text-white`}>
+        <div className={`min-h-screen pt-20 pb-12 transition-colors duration-1000 bg-gradient-to-br ${bgGradient} text-white selection:bg-agri-primary selection:text-white`}>
             {/* Ambient Background Effects */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden">
                 <AnimatePresence>
-                    {weather?.current?.rain > 0 && Array.from({ length: 30 }).map((_, i) => (
+                    {weather?.current?.rain > 0 && Array.from({ length: 20 }).map((_, i) => (
                         <motion.div
                             key={`rain-${i}`}
                             initial={{ y: -100, x: Math.random() * window.innerWidth }}
                             animate={{ y: window.innerHeight + 100 }}
-                            transition={{ repeat: Infinity, duration: 1 + Math.random(), ease: "linear" }}
+                            transition={{ repeat: Infinity, duration: 1.5 + Math.random(), ease: "linear" }}
                             className="absolute w-0.5 h-6 bg-blue-200/40 rounded-full"
                         />
                     ))}
-                    {weather?.current?.weather_code === 0 && weather?.current?.is_day && (
-                        <motion.div 
-                            animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
-                            transition={{ duration: 5, repeat: Infinity }}
-                            className="absolute -top-40 -right-40 w-96 h-96 bg-yellow-400/20 blur-[100px] rounded-full"
-                        />
-                    )}
                 </AnimatePresence>
             </div>
 
             <div className="max-w-4xl mx-auto px-4 relative z-10">
-                {/* Search Bar */}
+                {/* Compact Search Bar */}
                 <motion.div 
                     initial={{ y: -20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    className="mb-12"
+                    className="mb-8"
                 >
                     <form onSubmit={handleSearch} className="relative group">
                         <input 
                             type="text" 
-                            placeholder="Enter Pincode or City Name (e.g. 560001, Delhi)"
+                            placeholder="Enter Pincode or City..."
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-[2rem] px-8 py-6 text-xl focus:outline-none focus:ring-4 focus:ring-agri-primary/30 transition-all placeholder:text-white/40 shadow-premium"
+                            className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-6 py-4 text-lg focus:outline-none focus:ring-2 focus:ring-agri-primary/30 transition-all placeholder:text-white/40 shadow-premium"
                         />
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
                              <button 
                                 type="button"
                                 onClick={handleMyLocation}
-                                className="p-3 hover:bg-white/10 rounded-full transition-colors text-white/70 hover:text-white"
+                                className="p-2 hover:bg-white/10 rounded-xl transition-colors text-white/70 hover:text-white"
                                 title="Use My Location"
                             >
-                                <Navigation size={24} />
+                                <Navigation size={20} />
                             </button>
                             <button 
                                 type="submit"
-                                className="bg-agri-primary text-white p-4 rounded-2xl shadow-glow hover:scale-105 active:scale-95 transition-all"
+                                className="bg-agri-primary text-white p-2.5 rounded-xl shadow-glow hover:scale-105 active:scale-95 transition-all"
                             >
-                                <Search size={24} />
+                                <Search size={20} />
                             </button>
                         </div>
                     </form>
@@ -202,107 +195,107 @@ const WeatherPage = () => {
                         <motion.p 
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="text-red-300 mt-4 flex items-center gap-2 font-bold px-4"
+                            className="text-red-300 mt-2 flex items-center gap-2 font-bold px-4 text-xs"
                         >
-                            <AlertTriangle size={16} /> {error}
+                            <AlertTriangle size={14} /> {error}
                         </motion.p>
                     )}
                 </motion.div>
 
                 {loading ? (
-                    <div className="flex flex-col items-center justify-center py-20">
-                        <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin mb-4" />
-                        <p className="text-xl font-medium animate-pulse">Fetching live weather data...</p>
+                    <div className="flex flex-col items-center justify-center py-10">
+                        <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin mb-4" />
+                        <p className="text-lg font-medium animate-pulse">Updating weather...</p>
                     </div>
                 ) : weather && (
-                    <div className="space-y-8">
-                        {/* Main Weather Card */}
+                    <div className="space-y-6">
+                        {/* More Compact Main Weather Card */}
                         <motion.div 
-                            initial={{ scale: 0.9, opacity: 0 }}
+                            initial={{ scale: 0.95, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            className="glass p-10 rounded-[3rem] shadow-premium relative overflow-hidden text-center sm:text-left"
+                            className="glass p-6 sm:p-8 rounded-[2rem] shadow-premium relative overflow-hidden"
                         >
-                            <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start mb-8 gap-8">
-                                <div>
-                                    <div className="flex items-center justify-center sm:justify-start gap-2 text-white/70 mb-2">
-                                        <MapPin size={20} className="text-agri-primary" />
-                                        <span className="font-bold uppercase tracking-widest text-sm">{locationName}</span>
+                            <div className="flex flex-col sm:flex-row justify-between items-center sm:items-start mb-6 gap-6">
+                                <div className="text-center sm:text-left">
+                                    <div className="flex items-center justify-center sm:justify-start gap-2 text-white/70 mb-1">
+                                        <MapPin size={16} className="text-agri-primary" />
+                                        <span className="font-bold uppercase tracking-widest text-[10px]">{locationName}</span>
                                     </div>
-                                    <h1 className="text-7xl sm:text-9xl font-display font-black tracking-tighter mb-4">
+                                    <h1 className="text-6xl sm:text-7xl font-display font-black tracking-tighter mb-2">
                                         {Math.round(weather.current.temperature_2m)}°
                                     </h1>
-                                    <div className="flex items-center justify-center sm:justify-start gap-4">
-                                        <span className="text-2xl font-bold">{getConditionName(weather.current.weather_code)}</span>
-                                        <div className="h-4 w-[1px] bg-white/20" />
-                                        <span className="text-xl text-white/70">Feels like {Math.round(weather.current.apparent_temperature)}°</span>
+                                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
+                                        <span className="text-xl font-bold">{getConditionName(weather.current.weather_code)}</span>
+                                        <span className="text-sm text-white/60">• Feels {Math.round(weather.current.apparent_temperature)}°</span>
                                     </div>
                                 </div>
-                                <div className="sm:text-right">
-                                    <div className="mb-4 inline-block p-6 bg-white/10 backdrop-blur-md rounded-[2.5rem]">
+                                <div className="sm:text-right flex flex-col items-center sm:items-end">
+                                    <div className="mb-3 p-4 bg-white/10 backdrop-blur-md rounded-2xl">
                                         {getWeatherIcon(weather.current.weather_code, weather.current.is_day)}
                                     </div>
-                                    <div className="text-sm font-medium text-white/60">
-                                        Max: {Math.round(weather.daily.temperature_2m_max[0])}° • Min: {Math.round(weather.daily.temperature_2m_min[0])}°
+                                    <div className="text-[10px] font-bold text-white/50 uppercase">
+                                        H: {Math.round(weather.daily.temperature_2m_max[0])}° • L: {Math.round(weather.daily.temperature_2m_min[0])}°
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Details Grid */}
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            {/* Dense Details Grid */}
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 {[
-                                    { label: 'Humidity', value: `${weather.current.relative_humidity_2m}%`, icon: <Droplets size={20} className="text-blue-300" /> },
-                                    { label: 'Wind Speed', value: `${weather.current.wind_speed_10m} km/h`, icon: <Wind size={20} className="text-agri-light" /> },
-                                    { label: 'Rain Status', value: weather.current.rain > 0 ? "Raining" : "No Rain", icon: <CloudRain size={20} className="text-blue-400" /> },
-                                    { label: 'UV Index', value: weather.daily.uv_index_max[0], icon: <Sun size={20} className="text-yellow-400" /> }
+                                    { label: 'Humidity', value: `${weather.current.relative_humidity_2m}%`, icon: <Droplets size={16} className="text-blue-300" /> },
+                                    { label: 'Wind', value: `${weather.current.wind_speed_10m} km/h`, icon: <Wind size={16} className="text-agri-light" /> },
+                                    { label: 'Rain', value: weather.current.rain > 0 ? "Yes" : "No", icon: <CloudRain size={16} className="text-blue-400" /> },
+                                    { label: 'UV Index', value: weather.daily.uv_index_max[0], icon: <Sun size={16} className="text-yellow-400" /> }
                                 ].map((item, i) => (
-                                    <div key={i} className="bg-white/5 hover:bg-white/10 transition-colors rounded-2xl p-4 border border-white/10 text-center">
-                                        <div className="flex justify-center mb-2">{item.icon}</div>
-                                        <div className="text-[10px] uppercase font-bold text-white/50 mb-1">{item.label}</div>
-                                        <div className="text-lg font-black">{item.value}</div>
+                                    <div key={i} className="bg-white/5 hover:bg-white/10 transition-colors rounded-xl p-3 border border-white/10 flex items-center gap-3">
+                                        <div className="shrink-0">{item.icon}</div>
+                                        <div>
+                                            <div className="text-[8px] uppercase font-bold text-white/40">{item.label}</div>
+                                            <div className="text-sm font-black">{item.value}</div>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
                         </motion.div>
 
-                        {/* Farmer Tip Card */}
+                        {/* Streamlined Farmer Tip Card */}
                         <motion.div 
-                            initial={{ y: 20, opacity: 0 }}
+                            initial={{ y: 10, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                            className="bg-agri-dark/40 backdrop-blur-xl border border-white/10 p-8 rounded-[2.5rem] flex flex-col md:flex-row items-center gap-6 shadow-premium"
+                            transition={{ delay: 0.1 }}
+                            className="bg-agri-dark/40 backdrop-blur-xl border border-white/10 p-4 rounded-2xl flex items-center gap-4 shadow-premium"
                         >
-                            <div className="p-5 bg-agri-primary/20 rounded-[2rem]">
-                                <Info size={32} className="text-agri-primary" />
+                            <div className="p-3 bg-agri-primary/20 rounded-xl shrink-0">
+                                <Info size={20} className="text-agri-primary" />
                             </div>
-                            <div className="flex-grow">
-                                <h4 className="text-agri-primary font-bold uppercase tracking-widest text-xs mb-1">Farmer Pro-Tip</h4>
-                                <p className="text-lg font-medium leading-relaxed italic">
+                            <div>
+                                <p className="text-xs sm:text-sm font-medium leading-tight italic text-white/90">
                                     "{getAdvice(weather.current.temperature_2m, weather.current.rain, weather.current.weather_code)}"
                                 </p>
                             </div>
                         </motion.div>
 
-                        {/* Daily Forecast */}
-                        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-4">
+                        {/* Compact Daily Forecast */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
                             {weather.daily.time.map((day, i) => (
                                 <motion.div 
                                     key={day}
-                                    initial={{ y: 20, opacity: 0 }}
+                                    initial={{ y: 10, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
-                                    transition={{ delay: 0.1 * i }}
-                                    className="glass py-6 px-4 rounded-[2rem] text-center border border-white/5"
+                                    transition={{ delay: 0.05 * i }}
+                                    className="glass py-4 px-2 rounded-2xl text-center border border-white/5"
                                 >
-                                    <div className="text-[10px] font-bold uppercase text-white/50 mb-3">
+                                    <div className="text-[8px] font-bold uppercase text-white/40 mb-2">
                                         {new Date(day).toLocaleDateString('en-IN', { weekday: 'short' })}
                                     </div>
-                                    <div className="flex justify-center mb-3">
+                                    <div className="flex justify-center mb-2">
                                         {getWeatherIcon(weather.daily.weather_code[i], true)}
                                     </div>
-                                    <div className="font-black text-lg">
+                                    <div className="font-black text-base">
                                         {Math.round(weather.daily.temperature_2m_max[i])}°
                                     </div>
-                                    <div className="text-[10px] text-white/40">
-                                        {Math.round(weather.daily.temperature_2m_min[i])}°
+                                    <div className="text-[9px] text-white/30">
+                                        L: {Math.round(weather.daily.temperature_2m_min[i])}°
                                     </div>
                                 </motion.div>
                             ))}
