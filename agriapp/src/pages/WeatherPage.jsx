@@ -92,14 +92,21 @@ const WeatherPage = () => {
                 // If location access denied, try loading the last saved location
                 const saved = localStorage.getItem('lastWeatherLocation');
                 if (saved) {
-                    const { lat, lon, name } = JSON.parse(saved);
-                    fetchWeather(lat, lon, name);
-                } else {
-                    setError("Location access denied. Please enter a pincode.");
-                    setLoading(false);
-                    // Default fallback to Bengaluru if nothing else
-                    fetchWeather(12.9716, 77.5946, "Bengaluru, Karnataka");
+                    try {
+                        const { lat, lon, name } = JSON.parse(saved);
+                        if (lat && lon && name) {
+                            fetchWeather(lat, lon, name);
+                            return;
+                        }
+                    } catch (e) {
+                         localStorage.removeItem('lastWeatherLocation');
+                    }
                 }
+                
+                setError("Location access denied. Please enter a pincode.");
+                setLoading(false);
+                // Default fallback to Bengaluru if nothing else
+                fetchWeather(12.9716, 77.5946, "Bengaluru, Karnataka");
             }
         );
     };
@@ -107,11 +114,17 @@ const WeatherPage = () => {
     useEffect(() => {
         const saved = localStorage.getItem('lastWeatherLocation');
         if (saved) {
-            const { lat, lon, name } = JSON.parse(saved);
-            fetchWeather(lat, lon, name);
-        } else {
-            handleMyLocation();
+            try {
+                const { lat, lon, name } = JSON.parse(saved);
+                if (lat && lon && name) {
+                    fetchWeather(lat, lon, name);
+                    return;
+                }
+            } catch (e) {
+                localStorage.removeItem('lastWeatherLocation');
+            }
         }
+        handleMyLocation();
     }, []);
 
     const getWeatherIcon = (code, isDay) => {
