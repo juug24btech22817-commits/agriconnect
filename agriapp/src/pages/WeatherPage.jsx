@@ -147,7 +147,7 @@ const WeatherPage = () => {
         : "from-slate-900 via-indigo-950 to-black";
 
     return (
-        <div className={`min-h-screen pt-20 pb-12 transition-colors duration-1000 bg-gradient-to-br ${bgGradient} text-white selection:bg-agri-primary selection:text-white`}>
+        <div className={`min-h-screen pt-28 pb-12 transition-colors duration-1000 bg-gradient-to-br ${bgGradient} text-white selection:bg-agri-primary selection:text-white`}>
             {/* Ambient Background Effects */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden">
                 <AnimatePresence>
