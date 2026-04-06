@@ -46,8 +46,9 @@ const WeatherPage = () => {
 
             if (geoData.length === 0) throw new Error("Location not found. Try a specific city or pincode.");
 
-            const { lat, lon, display_name, address } = geoData[0];
-            const name = address.city || address.town || address.village || address.suburb || display_name.split(',')[0];
+            const city = address.city || address.town || address.village || address.suburb || "";
+            const state = address.state || address.state_district || "";
+            const name = city && state ? `${city}, ${state}` : city || state || display_name.split(',')[0];
             
             fetchWeather(lat, lon, name);
         } catch (err) {
@@ -69,8 +70,9 @@ const WeatherPage = () => {
                 // Reverse geocode to get name
                 try {
                     const revRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-                    const revData = await revRes.json();
-                    const name = revData.address.city || revData.address.town || revData.address.suburb || "My Location";
+                    const city = revData.address.city || revData.address.town || revData.address.village || revData.address.suburb || "";
+                    const state = revData.address.state || revData.address.state_district || "";
+                    const name = city && state ? `${city}, ${state}` : city || state || "My Location";
                     fetchWeather(latitude, longitude, name);
                 } catch (err) {
                     fetchWeather(latitude, longitude, "My Location");
