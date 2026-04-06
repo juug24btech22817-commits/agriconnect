@@ -31,6 +31,7 @@ const Navbar = () => {
         { name: language === 'EN' ? 'AI Advisor' : 'एआई सलाहकार', path: '/advisor' },
         { name: language === 'EN' ? 'Community' : 'समुदाय', path: '/community' },
         { name: language === 'EN' ? 'Prices' : 'कीमतें', path: '/prices' },
+        { name: language === 'EN' ? 'Weather' : 'मौसम', path: '/weather' },
         { name: language === 'EN' ? 'Stories' : 'कहानियां', path: '/stories' },
         { name: language === 'EN' ? 'Contact' : 'संपर्क', path: '/contact' },
     ];
