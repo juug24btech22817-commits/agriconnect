@@ -14,6 +14,10 @@ const WeatherPage = () => {
     const [weather, setWeather] = useState(null);
     const [locationName, setLocationName] = useState('');
 
+    useEffect(() => {
+        document.title = "Live Weather Tracker | AgriConnect";
+    }, []);
+
     const fetchWeather = useCallback(async (lat, lon, name) => {
         setLoading(true);
         setError(null);
