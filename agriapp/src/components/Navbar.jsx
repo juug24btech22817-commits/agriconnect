@@ -52,47 +52,47 @@ const Navbar = () => {
                         </Link>
                     </div>
 
-                    {/* Desktop Menu - Ultra Compact Row */}
-                    <div className="hidden md:block overflow-x-hidden">
-                        <div className="flex items-center space-x-0.5 lg:space-x-1">
+                    {/* Desktop Menu - Centered & Full Width Usage */}
+                    <div className="hidden md:flex flex-grow justify-center px-4">
+                        <div className="flex items-center space-x-1 lg:space-x-2">
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.name}
                                     to={link.path}
-                                    className={`px-1 lg:px-2 py-1.5 rounded-lg text-[10px] lg:text-[12px] xl:text-[13px] font-black transition-all duration-300 relative group overflow-hidden ${isActive(link.path)
+                                    className={`px-2 lg:px-3 py-2 rounded-xl text-[12px] lg:text-[14px] font-bold transition-all duration-300 relative group truncate ${isActive(link.path)
                                             ? 'text-agri-primary bg-agri-primary/5'
                                             : 'text-gray-600 dark:text-gray-400 hover:text-agri-primary hover:bg-gray-50 dark:hover:bg-gray-800/50'
                                         }`}
                                 >
-                                    <span className="relative z-10 whitespace-nowrap">{link.name}</span>
+                                    <span className="relative z-10">{link.name}</span>
                                     {isActive(link.path) && (
-                                        <motion.div layoutId="nav-active" className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-agri-primary rounded-full" />
+                                        <motion.div layoutId="nav-active" className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-agri-primary rounded-full" />
                                     )}
                                 </Link>
                             ))}
-
-                            <div className="h-6 w-[1px] bg-gray-200 dark:bg-gray-800 mx-1"></div>
-
-                            {/* Icons Section */}
-                            <div className="flex items-center gap-0.5 lg:gap-1.5">
-                                <button onClick={() => setLanguage(language === 'EN' ? 'HI' : 'EN')} className="px-1 py-0.5 text-[9px] font-black border border-gray-100 dark:border-gray-800 rounded hover:border-agri-primary transition-colors text-gray-400">
-                                    {language}
-                                </button>
-
-                                <Link to="/cart" className="p-1 rounded-lg text-gray-400 hover:bg-agri-primary/10 hover:text-agri-primary transition-all relative">
-                                    <ShoppingCart size={14} className="lg:w-4 lg:h-4" />
-                                    {cartCount > 0 && <span className="absolute -top-1 -right-1 w-3 h-3 bg-agri-primary text-white text-[7px] font-black flex items-center justify-center rounded-full border-2 border-white dark:border-slate-900">{cartCount}</span>}
-                                </Link>
-
-                                <button onClick={() => setDarkMode(!darkMode)} className="p-1 rounded-lg text-gray-400 hover:bg-agri-primary/10 hover:text-agri-primary transition-all">
-                                    {darkMode ? <Sun size={14} className="lg:w-4 lg:h-4" /> : <Moon size={14} className="lg:w-4 lg:h-4" />}
-                                </button>
-
-                                <Link to="/dashboard" className="bg-agri-primary text-white px-2 lg:px-3 py-1.5 rounded-lg text-[10px] lg:text-[12px] font-black shadow-glow transform hover:-translate-y-0.5 transition-all ml-1 xl:ml-2">
-                                    {language === 'EN' ? 'Sell' : 'बेचें'}
-                                </Link>
-                            </div>
                         </div>
+                    </div>
+
+                    {/* Icons Section - Right Aligned */}
+                    <div className="hidden md:flex items-center gap-1 lg:gap-3">
+                        <div className="h-6 w-[1px] bg-gray-200 dark:bg-gray-800 mr-2"></div>
+                        
+                        <button onClick={() => setLanguage(language === 'EN' ? 'HI' : 'EN')} className="px-2 py-1 text-[10px] font-black border border-gray-100 dark:border-gray-800 rounded-lg hover:border-agri-primary transition-colors text-gray-400">
+                            {language}
+                        </button>
+
+                        <Link to="/cart" className="p-2 rounded-xl text-gray-400 hover:bg-agri-primary/10 hover:text-agri-primary transition-all relative">
+                            <ShoppingCart size={18} />
+                            {cartCount > 0 && <span className="absolute -top-1 -right-1 w-4 h-4 bg-agri-primary text-white text-[9px] font-black flex items-center justify-center rounded-full border-2 border-white dark:border-slate-900">{cartCount}</span>}
+                        </Link>
+
+                        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-xl text-gray-400 hover:bg-agri-primary/10 hover:text-agri-primary transition-all">
+                            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+                        </button>
+
+                        <Link to="/dashboard" className="bg-agri-primary text-white px-5 py-2.5 rounded-xl text-sm font-black shadow-glow transform hover:-translate-y-0.5 transition-all ml-2">
+                            {language === 'EN' ? 'Sell Now' : 'अभी बेचें'}
+                        </Link>
                     </div>
 
                     {/* Mobile toggle button */}
