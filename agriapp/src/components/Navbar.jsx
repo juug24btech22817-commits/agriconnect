@@ -26,12 +26,12 @@ const Navbar = () => {
 
     const navLinks = [
         { name: language === 'EN' ? 'Home' : 'होम', path: '/' },
-        { name: language === 'EN' ? 'Market' : 'मार्केट', path: '/marketplace' },
-        { name: language === 'EN' ? 'Dash' : 'डैश', path: '/dashboard' },
-        { name: language === 'EN' ? 'AI' : 'एआई', path: '/advisor' },
+        { name: language === 'EN' ? 'Marketplace' : 'मार्केटप्लेस', path: '/marketplace' },
+        { name: language === 'EN' ? 'Dashboard' : 'डैशबोर्ड', path: '/dashboard' },
+        { name: language === 'EN' ? 'AI Advisor' : 'एआई सलाहकार', path: '/advisor' },
         { name: language === 'EN' ? 'Weather' : 'मौसम', path: '/weather' },
         { name: language === 'EN' ? 'Prices' : 'कीमतें', path: '/prices' },
-        { name: language === 'EN' ? 'Social' : 'सोशल', path: '/community' },
+        { name: language === 'EN' ? 'Community' : 'समुदाय', path: '/community' },
         { name: language === 'EN' ? 'Stories' : 'कहानियां', path: '/stories' },
         { name: language === 'EN' ? 'Contact' : 'संपर्क', path: '/contact' },
     ];
@@ -40,33 +40,33 @@ const Navbar = () => {
 
     return (
         <nav className="fixed w-full z-50 glass border-none shadow-premium transition-all duration-300">
-            <div className="max-w-[1400px] mx-auto px-2 lg:px-4">
-                <div className="flex items-center justify-between h-16 lg:h-20">
-                    {/* Logo */}
-                    <div className="flex-shrink-0">
-                        <Link to="/" className="flex items-center gap-1.5 group">
-                            <Leaf className="h-5 w-5 lg:h-6 lg:w-6 text-agri-primary group-hover:rotate-12 transition-transform" />
-                            <span className="font-display font-bold text-base lg:text-xl xl:text-2xl tracking-tighter text-agri-dark dark:text-white">
+            <div className="max-w-full mx-auto px-4 lg:px-8">
+                <div className="flex items-center justify-between h-16 lg:h-20 gap-4">
+                    {/* Logo - Left Aligned */}
+                    <div className="flex-shrink-0 min-w-fit">
+                        <Link to="/" className="flex items-center gap-2 group">
+                            <Leaf className="h-6 w-6 text-agri-primary group-hover:rotate-12 transition-transform" />
+                            <span className="font-display font-bold text-xl lg:text-2xl tracking-tighter text-agri-dark dark:text-white">
                                 AgriConnect
                             </span>
                         </Link>
                     </div>
 
-                    {/* Desktop Menu - Centered & Full Width Usage */}
-                    <div className="hidden md:flex flex-grow justify-center px-4">
-                        <div className="flex items-center space-x-1 lg:space-x-2">
+                    {/* Desktop Menu - Spanning Center */}
+                    <div className="hidden md:flex flex-grow justify-center overflow-x-auto no-scrollbar">
+                        <div className="flex items-center space-x-1 lg:space-x-3 xl:space-x-4">
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.name}
                                     to={link.path}
-                                    className={`px-2 lg:px-3 py-2 rounded-xl text-[12px] lg:text-[14px] font-bold transition-all duration-300 relative group truncate ${isActive(link.path)
+                                    className={`px-2 lg:px-4 py-2 rounded-xl text-[12px] lg:text-[14px] font-bold transition-all duration-300 relative group truncate ${isActive(link.path)
                                             ? 'text-agri-primary bg-agri-primary/5'
                                             : 'text-gray-600 dark:text-gray-400 hover:text-agri-primary hover:bg-gray-50 dark:hover:bg-gray-800/50'
                                         }`}
                                 >
-                                    <span className="relative z-10">{link.name}</span>
+                                    <span className="relative z-10 whitespace-nowrap">{link.name}</span>
                                     {isActive(link.path) && (
-                                        <motion.div layoutId="nav-active" className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-agri-primary rounded-full" />
+                                        <motion.div layoutId="nav-active" className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-agri-primary rounded-full" />
                                     )}
                                 </Link>
                             ))}
