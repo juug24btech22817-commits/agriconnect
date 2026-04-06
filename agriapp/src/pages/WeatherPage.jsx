@@ -25,6 +25,9 @@ const WeatherPage = () => {
 
             setWeather(data);
             setLocationName(name);
+
+            // Save last location for persistence
+            localStorage.setItem('lastWeatherLocation', JSON.stringify({ lat, lon, name }));
         } catch (err) {
             setError("Failed to fetch weather data. Please try again.");
         } finally {
@@ -46,6 +49,7 @@ const WeatherPage = () => {
 
             if (geoData.length === 0) throw new Error("Location not found. Try a specific city or pincode.");
 
+            const { lat, lon, address } = geoData[0];
             const city = address.city || address.town || address.village || address.suburb || address.city_district || address.county || "";
             const state = address.state || address.state_district || "";
             const name = city && state ? `${city}, ${state}` : city || state || geoData[0].display_name.split(',')[0];
@@ -77,18 +81,33 @@ const WeatherPage = () => {
                     const name = city && state ? `${city}, ${state}` : city || state || revData.display_name.split(',')[0] || "Your Location";
                     fetchWeather(latitude, longitude, name);
                 } catch (err) {
-                    fetchWeather(latitude, longitude, "My Location");
+                    fetchWeather(latitude, longitude, "Your Location");
                 }
             },
             (err) => {
-                setError("Location access denied. Please enter a pincode.");
-                setLoading(false);
+                // If location access denied, try loading the last saved location
+                const saved = localStorage.getItem('lastWeatherLocation');
+                if (saved) {
+                    const { lat, lon, name } = JSON.parse(saved);
+                    fetchWeather(lat, lon, name);
+                } else {
+                    setError("Location access denied. Please enter a pincode.");
+                    setLoading(false);
+                    // Default fallback to Bengaluru if nothing else
+                    fetchWeather(12.9716, 77.5946, "Bengaluru, Karnataka");
+                }
             }
         );
     };
 
     useEffect(() => {
-        handleMyLocation();
+        const saved = localStorage.getItem('lastWeatherLocation');
+        if (saved) {
+            const { lat, lon, name } = JSON.parse(saved);
+            fetchWeather(lat, lon, name);
+        } else {
+            handleMyLocation();
+        }
     }, []);
 
     const getWeatherIcon = (code, isDay) => {
