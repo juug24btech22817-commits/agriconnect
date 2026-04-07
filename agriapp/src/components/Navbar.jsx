@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Leaf, Sun, Moon, Bell, User, ShoppingCart, PhoneCall } from 'lucide-react';
+import { Menu, X, Leaf, Sun, Moon, Bell, User, ShoppingCart, PhoneCall, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 
@@ -90,9 +90,35 @@ const Navbar = () => {
                             {darkMode ? <Sun size={18} /> : <Moon size={18} />}
                         </button>
 
-                        <Link to="/dashboard" className="bg-agri-primary text-white px-5 py-2.5 rounded-xl text-sm font-black shadow-glow transform hover:-translate-y-0.5 transition-all ml-2">
-                            {language === 'EN' ? 'Sell Now' : 'अभी बेचें'}
-                        </Link>
+                        <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="relative group"
+                        >
+                            {/* Subtle pulsing background glow */}
+                            <motion.div 
+                                animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0, 0.3] }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                                className="absolute -inset-1 bg-agri-primary rounded-2xl blur-lg"
+                            />
+                            
+                            <Link 
+                                to="/dashboard" 
+                                className="relative bg-gradient-to-r from-agri-primary via-emerald-500 to-teal-600 text-white px-7 py-3 rounded-2xl text-sm font-black shadow-glow hover:shadow-emerald-500/60 transform transition-all ml-2 flex items-center gap-2 group ring-1 ring-white/20 overflow-hidden"
+                            >
+                                {/* Animated Shine Effect */}
+                                <motion.div 
+                                    animate={{ left: ['-100%', '200%'] }}
+                                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, ease: "linear" }}
+                                    className="absolute top-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg]"
+                                />
+                                
+                                <span className="relative z-10 flex items-center gap-2">
+                                    <Sparkles className="h-4 w-4 text-emerald-100 animate-pulse" />
+                                    {language === 'EN' ? 'Sell Now' : 'अभी बेचें'}
+                                </span>
+                            </Link>
+                        </motion.div>
                     </div>
 
                     {/* Mobile toggle button */}
@@ -147,9 +173,11 @@ const Navbar = () => {
                                 <Link
                                     to="/dashboard"
                                     onClick={() => setIsOpen(false)}
-                                    className="flex-grow ml-4 bg-agri-primary text-white text-center py-3 rounded-xl font-bold shadow-lg shadow-agri-primary/20"
+                                    className="flex-grow ml-4 bg-gradient-to-r from-agri-primary via-emerald-500 to-teal-600 text-white text-center py-4 rounded-[1.5rem] font-black shadow-xl shadow-agri-primary/20 flex items-center justify-center gap-3 active:scale-95 transition-all border border-white/20 relative overflow-hidden"
                                 >
-                                    {language === 'EN' ? 'Sell Crops' : 'फसल बेचें'}
+                                    <Sparkles className="h-5 w-5 text-emerald-100" />
+                                    {language === 'EN' ? 'Sell Now' : 'अभी बेचें'}
+                                    <div className="absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_3s_infinite]" />
                                 </Link>
                             </div>
                         </div>

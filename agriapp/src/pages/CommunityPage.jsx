@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, MessageSquare, Heart, Share2, Search, 
   TrendingUp, Award, User, Clock, CheckCircle, 
-  Plus, MessageCircle, Sparkles, Filter 
+  Plus, MessageCircle, Sparkles, Filter, X
 } from 'lucide-react';
 
 const postsData = [

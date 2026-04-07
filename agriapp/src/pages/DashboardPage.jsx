@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, Edit2, Trash2, Package, TrendingUp, Clock, 
   DollarSign, Search, Filter, X, Sun, Moon, CloudRain, 
-  Thermometer, Droplets, MapPin, ChevronRight, AlertCircle 
+  Thermometer, Droplets, MapPin, ChevronRight, AlertCircle, Sparkles 
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -133,10 +133,21 @@ const DashboardPage = () => {
                            <MapPin size={16} className="text-agri-primary" /> Welcome back, Farmer Shaswat. {weather.location}
                         </p>
                     </div>
-                    <button onClick={() => setIsAddModalOpen(true)} className="group flex items-center gap-2 bg-agri-primary hover:bg-agri-dark text-white px-8 py-4 rounded-2xl font-bold shadow-glow transition-all transform hover:-translate-y-1">
-                        <Plus size={20} className="group-hover:rotate-90 transition-transform" />
-                        Create New Listing
-                    </button>
+                    <motion.button 
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setIsAddModalOpen(true)} 
+                        className="group relative flex items-center gap-3 bg-gradient-to-r from-agri-primary to-emerald-700 text-white px-8 py-4 rounded-2xl font-black shadow-glow transition-all overflow-hidden border border-white/20"
+                    >
+                        <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                        <motion.div
+                            animate={{ rotate: [0, 90, 0] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            <Sparkles size={20} className="text-emerald-100" />
+                        </motion.div>
+                        <span className="relative z-10">{language === 'EN' ? 'Sell Now / List Crop' : 'अभी बेचें / फसल जोड़ें'}</span>
+                    </motion.button>
                 </header>
 
                 {/* Main Grid Layout */}
