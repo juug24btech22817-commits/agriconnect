@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, Sun, Cloud, CloudRain, CloudLightning, 
   Wind, Droplets, MapPin, Navigation, 
-  ArrowLeft, AlertTriangle, Info, Thermometer
+  ArrowLeft, AlertTriangle, Info, Thermometer, Clock
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ const WeatherPage = () => {
         setLoading(true);
         setError(null);
         try {
-            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_sum&timezone=auto`);
+            const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,uv_index&hourly=temperature_2m,relative_humidity_2m,precipitation_probability,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_sum&timezone=auto`);
             const data = await res.json();
             
             if (data.error) throw new Error("Weather data unavailable");
@@ -112,18 +112,8 @@ const WeatherPage = () => {
     };
 
     useEffect(() => {
-        const saved = localStorage.getItem('lastWeatherLocation');
-        if (saved) {
-            try {
-                const { lat, lon, name } = JSON.parse(saved);
-                if (lat && lon && name) {
-                    fetchWeather(lat, lon, name);
-                    return;
-                }
-            } catch (e) {
-                localStorage.removeItem('lastWeatherLocation');
-            }
-        }
+        // ALWAYS prioritize current location on fresh load as requested.
+        // Fallbacks are handled inside handleMyLocation().
         handleMyLocation();
     }, []);
 
@@ -245,6 +235,10 @@ const WeatherPage = () => {
                                         <span className="text-xl font-bold">{getConditionName(weather.current.weather_code)}</span>
                                         <span className="text-sm text-white/60">• Feels {Math.round(weather.current.apparent_temperature)}°</span>
                                     </div>
+                                    <div className="mt-4 flex items-center justify-center sm:justify-start gap-2 text-[10px] font-black text-white/40 uppercase tracking-[0.2em]">
+                                        <Clock size={12} className="text-agri-primary/60" />
+                                        Last Updated: {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    </div>
                                 </div>
                                 <div className="sm:text-right flex flex-col items-center sm:items-end">
                                     <div className="mb-3 p-4 bg-white/10 backdrop-blur-md rounded-2xl">
@@ -262,7 +256,7 @@ const WeatherPage = () => {
                                     { label: 'Humidity', value: `${weather.current.relative_humidity_2m}%`, icon: <Droplets size={16} className="text-blue-300" /> },
                                     { label: 'Wind', value: `${weather.current.wind_speed_10m} km/h`, icon: <Wind size={16} className="text-agri-light" /> },
                                     { label: 'Rain', value: weather.current.rain > 0 ? "Yes" : "No", icon: <CloudRain size={16} className="text-blue-400" /> },
-                                    { label: 'UV Index', value: weather.daily.uv_index_max[0], icon: <Sun size={16} className="text-yellow-400" /> }
+                                    { label: 'UV Index', value: `${weather.current.uv_index} (${weather.daily.uv_index_max[0]} Max)`, icon: <Sun size={16} className="text-yellow-400" /> }
                                 ].map((item, i) => (
                                     <div key={i} className="bg-white/5 hover:bg-white/10 transition-colors rounded-xl p-3 border border-white/10 flex items-center gap-3">
                                         <div className="shrink-0">{item.icon}</div>
