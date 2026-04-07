@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Leaf, Sun, Moon, Bell, User, ShoppingCart, PhoneCall, Sparkles } from 'lucide-react';
+import { Menu, X, Leaf, Sun, Moon, Bell, User, ShoppingCart, PhoneCall, Sparkles, Home } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 
@@ -25,7 +25,7 @@ const Navbar = () => {
     }, [darkMode]);
 
     const navLinks = [
-        { name: language === 'EN' ? 'Home' : 'होम', path: '/' },
+        { name: language === 'EN' ? 'Home' : 'होम', path: '/', icon: <Home size={18} /> },
         { name: language === 'EN' ? 'Marketplace' : 'मार्केटप्लेस', path: '/marketplace' },
         { name: language === 'EN' ? 'Dashboard' : 'डैशबोर्ड', path: '/dashboard' },
         { name: language === 'EN' ? 'AI Advisor' : 'एआई सलाहकार', path: '/advisor' },
@@ -45,7 +45,7 @@ const Navbar = () => {
                     {/* Logo - Left Aligned */}
                     <div className="flex-shrink-0 min-w-fit">
                         <Link to="/" className="flex items-center gap-2 group">
-                            <Leaf className="h-6 w-6 text-agri-primary group-hover:rotate-12 transition-transform" />
+                            <Leaf className="h-8 w-8 text-agri-primary group-hover:rotate-12 transition-transform" />
                             <span className="font-display font-bold text-xl lg:text-2xl tracking-tighter text-agri-dark dark:text-white">
                                 AgriConnect
                             </span>
@@ -64,7 +64,10 @@ const Navbar = () => {
                                             : 'text-gray-600 dark:text-gray-400 hover:text-agri-primary hover:bg-gray-50 dark:hover:bg-gray-800/50'
                                         }`}
                                 >
-                                    <span className="relative z-10 whitespace-nowrap">{link.name}</span>
+                                    <span className="relative z-10 whitespace-nowrap flex items-center gap-1.5">
+                                        {link.icon && <span className="opacity-80 group-hover:opacity-100 transition-opacity">{link.icon}</span>}
+                                        {link.name}
+                                    </span>
                                     {isActive(link.path) && (
                                         <motion.div layoutId="nav-active" className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-agri-primary rounded-full" />
                                     )}
@@ -152,11 +155,12 @@ const Navbar = () => {
                                     key={link.name}
                                     to={link.path}
                                     onClick={() => setIsOpen(false)}
-                                    className={`block px-4 py-3 rounded-xl text-base font-semibold transition-colors ${isActive(link.path)
-                                            ? 'bg-agri-primary/10 text-agri-primary'
+                                    className={`px-3 py-2 rounded-xl text-sm font-bold transition-all flex items-center ${isActive(link.path)
+                                            ? 'bg-agri-primary/10 text-agri-primary shadow-sm'
                                             : 'text-gray-600 dark:text-gray-400 hover:bg-agri-primary/5 hover:text-agri-primary'
                                         }`}
                                 >
+                                    {link.icon && <span className="mr-1.5 opacity-80 group-hover:opacity-100">{link.icon}</span>}
                                     {link.name}
                                 </Link>
                             ))}

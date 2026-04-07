@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 const DashboardPage = () => {
     const [activeTab, setActiveTab] = useState('listings');
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [language, setLanguage] = useState('EN');
     const [listings, setListings] = useState([
         { id: 1, name: 'Alphonso Mangoes', quantity: '120 dozen', price: '₹800/dozen', status: 'Active', image: '/images/crops/alphonso_mangoes_1773328054659.png' },
         { id: 2, name: 'Basmati Rice', quantity: '1500 kg', price: '₹120/kg', status: 'Active', image: '/images/crops/basmati_rice_organic_1773328180216.png' },
