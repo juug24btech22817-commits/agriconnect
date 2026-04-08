@@ -25,6 +25,7 @@ const trendingCrops = [
 const tickerItems = [
     "Wheat: ₹2,150/quintal ↑ 0.5%",
     "Paddy: ₹1,960/quintal ↓ 0.2%",
+    "Sugarcane: ₹3,150/ton ↑ 1.4%",
     "Sugar: ₹3,400/quintal ↑ 1.1%",
     "Corn: ₹1,850/quintal ↑ 0.8%",
     "Cotton: ₹6,200/quintal ↓ 0.4%"
@@ -100,6 +101,7 @@ const MarketPricePage = () => {
         'basmati rice': { min: 110, max: 550, category: 'Groceries' },
         'dal': { min: 120, max: 210, category: 'Groceries' },
         'sugar': { min: 42, max: 55, category: 'Groceries' },
+        'sugarcane': { min: 3, max: 6, category: 'Groceries' },
         'honey': { min: 380, max: 950, category: 'Groceries' },
         'turmeric': { min: 180, max: 380, category: 'Groceries' },
         'mustard': { min: 95, max: 145, category: 'Groceries' },

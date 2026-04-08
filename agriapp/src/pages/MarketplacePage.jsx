@@ -266,6 +266,19 @@ const initialCropsData = [
             experience: '15 years',
             farmName: 'Kulkarni Organic'
         }
+    },
+    { 
+        id: 20, name: 'Fresh Sugarcane', category: 'Vegetables', price: '₹40', unit: 'bundle', 
+        farmer: 'Vikas Deshmukh', location: 'Kolhapur, Maharashtra', rating: '4.8', 
+        image: 'https://images.unsplash.com/photo-1593113630400-ea4288922202?w=800&q=80',
+        mandiPrice: '₹25', retailPrice: '₹60',
+        farmerDetails: {
+            phone: '+91 90000 11111',
+            bio: 'Expert in high-yield sugarcane cultivation. Focused on traditional and sustainable farming.',
+            verified: true,
+            experience: '18 years',
+            farmName: 'Sugar Valley'
+        }
     }
 ];
 
