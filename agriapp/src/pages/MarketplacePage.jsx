@@ -270,7 +270,7 @@ const initialCropsData = [
     { 
         id: 20, name: 'Fresh Sugarcane', category: 'Vegetables', price: '₹40', unit: 'bundle', 
         farmer: 'Vikas Deshmukh', location: 'Kolhapur, Maharashtra', rating: '4.8', 
-        image: 'https://images.unsplash.com/photo-1593113630400-ea4288922202?w=800&q=80',
+        image: '/images/crops/fresh_sugarcane.png',
         mandiPrice: '₹25', retailPrice: '₹60',
         farmerDetails: {
             phone: '+91 90000 11111',
