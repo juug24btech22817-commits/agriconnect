@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, Edit2, Trash2, Package, TrendingUp, Clock, 
   DollarSign, Search, Filter, X, Sun, Moon, CloudRain, 
   Thermometer, Droplets, MapPin, ChevronRight, AlertCircle, Sparkles 
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const DashboardPage = () => {
+    const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
+    
+    const isAuthorized = user && (user.role === 'farmer' || user.role === 'admin');
+    const isBuyer = user && user.role === 'buyer';
     const [activeTab, setActiveTab] = useState('listings');
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [language, setLanguage] = useState('EN');
@@ -131,24 +137,28 @@ const DashboardPage = () => {
                     <div>
                         <h1 className="text-4xl font-display font-black text-agri-dark dark:text-white mb-2 tracking-tight">Farmer <span className="text-agri-primary">Dashboard</span></h1>
                         <p className="text-gray-500 dark:text-gray-400 font-medium flex items-center gap-2">
-                           <MapPin size={16} className="text-agri-primary" /> Welcome back, Farmer Shaswat. {weather.location}
+                           <MapPin size={16} className="text-agri-primary" /> 
+                           {user ? `Welcome back, ${user.name}` : 'Please log in to manage your inventory'}
+                           {weather.location && ` • ${weather.location}`}
                         </p>
                     </div>
-                    <motion.button 
-                        whileHover={{ scale: 1.05, y: -2 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setIsAddModalOpen(true)} 
-                        className="group relative flex items-center gap-3 bg-gradient-to-r from-agri-primary to-emerald-700 text-white px-8 py-4 rounded-2xl font-black shadow-glow transition-all overflow-hidden border border-white/20"
-                    >
-                        <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                        <motion.div
-                            animate={{ rotate: [0, 90, 0] }}
-                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    {isAuthorized && (
+                        <motion.button 
+                            whileHover={{ scale: 1.05, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setIsAddModalOpen(true)} 
+                            className="group relative flex items-center gap-3 bg-gradient-to-r from-agri-primary to-emerald-700 text-white px-8 py-4 rounded-2xl font-black shadow-glow transition-all overflow-hidden border border-white/20"
                         >
-                            <Sparkles size={20} className="text-emerald-100" />
-                        </motion.div>
-                        <span className="relative z-10">{language === 'EN' ? 'Sell Now / List Crop' : 'अभी बेचें / फसल जोड़ें'}</span>
-                    </motion.button>
+                            <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
+                            <motion.div
+                                animate={{ rotate: [0, 90, 0] }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                                <Sparkles size={20} className="text-emerald-100" />
+                            </motion.div>
+                            <span className="relative z-10">{language === 'EN' ? 'Sell Now / List Crop' : 'अभी बेचें / फसल जोड़ें'}</span>
+                        </motion.button>
+                    )}
                 </header>
 
                 {/* Main Grid Layout */}
@@ -262,67 +272,99 @@ const DashboardPage = () => {
                     {/* Right Column: Listings (col-span-8) */}
                     <main className="lg:col-span-8 space-y-8">
                         
-                        <div className="glass rounded-[2.5rem] shadow-premium overflow-hidden">
-                            <div className="p-8 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-6">
-                                <h2 className="text-2xl font-display font-bold text-agri-dark dark:text-white">Active Inventory</h2>
-                                <div className="flex glass rounded-2xl p-1.5 border-gray-200 dark:border-gray-800">
-                                    {['listings', 'drafts', 'history'].map(tab => (
-                                        <button
-                                            key={tab}
-                                            onClick={() => setActiveTab(tab)}
-                                            className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === tab ? 'bg-agri-primary text-white shadow-glow' : 'text-gray-400 hover:text-agri-primary'}`}
-                                        >
-                                            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                                        </button>
-                                    ))}
+                        {isAuthorized ? (
+                            <div className="glass rounded-[2.5rem] shadow-premium overflow-hidden">
+                                <div className="p-8 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-6">
+                                    <h2 className="text-2xl font-display font-bold text-agri-dark dark:text-white">Active Inventory</h2>
+                                    <div className="flex glass rounded-2xl p-1.5 border-gray-200 dark:border-gray-800">
+                                        {['listings', 'drafts', 'history'].map(tab => (
+                                            <button
+                                                key={tab}
+                                                onClick={() => setActiveTab(tab)}
+                                                className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${activeTab === tab ? 'bg-agri-primary text-white shadow-glow' : 'text-gray-400 hover:text-agri-primary'}`}
+                                            >
+                                                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                                    <AnimatePresence>
+                                        {listings.map((item, idx) => (
+                                            <motion.div
+                                                key={item.id}
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, scale: 0.95 }}
+                                                transition={{ delay: idx * 0.1 }}
+                                                className="p-8 flex flex-col sm:flex-row items-center gap-8 hover:bg-agri-primary/[0.02] transition-colors"
+                                            >
+                                                <div className="relative group shrink-0">
+                                                    <img src={item.image} alt={item.name} className="w-28 h-28 rounded-[1.5rem] object-cover shadow-lg" />
+                                                    <div className="absolute inset-0 bg-agri-primary/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-[1.5rem]" />
+                                                </div>
+                                                
+                                                <div className="flex-grow text-center sm:text-left">
+                                                    <div className="flex items-center justify-center sm:justify-start gap-3 mb-2">
+                                                        <h3 className="text-xl font-display font-bold text-agri-dark dark:text-white">{item.name}</h3>
+                                                        <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${item.status === 'Active' ? 'bg-agri-primary/10 text-agri-primary' : 'bg-red-100 text-red-600'}`}>
+                                                            {item.status}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-wrap justify-center sm:justify-start gap-4 text-sm text-gray-400 font-medium">
+                                                        <span className="flex items-center gap-1.5"><Package size={16} className="text-agri-primary" /> {item.quantity}</span>
+                                                        <span className="flex items-center gap-1.5 font-bold text-agri-primary"> {item.price}</span>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex gap-3 shrink-0">
+                                                    <button className="p-3 bg-white dark:bg-slate-900 rounded-xl text-gray-400 hover:text-agri-primary border border-gray-100 dark:border-gray-800 transition-all hover:border-agri-primary/30">
+                                                        <Edit2 size={18} />
+                                                    </button>
+                                                    <button className="p-3 bg-white dark:bg-slate-900 rounded-xl text-gray-400 hover:text-red-500 border border-gray-100 dark:border-gray-800 transition-all hover:border-red-500/30">
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                    <button className="p-3 bg-agri-primary/10 text-agri-primary rounded-xl font-bold text-xs hover:bg-agri-primary hover:text-white transition-all">
+                                                        Details
+                                                    </button>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </AnimatePresence>
                                 </div>
                             </div>
-
-                            <div className="divide-y divide-gray-100 dark:divide-gray-800">
-                                <AnimatePresence>
-                                    {listings.map((item, idx) => (
-                                        <motion.div
-                                            key={item.id}
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, scale: 0.95 }}
-                                            transition={{ delay: idx * 0.1 }}
-                                            className="p-8 flex flex-col sm:flex-row items-center gap-8 hover:bg-agri-primary/[0.02] transition-colors"
-                                        >
-                                            <div className="relative group shrink-0">
-                                                <img src={item.image} alt={item.name} className="w-28 h-28 rounded-[1.5rem] object-cover shadow-lg" />
-                                                <div className="absolute inset-0 bg-agri-primary/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-[1.5rem]" />
-                                            </div>
-                                            
-                                            <div className="flex-grow text-center sm:text-left">
-                                                <div className="flex items-center justify-center sm:justify-start gap-3 mb-2">
-                                                    <h3 className="text-xl font-display font-bold text-agri-dark dark:text-white">{item.name}</h3>
-                                                    <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${item.status === 'Active' ? 'bg-agri-primary/10 text-agri-primary' : 'bg-red-100 text-red-600'}`}>
-                                                        {item.status}
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-wrap justify-center sm:justify-start gap-4 text-sm text-gray-400 font-medium">
-                                                    <span className="flex items-center gap-1.5"><Package size={16} className="text-agri-primary" /> {item.quantity}</span>
-                                                    <span className="flex items-center gap-1.5 font-bold text-agri-primary"> {item.price}</span>
-                                                </div>
-                                            </div>
-
-                                            <div className="flex gap-3 shrink-0">
-                                                <button className="p-3 bg-white dark:bg-slate-900 rounded-xl text-gray-400 hover:text-agri-primary border border-gray-100 dark:border-gray-800 transition-all hover:border-agri-primary/30">
-                                                    <Edit2 size={18} />
-                                                </button>
-                                                <button className="p-3 bg-white dark:bg-slate-900 rounded-xl text-gray-400 hover:text-red-500 border border-gray-100 dark:border-gray-800 transition-all hover:border-red-500/30">
-                                                    <Trash2 size={18} />
-                                                </button>
-                                                <button className="p-3 bg-agri-primary/10 text-agri-primary rounded-xl font-bold text-xs hover:bg-agri-primary hover:text-white transition-all">
-                                                    Details
-                                                </button>
-                                            </div>
-                                        </motion.div>
-                                    ))}
-                                </AnimatePresence>
+                        ) : (
+                            <div className="glass rounded-[2.5rem] shadow-premium p-12 text-center space-y-6">
+                                <div className="w-24 h-24 bg-agri-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <Sparkles size={40} className="text-agri-primary" />
+                                </div>
+                                <h2 className="text-3xl font-display font-bold text-agri-dark dark:text-white">
+                                    {isBuyer ? 'Farmer Dashboard' : 'Ready to grow with us?'}
+                                </h2>
+                                <p className="text-gray-500 dark:text-gray-400 text-lg max-w-md mx-auto">
+                                    {isBuyer 
+                                        ? "This dashboard is reserved for our verified farmers. As a buyer, you can explore the marketplace to find fresh harvests!" 
+                                        : "Join our community of farmers to list your crops, reach more buyers, and manage your harvests with ease."}
+                                </p>
+                                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
+                                    {isBuyer ? (
+                                        <Link to="/marketplace" className="px-8 py-4 bg-agri-primary text-white font-bold rounded-2xl shadow-glow hover:bg-agri-dark transition-all">
+                                            Go to Marketplace
+                                        </Link>
+                                    ) : (
+                                        <>
+                                            <Link to="/login" className="px-8 py-4 bg-agri-primary text-white font-bold rounded-2xl shadow-glow hover:bg-agri-dark transition-all">
+                                                Log In
+                                            </Link>
+                                            <Link to="/register" className="px-8 py-4 bg-white dark:bg-slate-900 text-agri-primary border border-agri-primary/20 font-bold rounded-2xl hover:bg-agri-primary/5 transition-all">
+                                                Register as Farmer
+                                            </Link>
+                                        </>
+                                    )}
+                                </div>
                             </div>
-                        </div>
+                        )}
 
                     </main>
                 </div>

@@ -19,6 +19,8 @@ const LoginPage = () => {
       // If admin, go to admin dashboard. Otherwise go home.
       if (data.user && data.user.role === 'admin') {
         navigate('/admin');
+      } else if (data.user && data.user.role === 'farmer') {
+        navigate('/dashboard');
       } else {
         navigate('/');
       }
