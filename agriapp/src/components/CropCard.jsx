@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   ShoppingCart, Star, MapPin, Check, Zap, Plus, Minus, 
   X, User, ShieldCheck, Phone, PhoneCall, Info, HeartPulse, 
-  TrendingUp, BarChart3, Globe, Sparkles, LogIn
+  TrendingUp, BarChart3, Globe, Sparkles, LogIn, Loader2
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
@@ -244,6 +244,7 @@ const CropCard = ({ crop, index }) => {
     const [showFarmerModal, setShowFarmerModal] = useState(false);
     const [showPriceModal, setShowPriceModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     
     const { user } = useContext(AuthContext);
     const { addToCart } = useCart();
@@ -257,13 +258,20 @@ const CropCard = ({ crop, index }) => {
     };
 
     const handleBuyNow = () => {
-        if (!user) {
-            setShowLoginModal(true);
-            return;
-        }
-        addToCart(crop, 1);
-        navigate('/cart');
+        setIsLoading(true);
+        
+        // Deliberate artificial delay for a "premium" weighted feel
+        setTimeout(() => {
+            setIsLoading(false);
+            if (!user) {
+                setShowLoginModal(true);
+                return;
+            }
+            addToCart(crop, 1);
+            navigate('/cart');
+        }, 1000);
     };
+
 
     const handleLoginRedirect = () => {
         navigate('/login', { state: { from: '/cart' } });
@@ -423,10 +431,17 @@ const CropCard = ({ crop, index }) => {
                                 </button>
                                 <button
                                     onClick={handleBuyNow}
-                                    className="flex items-center justify-center gap-3 py-4 bg-agri-primary hover:bg-emerald-700 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all shadow-glow"
+                                    disabled={isLoading}
+                                    className={`flex items-center justify-center gap-3 py-4 bg-agri-primary hover:bg-emerald-700 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all shadow-glow ${isLoading ? 'opacity-80 cursor-not-allowed scale-95' : ''}`}
                                 >
-                                    <Zap size={16} className="fill-white" /> Buy
+                                    {isLoading ? (
+                                        <Loader2 size={16} className="animate-spin text-white" />
+                                    ) : (
+                                        <Zap size={16} className="fill-white" />
+                                    )}
+                                    {isLoading ? 'Processing...' : 'Buy'}
                                 </button>
+
                             </div>
                         )}
                     </div>
