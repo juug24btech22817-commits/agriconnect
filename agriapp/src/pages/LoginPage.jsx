@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { api } from '../services/api';
 
@@ -9,6 +9,7 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const { loginAction } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -16,8 +17,12 @@ const LoginPage = () => {
       const data = await api.login(email, password);
       loginAction(data.token, data.user);
       
-      // If admin, go to admin dashboard. Otherwise go home.
-      if (data.user && data.user.role === 'admin') {
+      // Check if there's a redirect destination
+      const destination = location.state?.from;
+      
+      if (destination) {
+        navigate(destination);
+      } else if (data.user && data.user.role === 'admin') {
         navigate('/admin');
       } else if (data.user && data.user.role === 'farmer') {
         navigate('/dashboard');

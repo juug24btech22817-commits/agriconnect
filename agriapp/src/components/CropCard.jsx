@@ -2,15 +2,17 @@
  * CropCard.jsx - Premium AgriTech UI Card
  * Handles product display, floating badges, and high-end interaction modals.
  */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
   ShoppingCart, Star, MapPin, Check, Zap, Plus, Minus, 
   X, User, ShieldCheck, Phone, PhoneCall, Info, HeartPulse, 
-  TrendingUp, BarChart3, Globe, Sparkles 
+  TrendingUp, BarChart3, Globe, Sparkles, LogIn
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { AuthContext } from '../context/AuthContext';
+
 
 const FarmerProfileModal = ({ farmer, onClose }) => {
     if (!farmer) return null;
@@ -180,6 +182,60 @@ const PriceAnalysisModal = ({ crop, onClose }) => {
     );
 };
 
+const LoginRequiredModal = ({ onClose, onLogin }) => {
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[120] flex items-center justify-center p-6 bg-agri-dark/90 backdrop-blur-2xl"
+            onClick={onClose}
+        >
+            <motion.div
+                initial={{ scale: 0.9, y: 50 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, y: 50 }}
+                className="bg-white dark:bg-slate-950 rounded-[4rem] overflow-hidden shadow-2xl max-w-md w-full relative p-12 border border-agri-primary/20"
+                onClick={e => e.stopPropagation()}
+            >
+                <button 
+                    onClick={onClose}
+                    className="absolute top-10 right-10 p-2 text-gray-400 hover:text-rose-500 transition-colors"
+                >
+                    <X size={24} />
+                </button>
+
+                <div className="text-center mb-10">
+                    <div className="w-24 h-24 bg-agri-primary/10 rounded-[2.5rem] flex items-center justify-center text-agri-primary mx-auto mb-8 relative">
+                        <div className="absolute inset-0 bg-agri-primary/20 blur-2xl rounded-full" />
+                        <LogIn size={48} className="relative z-10" />
+                    </div>
+                    <h3 className="text-4xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter mb-4">Authentication Required</h3>
+                    <p className="text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+                        To maintain direct traceability and secure fair farmer payments, you must be logged into your AgriConnect account to complete this purchase.
+                    </p>
+                </div>
+
+                <div className="flex flex-col gap-4">
+                    <button
+                        onClick={onLogin}
+                        className="w-full py-6 bg-agri-primary text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.2em] shadow-glow hover:scale-[1.03] active:scale-95 transition-all"
+                    >
+                        Sign In Now
+                    </button>
+                    <button
+                        onClick={onClose}
+                        className="w-full py-6 bg-gray-50 dark:bg-slate-900 text-gray-400 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:text-gray-600 dark:hover:text-white transition-all"
+                    >
+                        Maybe Later
+                    </button>
+                </div>
+            </motion.div>
+        </motion.div>
+    );
+};
+
+
 const farmerName = (name) => name.split(' ')[0];
 
 const CropCard = ({ crop, index }) => {
@@ -187,6 +243,9 @@ const CropCard = ({ crop, index }) => {
     const [weight, setWeight] = useState(1);
     const [showFarmerModal, setShowFarmerModal] = useState(false);
     const [showPriceModal, setShowPriceModal] = useState(false);
+    const [showLoginModal, setShowLoginModal] = useState(false);
+    
+    const { user } = useContext(AuthContext);
     const { addToCart } = useCart();
     const navigate = useNavigate();
 
@@ -197,10 +256,24 @@ const CropCard = ({ crop, index }) => {
         setPhase('confirming');
     };
 
+    const handleBuyNow = () => {
+        if (!user) {
+            setShowLoginModal(true);
+            return;
+        }
+        addToCart(crop, 1);
+        navigate('/cart');
+    };
+
+    const handleLoginRedirect = () => {
+        navigate('/login', { state: { from: '/cart' } });
+    };
+
     const reset = () => {
         setPhase('initial');
         setWeight(1);
     };
+
 
     const weightOptions = crop.unit?.toLowerCase() === 'dozen' 
         ? [0.5, 1, 2] 
@@ -349,7 +422,7 @@ const CropCard = ({ crop, index }) => {
                                     <Plus size={16} /> Add
                                 </button>
                                 <button
-                                    onClick={() => { addToCart(crop, 1); navigate('/cart'); }}
+                                    onClick={handleBuyNow}
                                     className="flex items-center justify-center gap-3 py-4 bg-agri-primary hover:bg-emerald-700 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all shadow-glow"
                                 >
                                     <Zap size={16} className="fill-white" /> Buy
@@ -363,7 +436,9 @@ const CropCard = ({ crop, index }) => {
             <AnimatePresence>
                 {showFarmerModal && <FarmerProfileModal farmer={crop} onClose={() => setShowFarmerModal(false)} />}
                 {showPriceModal && <PriceAnalysisModal crop={crop} onClose={() => setShowPriceModal(false)} />}
+                {showLoginModal && <LoginRequiredModal onClose={() => setShowLoginModal(false)} onLogin={handleLoginRedirect} />}
             </AnimatePresence>
+
         </>
     );
 };
