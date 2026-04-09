@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Star, MapPin, Truck, Lock, Package, ChevronLeft, 
   ShieldCheck, Zap, Plus, Minus, Loader2, Info, 
-  Sparkles, TrendingUp, BarChart3, ShoppingBag, ArrowRight
+  Sparkles, TrendingUp, BarChart3, ShoppingBag, ArrowRight, User
 } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
