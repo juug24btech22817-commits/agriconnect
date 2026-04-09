@@ -4,10 +4,20 @@ import React, { createContext, useState, useEffect } from 'react';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    try {
+      const savedUser = localStorage.getItem('user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (err) {
+      console.error("Error parsing user from localStorage", err);
+      return null;
+    }
+  });
+  
   const [token, setToken] = useState(localStorage.getItem('token') || null);
 
-  // Read saved data when app loads
+  // Still keep the check in useEffect for cross-tab sync or other side effects if needed,
+  // but it's now primarily handled in useState.
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
     const savedUser = localStorage.getItem('user');
@@ -29,6 +39,7 @@ export const AuthProvider = ({ children }) => {
     setToken(newToken);
     setUser(newUserObj);
   };
+
 
   // Standard simple logout
   const logoutAction = () => {

@@ -4,7 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Star, MapPin, Truck, Lock, Package, ChevronLeft, 
   ShieldCheck, Zap, Plus, Minus, Loader2, Info, 
-  Sparkles, TrendingUp, BarChart3, ShoppingBag, ArrowRight, User
+  Sparkles, TrendingUp, BarChart3, ShoppingBag, ArrowRight, User,
+  Navigation, CheckCircle2
 } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -20,8 +21,13 @@ const ProductDetailsPage = () => {
     const [crop, setCrop] = useState(null);
     const [loading, setLoading] = useState(true);
     const [buyLoading, setBuyLoading] = useState(false);
+    const [locLoading, setLocLoading] = useState(false);
+    const [location, setLocation] = useState(() => {
+        return localStorage.getItem('deliveryLocation') || 'Bengaluru 560001';
+    });
     const [count, setCount] = useState(1);
     const [activeTab, setActiveTab] = useState('overview');
+
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -64,6 +70,39 @@ const ProductDetailsPage = () => {
         addToCart(crop, count);
         // Maybe show a toast or small animation later
     };
+
+    const handleDetectLocation = () => {
+        setLocLoading(true);
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser");
+            setLocLoading(false);
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const { latitude, longitude } = position.coords;
+            try {
+                // Using OpenStreetMap Nominatim for free reverse geocoding
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
+                const data = await response.json();
+                
+                const city = data.address.city || data.address.town || data.address.village || "Unknown City";
+                const pincode = data.address.postcode || "";
+                const newLoc = `${city} ${pincode}`.trim();
+                
+                setLocation(newLoc);
+                localStorage.setItem('deliveryLocation', newLoc);
+            } catch (err) {
+                console.error("Error fetching location details:", err);
+            } finally {
+                setLocLoading(false);
+            }
+        }, (err) => {
+            console.error("Geolocation error:", err);
+            setLocLoading(false);
+        });
+    };
+
 
     const getMockDeliveryDate = () => {
         const today = new Date();
@@ -145,13 +184,37 @@ const ProductDetailsPage = () => {
                             <h1 className="text-5xl md:text-7xl font-display font-black text-agri-dark dark:text-white mb-4 tracking-tighter uppercase leading-none">
                                 {crop.name}
                             </h1>
-                            <div className="flex items-center gap-2 text-gray-500 font-medium">
+                            <div className="flex items-center gap-2 text-gray-500 font-medium mb-6">
                                 <MapPin size={18} className="text-agri-primary" />
                                 <span>Harvested in {crop.location}</span>
+                            </div>
+
+                            {/* Delivering to Section */}
+                            <div className="p-6 bg-gray-50/50 dark:bg-slate-900/50 rounded-3xl border border-dashed border-gray-200 dark:border-slate-800 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                <div className="flex items-start gap-4">
+                                    <div className="p-3 bg-white dark:bg-slate-800 rounded-2xl text-agri-secondary shadow-sm">
+                                        <Navigation size={20} className={locLoading ? 'animate-pulse' : ''} />
+                                    </div>
+                                    <div>
+                                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Delivering to</p>
+                                        <h4 className="text-lg font-black text-agri-dark dark:text-white uppercase leading-none">
+                                            {locLoading ? 'Locating...' : location}
+                                        </h4>
+                                    </div>
+                                </div>
+                                <button 
+                                    onClick={handleDetectLocation}
+                                    disabled={locLoading}
+                                    className="px-6 py-3 bg-white dark:bg-slate-800 hover:bg-agri-primary/5 text-agri-primary rounded-xl text-[10px] font-black uppercase tracking-widest border border-gray-100 dark:border-slate-700 transition-all flex items-center gap-2 disabled:opacity-50"
+                                >
+                                    {locLoading ? <Loader2 size={14} className="animate-spin" /> : <Navigation size={14} />}
+                                    {locLoading ? 'Detecting...' : 'Use Current Location'}
+                                </button>
                             </div>
                         </div>
 
                         {/* Price & Primary Info */}
+
                         <div className="p-10 rounded-[3rem] bg-gray-50 dark:bg-slate-900 border border-gray-100 dark:border-slate-800 mb-8 relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-8 opacity-5">
                                 <TrendingUp size={120} className="text-agri-primary" />
@@ -183,11 +246,12 @@ const ProductDetailsPage = () => {
                                 </div>
                                 <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400">
                                     <div className="p-3 bg-white dark:bg-slate-800 rounded-2xl text-agri-secondary shadow-sm">
-                                        <Lock size={24} />
+                                        <MapPin size={24} />
                                     </div>
-                                    <p className="font-bold uppercase tracking-widest text-xs">Secure Transaction & Data Protection</p>
+                                    <p className="font-bold uppercase tracking-widest text-xs">Delivering to {location}</p>
                                 </div>
                             </div>
+
                         </div>
 
                         {/* Producer & Story */}

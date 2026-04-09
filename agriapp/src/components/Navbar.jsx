@@ -3,9 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Leaf, Sun, Moon, Bell, User, ShoppingCart, PhoneCall, Sparkles, Home } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
+import { AuthContext } from '../context/AuthContext';
+import { useContext } from 'react';
 
 const Navbar = () => {
+    const { user, logoutAction } = useContext(AuthContext);
     const [isOpen, setIsOpen] = useState(false);
+
     const [darkMode, setDarkMode] = useState(() => {
         const hour = new Date().getHours();
         return hour >= 18 || hour < 6; // Real-time auto-dark mode from 6 PM to 6 AM
@@ -93,36 +97,63 @@ const Navbar = () => {
                             {darkMode ? <Sun size={18} /> : <Moon size={18} />}
                         </button>
 
-                        <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="relative group"
-                        >
-                            {/* Subtle pulsing background glow */}
-                            <motion.div 
-                                animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0, 0.3] }}
-                                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute -inset-1 bg-agri-primary rounded-2xl blur-lg"
-                            />
-                            
-                            <Link 
-                                to="/dashboard" 
-                                className="relative bg-gradient-to-r from-agri-primary via-emerald-500 to-teal-600 text-white px-7 py-3 rounded-2xl text-sm font-black shadow-glow hover:shadow-emerald-500/60 transform transition-all ml-2 flex items-center gap-2 group ring-1 ring-white/20 overflow-hidden"
+                        <div className="flex items-center gap-2">
+                            {user ? (
+                                <div className="flex items-center gap-3 bg-gray-50 dark:bg-slate-800 p-1.5 pr-4 rounded-2xl border border-gray-100 dark:border-gray-700">
+                                    <div className="w-8 h-8 rounded-xl bg-agri-primary/10 flex items-center justify-center text-agri-primary">
+                                        <User size={16} />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] font-black uppercase tracking-widest text-agri-primary leading-none mb-1">Authenticated</span>
+                                        <button 
+                                            onClick={logoutAction}
+                                            className="text-[10px] font-bold text-gray-400 hover:text-red-500 uppercase tracking-widest transition-colors text-left"
+                                        >
+                                            Sign Out
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <Link 
+                                    to="/login"
+                                    className="px-4 py-2 text-xs font-black uppercase tracking-widest text-gray-500 hover:text-agri-primary transition-colors"
+                                >
+                                    Login
+                                </Link>
+                            )}
+
+                            <motion.div
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="relative group"
                             >
-                                {/* Animated Shine Effect */}
+                                {/* Subtle pulsing background glow */}
                                 <motion.div 
-                                    animate={{ left: ['-100%', '200%'] }}
-                                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, ease: "linear" }}
-                                    className="absolute top-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg]"
+                                    animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0, 0.3] }}
+                                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                                    className="absolute -inset-1 bg-agri-primary rounded-2xl blur-lg"
                                 />
                                 
-                                <span className="relative z-10 flex items-center gap-2">
-                                    <Sparkles className="h-4 w-4 text-emerald-100 animate-pulse" />
-                                    {language === 'EN' ? 'Sell Now' : 'अभी बेचें'}
-                                </span>
-                            </Link>
-                        </motion.div>
+                                <Link 
+                                    to={user ? "/dashboard" : "/login"} 
+                                    className="relative bg-gradient-to-r from-agri-primary via-emerald-500 to-teal-600 text-white px-7 py-3 rounded-2xl text-sm font-black shadow-glow hover:shadow-emerald-500/60 transform transition-all ml-2 flex items-center gap-2 group ring-1 ring-white/20 overflow-hidden"
+                                >
+                                    {/* Animated Shine Effect */}
+                                    <motion.div 
+                                        animate={{ left: ['-100%', '200%'] }}
+                                        transition={{ duration: 2, repeat: Infinity, repeatDelay: 3, ease: "linear" }}
+                                        className="absolute top-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-20deg]"
+                                    />
+                                    
+                                    <span className="relative z-10 flex items-center gap-2">
+                                        <Sparkles className="h-4 w-4 text-emerald-100 animate-pulse" />
+                                        {language === 'EN' ? 'Sell Now' : 'अभी बेचें'}
+                                    </span>
+                                </Link>
+                            </motion.div>
+                        </div>
                     </div>
+
 
                     {/* Mobile toggle button */}
                     <div className="md:hidden flex items-center gap-3">
