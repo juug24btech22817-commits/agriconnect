@@ -21,7 +21,9 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import WeatherPage from './pages/WeatherPage';
+import ProductDetailsPage from './pages/ProductDetailsPage';
 import ContactWidget from './components/ContactWidget';
+
 
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
@@ -65,8 +67,10 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/marketplace" element={<MarketplacePage />} />
-              <Route path="/cart" element={<CartPage />} />
+               <Route path="/marketplace" element={<MarketplacePage />} />
+               <Route path="/product/:id" element={<ProductDetailsPage />} />
+               <Route path="/cart" element={<CartPage />} />
+
               <Route path="/tracking" element={<OrderTrackingPage />} />
               <Route path="/prices" element={<MarketPricePage />} />
               <Route path="/stories" element={<StoriesPage />} />

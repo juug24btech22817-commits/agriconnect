@@ -342,8 +342,11 @@ const CropCard = ({ crop, index }) => {
                     )}
                 </AnimatePresence>
 
-                {/* Media Container */}
-                <div className="relative h-64 overflow-hidden shrink-0">
+                {/* Media Container - Clickable for details */}
+                <div 
+                    className="relative h-64 overflow-hidden shrink-0 cursor-pointer"
+                    onClick={() => navigate(`/product/${crop.id}`)}
+                >
                     <div className="absolute top-5 right-5 z-10 glass dark:bg-slate-900/80 px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-premium border border-white/20">
                         <Star size={14} className="text-agri-secondary fill-agri-secondary" />
                         <span className="text-[10px] font-black text-agri-dark dark:text-white">{crop.rating}</span>
@@ -367,13 +370,14 @@ const CropCard = ({ crop, index }) => {
                              <h3 className="text-xl font-display font-black leading-none uppercase tracking-tighter">{crop.name}</h3>
                         </div>
                         <button 
-                            onClick={() => setShowPriceModal(true)}
+                            onClick={(e) => { e.stopPropagation(); setShowPriceModal(true); }}
                             className="p-3 glass dark:bg-slate-900/80 text-white hover:text-agri-primary rounded-2xl transition-all border border-white/20 shadow-premium"
                         >
                             <BarChart3 size={18} />
                         </button>
                     </div>
                 </div>
+
 
                 {/* Content Container - Amazon Inspired Detailed Layout */}
                 <div className="p-8 flex flex-col flex-grow bg-gradient-to-b from-transparent to-gray-50/30 dark:to-slate-900/10">
