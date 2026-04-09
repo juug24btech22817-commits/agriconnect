@@ -8,10 +8,20 @@ import { useNavigate } from 'react-router-dom';
 import { 
   ShoppingCart, Star, MapPin, Check, Zap, Plus, Minus, 
   X, User, ShieldCheck, Phone, PhoneCall, Info, HeartPulse, 
-  TrendingUp, BarChart3, Globe, Sparkles, LogIn, Loader2
+  TrendingUp, BarChart3, Globe, Sparkles, LogIn, Loader2,
+  Truck, Lock, Package, ChevronDown
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
+
+const getMockDeliveryDate = () => {
+    const today = new Date();
+    const deliveryDate = new Date(today);
+    deliveryDate.setDate(today.getDate() + 4); // 4 days from now
+    const options = { weekday: 'long', day: 'numeric', month: 'long' };
+    return deliveryDate.toLocaleDateString('en-IN', options);
+};
+
 
 
 const FarmerProfileModal = ({ farmer, onClose }) => {
@@ -365,87 +375,118 @@ const CropCard = ({ crop, index }) => {
                     </div>
                 </div>
 
-                {/* Content Container */}
-                <div className="p-8 flex flex-col flex-grow">
-                    <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-baseline gap-1">
-                            <span className="text-3xl font-display font-black text-agri-dark dark:text-white tracking-tighter">{crop.price}</span>
-                            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">/ {crop.unit}</span>
+                {/* Content Container - Amazon Inspired Detailed Layout */}
+                <div className="p-8 flex flex-col flex-grow bg-gradient-to-b from-transparent to-gray-50/30 dark:to-slate-900/10">
+                    
+                    {/* Price & Unit Breakdown */}
+                    <div className="mb-6">
+                        <div className="flex items-baseline gap-2 mb-1">
+                            <span className="text-4xl font-display font-black text-agri-dark dark:text-white tracking-tighter">
+                                {crop.price}
+                            </span>
+                            <span className="text-sm font-bold text-gray-400">
+                                ({crop.price} / {crop.unit})
+                            </span>
                         </div>
-                        <button 
-                            onClick={() => setShowFarmerModal(true)}
-                            className="flex items-center gap-3 p-1.5 pr-4 glass dark:bg-slate-800 rounded-2xl border border-gray-100 dark:border-slate-700 hover:border-agri-primary transition-all group/farmer"
-                        >
-                            <div className="w-8 h-8 bg-agri-primary/10 rounded-xl flex items-center justify-center text-agri-primary">
-                                <User size={16} />
-                            </div>
-                            <div className="text-left">
-                                <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Producer</p>
-                                <p className="text-[10px] font-bold text-agri-dark dark:text-white leading-none truncate max-w-[80px]">{farmerName(crop.farmer)}</p>
-                            </div>
-                        </button>
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                            Inclusive of all taxes
+                        </p>
                     </div>
 
-                    <div className="mt-auto">
-                        {phase === 'selecting' ? (
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="glass dark:bg-slate-800 rounded-3xl p-5 border-agri-primary/20"
-                            >
-                                <div className="flex justify-between items-center mb-4">
-                                    <label className="text-[9px] font-black uppercase tracking-[0.2em] text-gray-500">SET QUANTITY</label>
-                                    <button onClick={reset} className="text-gray-400 hover:text-rose-500 transition-colors">
-                                        <X size={16} />
-                                    </button>
-                                </div>
-                                <div className="grid grid-cols-4 gap-2 mb-4">
-                                    {weightOptions.map((opt) => (
-                                        <button
-                                            key={opt}
-                                            onClick={() => setWeight(opt)}
-                                            className={`py-3 rounded-xl text-xs font-black transition-all ${
-                                                weight === opt 
-                                                ? 'bg-agri-primary text-white shadow-glow' 
-                                                : 'bg-white dark:bg-slate-900 text-gray-500 border border-gray-100 dark:border-slate-700 hover:border-agri-primary'
-                                            }`}
-                                        >
-                                            {opt}
-                                        </button>
-                                    ))}
-                                </div>
-                                <button
-                                    onClick={handleAddToCart}
-                                    className="w-full py-4 bg-agri-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest shadow-glow active:scale-95 transition-all"
-                                >
-                                    Confirm +{weight} {crop.unit}
+                    {/* Delivery & Location */}
+                    <div className="space-y-4 mb-8">
+                        <div className="flex items-start gap-3">
+                            <Truck size={18} className="text-agri-primary shrink-0 mt-0.5" />
+                            <div>
+                                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <span className="text-emerald-600 dark:text-agri-primary font-bold">FREE delivery</span> <span className="font-bold">{getMockDeliveryDate()}</span>
+                                </p>
+                                <button className="text-[10px] font-black text-agri-primary uppercase tracking-widest hover:underline text-left">
+                                    Details
                                 </button>
-                            </motion.div>
-                        ) : (
-                            <div className="grid grid-cols-2 gap-3">
-                                <button
-                                    onClick={() => setPhase('selecting')}
-                                    className="flex items-center justify-center gap-3 py-4 glass dark:bg-slate-800 hover:bg-agri-primary/5 text-agri-dark dark:text-white border border-gray-100 dark:border-slate-700 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all"
-                                >
-                                    <Plus size={16} /> Add
-                                </button>
-                                <button
-                                    onClick={handleBuyNow}
-                                    disabled={isLoading}
-                                    className={`flex items-center justify-center gap-3 py-4 bg-agri-primary hover:bg-emerald-700 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all shadow-glow ${isLoading ? 'opacity-80 cursor-not-allowed scale-95' : ''}`}
-                                >
-                                    {isLoading ? (
-                                        <Loader2 size={16} className="animate-spin text-white" />
-                                    ) : (
-                                        <Zap size={16} className="fill-white" />
-                                    )}
-                                    {isLoading ? 'Processing...' : 'Buy'}
-                                </button>
-
                             </div>
-                        )}
+                        </div>
+
+                        <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
+                            <MapPin size={16} className="shrink-0" />
+                            <p className="text-xs font-medium truncate">
+                                Delivering to <span className="font-bold text-agri-dark dark:text-white">Bengaluru 560001</span>
+                            </p>
+                            <button className="text-[10px] font-black text-agri-primary uppercase tracking-widest ml-auto">Update</button>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                             <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-tight">In Stock</span>
+                        </div>
+                    </div>
+
+                    {/* Fulfillment & Security */}
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-3 mb-8 py-6 border-y border-gray-100 dark:border-slate-800">
+                        <div className="space-y-1">
+                            <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">Delivered by</p>
+                            <p className="text-xs font-bold text-agri-dark dark:text-white flex items-center gap-1.5">
+                                <Package size={12} className="text-agri-primary" /> AgriConnect
+                            </p>
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">Sold by</p>
+                            <p className="text-xs font-bold text-agri-dark dark:text-white truncate max-w-full">
+                                {crop.farmerDetails?.farmName || crop.farmer}
+                            </p>
+                        </div>
+                        <div className="col-span-2 mt-2 pt-2 border-t border-gray-50 dark:border-slate-800/50">
+                             <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 dark:text-gray-400">
+                                <Lock size={12} className="text-agri-secondary" />
+                                <span className="uppercase tracking-widest">Secure transaction</span>
+                             </div>
+                        </div>
+                    </div>
+
+                    {/* Quantity & Actions */}
+                    <div className="mt-auto space-y-4">
+                        <div className="flex items-center justify-between bg-white dark:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm">
+                             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-2">Quantity</span>
+                             <div className="flex items-center gap-4">
+                                <button 
+                                    onClick={() => setWeight(Math.max(0.5, weight - 0.5))}
+                                    className="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg text-gray-500 transition-colors"
+                                >
+                                    <Minus size={16} />
+                                </button>
+                                <span className="text-sm font-black text-agri-dark dark:text-white min-w-[2ch] text-center">{weight}</span>
+                                <button 
+                                    onClick={() => setWeight(weight + 0.5)}
+                                    className="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg text-gray-500 transition-colors"
+                                >
+                                    <Plus size={16} />
+                                </button>
+                             </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-3">
+                            <button
+                                onClick={handleAddToCart}
+                                className="w-full py-5 bg-white dark:bg-slate-800 text-agri-dark dark:text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] border border-gray-200 dark:border-slate-700 hover:border-agri-primary transition-all shadow-sm"
+                            >
+                                Add to Cart
+                            </button>
+                            <button
+                                onClick={handleBuyNow}
+                                disabled={isLoading}
+                                className="w-full py-5 bg-agri-primary hover:bg-emerald-700 text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] transition-all shadow-glow flex items-center justify-center gap-3 disabled:opacity-80 disabled:cursor-not-allowed"
+                            >
+                                {isLoading ? (
+                                    <Loader2 size={18} className="animate-spin text-white" />
+                                ) : (
+                                    <Zap size={18} className="fill-white" />
+                                )}
+                                {isLoading ? 'Processing...' : 'Buy Now'}
+                            </button>
+                        </div>
                     </div>
                 </div>
+
             </motion.div>
 
             <AnimatePresence>
