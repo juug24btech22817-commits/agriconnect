@@ -6,7 +6,7 @@ import React, { useState, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
-  ShoppingCart, Star, MapPin, Check, Zap, Plus, Minus, 
+  ShoppingCart, Star, StarHalf, MapPin, Check, Zap, Plus, Minus, 
   X, User, ShieldCheck, Phone, PhoneCall, Info, HeartPulse, 
   TrendingUp, BarChart3, Globe, Sparkles, LogIn, Loader2,
   Truck, Lock, Package, ChevronDown
@@ -248,6 +248,23 @@ const LoginRequiredModal = ({ onClose, onLogin }) => {
 
 const farmerName = (name) => name.split(' ')[0];
 
+const renderStars = (rating) => {
+    const stars = [];
+    const fullStars = Math.floor(rating || 0);
+    const hasHalfStar = (rating || 0) % 1 >= 0.5;
+
+    for (let i = 0; i < 5; i++) {
+        if (i < fullStars) {
+            stars.push(<Star key={i} size={10} className="text-agri-secondary fill-agri-secondary" />);
+        } else if (i === fullStars && hasHalfStar) {
+            stars.push(<StarHalf key={i} size={10} className="text-agri-secondary fill-agri-secondary" />);
+        } else {
+            stars.push(<Star key={i} size={10} className="text-gray-300 dark:text-gray-700" />);
+        }
+    }
+    return stars;
+};
+
 const CropCard = ({ crop, index }) => {
     const [phase, setPhase] = useState('initial');
     const [weight, setWeight] = useState(1);
@@ -348,8 +365,10 @@ const CropCard = ({ crop, index }) => {
                     onClick={() => navigate(`/product/${crop.id}`)}
                 >
                     <div className="absolute top-5 right-5 z-10 glass dark:bg-slate-900/80 px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-premium border border-white/20">
-                        <Star size={14} className="text-agri-secondary fill-agri-secondary" />
-                        <span className="text-[10px] font-black text-agri-dark dark:text-white">{crop.rating}</span>
+                        <div className="flex items-center -space-x-0.5">
+                            {renderStars(crop.rating)}
+                        </div>
+                        <span className="text-[10px] font-black text-agri-dark dark:text-white ml-0.5">{crop.rating}</span>
                     </div>
                     <div className="absolute top-5 left-5 z-10 px-3 py-1.5 bg-agri-dark/60 backdrop-blur-md rounded-xl text-[8px] font-black text-white uppercase tracking-widest border border-white/10 shadow-xl">
                         {stockAvailable} {crop.unit} IN STOCK
