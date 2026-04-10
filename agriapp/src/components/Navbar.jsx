@@ -29,7 +29,7 @@ const Navbar = () => {
     }, [darkMode]);
 
     const navLinks = [
-        { name: language === 'EN' ? 'Home' : 'होम', path: '/', icon: <Home size={18} /> },
+        { name: language === 'EN' ? 'Home' : 'होम', path: '/' },
         { name: language === 'EN' ? 'Marketplace' : 'मार्केटप्लेस', path: '/marketplace' },
         { name: language === 'EN' ? 'Dashboard' : 'डैशबोर्ड', path: '/dashboard' },
         { name: language === 'EN' ? 'AI Advisor' : 'एआई सलाहकार', path: '/advisor' },
@@ -58,17 +58,17 @@ const Navbar = () => {
 
                     {/* Desktop Menu - Spanning Center */}
                     <div className="hidden md:flex flex-grow justify-center overflow-x-auto no-scrollbar">
-                        <div className="flex items-center space-x-1 lg:space-x-3 xl:space-x-4">
+                        <div className="flex items-center space-x-1 lg:space-x-1 xl:space-x-2">
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.name}
                                     to={link.path}
-                                    className={`px-2 lg:px-4 py-2 rounded-xl text-[12px] lg:text-[14px] font-bold transition-all duration-300 relative group truncate ${isActive(link.path)
+                                    className={`px-2 lg:px-2 py-2 rounded-xl text-[11px] lg:text-[13px] font-bold transition-all duration-300 relative group truncate ${isActive(link.path)
                                             ? 'text-agri-primary bg-agri-primary/5'
                                             : 'text-gray-600 dark:text-gray-400 hover:text-agri-primary hover:bg-gray-50 dark:hover:bg-gray-800/50'
                                         }`}
                                 >
-                                    <span className="relative z-10 whitespace-nowrap flex items-center gap-1.5">
+                                    <span className="relative z-10 whitespace-nowrap flex items-center gap-1">
                                         {link.icon && <span className="opacity-80 group-hover:opacity-100 transition-opacity">{link.icon}</span>}
                                         {link.name}
                                     </span>
