@@ -5,7 +5,7 @@ import {
   Star, MapPin, Truck, Lock, Package, ChevronLeft, 
   ShieldCheck, Zap, Plus, Minus, Loader2, Info, 
   Sparkles, TrendingUp, BarChart3, ShoppingBag, ArrowRight, User,
-  Navigation, CheckCircle2
+  Navigation, CheckCircle2, RotateCcw, HandCoins, Award, PackageCheck
 } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -252,6 +252,26 @@ const ProductDetailsPage = () => {
                                 </div>
                             </div>
 
+                        </div>
+
+                        {/* Amazon-style Service Badges */}
+                        <div className="flex items-center justify-between gap-2 py-8 border-y border-gray-100 dark:border-slate-800 mb-10 overflow-x-auto hide-scrollbar">
+                            {[
+                                { icon: Truck, label: 'Free Delivery', color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-900/20' },
+                                { icon: RotateCcw, label: 'Non-Returnable', color: 'text-gray-500', bg: 'bg-gray-50 dark:bg-slate-800' },
+                                { icon: PackageCheck, label: 'AgriConnect Delivered', color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-900/20' },
+                                { icon: HandCoins, label: 'Pay on Delivery', color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-900/20' },
+                                { icon: Award, label: 'Top Brand', color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-900/20' }
+                            ].map((badge, idx) => (
+                                <div key={idx} className="flex flex-col items-center text-center min-w-[80px] group cursor-help px-2">
+                                    <div className={`p-4 rounded-2xl ${badge.bg} ${badge.color} mb-3 group-hover:rotate-12 transition-all duration-500 shadow-sm border border-transparent group-hover:border-current/10`}>
+                                        <badge.icon size={22} />
+                                    </div>
+                                    <span className="text-[9px] font-black uppercase tracking-tight leading-tight text-gray-500 dark:text-gray-400 group-hover:text-agri-dark dark:group-hover:text-white transition-colors">
+                                        {badge.label}
+                                    </span>
+                                </div>
+                            ))}
                         </div>
 
                         {/* Producer & Story */}
