@@ -8,24 +8,24 @@ const stories = [
         name: "Sandeep Patil",
         farm: "Patil Family Farm, Maharashtra",
         quote: "AgriConnect completely changed our business. By cutting out the middleman, we increased our profit margins by 40% in just one season.",
-        image: "/story_farmer_1_profile_1775919437866.png",
-        videoBg: "/story_farmer_1_bg_1775919521824.png"
+        image: "https://images.unsplash.com/photo-1595804365737-12681fbfa968?q=80&w=600&auto=format&fit=crop",
+        videoBg: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop"
     },
     {
         id: 2,
         name: "Meera Reddy",
         farm: "Reddy Estates, Telangana",
         quote: "The live pricing dashboard gives me the confidence to know I'm selling my coffee beans at the true market value, not what a broker dictates.",
-        image: "/story_farmer_2_profile_1775919655824.png",
-        videoBg: "/story_farmer_2_bg_1775919741420.png"
+        image: "https://images.unsplash.com/photo-1587326442657-3b28b7ed661c?q=80&w=600&auto=format&fit=crop",
+        videoBg: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=800&auto=format&fit=crop"
     },
     {
         id: 3,
         name: "Deepak Sharma",
         farm: "Sharma Organic Greens, Panjab",
         quote: "The buyer feedback and rating system has helped us establish a premium brand for our organic vegetables. Buyers trust us.",
-        image: "/story_farmer_3_profile_1775919793972.png",
-        videoBg: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1200&auto=format&fit=crop"
+        image: "https://images.unsplash.com/photo-1506807803408-db287eeb22bd?q=80&w=600&auto=format&fit=crop",
+        videoBg: "https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?q=80&w=800&auto=format&fit=crop"
     }
 ];
 
