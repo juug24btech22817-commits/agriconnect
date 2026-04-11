@@ -372,13 +372,6 @@ const CropCard = ({ crop, index }) => {
                         <span className="text-[9px] font-black text-agri-dark dark:text-white ml-0.5">{crop.rating}</span>
                     </div>
                     
-                    {/* Compact Health Highlight Badge */}
-                    {crop.nutrition?.healthBenefit && (
-                         <div className="absolute bottom-3 left-3 z-10 px-2 py-1 bg-agri-primary/90 backdrop-blur-md rounded-lg text-[7px] font-black text-white uppercase tracking-wider border border-white/10 shadow-lg flex items-center gap-1">
-                            <HeartPulse size={8} /> {crop.nutrition.healthBenefit}
-                        </div>
-                    )}
-
                     {/* Compact Stock Badge */}
                     <div className="absolute top-3 left-3 z-10 px-2 py-1 bg-agri-dark/70 backdrop-blur-md rounded-lg text-[7px] font-black text-white uppercase tracking-widest border border-white/5 shadow-md">
                         {stockAvailable} {crop.unit} IN STOCK
@@ -391,13 +384,19 @@ const CropCard = ({ crop, index }) => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
                     
-                    <div className="absolute bottom-3 right-3 flex justify-end items-end">
-                        <div className="flex flex-col items-end">
+                    <div className="absolute bottom-3 right-3 left-3 flex justify-between items-end pointer-events-none">
+                        <div className="flex flex-col items-start max-w-[60%]">
+                              <div className="flex items-center gap-1 mb-0.5">
+                                <div className="w-1 h-1 bg-agri-primary rounded-full" />
+                                <span className="text-[7px] font-black uppercase tracking-[0.1em] text-white opacity-90">{crop.category}</span>
+                              </div>
+                        </div>
+                        <div className="flex flex-col items-end max-w-[60%]">
                               <div className="flex items-center gap-1 mb-0.5">
                                 <div className="w-1 h-1 bg-agri-primary rounded-full" />
                                 <span className="text-[7px] font-black uppercase tracking-[0.1em] text-white opacity-90">{crop.qualityMetrics?.freshnessScore} Fresh</span>
                               </div>
-                             <h3 className="text-lg font-display font-black leading-none text-white uppercase tracking-tighter">{crop.name}</h3>
+                             <h3 className="text-lg font-display font-black leading-none text-white uppercase tracking-tighter text-right">{crop.name}</h3>
                         </div>
                     </div>
                 </div>
@@ -406,6 +405,15 @@ const CropCard = ({ crop, index }) => {
                 {/* Content Container - Amazon Inspired Detailed Layout */}
                 <div className="p-8 flex flex-col flex-grow bg-gradient-to-b from-transparent to-gray-50/30 dark:to-slate-900/10">
                     
+                    {/* Health Highlight Tag */}
+                    {crop.nutrition?.healthBenefit && (
+                         <div className="mb-4 flex">
+                            <div className="px-2 py-1 bg-agri-primary/10 text-agri-primary rounded-md text-[7px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-agri-primary/20">
+                                <HeartPulse size={8} /> {crop.nutrition.healthBenefit}
+                            </div>
+                         </div>
+                    )}
+
                     {/* Price & Unit Breakdown */}
                     <div className="mb-6">
                         <div className="flex items-baseline gap-2 mb-1">
