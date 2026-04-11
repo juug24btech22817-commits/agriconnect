@@ -370,7 +370,15 @@ const CropCard = ({ crop, index }) => {
                         </div>
                         <span className="text-[10px] font-black text-agri-dark dark:text-white ml-0.5">{crop.rating}</span>
                     </div>
-                    <div className="absolute top-5 left-5 z-10 px-3 py-1.5 bg-agri-dark/60 backdrop-blur-md rounded-xl text-[8px] font-black text-white uppercase tracking-widest border border-white/10 shadow-xl">
+                    
+                    {/* Health Highlight Badge */}
+                    {crop.nutrition?.healthBenefit && (
+                         <div className="absolute top-5 left-5 z-10 px-3 py-1.5 bg-agri-primary/80 backdrop-blur-md rounded-xl text-[8px] font-black text-white uppercase tracking-widest border border-white/10 shadow-xl flex items-center gap-1.5">
+                            <HeartPulse size={10} className="animate-pulse" /> {crop.nutrition.healthBenefit}
+                        </div>
+                    )}
+
+                    <div className="absolute top-14 left-5 z-10 px-3 py-1.5 bg-agri-dark/60 backdrop-blur-md rounded-xl text-[8px] font-black text-white uppercase tracking-widest border border-white/10 shadow-xl">
                         {stockAvailable} {crop.unit} IN STOCK
                     </div>
                     <img
@@ -384,7 +392,7 @@ const CropCard = ({ crop, index }) => {
                         <div className="text-white">
                              <div className="flex items-center gap-1 mb-1">
                                 <div className="w-1 h-1 bg-agri-primary rounded-full animate-pulse" />
-                                <span className="text-[8px] font-black uppercase tracking-[0.2em] opacity-80">{crop.category}</span>
+                                <span className="text-[8px] font-black uppercase tracking-[0.2em] opacity-80">{crop.category} • {crop.qualityMetrics?.freshnessScore} Freshness</span>
                              </div>
                              <h3 className="text-xl font-display font-black leading-none uppercase tracking-tighter">{crop.name}</h3>
                         </div>

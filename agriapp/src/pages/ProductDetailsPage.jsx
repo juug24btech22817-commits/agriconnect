@@ -6,7 +6,7 @@ import {
   ShieldCheck, Zap, Plus, Minus, Loader2, Info, 
   Sparkles, TrendingUp, BarChart3, ShoppingBag, ArrowRight, User,
   Navigation, CheckCircle2, RotateCcw, HandCoins, Award, PackageCheck,
-  StarHalf
+  StarHalf, HeartPulse
 } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -379,11 +379,11 @@ const ProductDetailsPage = () => {
                 {/* Extended Details Tabs */}
                 <div className="mt-24">
                     <div className="flex gap-12 border-b border-gray-100 dark:border-slate-800 mb-12 overflow-x-auto hide-scrollbar">
-                        {['overview', 'farmer story', 'quality audit'].map((tab) => (
+                        {['overview', 'nutrition facts', 'farmer story', 'quality audit', 'tips & storage'].map((tab) => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
-                                className={`pb-6 text-sm font-black uppercase tracking-widest transition-all relative ${
+                                className={`pb-6 text-sm font-black uppercase tracking-widest transition-all relative whitespace-nowrap ${
                                     activeTab === tab ? 'text-agri-primary' : 'text-gray-400'
                                 }`}
                             >
@@ -396,33 +396,211 @@ const ProductDetailsPage = () => {
                     </div>
 
                     <div className="max-w-4xl">
-                        {activeTab === 'overview' && (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-8">
-                                <div className="prose dark:prose-invert max-w-none">
-                                    <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed font-medium italic">
-                                        "{crop.farmerDetails?.bio || 'This product is curated by our experts to ensure the purest harvest directly from specialized local farms.'}"
-                                    </p>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div className="p-6 bg-gray-50 dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800">
-                                        <Info size={24} className="text-agri-primary mb-3" />
-                                        <h4 className="font-black text-xs uppercase tracking-widest mb-2">Category</h4>
-                                        <p className="text-sm font-bold text-gray-700 dark:text-gray-300">{crop.category}</p>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activeTab}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                {activeTab === 'overview' && (
+                                    <div className="space-y-12">
+                                        <div className="prose dark:prose-invert max-w-none">
+                                            <p className="text-2xl text-gray-700 dark:text-gray-300 leading-relaxed font-medium">
+                                                {crop.farmerDetails?.bio}
+                                            </p>
+                                        </div>
+                                        
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                            <div className="p-8 bg-gray-50 dark:bg-slate-900 rounded-[2.5rem] border border-gray-100 dark:border-slate-800">
+                                                <h4 className="text-xs font-black uppercase tracking-[0.3em] mb-6 text-agri-primary">Harvest Intelligence</h4>
+                                                <div className="space-y-6">
+                                                    <div className="flex justify-between items-center py-3 border-b border-gray-200/50 dark:border-slate-800/50">
+                                                        <span className="text-xs font-bold text-gray-500 uppercase">Harvest Date</span>
+                                                        <span className="text-sm font-black text-agri-dark dark:text-white uppercase">{crop.harvestDetails?.date}</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center py-3 border-b border-gray-200/50 dark:border-slate-800/50">
+                                                        <span className="text-xs font-bold text-gray-500 uppercase">Soil Type</span>
+                                                        <span className="text-sm font-black text-agri-dark dark:text-white uppercase">{crop.harvestDetails?.soilType}</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center py-3 border-b border-gray-200/50 dark:border-slate-800/50">
+                                                        <span className="text-xs font-bold text-gray-500 uppercase">Water Source</span>
+                                                        <span className="text-sm font-black text-agri-dark dark:text-white uppercase">{crop.harvestDetails?.waterSource}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="p-8 bg-agri-secondary/5 rounded-[2.5rem] border border-agri-secondary/10 flex flex-col justify-center">
+                                                <div className="flex items-center gap-4 mb-6">
+                                                     <div className="p-3 bg-agri-secondary/20 text-agri-secondary rounded-2xl">
+                                                        <HeartPulse size={24} />
+                                                     </div>
+                                                     <h4 className="text-xs font-black uppercase tracking-[0.3em] text-agri-secondary">Primary Vitality Benefit</h4>
+                                                </div>
+                                                <p className="text-3xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter leading-none mb-4">
+                                                    {crop.nutrition?.healthBenefit}
+                                                </p>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">Verified by AgriConnect Health Compliance Team.</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="p-6 bg-gray-50 dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800">
-                                        <TrendingUp size={24} className="text-agri-secondary mb-3" />
-                                        <h4 className="font-black text-xs uppercase tracking-widest mb-2">Mandi Trace</h4>
-                                        <p className="text-sm font-bold text-gray-700 dark:text-gray-300">{crop.mandiPrice} Regional Avg.</p>
+                                )}
+
+                                {activeTab === 'nutrition facts' && (
+                                    <div className="max-w-md bg-white dark:bg-slate-900 border-4 border-agri-dark dark:border-white p-8 shadow-2xl rounded-sm">
+                                        <h2 className="text-4xl font-black uppercase border-b-8 border-agri-dark dark:border-white pb-2 mb-4 tracking-tighter">Nutrition Facts</h2>
+                                        <div className="text-sm font-bold border-b border-agri-dark dark:border-white pb-2 mb-2 flex justify-between">
+                                            <span>Serving size</span>
+                                            <span>100g</span>
+                                        </div>
+                                        <div className="text-5xl font-black border-b-4 border-agri-dark dark:border-white pb-2 mb-4 flex justify-between items-baseline">
+                                            <span>Calories</span>
+                                            <span>{crop.nutrition?.calories}</span>
+                                        </div>
+                                        
+                                        <div className="space-y-3 mb-6">
+                                            <div className="flex justify-between border-b border-gray-200 dark:border-slate-800 py-1">
+                                                <span className="font-black">Vitamins</span>
+                                                <span className="text-gray-500">{crop.nutrition?.vitamins?.join(', ')}</span>
+                                            </div>
+                                            <div className="flex justify-between border-b border-gray-200 dark:border-slate-800 py-1">
+                                                <span className="font-black">Minerals</span>
+                                                <span className="text-gray-500">{crop.nutrition?.minerals?.join(', ')}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="p-4 bg-gray-50 dark:bg-slate-800 italic text-[10px] leading-relaxed text-gray-400 font-medium uppercase tracking-widest">
+                                            * Product grown without synthetic hormones or chemical stimulants. Nutritional value may vary by harvest.
+                                        </div>
                                     </div>
-                                    <div className="p-6 bg-gray-50 dark:bg-slate-900 rounded-3xl border border-gray-100 dark:border-slate-800">
-                                        <ShieldCheck size={24} className="text-emerald-500 mb-3" />
-                                        <h4 className="font-black text-xs uppercase tracking-widest mb-2">Integrity</h4>
-                                        <p className="text-sm font-bold text-gray-700 dark:text-gray-300">100% Lab Verified</p>
+                                )}
+
+                                {activeTab === 'farmer story' && (
+                                    <div className="space-y-12">
+                                        <div className="flex flex-col md:flex-row gap-12 items-start">
+                                            <div className="w-full md:w-1/3">
+                                                <div className="aspect-[3/4] rounded-[2rem] bg-gray-100 dark:bg-slate-800 overflow-hidden relative">
+                                                    <div className="absolute inset-0 flex items-center justify-center text-agri-primary opacity-20 capitalize">
+                                                        <User size={120} />
+                                                    </div>
+                                                    <div className="absolute bottom-6 left-6 right-6 p-4 glass rounded-2xl">
+                                                        <p className="text-[10px] font-black uppercase tracking-widest text-white mb-1">Elite Producer</p>
+                                                        <h4 className="text-lg font-black text-white uppercase leading-none">{crop.farmer}</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="w-full md:w-2/3 space-y-8">
+                                                <div>
+                                                    <h3 className="text-4xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter mb-4">The {crop.farmerDetails?.farmName} Legacy</h3>
+                                                    <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
+                                                        Located in the heart of {crop.location}, {crop.farmerDetails?.farmName} has been a beacon of sustainable agriculture for {crop.farmerDetails?.experience}. By maintaining heritage irrigation patterns and traditional seed selection, they achieve a purity level unmatched in commercial farming.
+                                                    </p>
+                                                </div>
+                                                
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div className="p-6 bg-white dark:bg-slate-800 rounded-3xl border border-gray-100 dark:border-slate-700">
+                                                        <CheckCircle2 size={24} className="text-agri-primary mb-3" />
+                                                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Audit Status</p>
+                                                        <p className="text-sm font-bold text-agri-dark dark:text-white uppercase">{crop.farmerDetails?.verified ? 'Verified Direct' : 'In Review'}</p>
+                                                    </div>
+                                                    <div className="p-6 bg-white dark:bg-slate-800 rounded-3xl border border-gray-100 dark:border-slate-700">
+                                                        <ShieldCheck size={24} className="text-blue-500 mb-3" />
+                                                        <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Certifications</p>
+                                                        <p className="text-sm font-bold text-agri-dark dark:text-white uppercase">{crop.qualityMetrics?.organicCert}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
+
+                                {activeTab === 'quality audit' && (
+                                    <div className="space-y-12">
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            {[
+                                                { label: 'Chemical Residue', value: 'Zero Detected', status: 'Perfect', color: 'text-emerald-500' },
+                                                { label: 'Purity Level', value: crop.qualityMetrics?.purity, status: 'Grade A+', color: 'text-agri-primary' },
+                                                { label: 'Freshness Index', value: crop.qualityMetrics?.freshnessScore, status: 'Peak Harvest', color: 'text-agri-secondary' }
+                                            ].map((stat, idx) => (
+                                                <div key={idx} className="p-8 bg-gray-50 dark:bg-slate-900 rounded-[2.5rem] border border-gray-100 dark:border-slate-800 relative overflow-hidden group">
+                                                     <div className={`absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform ${stat.color}`}>
+                                                        <BarChart3 size={40} />
+                                                     </div>
+                                                     <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">{stat.label}</p>
+                                                     <p className={`text-3xl font-display font-black ${stat.color} mb-1 uppercase tracking-tighter`}>{stat.value}</p>
+                                                     <span className="text-[10px] font-black uppercase tracking-widest text-gray-300 dark:text-gray-700">{stat.status}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        
+                                        <div className="p-8 glass dark:bg-slate-900 rounded-[3rem] border border-agri-primary/10">
+                                            <div className="flex items-center gap-4 mb-6">
+                                                <Award size={32} className="text-agri-primary animate-pulse" />
+                                                <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter">AgriConnect Integrity Stamp</h3>
+                                            </div>
+                                            <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed mb-8">
+                                                Every batch of our {crop.name} undergoes a multi-point inspection. We track the product from the moment the seed is planted to the final harvest processing, ensuring that the "sold by" information is 100% accurate and the farmer is paid the agreed premium.
+                                            </p>
+                                            <div className="flex flex-wrap gap-4">
+                                                <div className="px-5 py-2 bg-emerald-500/10 text-emerald-500 rounded-full text-[10px] font-black uppercase tracking-widest border border-emerald-500/20">DNA Verified Origin</div>
+                                                <div className="px-5 py-2 bg-blue-500/10 text-blue-500 rounded-full text-[10px] font-black uppercase tracking-widest border border-blue-500/20">Solvents Free</div>
+                                                <div className="px-5 py-2 bg-agri-primary/10 text-agri-primary rounded-full text-[10px] font-black uppercase tracking-widest border border-agri-primary/20">Non-GMO Heirloom</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {activeTab === 'tips & storage' && (
+                                    <div className="space-y-12">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                            <div className="p-10 bg-agri-dark text-white rounded-[3rem] shadow-premium relative overflow-hidden">
+                                                 <div className="absolute top-0 right-0 p-8 opacity-10">
+                                                    <RotateCcw size={150} />
+                                                 </div>
+                                                 <h3 className="text-3xl font-display font-black uppercase tracking-tighter mb-8 relative z-10">Storage Mastery</h3>
+                                                 <ul className="space-y-6 relative z-10">
+                                                     <li className="flex items-start gap-4 pb-6 border-b border-white/10">
+                                                         <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-black text-xs shrink-0 mt-1">01</div>
+                                                         <p className="font-medium text-lg text-white/80">Store in a cool, dry place away from direct sunlight for maximum sweetness.</p>
+                                                     </li>
+                                                     <li className="flex items-start gap-4 pb-6 border-b border-white/10">
+                                                         <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-black text-xs shrink-0 mt-1">02</div>
+                                                         <p className="font-medium text-lg text-white/80">Avoid refrigerating {crop.name} if possible to maintain original texture.</p>
+                                                     </li>
+                                                     <li className="flex items-start gap-4">
+                                                         <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-black text-xs shrink-0 mt-1">03</div>
+                                                         <p className="font-medium text-lg text-white/80">Consumption within {crop.category === 'Vegetables' ? '4-5' : '7'} days is recommended for peak vitamins.</p>
+                                                     </li>
+                                                 </ul>
+                                            </div>
+                                            
+                                            <div className="p-10 bg-white dark:bg-slate-900 rounded-[3rem] border border-gray-100 dark:border-slate-800 shadow-premium">
+                                                 <h3 className="text-3xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter mb-8">Culinary Use</h3>
+                                                 <div className="space-y-8">
+                                                     <div className="p-6 bg-gray-50 dark:bg-slate-800 rounded-3xl">
+                                                         <p className="text-[10px] font-black uppercase tracking-[0.2em] text-agri-primary mb-2">Artisan Tip</p>
+                                                         <p className="font-bold text-agri-dark dark:text-white leading-relaxed italic">
+                                                             "To unlock the full aroma of our {crop.name}, allow it to reach room temperature for 30 minutes before preparation."
+                                                         </p>
+                                                     </div>
+                                                     <div className="flex flex-col gap-4">
+                                                         <div className="flex justify-between items-center py-4 border-y border-gray-100 dark:border-slate-800">
+                                                             <span className="text-sm font-black uppercase text-gray-500">Taste Profile</span>
+                                                             <span className="text-sm font-black text-agri-dark dark:text-white uppercase tracking-widest">{crop.category === 'Fruits' ? 'Sun-Kissed / Sweet' : 'Earthbound / Umami'}</span>
+                                                         </div>
+                                                         <div className="flex justify-between items-center py-4 border-b border-gray-100 dark:border-slate-800">
+                                                             <span className="text-sm font-black uppercase text-gray-500">Best Paired With</span>
+                                                             <span className="text-sm font-black text-agri-dark dark:text-white uppercase tracking-widest">Local Spices • Desi Ghee</span>
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </motion.div>
-                        )}
-                        {/* Add more tab content as needed */}
+                        </AnimatePresence>
                     </div>
                 </div>
 
