@@ -361,26 +361,29 @@ const CropCard = ({ crop, index }) => {
 
                 {/* Media Container - Clickable for details */}
                 <div 
-                    className="relative h-64 overflow-hidden shrink-0 cursor-pointer"
+                    className="relative h-60 overflow-hidden shrink-0 cursor-pointer"
                     onClick={() => navigate(`/product/${crop.id}`)}
                 >
-                    <div className="absolute top-5 right-5 z-10 glass dark:bg-slate-900/80 px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-premium border border-white/20">
+                    {/* Compact Rating Badge */}
+                    <div className="absolute top-3 right-3 z-10 glass dark:bg-slate-900/80 px-2 py-1 rounded-lg flex items-center gap-1 shadow-premium border border-white/10">
                         <div className="flex items-center -space-x-0.5">
                             {renderStars(crop.rating)}
                         </div>
-                        <span className="text-[10px] font-black text-agri-dark dark:text-white ml-0.5">{crop.rating}</span>
+                        <span className="text-[9px] font-black text-agri-dark dark:text-white ml-0.5">{crop.rating}</span>
                     </div>
                     
-                    {/* Health Highlight Badge */}
+                    {/* Compact Health Highlight Badge */}
                     {crop.nutrition?.healthBenefit && (
-                         <div className="absolute top-5 left-5 z-10 px-3 py-1.5 bg-agri-primary/80 backdrop-blur-md rounded-xl text-[8px] font-black text-white uppercase tracking-widest border border-white/10 shadow-xl flex items-center gap-1.5">
-                            <HeartPulse size={10} className="animate-pulse" /> {crop.nutrition.healthBenefit}
+                         <div className="absolute bottom-3 left-3 z-10 px-2 py-1 bg-agri-primary/90 backdrop-blur-md rounded-lg text-[7px] font-black text-white uppercase tracking-wider border border-white/10 shadow-lg flex items-center gap-1">
+                            <HeartPulse size={8} /> {crop.nutrition.healthBenefit}
                         </div>
                     )}
 
-                    <div className="absolute top-14 left-5 z-10 px-3 py-1.5 bg-agri-dark/60 backdrop-blur-md rounded-xl text-[8px] font-black text-white uppercase tracking-widest border border-white/10 shadow-xl">
+                    {/* Compact Stock Badge */}
+                    <div className="absolute top-3 left-3 z-10 px-2 py-1 bg-agri-dark/70 backdrop-blur-md rounded-lg text-[7px] font-black text-white uppercase tracking-widest border border-white/5 shadow-md">
                         {stockAvailable} {crop.unit} IN STOCK
                     </div>
+
                     <img
                         src={crop.image}
                         alt={crop.name}
@@ -388,20 +391,14 @@ const CropCard = ({ crop, index }) => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
                     
-                    <div className="absolute bottom-5 left-5 right-5 flex justify-between items-end">
-                        <div className="text-white">
-                             <div className="flex items-center gap-1 mb-1">
-                                <div className="w-1 h-1 bg-agri-primary rounded-full animate-pulse" />
-                                <span className="text-[8px] font-black uppercase tracking-[0.2em] opacity-80">{crop.category} • {crop.qualityMetrics?.freshnessScore} Freshness</span>
-                             </div>
-                             <h3 className="text-xl font-display font-black leading-none uppercase tracking-tighter">{crop.name}</h3>
+                    <div className="absolute bottom-3 right-3 flex justify-end items-end">
+                        <div className="flex flex-col items-end">
+                              <div className="flex items-center gap-1 mb-0.5">
+                                <div className="w-1 h-1 bg-agri-primary rounded-full" />
+                                <span className="text-[7px] font-black uppercase tracking-[0.1em] text-white opacity-90">{crop.qualityMetrics?.freshnessScore} Fresh</span>
+                              </div>
+                             <h3 className="text-lg font-display font-black leading-none text-white uppercase tracking-tighter">{crop.name}</h3>
                         </div>
-                        <button 
-                            onClick={(e) => { e.stopPropagation(); setShowPriceModal(true); }}
-                            className="p-3 glass dark:bg-slate-900/80 text-white hover:text-agri-primary rounded-2xl transition-all border border-white/20 shadow-premium"
-                        >
-                            <BarChart3 size={18} />
-                        </button>
                     </div>
                 </div>
 
