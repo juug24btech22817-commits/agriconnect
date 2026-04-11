@@ -23,6 +23,7 @@ import AdminDashboardPage from './pages/AdminDashboardPage';
 import WeatherPage from './pages/WeatherPage';
 import ProductDetailsPage from './pages/ProductDetailsPage';
 import ContactWidget from './components/ContactWidget';
+import ActionSidebar from './components/ActionSidebar';
 
 
 import { CartProvider } from './context/CartContext';
@@ -87,6 +88,7 @@ function App() {
           </main>
           <Footer />
           <ContactWidget />
+          <ActionSidebar />
         </div>
       </CartProvider>
       </AuthProvider>
