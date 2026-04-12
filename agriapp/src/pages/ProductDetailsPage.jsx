@@ -350,27 +350,15 @@ const ProductDetailsPage = () => {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 gap-4">
                                  <button
                                     onClick={handleAddToCart}
-                                    className="w-full py-6 bg-white dark:bg-slate-800 text-agri-dark dark:text-white rounded-[2.5rem] font-black text-sm uppercase tracking-[0.2em] border-2 border-gray-100 dark:border-slate-700 hover:border-agri-primary transition-all group"
+                                    className="w-full py-6 bg-agri-primary hover:bg-emerald-700 text-white rounded-[2.5rem] font-black text-sm uppercase tracking-[0.2em] transition-all shadow-glow flex items-center justify-center gap-3 group"
                                 >
                                     <span className="flex items-center justify-center gap-3">
                                         {isInCart ? <ArrowRight size={20} /> : <ShoppingBag size={20} />}
                                         {isInCart ? 'View Cart' : 'Add to Cart'}
                                     </span>
-                                </button>
-                                <button
-                                    onClick={handleBuyNow}
-                                    disabled={buyLoading}
-                                    className="w-full py-6 bg-agri-primary hover:bg-emerald-700 text-white rounded-[2.5rem] font-black text-sm uppercase tracking-[0.2em] transition-all shadow-glow flex items-center justify-center gap-3 disabled:opacity-80"
-                                >
-                                    {buyLoading ? (
-                                        <Loader2 size={24} className="animate-spin text-white" />
-                                    ) : (
-                                        <CreditCard size={22} className="fill-white" />
-                                    )}
-                                    {buyLoading ? 'PROCESSING...' : (isInCart ? 'Checkout Now' : 'Proceed to Buy')}
                                 </button>
                             </div>
                         </div>

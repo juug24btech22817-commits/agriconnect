@@ -505,22 +505,10 @@ const CropCard = ({ crop, index }) => {
                         <div className="grid grid-cols-1 gap-3">
                             <button
                                 onClick={isInCart ? () => navigate('/cart') : handleAddToCart}
-                                className="w-full py-5 bg-white dark:bg-slate-800 text-agri-dark dark:text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] border border-gray-200 dark:border-slate-700 hover:border-agri-primary transition-all shadow-sm flex items-center justify-center gap-2"
+                                className="w-full py-5 bg-agri-primary hover:bg-emerald-700 text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.2em] transition-all shadow-glow flex items-center justify-center gap-2"
                             >
                                 {isInCart ? <ChevronRight size={18} /> : <ShoppingCart size={18} />}
                                 {isInCart ? 'Proceed to Cart' : 'Add to Cart'}
-                            </button>
-                            <button
-                                onClick={handleBuyNow}
-                                disabled={isLoading}
-                                className="w-full py-5 bg-agri-primary hover:bg-emerald-700 text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] transition-all shadow-glow flex items-center justify-center gap-3 disabled:opacity-80 disabled:cursor-not-allowed"
-                            >
-                                {isLoading ? (
-                                    <Loader2 size={18} className="animate-spin text-white" />
-                                ) : (
-                                    <CreditCard size={18} className="fill-white" />
-                                )}
-                                {isLoading ? 'Processing...' : (isInCart ? 'Checkout Now' : 'Buy Now')}
                             </button>
                         </div>
                     </div>
