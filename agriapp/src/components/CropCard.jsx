@@ -503,8 +503,9 @@ const CropCard = ({ crop, index }) => {
                         <div className="grid grid-cols-1 gap-3">
                             <button
                                 onClick={handleAddToCart}
-                                className="w-full py-5 bg-white dark:bg-slate-800 text-agri-dark dark:text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] border border-gray-200 dark:border-slate-700 hover:border-agri-primary transition-all shadow-sm"
+                                className="w-full py-5 bg-white dark:bg-slate-800 text-agri-dark dark:text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] border border-gray-200 dark:border-slate-700 hover:border-agri-primary transition-all shadow-sm flex items-center justify-center gap-2"
                             >
+                                <ShoppingCart size={18} />
                                 Add to Cart
                             </button>
                             <button

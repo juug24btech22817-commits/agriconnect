@@ -218,10 +218,11 @@ const CartPage = () => {
                             </div>
                             <button
                                 onClick={handleCheckout}
-                                className="w-full flex items-center justify-center gap-2 bg-agri-green hover:bg-agri-dark text-white py-4 rounded-2xl font-bold transition-all shadow-md shadow-agri-green/20"
+                                className="w-full flex items-center justify-center gap-2 bg-agri-green hover:bg-agri-dark text-white py-4 rounded-2xl font-bold transition-all shadow-md shadow-agri-green/20 group"
                             >
                                 <CreditCard size={20} />
-                                Checkout Now
+                                <span>Checkout Now</span>
+                                <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
                             </button>
                             <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4 px-4">
                                 By proceeding, you agree to our Terms of Service and Privacy Policy.
