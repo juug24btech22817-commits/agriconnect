@@ -17,7 +17,9 @@ const ProductDetailsPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
-    const { addToCart } = useCart();
+    const { cart, addToCart } = useCart();
+
+    const isInCart = cart && cart.some(item => item.id === crop?.id);
     
     const [crop, setCrop] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -349,13 +351,13 @@ const ProductDetailsPage = () => {
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <button
+                                 <button
                                     onClick={handleAddToCart}
                                     className="w-full py-6 bg-white dark:bg-slate-800 text-agri-dark dark:text-white rounded-[2.5rem] font-black text-sm uppercase tracking-[0.2em] border-2 border-gray-100 dark:border-slate-700 hover:border-agri-primary transition-all group"
                                 >
                                     <span className="flex items-center justify-center gap-3">
-                                        <ShoppingBag size={20} />
-                                        Add to Cart
+                                        {isInCart ? <ArrowRight size={20} /> : <ShoppingBag size={20} />}
+                                        {isInCart ? 'View Cart' : 'Add to Cart'}
                                     </span>
                                 </button>
                                 <button
@@ -366,9 +368,9 @@ const ProductDetailsPage = () => {
                                     {buyLoading ? (
                                         <Loader2 size={24} className="animate-spin text-white" />
                                     ) : (
-                                        <Zap size={22} className="fill-white" />
+                                        <CreditCard size={22} className="fill-white" />
                                     )}
-                                    {buyLoading ? 'PROCESSING...' : 'Proceed to Buy'}
+                                    {buyLoading ? 'PROCESSING...' : (isInCart ? 'Checkout Now' : 'Proceed to Buy')}
                                 </button>
                             </div>
                         </div>

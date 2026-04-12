@@ -274,8 +274,10 @@ const CropCard = ({ crop, index }) => {
     const [isLoading, setIsLoading] = useState(false);
     
     const { user } = useContext(AuthContext);
-    const { addToCart } = useCart();
+    const { cart, addToCart } = useCart();
     const navigate = useNavigate();
+
+    const isInCart = cart.some(item => item.id === crop.id);
 
     const stockAvailable = 15; 
 
@@ -502,11 +504,11 @@ const CropCard = ({ crop, index }) => {
 
                         <div className="grid grid-cols-1 gap-3">
                             <button
-                                onClick={handleAddToCart}
+                                onClick={isInCart ? () => navigate('/cart') : handleAddToCart}
                                 className="w-full py-5 bg-white dark:bg-slate-800 text-agri-dark dark:text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] border border-gray-200 dark:border-slate-700 hover:border-agri-primary transition-all shadow-sm flex items-center justify-center gap-2"
                             >
-                                <ShoppingCart size={18} />
-                                Add to Cart
+                                {isInCart ? <ChevronRight size={18} /> : <ShoppingCart size={18} />}
+                                {isInCart ? 'Proceed to Cart' : 'Add to Cart'}
                             </button>
                             <button
                                 onClick={handleBuyNow}
@@ -516,9 +518,9 @@ const CropCard = ({ crop, index }) => {
                                 {isLoading ? (
                                     <Loader2 size={18} className="animate-spin text-white" />
                                 ) : (
-                                    <Zap size={18} className="fill-white" />
+                                    <CreditCard size={18} className="fill-white" />
                                 )}
-                                {isLoading ? 'Processing...' : 'Buy Now'}
+                                {isLoading ? 'Processing...' : (isInCart ? 'Checkout Now' : 'Buy Now')}
                             </button>
                         </div>
                     </div>
