@@ -6,7 +6,7 @@ import {
   ShieldCheck, Zap, Plus, Minus, Loader2, Info, 
   Sparkles, TrendingUp, BarChart3, ShoppingBag, ArrowRight, User,
   Navigation, CheckCircle2, RotateCcw, HandCoins, Award, PackageCheck,
-  StarHalf, HeartPulse
+  StarHalf, HeartPulse, CreditCard
 } from 'lucide-react';
 import { AuthContext } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';

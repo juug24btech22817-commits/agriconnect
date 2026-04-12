@@ -9,7 +9,7 @@ import {
   ShoppingCart, Star, StarHalf, MapPin, Check, Zap, Plus, Minus, 
   X, User, ShieldCheck, Phone, PhoneCall, Info, HeartPulse, 
   TrendingUp, BarChart3, Globe, Sparkles, LogIn, Loader2,
-  Truck, Lock, Package, ChevronDown
+  Truck, Lock, Package, ChevronDown, ChevronRight, CreditCard
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
