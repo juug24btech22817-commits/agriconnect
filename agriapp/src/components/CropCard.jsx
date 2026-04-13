@@ -398,7 +398,7 @@ const CropCard = ({ crop, index }) => {
                                 <div className="w-1 h-1 bg-agri-primary rounded-full" />
                                 <span className="text-[7px] font-black uppercase tracking-[0.1em] text-white opacity-90">{crop.qualityMetrics?.freshnessScore} Fresh</span>
                               </div>
-                             <h3 className="text-lg font-display font-black leading-none text-white uppercase tracking-tighter text-right">{crop.name}</h3>
+                             <h3 className="text-2xl font-display font-black leading-tight text-white uppercase tracking-tighter text-right drop-shadow-lg">{crop.name}</h3>
                         </div>
                     </div>
                 </div>
