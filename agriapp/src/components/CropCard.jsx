@@ -397,7 +397,7 @@ const CropCard = ({ crop, index }) => {
                                 <div className="w-1.5 h-1.5 bg-agri-primary rounded-full shadow-glow" />
                                 <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/80">{crop.qualityMetrics?.freshnessScore} Fresh</span>
                             </div>
-                            <h3 className="text-3xl lg:text-4xl font-display font-black leading-none text-white uppercase tracking-tighter drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)]">
+                            <h3 className="text-2xl lg:text-3xl font-display font-black leading-none text-white uppercase tracking-tighter drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)]">
                                 {crop.name}
                             </h3>
                         </motion.div>

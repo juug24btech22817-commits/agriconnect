@@ -307,7 +307,7 @@ const DashboardPage = () => {
                                                 
                                                 <div className="flex-grow text-center sm:text-left">
                                                     <div className="flex items-center justify-center sm:justify-start gap-3 mb-2">
-                                                        <h3 className="text-xl font-display font-bold text-agri-dark dark:text-white">{item.name}</h3>
+                                                        <h3 className="text-lg font-display font-bold text-agri-dark dark:text-white">{item.name}</h3>
                                                         <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${item.status === 'Active' ? 'bg-agri-primary/10 text-agri-primary' : 'bg-red-100 text-red-600'}`}>
                                                             {item.status}
                                                         </span>
