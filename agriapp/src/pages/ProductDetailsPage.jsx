@@ -19,8 +19,6 @@ const ProductDetailsPage = () => {
     const { user } = useContext(AuthContext);
     const { cart, addToCart } = useCart();
 
-    const isInCart = cart && cart.some(item => item.id === crop?.id);
-    
     const [crop, setCrop] = useState(null);
     const [loading, setLoading] = useState(true);
     const [buyLoading, setBuyLoading] = useState(false);
@@ -30,6 +28,8 @@ const ProductDetailsPage = () => {
     });
     const [count, setCount] = useState(1);
     const [activeTab, setActiveTab] = useState('overview');
+
+    const isInCart = cart && cart.some(item => item.id === crop?.id);
 
 
     useEffect(() => {
