@@ -58,13 +58,13 @@ const Navbar = () => {
                         </div>
 
                         {/* Permanent Search Bar */}
-                        <div className="hidden md:flex flex-grow max-w-md mx-8">
+                        <div className="hidden md:flex flex-grow max-w-xl mx-8">
                             <div className="relative w-full group">
                                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-agri-primary transition-colors" size={18} />
                                 <input 
                                     type="text" 
                                     placeholder={language === 'EN' ? "Search seeds, tools, advice..." : "बीज, उपकरण, सलाह खोजें..."}
-                                    className="w-full pl-11 pr-4 py-2 bg-gray-50/50 dark:bg-slate-800/50 rounded-2xl border border-gray-100 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-agri-primary/20 focus:border-agri-primary transition-all text-sm font-medium"
+                                    className="w-full pl-11 pr-4 py-2.5 bg-gray-50/50 dark:bg-slate-800/50 rounded-2xl border border-gray-100 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-agri-primary/20 focus:border-agri-primary transition-all text-sm font-medium shadow-sm hover:shadow-md focus:shadow-md"
                                 />
                             </div>
                         </div>
