@@ -384,20 +384,20 @@ const CropCard = ({ crop, index }) => {
                         alt={crop.name}
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+                    <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-slate-950/50 to-transparent" />
                     
-                    <div className="absolute inset-x-0 bottom-8 flex flex-col items-center justify-center pointer-events-none px-6 text-center">
+                    <div className="absolute inset-x-0 bottom-5 flex flex-col items-start justify-end pointer-events-none px-6">
                         <motion.div
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
                             className="space-y-1"
                         >
-                            <div className="flex items-center justify-center gap-2 mb-1">
-                                <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/80">{crop.category}</span>
-                                <div className="w-1.5 h-1.5 bg-agri-primary rounded-full shadow-glow" />
-                                <span className="text-[8px] font-black uppercase tracking-[0.2em] text-white/80">{crop.qualityMetrics?.freshnessScore} Fresh</span>
+                            <div className="flex items-center gap-2 mb-0.5">
+                                <span className="text-[7px] font-black uppercase tracking-[0.2em] text-white/70">{crop.category}</span>
+                                <div className="w-1 h-1 bg-agri-primary rounded-full" />
+                                <span className="text-[7px] font-black uppercase tracking-[0.2em] text-white/70">{crop.qualityMetrics?.freshnessScore} Fresh</span>
                             </div>
-                            <h3 className="text-2xl lg:text-3xl font-display font-black leading-none text-white uppercase tracking-tighter drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)]">
+                            <h3 className="text-lg lg:text-xl font-display font-black leading-none text-white uppercase tracking-tighter">
                                 {crop.name}
                             </h3>
                         </motion.div>
