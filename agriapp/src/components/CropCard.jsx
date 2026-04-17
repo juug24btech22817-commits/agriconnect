@@ -9,7 +9,8 @@ import {
   ShoppingCart, Star, StarHalf, MapPin, Check, Zap, Plus, Minus, 
   X, User, ShieldCheck, Phone, PhoneCall, Info, HeartPulse, 
   TrendingUp, BarChart3, Globe, Sparkles, LogIn, Loader2,
-  Truck, Lock, Package, ChevronDown, ChevronRight, CreditCard
+  Truck, Lock, Package, ChevronDown, ChevronRight, CreditCard,
+  Leaf, Droplets, Dna, CloudRain, Sunrise, Award, Shield
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
@@ -20,6 +21,15 @@ const getMockDeliveryDate = () => {
     deliveryDate.setDate(today.getDate() + 4); // 4 days from now
     const options = { weekday: 'long', day: 'numeric', month: 'long' };
     return deliveryDate.toLocaleDateString('en-IN', options);
+};
+
+const calculateSavings = (priceStr, retailStr) => {
+    const price = parseInt(priceStr.replace(/[^0-9]/g, ''));
+    const retail = parseInt(retailStr.replace(/[^0-9]/g, ''));
+    if (!price || !retail || retail <= price) return null;
+    const savings = retail - price;
+    const percent = Math.round((savings / retail) * 100);
+    return { amount: savings, percent };
 };
 
 
@@ -363,41 +373,61 @@ const CropCard = ({ crop, index }) => {
 
                 {/* Media Container - Clickable for details */}
                 <div 
-                    className="relative h-60 overflow-hidden shrink-0 cursor-pointer"
+                    className="relative h-64 overflow-hidden shrink-0 cursor-pointer"
                     onClick={() => navigate(`/product/${crop.id}`)}
                 >
                     {/* Compact Rating Badge */}
-                    <div className="absolute top-3 right-3 z-10 glass dark:bg-slate-900/80 px-2 py-1 rounded-lg flex items-center gap-1 shadow-premium border border-white/10">
+                    <div className="absolute top-4 right-4 z-10 glass px-2.5 py-1.5 rounded-xl flex items-center gap-1.5 shadow-premium border border-white/20">
                         <div className="flex items-center -space-x-0.5">
                             {renderStars(crop.rating)}
                         </div>
-                        <span className="text-[9px] font-black text-agri-dark dark:text-white ml-0.5">{crop.rating}</span>
+                        <span className="text-[10px] font-black text-agri-dark dark:text-white ml-0.5">{crop.rating}</span>
                     </div>
                     
-                    {/* Compact Stock Badge */}
-                    <div className="absolute top-3 left-3 z-10 px-2 py-1 bg-agri-dark/70 backdrop-blur-md rounded-lg text-[7px] font-black text-white uppercase tracking-widest border border-white/5 shadow-md">
-                        {stockAvailable} {crop.unit} IN STOCK
+                    {/* Professional Badges */}
+                    <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+                        <div className="px-3 py-1.5 bg-agri-dark/80 backdrop-blur-md rounded-xl text-[8px] font-black text-white uppercase tracking-[0.1em] border border-white/10 shadow-lg flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
+                            {stockAvailable} {crop.unit} IN STOCK
+                        </div>
+                        {crop.qualityMetrics?.organicCert && (
+                             <div className="px-3 py-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-xl text-[8px] font-black text-agri-primary uppercase tracking-[0.1em] border border-agri-primary/20 shadow-lg flex items-center gap-2">
+                                <Award size={10} />
+                                {crop.qualityMetrics.organicCert}
+                            </div>
+                        )}
                     </div>
+
+                    {/* Savings Badge */}
+                    {calculateSavings(crop.price, crop.retailPrice) && (
+                        <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 bg-rose-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-glow animate-bounce-slow">
+                            SAVE {calculateSavings(crop.price, crop.retailPrice).percent}%
+                        </div>
+                    )}
 
                     <img
                         src={crop.image}
                         alt={crop.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
                     />
-                    <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-slate-950/50 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-60" />
                     
-                    <div className="absolute inset-x-0 bottom-5 flex flex-col items-start justify-end pointer-events-none px-6">
+                    <div className="absolute inset-x-0 bottom-6 flex flex-col items-start justify-end pointer-events-none px-8">
                         <motion.div
                             initial={{ x: -20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
-                            className="space-y-1"
+                            className="space-y-1.5"
                         >
-                            <div className="flex items-center gap-2 mb-0.5">
-                                <span className="text-[7px] font-black uppercase tracking-[0.2em] text-white/70">{crop.category}</span>
+                            <div className="flex items-center gap-2">
+                                <span className="px-2 py-0.5 bg-white/10 backdrop-blur-md rounded text-[8px] font-black uppercase tracking-[0.2em] text-white">
+                                    {crop.category}
+                                </span>
                                 <div className="w-1 h-1 bg-agri-primary rounded-full" />
-                                <span className="text-[7px] font-black uppercase tracking-[0.2em] text-white/70">{crop.qualityMetrics?.freshnessScore} Fresh</span>
+                                <span className="text-[9px] font-bold text-white/90 italic">
+                                    {crop.qualityMetrics?.freshnessScore} Freshness Score
+                                </span>
                             </div>
-                            <h3 className="text-lg lg:text-xl font-display font-black leading-none text-white uppercase tracking-tighter">
+                            <h3 className="text-2xl lg:text-3xl font-display font-black leading-none text-white uppercase tracking-tighter drop-shadow-lg">
                                 {crop.name}
                             </h3>
                         </motion.div>
@@ -405,113 +435,151 @@ const CropCard = ({ crop, index }) => {
                 </div>
 
 
-                {/* Content Container - Amazon Inspired Detailed Layout */}
-                <div className="p-8 flex flex-col flex-grow bg-gradient-to-b from-transparent to-gray-50/30 dark:to-slate-900/10">
+                {/* Content Container - Premium Detailed Layout */}
+                <div className="p-8 flex flex-col flex-grow bg-gradient-to-b from-transparent to-gray-50/50 dark:to-slate-900/20">
                     
-                    {/* Health Highlight Tag */}
-                    {crop.nutrition?.healthBenefit && (
-                         <div className="mb-4 flex">
-                            <div className="px-2 py-1 bg-agri-primary/10 text-agri-primary rounded-md text-[7px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-agri-primary/20">
-                                <HeartPulse size={8} /> {crop.nutrition.healthBenefit}
+                    {/* Top Row: Price & Health */}
+                    <div className="flex justify-between items-start mb-6">
+                        <div>
+                             <div className="flex items-baseline gap-2 mb-1">
+                                <span className="text-4xl font-display font-black text-agri-dark dark:text-white tracking-tighter">
+                                    {crop.price}
+                                </span>
+                                <span className="text-sm font-bold text-gray-400 italic">
+                                    / {crop.unit}
+                                </span>
+                            </div>
+                            <p className="text-[10px] font-black text-agri-primary/60 uppercase tracking-widest">
+                                Farm-Gate Pricing
+                            </p>
+                        </div>
+                        {crop.nutrition?.healthBenefit && (
+                             <div className="px-3 py-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl text-[8px] font-black uppercase tracking-wider flex items-center gap-2 border border-emerald-500/20 shadow-sm">
+                                <HeartPulse size={12} strokeWidth={3} /> {crop.nutrition.healthBenefit}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Quick Nutrition & Purity Badges */}
+                    <div className="flex flex-wrap gap-2 mb-8">
+                        {crop.qualityMetrics?.purity && (
+                            <div className="px-2.5 py-1 bg-agri-primary/5 text-agri-primary rounded-lg text-[9px] font-bold flex items-center gap-1.5 border border-agri-primary/10">
+                                <Shield size={10} /> {crop.qualityMetrics.purity} Pure
+                            </div>
+                        )}
+                        {crop.nutrition?.vitamins?.slice(0, 2).map((v, i) => (
+                            <div key={i} className="px-2.5 py-1 bg-blue-500/5 text-blue-500 rounded-lg text-[9px] font-bold flex items-center gap-1.5 border border-blue-500/10">
+                                <Zap size={10} /> {v}
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Traceability Grid - The "Expert" section */}
+                    <div className="grid grid-cols-2 gap-4 mb-8 p-5 bg-white dark:bg-slate-800/50 rounded-[2rem] border border-gray-100 dark:border-slate-800 shadow-inner-premium relative overflow-hidden group/trace">
+                         <div className="absolute top-0 right-0 p-3 text-agri-primary/10 group-hover/trace:text-agri-primary/20 transition-colors">
+                            <Dna size={40} />
+                         </div>
+                         
+                         <div className="space-y-1 relative z-10">
+                            <p className="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em]">Harvested</p>
+                            <div className="flex items-center gap-2">
+                                <Sunrise size={14} className="text-amber-500" />
+                                <span className="text-xs font-bold text-agri-dark dark:text-white">{crop.harvestDetails?.date || 'Refined'}</span>
                             </div>
                          </div>
-                    )}
 
-                    {/* Price & Unit Breakdown */}
-                    <div className="mb-6">
-                        <div className="flex items-baseline gap-2 mb-1">
-                            <span className="text-4xl font-display font-black text-agri-dark dark:text-white tracking-tighter">
-                                {crop.price}
-                            </span>
-                            <span className="text-sm font-bold text-gray-400">
-                                ({crop.price} / {crop.unit})
-                            </span>
-                        </div>
-                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                            Inclusive of all taxes
-                        </p>
-                    </div>
-
-                    {/* Delivery & Location */}
-                    <div className="space-y-4 mb-8">
-                        <div className="flex items-start gap-3">
-                            <Truck size={18} className="text-agri-primary shrink-0 mt-0.5" />
-                            <div>
-                                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    <span className="text-emerald-600 dark:text-agri-primary font-bold">FREE delivery</span> <span className="font-bold">{getMockDeliveryDate()}</span>
-                                </p>
-                                <button className="text-[10px] font-black text-agri-primary uppercase tracking-widest hover:underline text-left">
-                                    Details
-                                </button>
+                         <div className="space-y-1 relative z-10">
+                            <p className="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em]">Soil Type</p>
+                            <div className="flex items-center gap-2">
+                                <Leaf size={14} className="text-emerald-500" />
+                                <span className="text-xs font-bold text-agri-dark dark:text-white">{crop.harvestDetails?.soilType || 'Organic'}</span>
                             </div>
+                         </div>
+
+                         <div className="space-y-1 relative z-10">
+                            <p className="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em]">Water Source</p>
+                            <div className="flex items-center gap-2">
+                                <Droplets size={14} className="text-blue-500" />
+                                <span className="text-xs font-bold text-agri-dark dark:text-white">{crop.harvestDetails?.waterSource || 'Spring'}</span>
+                            </div>
+                         </div>
+
+                         <div className="space-y-1 relative z-10">
+                            <p className="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em]">Purity Score</p>
+                            <div className="flex items-center gap-1">
+                                <div className="h-1.5 w-16 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden">
+                                     <div 
+                                        className="h-full bg-agri-primary rounded-full shadow-glow" 
+                                        style={{ width: `${(parseFloat(crop.qualityMetrics?.freshnessScore) || 9) * 10}%` }}
+                                    />
+                                </div>
+                                <span className="text-[9px] font-black text-agri-primary opacity-70">A+</span>
+                            </div>
+                         </div>
+                    </div>
+
+                    {/* Delivery & Producer Interaction */}
+                    <div className="space-y-4 mb-8 px-1">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 bg-agri-primary/10 rounded-xl text-agri-primary">
+                                    <Truck size={16} />
+                                </div>
+                                <p className="text-xs font-medium text-gray-600 dark:text-gray-400">
+                                    Express by <span className="font-bold text-agri-dark dark:text-white">{getMockDeliveryDate()}</span>
+                                </p>
+                            </div>
+                            <span className="text-[9px] font-black text-agri-primary uppercase tracking-widest cursor-pointer hover:underline">Policy</span>
                         </div>
 
-                        <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
-                            <MapPin size={16} className="shrink-0" />
-                            <p className="text-xs font-medium truncate">
-                                Delivering to <span className="font-bold text-agri-dark dark:text-white">Bengaluru 560001</span>
-                            </p>
-                            <button className="text-[10px] font-black text-agri-primary uppercase tracking-widest ml-auto">Update</button>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                             <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-tight">In Stock</span>
+                        <div 
+                            className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-800/30 rounded-2xl border border-gray-100 dark:border-slate-800 cursor-pointer hover:bg-white dark:hover:bg-slate-800 transition-all border-dashed"
+                            onClick={() => setShowFarmerModal(true)}
+                        >
+                            <div className="w-8 h-8 bg-agri-primary/10 rounded-lg flex items-center justify-center text-agri-primary shrink-0">
+                                <User size={16} />
+                            </div>
+                            <div className="truncate">
+                                <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Heritage Producer</p>
+                                <p className="text-xs font-bold text-agri-dark dark:text-white truncate">
+                                    {crop.farmerDetails?.farmName || crop.farmer}
+                                </p>
+                            </div>
+                            <ChevronRight size={14} className="ml-auto text-gray-300" />
                         </div>
                     </div>
 
-                    {/* Fulfillment & Security */}
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-3 mb-8 py-6 border-y border-gray-100 dark:border-slate-800">
-                        <div className="space-y-1">
-                            <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">Delivered by</p>
-                            <p className="text-xs font-bold text-agri-dark dark:text-white flex items-center gap-1.5">
-                                <Package size={12} className="text-agri-primary" /> AgriConnect
-                            </p>
-                        </div>
-                        <div className="space-y-1">
-                            <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">Sold by</p>
-                            <p className="text-xs font-bold text-agri-dark dark:text-white truncate max-w-full">
-                                {crop.farmerDetails?.farmName || crop.farmer}
-                            </p>
-                        </div>
-                        <div className="col-span-2 mt-2 pt-2 border-t border-gray-50 dark:border-slate-800/50">
-                             <div className="flex items-center gap-2 text-[10px] font-bold text-gray-500 dark:text-gray-400">
-                                <Lock size={12} className="text-agri-secondary" />
-                                <span className="uppercase tracking-widest">Secure transaction</span>
+                    {/* Professional Action Footer */}
+                    <div className="mt-auto space-y-4 pt-6 border-t border-gray-100 dark:border-slate-800">
+                        <div className="flex items-center justify-between">
+                             <div className="flex items-center gap-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                                <ShieldCheck size={14} className="text-agri-secondary" />
+                                <span>Verified Transaction</span>
                              </div>
-                        </div>
-                    </div>
-
-                    {/* Quantity & Actions */}
-                    <div className="mt-auto space-y-4">
-                        <div className="flex items-center justify-between bg-white dark:bg-slate-800 p-3 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm">
-                             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-2">Quantity</span>
-                             <div className="flex items-center gap-4">
+                             <div className="flex items-center gap-4 bg-gray-100/50 dark:bg-slate-800/50 px-4 py-2 rounded-2xl border border-gray-100/50 dark:border-slate-700/50">
                                 <button 
                                     onClick={() => setWeight(Math.max(0.5, weight - 0.5))}
-                                    className="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg text-gray-500 transition-colors"
+                                    className="text-gray-400 hover:text-agri-primary transition-colors"
                                 >
-                                    <Minus size={16} />
+                                    <Minus size={14} />
                                 </button>
-                                <span className="text-sm font-black text-agri-dark dark:text-white min-w-[2ch] text-center">{weight}</span>
+                                <span className="text-xs font-black text-agri-dark dark:text-white min-w-[3ch] text-center">{weight} {crop.unit}</span>
                                 <button 
                                     onClick={() => setWeight(weight + 0.5)}
-                                    className="p-1.5 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg text-gray-500 transition-colors"
+                                    className="text-gray-400 hover:text-agri-primary transition-colors"
                                 >
-                                    <Plus size={16} />
+                                    <Plus size={14} />
                                 </button>
                              </div>
                         </div>
 
-                        <div className="grid grid-cols-1 gap-3">
-                            <button
-                                onClick={isInCart ? () => navigate('/cart') : handleAddToCart}
-                                className="w-full py-5 bg-agri-primary hover:bg-emerald-700 text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.2em] transition-all shadow-glow flex items-center justify-center gap-2"
-                            >
-                                {isInCart ? <ChevronRight size={18} /> : <ShoppingCart size={18} />}
-                                {isInCart ? 'Proceed to Cart' : 'Add to Cart'}
-                            </button>
-                        </div>
+                        <button
+                            onClick={isInCart ? () => navigate('/cart') : handleAddToCart}
+                            className="w-full py-5 bg-agri-dark dark:bg-white text-white dark:text-agri-dark rounded-[2rem] font-black text-sm uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 shadow-premium-dark flex items-center justify-center gap-3 group"
+                        >
+                            {isInCart ? <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" /> : <ShoppingCart size={20} />}
+                            {isInCart ? 'View in Cart' : 'Secure Purchase'}
+                        </button>
                     </div>
                 </div>
 
