@@ -577,10 +577,10 @@ const CropCard = ({ crop, index }) => {
 
                         <button
                             onClick={isInCart ? () => navigate('/cart') : handleAddToCart}
-                            className="w-full py-5 bg-agri-dark dark:bg-white text-white dark:text-agri-dark rounded-[2rem] font-black text-sm uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 shadow-premium-dark flex items-center justify-center gap-3 group"
+                            className="w-full py-4 bg-gradient-to-r from-agri-primary to-emerald-700 hover:from-emerald-600 hover:to-agri-primary text-white rounded-[2rem] font-black text-[11px] uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 shadow-glow flex items-center justify-center gap-2 group"
                         >
-                            {isInCart ? <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" /> : <ShoppingCart size={20} />}
-                            {isInCart ? 'View in Cart' : 'Secure Purchase'}
+                            {isInCart ? <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" /> : <ShoppingCart size={18} />}
+                            {isInCart ? 'View in Cart' : 'Add to Cart'}
                         </button>
                     </div>
                 </div>
