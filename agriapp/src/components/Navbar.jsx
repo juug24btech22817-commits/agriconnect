@@ -76,6 +76,17 @@ const Navbar = () => {
                                 <Search size={22} className="text-gray-400" />
                             </div>
 
+                            {/* Visible Login/Account Icon */}
+                            <Link 
+                                to={user ? "/dashboard" : "/login"}
+                                className="p-2.5 rounded-2xl bg-agri-primary/10 text-agri-primary hover:bg-agri-primary/20 transition-all group flex items-center gap-2"
+                            >
+                                <User size={22} className="group-hover:scale-110 transition-transform" />
+                                <span className="hidden lg:block text-[10px] font-black uppercase tracking-widest">
+                                    {user ? 'Profile' : 'Sign In'}
+                                </span>
+                            </Link>
+
                             {/* Hamburger Menu Icon */}
                             <button
                                 onClick={() => setIsOpen(true)}
