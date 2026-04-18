@@ -116,19 +116,19 @@ const CartPage = () => {
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-4">
-                                        <div className="flex items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-1 ring-1 ring-gray-200 dark:ring-gray-600">
+                                        <div className="flex items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-0.5 ring-1 ring-gray-200 dark:ring-gray-600">
                                             <button
                                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                className="p-2 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-500 dark:text-gray-300 transition-colors"
+                                                className="p-1.5 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-500 dark:text-gray-300 transition-colors"
                                             >
-                                                <Minus size={16} />
+                                                <Minus size={12} />
                                             </button>
-                                            <span className="w-8 text-center font-bold text-gray-900 dark:text-white">{item.quantity}</span>
+                                            <span className="w-7 text-center font-bold text-gray-900 dark:text-white text-sm">{item.quantity}</span>
                                             <button
                                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                className="p-2 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-500 dark:text-gray-300 transition-colors"
+                                                className="p-1.5 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-500 dark:text-gray-300 transition-colors"
                                             >
-                                                <Plus size={16} />
+                                                <Plus size={12} />
                                             </button>
                                         </div>
                                         <button

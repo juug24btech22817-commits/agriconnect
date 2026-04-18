@@ -333,19 +333,19 @@ const ProductDetailsPage = () => {
                                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Set Quantity</p>
                                     <span className="text-sm font-bold text-agri-dark dark:text-white">Minimum: 0.5 {crop.unit}</span>
                                 </div>
-                                <div className="flex items-center gap-6">
+                                <div className="flex items-center gap-4">
                                     <button 
                                         onClick={() => setCount(Math.max(0.5, count - 0.5))}
-                                        className="w-12 h-12 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-xl text-gray-600 hover:text-agri-secondary transition-colors"
+                                        className="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-lg text-gray-600 hover:text-agri-secondary transition-colors"
                                     >
-                                        <Minus size={20} />
+                                        <Minus size={16} />
                                     </button>
-                                    <span className="text-3xl font-display font-black text-agri-dark dark:text-white min-w-[1.5ch] text-center">{count}</span>
+                                    <span className="text-2xl font-display font-black text-agri-dark dark:text-white min-w-[1.5ch] text-center">{count}</span>
                                     <button 
                                         onClick={() => setCount(count + 0.5)}
-                                        className="w-12 h-12 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-xl text-gray-600 hover:text-agri-primary transition-colors"
+                                        className="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-lg text-gray-600 hover:text-agri-primary transition-colors"
                                     >
-                                        <Plus size={20} />
+                                        <Plus size={16} />
                                     </button>
                                 </div>
                             </div>
