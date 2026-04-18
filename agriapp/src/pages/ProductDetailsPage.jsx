@@ -251,7 +251,7 @@ const ProductDetailsPage = () => {
                                 <span className="text-6xl font-display font-black text-agri-dark dark:text-white tracking-tighter">
                                     {crop.price}
                                 </span>
-                                <span className="text-xl font-bold text-gray-400">
+                                <span className="text-sm font-bold text-gray-400 italic lowercase tracking-wider pl-2">
                                     / {crop.unit}
                                 </span>
                             </div>
@@ -306,8 +306,8 @@ const ProductDetailsPage = () => {
                             <div className="p-8 bg-agri-primary/5 rounded-3xl border border-agri-primary/10">
                                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 leading-none">Sold & Produced by</p>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-agri-primary/20 rounded-2xl flex items-center justify-center text-agri-primary">
-                                        <User size={24} />
+                                    <div className="w-10 h-10 bg-agri-primary/20 rounded-2xl flex items-center justify-center text-agri-primary">
+                                        <User size={16} />
                                     </div>
                                     <div>
                                         <h3 className="text-lg font-black text-agri-dark dark:text-white uppercase leading-tight">{crop.farmerDetails?.farmName || crop.farmer}</h3>
@@ -318,8 +318,8 @@ const ProductDetailsPage = () => {
                             <div className="p-8 bg-agri-secondary/5 rounded-3xl border border-agri-secondary/10">
                                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 leading-none">Delivered by</p>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 bg-agri-secondary/20 rounded-2xl flex items-center justify-center text-agri-secondary">
-                                        <Package size={24} />
+                                    <div className="w-10 h-10 bg-agri-secondary/20 rounded-2xl flex items-center justify-center text-agri-secondary">
+                                        <Package size={16} />
                                     </div>
                                     <h3 className="text-lg font-black text-agri-dark dark:text-white uppercase leading-tight">AgriConnect Logis</h3>
                                 </div>
@@ -336,16 +336,16 @@ const ProductDetailsPage = () => {
                                 <div className="flex items-center gap-4">
                                     <button 
                                         onClick={() => setCount(Math.max(0.5, count - 0.5))}
-                                        className="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-lg text-gray-600 hover:text-agri-secondary transition-colors"
+                                        className="w-8 h-8 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-lg text-gray-600 hover:text-agri-secondary transition-colors border border-gray-100 dark:border-slate-800"
                                     >
-                                        <Minus size={16} />
+                                        <Minus size={12} />
                                     </button>
-                                    <span className="text-2xl font-display font-black text-agri-dark dark:text-white min-w-[1.5ch] text-center">{count}</span>
+                                    <span className="text-xl font-display font-black text-agri-dark dark:text-white min-w-[1.5ch] text-center">{count}</span>
                                     <button 
                                         onClick={() => setCount(count + 0.5)}
-                                        className="w-10 h-10 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-lg text-gray-600 hover:text-agri-primary transition-colors"
+                                        className="w-8 h-8 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-lg text-gray-600 hover:text-agri-primary transition-colors border border-gray-100 dark:border-slate-800"
                                     >
-                                        <Plus size={16} />
+                                        <Plus size={12} />
                                     </button>
                                 </div>
                             </div>

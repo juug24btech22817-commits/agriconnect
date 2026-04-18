@@ -253,7 +253,7 @@ const DashboardPage = () => {
                             <div className="space-y-6">
                                 {[
                                     { label: 'Total Sales', value: '₹1,24,450', icon: <DollarSign size={20}/>, color: 'text-agri-primary bg-agri-primary/10' },
-                                    { label: 'Active Listings', value: listings.length, icon: <Package size={20}/>, color: 'text-blue-500 bg-blue-500/10' },
+                                    { label: 'Active Listings', value: listings.length, icon: <Package size={14}/>, color: 'text-blue-500 bg-blue-500/10' },
                                     { label: 'Pending Orders', value: '05', icon: <Clock size={20}/>, color: 'text-amber-500 bg-amber-500/10' }
                                 ].map((stat, i) => (
                                     <div key={i} className="flex items-center justify-between p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-900 transition-colors">
@@ -313,7 +313,7 @@ const DashboardPage = () => {
                                                         </span>
                                                     </div>
                                                     <div className="flex flex-wrap justify-center sm:justify-start gap-4 text-sm text-gray-400 font-medium">
-                                                        <span className="flex items-center gap-1.5"><Package size={16} className="text-agri-primary" /> {item.quantity}</span>
+                                                        <span className="flex items-center gap-1.5"><Package size={12} className="text-agri-primary" /> {item.quantity}</span>
                                                         <span className="flex items-center gap-1.5 font-bold text-agri-primary"> {item.price}</span>
                                                     </div>
                                                 </div>

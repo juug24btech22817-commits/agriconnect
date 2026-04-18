@@ -109,33 +109,33 @@ const CartPage = () => {
                                         <h3 className="text-lg font-bold text-gray-900 dark:text-white">{item.name}</h3>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">{item.farmer}</p>
                                         <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
-                                            <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md text-xs font-bold text-gray-600 dark:text-gray-300">
+                                            <span className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-tighter">
                                                 {item.quantity} {item.unit}
                                             </span>
                                             <p className="text-agri-green font-bold text-lg">{item.price}</p>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-2">
                                         <div className="flex items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-0.5 ring-1 ring-gray-200 dark:ring-gray-600">
                                             <button
                                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                className="p-1.5 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-500 dark:text-gray-300 transition-colors"
+                                                className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-400 dark:text-gray-500 transition-colors"
                                             >
-                                                <Minus size={12} />
+                                                <Minus size={9} />
                                             </button>
-                                            <span className="w-7 text-center font-bold text-gray-900 dark:text-white text-sm">{item.quantity}</span>
+                                            <span className="w-5 text-center font-black text-gray-900 dark:text-white text-[9px]">{item.quantity}</span>
                                             <button
                                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                className="p-1.5 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-500 dark:text-gray-300 transition-colors"
+                                                className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-400 dark:text-gray-500 transition-colors"
                                             >
-                                                <Plus size={12} />
+                                                <Plus size={9} />
                                             </button>
                                         </div>
                                         <button
                                             onClick={() => removeFromCart(item.id)}
-                                            className="p-3 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-colors"
+                                            className="p-2 text-red-500/70 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all"
                                         >
-                                            <Trash2 size={20} />
+                                            <Trash2 size={14} />
                                         </button>
                                     </div>
                                 </motion.div>
