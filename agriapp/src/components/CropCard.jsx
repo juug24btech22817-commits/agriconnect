@@ -558,19 +558,19 @@ const CropCard = ({ crop, index }) => {
                                 </div>
                                 <span>Verified Transaction</span>
                              </div>
-                             <div className="flex items-center gap-4 bg-gray-100/50 dark:bg-slate-800/50 px-4 py-2 rounded-2xl border border-gray-100/50 dark:border-slate-700/50">
+                             <div className="flex items-center gap-2.5 bg-gray-100/50 dark:bg-slate-800/50 px-3 py-1.5 rounded-xl border border-gray-100/50 dark:border-slate-700/50">
                                 <button 
                                     onClick={() => setWeight(Math.max(0.5, weight - 0.5))}
                                     className="text-gray-400 hover:text-agri-primary transition-colors"
                                 >
-                                    <Minus size={14} />
+                                    <Minus size={11} />
                                 </button>
-                                <span className="text-xs font-black text-agri-dark dark:text-white min-w-[3ch] text-center">{weight} {crop.unit}</span>
+                                <span className="text-[10px] font-black text-agri-dark dark:text-white min-w-[3ch] text-center">{weight} {crop.unit}</span>
                                 <button 
                                     onClick={() => setWeight(weight + 0.5)}
                                     className="text-gray-400 hover:text-agri-primary transition-colors"
                                 >
-                                    <Plus size={14} />
+                                    <Plus size={11} />
                                 </button>
                              </div>
                         </div>
