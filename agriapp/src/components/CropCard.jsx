@@ -554,7 +554,7 @@ const CropCard = ({ crop, index }) => {
                         <div className="flex items-center justify-between">
                              <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest group/secure">
                                 <div className="p-1.5 bg-blue-500/10 rounded-lg text-blue-500 group-hover/secure:bg-blue-500/20 transition-colors">
-                                    <ShieldCheck size={10} strokeWidth={3} />
+                                    <ShieldCheck size={14} strokeWidth={3} />
                                 </div>
                                 <span>Verified Transaction</span>
                              </div>
@@ -563,14 +563,14 @@ const CropCard = ({ crop, index }) => {
                                     onClick={() => setWeight(Math.max(0.5, weight - 0.5))}
                                     className="text-gray-400 hover:text-agri-primary transition-colors"
                                 >
-                                    <Minus size={9} />
+                                    <Minus size={14} />
                                 </button>
                                 <span className="text-[10px] font-black text-agri-dark dark:text-white min-w-[3ch] text-center">{weight} {crop.unit}</span>
                                 <button 
                                     onClick={() => setWeight(weight + 0.5)}
                                     className="text-gray-400 hover:text-agri-primary transition-colors"
                                 >
-                                    <Plus size={9} />
+                                    <Plus size={14} />
                                 </button>
                              </div>
                         </div>
