@@ -398,12 +398,7 @@ const CropCard = ({ crop, index }) => {
                         )}
                     </div>
 
-                    {/* Savings Badge */}
-                    {calculateSavings(crop.price, crop.retailPrice) && (
-                        <div className="absolute bottom-4 right-4 z-10 px-3 py-1.5 bg-rose-500 text-white rounded-xl text-[10px] font-black uppercase tracking-widest shadow-glow animate-bounce-slow">
-                            SAVE {calculateSavings(crop.price, crop.retailPrice).percent}%
-                        </div>
-                    )}
+
 
                     <img
                         src={crop.image}
@@ -441,13 +436,30 @@ const CropCard = ({ crop, index }) => {
                     {/* Top Row: Price & Health */}
                     <div className="flex justify-between items-start mb-6">
                         <div>
-                             <div className="flex items-baseline gap-2 mb-1">
+                             <div className="flex items-center gap-3 mb-1">
                                 <span className="text-4xl font-display font-black text-agri-dark dark:text-white tracking-tighter">
                                     {crop.price}
                                 </span>
-                                <span className="text-sm font-bold text-gray-400 italic">
-                                    / {crop.unit}
-                                </span>
+                                {calculateSavings(crop.price, crop.retailPrice) && (
+                                    <div className="flex flex-col justify-center">
+                                        <div className="flex items-center gap-1.5">
+                                            <span className="text-xs font-bold text-gray-400 line-through decoration-rose-500/30">
+                                                {crop.retailPrice}
+                                            </span>
+                                            <span className="px-1.5 py-0.5 bg-rose-500/10 text-rose-500 rounded text-[7px] font-black uppercase tracking-wider">
+                                                -{calculateSavings(crop.price, crop.retailPrice).percent}%
+                                            </span>
+                                        </div>
+                                        <span className="text-[8px] font-bold text-gray-400 italic">
+                                            / {crop.unit}
+                                        </span>
+                                    </div>
+                                )}
+                                {!calculateSavings(crop.price, crop.retailPrice) && (
+                                    <span className="text-sm font-bold text-gray-400 italic mt-auto pb-1">
+                                        / {crop.unit}
+                                    </span>
+                                )}
                             </div>
                             <p className="text-[10px] font-black text-agri-primary/60 uppercase tracking-widest">
                                 Farm-Gate Pricing
