@@ -495,7 +495,7 @@ const CropCard = ({ crop, index }) => {
                          <div className="space-y-1 relative z-10">
                             <p className="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em]">Harvested</p>
                             <div className="flex items-center gap-2">
-                                <Sunrise size={14} className="text-amber-500" />
+                                <Sunrise size={12} className="text-amber-500" />
                                 <span className="text-xs font-bold text-agri-dark dark:text-white">{crop.harvestDetails?.date || 'Refined'}</span>
                             </div>
                          </div>
@@ -503,7 +503,7 @@ const CropCard = ({ crop, index }) => {
                          <div className="space-y-1 relative z-10">
                             <p className="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em]">Soil Type</p>
                             <div className="flex items-center gap-2">
-                                <Leaf size={14} className="text-emerald-500" />
+                                <Leaf size={12} className="text-emerald-500" />
                                 <span className="text-xs font-bold text-agri-dark dark:text-white">{crop.harvestDetails?.soilType || 'Organic'}</span>
                             </div>
                          </div>
@@ -511,7 +511,7 @@ const CropCard = ({ crop, index }) => {
                          <div className="space-y-1 relative z-10">
                             <p className="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em]">Water Source</p>
                             <div className="flex items-center gap-2">
-                                <Droplets size={14} className="text-blue-500" />
+                                <Droplets size={12} className="text-blue-500" />
                                 <span className="text-xs font-bold text-agri-dark dark:text-white">{crop.harvestDetails?.waterSource || 'Spring'}</span>
                             </div>
                          </div>
@@ -549,40 +549,40 @@ const CropCard = ({ crop, index }) => {
                             onClick={() => setShowFarmerModal(true)}
                         >
                             <div className="w-8 h-8 bg-agri-primary/10 rounded-lg flex items-center justify-center text-agri-primary shrink-0">
-                                <User size={16} />
+                                <User size={12} />
                             </div>
                             <div className="truncate">
                                 <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Heritage Producer</p>
-                                <p className="text-xs font-bold text-agri-dark dark:text-white truncate">
+                                <p className="text-[10px] font-bold text-agri-dark dark:text-white truncate">
                                     {crop.farmerDetails?.farmName || crop.farmer}
                                 </p>
                             </div>
-                            <ChevronRight size={14} className="ml-auto text-gray-300" />
+                            <ChevronRight size={12} className="ml-auto text-gray-300" />
                         </div>
                     </div>
 
                     {/* Professional Action Footer */}
-                    <div className="mt-auto space-y-4 pt-6 border-t border-gray-100 dark:border-slate-800">
-                        <div className="flex items-center justify-between">
-                             <div className="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-widest group/secure">
-                                <div className="p-1.5 bg-blue-500/10 rounded-lg text-blue-500 group-hover/secure:bg-blue-500/20 transition-colors">
-                                    <ShieldCheck size={14} strokeWidth={3} />
+                    <div className="mt-auto space-y-3 pt-4 border-t border-gray-100 dark:border-slate-800">
+                        <div className="flex items-center justify-between gap-2">
+                             <div className="flex items-center gap-1.5 text-[9px] font-black text-gray-400 uppercase tracking-widest group/secure shrink-0">
+                                <div className="p-1 bg-blue-500/10 rounded-lg text-blue-500 group-hover/secure:bg-blue-500/20 transition-colors">
+                                    <ShieldCheck size={11} strokeWidth={3} />
                                 </div>
-                                <span>Verified Transaction</span>
+                                <span className="truncate max-w-[100px]">Verified Transaction</span>
                              </div>
-                             <div className="flex items-center gap-2.5 bg-gray-100/50 dark:bg-slate-800/50 px-3 py-1.5 rounded-xl border border-gray-100/50 dark:border-slate-700/50">
+                             <div className="flex items-center gap-2 bg-gray-100/50 dark:bg-slate-800/50 px-2 py-1 rounded-lg border border-gray-100/50 dark:border-slate-700/50 shrink-0">
                                 <button 
                                     onClick={() => setWeight(Math.max(0.5, weight - 0.5))}
                                     className="text-gray-400 hover:text-agri-primary transition-colors"
                                 >
-                                    <Minus size={14} />
+                                    <Minus size={11} />
                                 </button>
-                                <span className="text-[10px] font-black text-agri-dark dark:text-white min-w-[3ch] text-center">{weight} {crop.unit}</span>
+                                <span className="text-[9px] font-black text-agri-dark dark:text-white min-w-[3ch] text-center">{weight} {crop.unit}</span>
                                 <button 
                                     onClick={() => setWeight(weight + 0.5)}
                                     className="text-gray-400 hover:text-agri-primary transition-colors"
                                 >
-                                    <Plus size={14} />
+                                    <Plus size={11} />
                                 </button>
                              </div>
                         </div>
