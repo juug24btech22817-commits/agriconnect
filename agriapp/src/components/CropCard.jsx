@@ -386,7 +386,7 @@ const CropCard = ({ crop, index }) => {
                     
                     {/* Professional Badges */}
                     <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
-                        <div className="px-3 py-1.5 bg-agri-dark/80 backdrop-blur-md rounded-xl text-[8px] font-black text-white uppercase tracking-[0.1em] border border-white/10 shadow-lg flex items-center gap-2">
+                        <div className="px-2 py-1 bg-agri-dark/80 backdrop-blur-md rounded-xl text-[7px] font-semibold text-white uppercase tracking-tight border border-white/10 shadow-lg flex items-center gap-2">
                             <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
                             {stockAvailable} {crop.unit} IN STOCK
                         </div>
@@ -541,8 +541,7 @@ const CropCard = ({ crop, index }) => {
                                     Express by <span className="font-bold text-agri-dark dark:text-white">{getMockDeliveryDate()}</span>
                                 </p>
                             </div>
-                            <span className="text-[9px] font-black text-agri-primary uppercase tracking-widest cursor-pointer hover:underline">Policy</span>
-                        </div>
+                                                    </div>
 
                         <div 
                             className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-slate-800/30 rounded-2xl border border-gray-100 dark:border-slate-800 cursor-pointer hover:bg-white dark:hover:bg-slate-800 transition-all border-dashed"
