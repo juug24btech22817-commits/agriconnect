@@ -391,9 +391,9 @@ const CropCard = ({ crop, index }) => {
                             {stockAvailable} {crop.unit} IN STOCK
                         </div>
                         {crop.qualityMetrics?.organicCert && (
-                             <div className="px-3 py-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-xl text-[8px] font-black text-agri-primary uppercase tracking-[0.1em] border border-agri-primary/20 shadow-lg flex items-center gap-2">
-                                <Award size={10} />
-                                {crop.qualityMetrics.organicCert}
+                             <div className="px-3 py-1.5 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-xl text-[8px] font-black text-agri-primary uppercase tracking-[0.1em] border border-agri-primary/20 shadow-lg flex items-center gap-2 max-w-[140px]">
+                                <Award size={10} className="shrink-0" />
+                                <span className="truncate">{crop.qualityMetrics.organicCert}</span>
                             </div>
                         )}
                     </div>
@@ -407,22 +407,22 @@ const CropCard = ({ crop, index }) => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-60" />
                     
-                    <div className="absolute inset-x-0 bottom-6 flex flex-col items-start justify-end pointer-events-none px-8">
+                    <div className="absolute inset-x-0 bottom-6 flex flex-col items-start justify-end pointer-events-none px-6">
                         <motion.div
                             initial={{ x: -20, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
-                            className="space-y-1.5"
+                            className="space-y-1.5 w-full"
                         >
-                            <div className="flex items-center gap-2">
-                                <span className="px-2 py-0.5 bg-white/10 backdrop-blur-md rounded text-[8px] font-black uppercase tracking-[0.2em] text-white">
+                            <div className="flex items-center gap-2 max-w-full">
+                                <span className="px-2 py-0.5 bg-white/10 backdrop-blur-md rounded text-[8px] font-black uppercase tracking-[0.2em] text-white truncate max-w-[80px]">
                                     {crop.category}
                                 </span>
-                                <div className="w-1 h-1 bg-agri-primary rounded-full" />
-                                <span className="text-[9px] font-bold text-white/90 italic">
+                                <div className="w-1 h-1 bg-agri-primary rounded-full shrink-0" />
+                                <span className="text-[9px] font-bold text-white/90 italic truncate">
                                     {crop.qualityMetrics?.freshnessScore} Freshness Score
                                 </span>
                             </div>
-                            <h3 className="text-2xl lg:text-3xl font-display font-black leading-none text-white uppercase tracking-tighter drop-shadow-lg">
+                            <h3 className="text-xl lg:text-2xl font-display font-black leading-none text-white uppercase tracking-tighter drop-shadow-lg line-clamp-1">
                                 {crop.name}
                             </h3>
                         </motion.div>
@@ -431,22 +431,22 @@ const CropCard = ({ crop, index }) => {
 
 
                 {/* Content Container - Premium Detailed Layout */}
-                <div className="p-8 flex flex-col flex-grow bg-gradient-to-b from-transparent to-gray-50/50 dark:to-slate-900/20">
+                <div className="p-6 flex flex-col flex-grow bg-gradient-to-b from-transparent to-gray-50/50 dark:to-slate-900/20">
                     
                     {/* Top Row: Price & Health */}
-                    <div className="flex justify-between items-start mb-6">
-                        <div>
-                             <div className="flex items-center gap-3 mb-1">
-                                <span className="text-4xl font-display font-black text-agri-dark dark:text-white tracking-tighter">
+                    <div className="flex justify-between items-start mb-6 gap-2">
+                        <div className="min-w-0">
+                             <div className="flex items-center gap-2 mb-1">
+                                <span className="text-3xl font-display font-black text-agri-dark dark:text-white tracking-tighter truncate">
                                     {crop.price}
                                 </span>
                                 {calculateSavings(crop.price, crop.retailPrice) && (
-                                    <div className="flex flex-col justify-center">
-                                        <div className="flex items-center gap-1.5">
-                                            <span className="text-xs font-bold text-gray-400 line-through decoration-rose-500/30">
+                                    <div className="flex flex-col justify-center shrink-0">
+                                        <div className="flex items-center gap-1">
+                                            <span className="text-[10px] font-bold text-gray-400 line-through decoration-rose-500/30">
                                                 {crop.retailPrice}
                                             </span>
-                                            <span className="px-1.5 py-0.5 bg-rose-500/10 text-rose-500 rounded text-[7px] font-black uppercase tracking-wider">
+                                            <span className="px-1 py-0.5 bg-rose-500/10 text-rose-500 rounded text-[6px] font-black uppercase tracking-wider">
                                                 -{calculateSavings(crop.price, crop.retailPrice).percent}%
                                             </span>
                                         </div>
@@ -456,18 +456,19 @@ const CropCard = ({ crop, index }) => {
                                     </div>
                                 )}
                                 {!calculateSavings(crop.price, crop.retailPrice) && (
-                                    <span className="text-sm font-bold text-gray-400 italic mt-auto pb-1">
+                                    <span className="text-xs font-bold text-gray-400 italic mt-auto pb-0.5 shrink-0">
                                         / {crop.unit}
                                     </span>
                                 )}
                             </div>
-                            <p className="text-[10px] font-black text-agri-primary/60 uppercase tracking-widest">
+                            <p className="text-[10px] font-black text-agri-primary/60 uppercase tracking-widest truncate">
                                 Farm-Gate Pricing
                             </p>
                         </div>
                         {crop.nutrition?.healthBenefit && (
-                             <div className="px-2 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-[7px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-emerald-500/20 shadow-sm shrink-0">
-                                <HeartPulse size={10} strokeWidth={3} /> {crop.nutrition.healthBenefit}
+                             <div className="px-2 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-[7px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-emerald-500/20 shadow-sm max-w-[45%]">
+                                <HeartPulse size={10} strokeWidth={3} className="shrink-0" /> 
+                                <span className="truncate">{crop.nutrition.healthBenefit}</span>
                             </div>
                         )}
                     </div>
@@ -475,13 +476,15 @@ const CropCard = ({ crop, index }) => {
                     {/* Quick Nutrition & Purity Badges */}
                     <div className="flex flex-wrap gap-1.5 mb-8">
                         {crop.qualityMetrics?.purity && (
-                            <div className="px-2 py-0.5 bg-agri-primary/5 text-agri-primary rounded-lg text-[8px] font-bold flex items-center gap-1 border border-agri-primary/10">
-                                <Shield size={9} /> {crop.qualityMetrics.purity} Pure
+                            <div className="px-2 py-0.5 bg-agri-primary/5 text-agri-primary rounded-lg text-[8px] font-bold flex items-center gap-1 border border-agri-primary/10 max-w-[130px]">
+                                <Shield size={9} className="shrink-0" /> 
+                                <span className="truncate">{crop.qualityMetrics.purity} Pure</span>
                             </div>
                         )}
                         {crop.nutrition?.vitamins?.slice(0, 2).map((v, i) => (
-                            <div key={i} className="px-2 py-0.5 bg-blue-500/5 text-blue-500 rounded-lg text-[8px] font-bold flex items-center gap-1 border border-blue-500/10">
-                                <Zap size={9} /> {v}
+                            <div key={i} className="px-2 py-0.5 bg-blue-500/5 text-blue-500 rounded-lg text-[8px] font-bold flex items-center gap-1 border border-blue-500/10 max-w-[100px]">
+                                <Zap size={9} className="shrink-0" /> 
+                                <span className="truncate">{v}</span>
                             </div>
                         ))}
                     </div>
@@ -563,11 +566,11 @@ const CropCard = ({ crop, index }) => {
                     {/* Professional Action Footer */}
                     <div className="mt-auto space-y-3 pt-4 border-t border-gray-100 dark:border-slate-800">
                         <div className="flex items-center justify-between gap-2">
-                             <div className="flex items-center gap-1.5 text-[9px] font-black text-gray-400 uppercase tracking-widest group/secure shrink-0">
-                                <div className="p-1 bg-blue-500/10 rounded-lg text-blue-500 group-hover/secure:bg-blue-500/20 transition-colors">
+                             <div className="flex items-center gap-1.5 text-[9px] font-black text-gray-400 uppercase tracking-widest group/secure min-w-0">
+                                <div className="p-1 bg-blue-500/10 rounded-lg text-blue-500 group-hover/secure:bg-blue-500/20 transition-colors shrink-0">
                                     <ShieldCheck size={11} strokeWidth={3} />
                                 </div>
-                                <span className="truncate max-w-[100px]">Verified Transaction</span>
+                                <span className="truncate">Verified Transaction</span>
                              </div>
                              <div className="flex items-center gap-2 bg-gray-100/50 dark:bg-slate-800/50 px-2 py-1 rounded-lg border border-gray-100/50 dark:border-slate-700/50 shrink-0">
                                 <button 
