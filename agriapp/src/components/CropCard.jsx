@@ -466,22 +466,22 @@ const CropCard = ({ crop, index }) => {
                             </p>
                         </div>
                         {crop.nutrition?.healthBenefit && (
-                             <div className="px-3 py-1.5 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl text-[8px] font-black uppercase tracking-wider flex items-center gap-2 border border-emerald-500/20 shadow-sm">
-                                <HeartPulse size={12} strokeWidth={3} /> {crop.nutrition.healthBenefit}
+                             <div className="px-2 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-[7px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-emerald-500/20 shadow-sm shrink-0">
+                                <HeartPulse size={10} strokeWidth={3} /> {crop.nutrition.healthBenefit}
                             </div>
                         )}
                     </div>
 
                     {/* Quick Nutrition & Purity Badges */}
-                    <div className="flex flex-wrap gap-2 mb-8">
+                    <div className="flex flex-wrap gap-1.5 mb-8">
                         {crop.qualityMetrics?.purity && (
-                            <div className="px-2.5 py-1 bg-agri-primary/5 text-agri-primary rounded-lg text-[9px] font-bold flex items-center gap-1.5 border border-agri-primary/10">
-                                <Shield size={10} /> {crop.qualityMetrics.purity} Pure
+                            <div className="px-2 py-0.5 bg-agri-primary/5 text-agri-primary rounded-lg text-[8px] font-bold flex items-center gap-1 border border-agri-primary/10">
+                                <Shield size={9} /> {crop.qualityMetrics.purity} Pure
                             </div>
                         )}
                         {crop.nutrition?.vitamins?.slice(0, 2).map((v, i) => (
-                            <div key={i} className="px-2.5 py-1 bg-blue-500/5 text-blue-500 rounded-lg text-[9px] font-bold flex items-center gap-1.5 border border-blue-500/10">
-                                <Zap size={10} /> {v}
+                            <div key={i} className="px-2 py-0.5 bg-blue-500/5 text-blue-500 rounded-lg text-[8px] font-bold flex items-center gap-1 border border-blue-500/10">
+                                <Zap size={9} /> {v}
                             </div>
                         ))}
                     </div>
