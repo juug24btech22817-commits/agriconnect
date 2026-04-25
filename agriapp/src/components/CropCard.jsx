@@ -413,16 +413,16 @@ const CropCard = ({ crop, index }) => {
                             animate={{ x: 0, opacity: 1 }}
                             className="space-y-1.5 w-full"
                         >
-                            <div className="flex items-center gap-2 max-w-full">
-                                <span className="px-2 py-0.5 bg-white/10 backdrop-blur-md rounded text-[8px] font-black uppercase tracking-[0.2em] text-white truncate max-w-[80px]">
+                            <div className="flex flex-wrap items-center gap-2 max-w-full">
+                                <span className="px-2 py-0.5 bg-white/10 backdrop-blur-md rounded text-[8px] font-black uppercase tracking-[0.2em] text-white whitespace-nowrap">
                                     {crop.category}
                                 </span>
                                 <div className="w-1 h-1 bg-agri-primary rounded-full shrink-0" />
-                                <span className="text-[9px] font-bold text-white/90 italic truncate">
+                                <span className="text-[9px] font-bold text-white/90 italic whitespace-nowrap">
                                     {crop.qualityMetrics?.freshnessScore} Freshness Score
                                 </span>
                             </div>
-                            <h3 className="text-xl lg:text-2xl font-display font-black leading-none text-white uppercase tracking-tighter drop-shadow-lg line-clamp-1">
+                            <h3 className="text-lg lg:text-xl font-display font-black leading-[1.1] text-white uppercase tracking-tighter drop-shadow-lg">
                                 {crop.name}
                             </h3>
                         </motion.div>
@@ -553,9 +553,9 @@ const CropCard = ({ crop, index }) => {
                             <div className="w-8 h-8 bg-agri-primary/10 rounded-lg flex items-center justify-center text-agri-primary shrink-0">
                                 <User size={12} />
                             </div>
-                            <div className="truncate">
+                            <div>
                                 <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Heritage Producer</p>
-                                <p className="text-[10px] font-bold text-agri-dark dark:text-white truncate">
+                                <p className="text-[10px] font-bold text-agri-dark dark:text-white">
                                     {crop.farmerDetails?.farmName || crop.farmer}
                                 </p>
                             </div>
