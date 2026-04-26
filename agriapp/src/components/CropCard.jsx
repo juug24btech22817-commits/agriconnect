@@ -466,9 +466,9 @@ const CropCard = ({ crop, index }) => {
                             </p>
                         </div>
                         {crop.nutrition?.healthBenefit && (
-                             <div className="px-2 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-[7px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-emerald-500/20 shadow-sm max-w-[45%]">
+                             <div className="px-2 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-[7px] font-black uppercase tracking-wider flex items-center gap-1.5 border border-emerald-500/20 shadow-sm">
                                 <HeartPulse size={10} strokeWidth={3} className="shrink-0" /> 
-                                <span className="truncate">{crop.nutrition.healthBenefit}</span>
+                                <span>{crop.nutrition.healthBenefit}</span>
                             </div>
                         )}
                     </div>
