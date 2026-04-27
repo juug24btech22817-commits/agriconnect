@@ -434,10 +434,10 @@ const CropCard = ({ crop, index }) => {
                 <div className="p-6 flex flex-col flex-grow bg-gradient-to-b from-transparent to-gray-50/50 dark:to-slate-900/20">
                     
                     {/* Top Row: Price & Health */}
-                    <div className="flex justify-between items-start mb-6 gap-2">
-                        <div className="min-w-0">
-                             <div className="flex items-center gap-2 mb-1">
-                                <span className="text-3xl font-display font-black text-agri-dark dark:text-white tracking-tighter truncate">
+                    <div className="flex justify-between items-start mb-6 gap-3 flex-wrap">
+                        <div className="flex-grow min-w-fit">
+                             <div className="flex items-baseline gap-2 mb-1 flex-wrap">
+                                <span className="text-3xl font-display font-black text-agri-dark dark:text-white tracking-tighter">
                                     {crop.price}
                                 </span>
                                 {calculateSavings(crop.price, crop.retailPrice) && (
@@ -461,7 +461,7 @@ const CropCard = ({ crop, index }) => {
                                     </span>
                                 )}
                             </div>
-                            <p className="text-[10px] font-black text-agri-primary/60 uppercase tracking-widest truncate">
+                            <p className="text-[10px] font-black text-agri-primary/60 uppercase tracking-widest">
                                 Farm-Gate Pricing
                             </p>
                         </div>
