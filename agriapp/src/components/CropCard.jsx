@@ -566,11 +566,11 @@ const CropCard = ({ crop, index }) => {
                     {/* Professional Action Footer */}
                     <div className="mt-auto space-y-3 pt-4 border-t border-gray-100 dark:border-slate-800">
                         <div className="flex items-center justify-between gap-2">
-                             <div className="flex items-center gap-1.5 text-[9px] font-black text-gray-400 uppercase tracking-widest group/secure min-w-0">
+                             <div className="flex items-center gap-1 text-[8px] font-black text-gray-400 uppercase tracking-tight group/secure shrink-0">
                                 <div className="p-1 bg-blue-500/10 rounded-lg text-blue-500 group-hover/secure:bg-blue-500/20 transition-colors shrink-0">
-                                    <ShieldCheck size={11} strokeWidth={3} />
+                                    <ShieldCheck size={10} strokeWidth={3} />
                                 </div>
-                                <span className="truncate">Verified Transaction</span>
+                                <span className="whitespace-nowrap">Verified Transaction</span>
                              </div>
                              <div className="flex items-center gap-2 bg-gray-100/50 dark:bg-slate-800/50 px-2 py-1 rounded-lg border border-gray-100/50 dark:border-slate-700/50 shrink-0">
                                 <button 
