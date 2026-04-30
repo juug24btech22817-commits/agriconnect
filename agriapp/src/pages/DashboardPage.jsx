@@ -40,24 +40,25 @@ const DashboardPage = () => {
         if (!query) return;
         setWeather(prev => ({ ...prev, isLoading: true, error: "" }));
         try {
-            // Geocoding with address details
-            const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1&addressdetails=1`);
+            // Geocoding with address details - Append India for pincode accuracy
+            const searchQuery = query.match(/^\d{6}$/) ? `${query}, India` : query;
+            const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=1&addressdetails=1`);
             const geoData = await geoRes.json();
             
             if (geoData.length === 0) throw new Error("Location not found");
             const { lat, lon, display_name, address } = geoData[0];
             
             // Extract the most relevant city/area name
-            const city = address.city || address.town || address.village || address.suburb || address.state_district || "";
-            const locationLabel = query.match(/^\d+$/) ? `${query}, ${city}` : city || display_name.split(',')[0];
+            const city = address.city || address.town || address.village || address.suburb || address.state_district || address.city_district || "";
+            const locationLabel = query.match(/^\d+$/) ? `${query}, ${city || address.state || ""}` : city || display_name.split(',')[0];
             
-            // Weather
-            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,rain,is_day`);
+            // Weather - Using precipitation instead of just rain to capture showers/drizzle
+            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,precipitation,is_day`);
             const data = await weatherRes.json();
             
             const tempVal = Math.round(data.current.temperature_2m);
             const humVal = data.current.relative_humidity_2m;
-            const rainVal = data.current.rain;
+            const rainVal = data.current.precipitation;
             const code = data.current.weather_code;
             const isDay = data.current.is_day !== 0; // 1 for day, 0 for night
             
@@ -68,11 +69,13 @@ const DashboardPage = () => {
             else if (code >= 80 && code <= 82) cond = "Showers";
             else if (code >= 95) cond = "Stormy";
 
+            let isRaining = rainVal > 0 || (code >= 51 && code <= 67) || (code >= 80 && code <= 82) || code >= 95;
+
             let adv = isDay ? "Weather conditions are optimal for your crops today." : "Optimal evening conditions for crop health.";
-            if (rainVal === 0 && tempVal > 28) {
-                adv = isDay ? "High heat today. Consider extra watering to keep soil moist." : "Warm night ahead. Ensure your storage areas are well ventilated.";
-            } else if (rainVal > 0) {
+            if (isRaining) {
                 adv = isDay ? "Rain is falling. No need for irrigation today." : "Night rain detected. Check your drainage to prevent waterlogging.";
+            } else if (tempVal > 28) {
+                adv = isDay ? "High heat today. Consider extra watering to keep soil moist." : "Warm night ahead. Ensure your storage areas are well ventilated.";
             } else if (tempVal < 15) {
                 adv = isDay ? "Cool day ahead. Good for rabi crops." : "Cool night falling. Protect sensitive young saplings from the chill.";
             }
@@ -110,9 +113,28 @@ const DashboardPage = () => {
     };
 
     useEffect(() => {
-        // Always reset to the real default location (Bengaluru) on a fresh open
-        const defaultLoc = "Bengaluru, Karnataka";
-        fetchWeather(defaultLoc);
+        // Try to load last searched location, otherwise try geolocation, fallback to Bengaluru
+        const savedLoc = localStorage.getItem('lastWeatherLocation');
+        if (savedLoc) {
+            fetchWeather(savedLoc);
+        } else if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                async (pos) => {
+                    const { latitude, longitude } = pos.coords;
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                        const data = await res.json();
+                        const city = data.address.city || data.address.town || data.address.village || "Current Location";
+                        fetchWeather(city);
+                    } catch (e) {
+                        fetchWeather("Bengaluru");
+                    }
+                },
+                () => fetchWeather("Bengaluru")
+            );
+        } else {
+            fetchWeather("Bengaluru");
+        }
     }, []);
 
     return (

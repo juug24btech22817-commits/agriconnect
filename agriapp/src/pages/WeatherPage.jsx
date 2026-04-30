@@ -154,7 +154,7 @@ const WeatherPage = () => {
             {/* Ambient Background Effects */}
             <div className="fixed inset-0 pointer-events-none overflow-hidden">
                 <AnimatePresence>
-                    {weather?.current?.rain > 0 && Array.from({ length: 20 }).map((_, i) => (
+                    {(weather?.current?.precipitation > 0 || (weather?.current?.weather_code >= 51 && weather?.current?.weather_code <= 82)) && Array.from({ length: 20 }).map((_, i) => (
                         <motion.div
                             key={`rain-${i}`}
                             initial={{ y: -100, x: Math.random() * window.innerWidth }}
@@ -255,7 +255,7 @@ const WeatherPage = () => {
                                 {[
                                     { label: 'Humidity', value: `${weather.current.relative_humidity_2m}%`, icon: <Droplets size={16} className="text-blue-300" /> },
                                     { label: 'Wind', value: `${weather.current.wind_speed_10m} km/h`, icon: <Wind size={16} className="text-agri-light" /> },
-                                    { label: 'Rain', value: weather.current.rain > 0 ? "Yes" : "No", icon: <CloudRain size={16} className="text-blue-400" /> },
+                                    { label: 'Rain', value: (weather.current.precipitation > 0 || (weather.current.weather_code >= 51 && weather.current.weather_code <= 82)) ? "Yes" : "No", icon: <CloudRain size={16} className="text-blue-400" /> },
                                     { label: 'UV Index', value: `${weather.current.uv_index} (${weather.daily.uv_index_max[0]} Max)`, icon: <Sun size={16} className="text-yellow-400" /> }
                                 ].map((item, i) => (
                                     <div key={i} className="bg-white/5 hover:bg-white/10 transition-colors rounded-xl p-3 border border-white/10 flex items-center gap-3">
