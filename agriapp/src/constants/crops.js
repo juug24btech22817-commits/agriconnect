@@ -607,5 +607,34 @@ export const initialCropsData = [
             experience: '18 years',
             farmName: 'Sugar Valley'
         }
+    },
+    { 
+        id: 21, name: 'Premium Kiwi Fruit', category: 'Fruits', price: '₹250', unit: 'kg', 
+        farmer: 'Himachal Exotic Farms', location: 'Solan, Himachal Pradesh', rating: '4.9', 
+        image: '/images/crops/kiwi_fruit_premium.png',
+        mandiPrice: '₹180', retailPrice: '₹350',
+        nutrition: {
+            calories: '61 kcal/100g',
+            vitamins: ['Vitamin C', 'Vitamin K', 'Vitamin E'],
+            minerals: ['Potassium', 'Copper'],
+            healthBenefit: 'Immune & Heart Health'
+        },
+        qualityMetrics: {
+            purity: '100% Organic',
+            freshnessScore: '9.8/10',
+            organicCert: 'Indocert Certified'
+        },
+        harvestDetails: {
+            date: 'April 11, 2026',
+            soilType: 'Rich Humus',
+            waterSource: 'Natural Springs'
+        },
+        farmerDetails: {
+            phone: '+91 98888 77777',
+            bio: 'Specialists in high-altitude exotic fruits. Our kiwis are naturally ripened and hand-picked.',
+            verified: true,
+            experience: '10 years',
+            farmName: 'Exotic Valley'
+        }
     }
 ];
