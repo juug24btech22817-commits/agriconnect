@@ -271,6 +271,24 @@ const MarketPricePage = () => {
                     </div>
                 </header>
 
+                {/* Category Filters */}
+                <div className="flex flex-wrap gap-3 mb-10">
+                    {categories.map((cat) => (
+                        <button
+                            key={cat}
+                            onClick={() => setActiveCategory(cat)}
+                            className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 border ${
+                                activeCategory === cat 
+                                    ? 'bg-agri-primary text-white border-agri-primary shadow-glow scale-105' 
+                                    : 'bg-white dark:bg-slate-900 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-800 hover:border-agri-primary/50'
+                            }`}
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </div>
+
+
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                     
                     <div className="lg:col-span-8 space-y-8">
@@ -287,10 +305,16 @@ const MarketPricePage = () => {
                                     <div className="relative z-10 grid md:grid-cols-2 gap-6 items-center">
                                         <div className="space-y-4">
                                             <div>
-                                                <h2 className="text-2xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter mb-1">
-                                                    {searchResult.commodity}
-                                                </h2>
+                                                <div className="flex items-center gap-3 mb-2">
+                                                    <h2 className="text-2xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter">
+                                                        {searchResult.commodity}
+                                                    </h2>
+                                                    <div className="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 rounded text-[10px] font-black uppercase flex items-center gap-1 border border-emerald-500/20">
+                                                        <Sparkles size={10} /> Verified
+                                                    </div>
+                                                </div>
                                                 <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{searchResult.arrivalDate}</p>
+
                                             </div>
                                             <div className="grid grid-cols-2 gap-4">
                                                 <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl">
@@ -303,17 +327,23 @@ const MarketPricePage = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="bg-agri-primary dark:bg-agri-primary/10 p-6 rounded-2xl flex flex-col justify-center text-center text-white border border-white/10">
-                                            <div className="text-[9px] opacity-60 font-bold uppercase tracking-widest mb-1">Avg Price</div>
-                                            <div className="text-4xl font-display font-black">
-                                                ₹{searchResult.avgPrice}
+                                        <div className="bg-gradient-to-br from-agri-primary to-emerald-600 p-8 rounded-2xl flex flex-col justify-center text-center text-white shadow-glow-sm relative overflow-hidden group">
+                                            <div className="absolute -right-4 -top-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
+                                                <TrendingUp size={120} />
                                             </div>
-                                            <div className="text-[10px] mt-1 font-bold opacity-80 decoration-secondary">Per {searchResult.unit}</div>
-                                            <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-center text-[10px] font-bold uppercase">
-                                                <span>{searchResult.mandiCount} Mandis</span>
-                                                <span>{searchResult.stateCount} States</span>
+                                            <div className="relative z-10">
+                                                <div className="text-[10px] opacity-80 font-bold uppercase tracking-widest mb-2">Average Mandi Price</div>
+                                                <div className="text-5xl font-display font-black mb-1 drop-shadow-md">
+                                                    ₹{searchResult.avgPrice}
+                                                </div>
+                                                <div className="text-xs font-bold opacity-90">Per {searchResult.unit}</div>
+                                                <div className="mt-6 pt-4 border-t border-white/20 flex justify-between items-center text-[10px] font-black uppercase tracking-wider">
+                                                    <span className="flex items-center gap-1"><MapPin size={10}/> {searchResult.mandiCount} Mandis</span>
+                                                    <span>{searchResult.stateCount} States</span>
+                                                </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </motion.div>
                             ) : (
@@ -333,7 +363,16 @@ const MarketPricePage = () => {
                                         </p>
                                     </div>
                                     <div className="flex flex-wrap justify-center gap-3">
-                                        {['Mango', 'Basmati Rice', 'Red Onion', 'Banana'].map(tag => (
+                                        {(activeCategory === 'All' 
+                                            ? ['Mango', 'Basmati Rice', 'Red Onion', 'Banana']
+                                            : activeCategory === 'Fruits'
+                                            ? ['Apple', 'Mango', 'Banana', 'Kiwi']
+                                            : activeCategory === 'Vegetables'
+                                            ? ['Potato', 'Tomato', 'Onion', 'Ginger']
+                                            : activeCategory === 'Dry Fruits'
+                                            ? ['Almond', 'Cashew', 'Walnut', 'Pistachio']
+                                            : ['Wheat', 'Rice', 'Sugar', 'Dal']
+                                        ).map(tag => (
                                             <button 
                                                 key={tag}
                                                 onClick={() => {
@@ -346,6 +385,7 @@ const MarketPricePage = () => {
                                             </button>
                                         ))}
                                     </div>
+
                                 </motion.div>
                             )}
                         </AnimatePresence>
