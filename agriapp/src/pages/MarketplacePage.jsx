@@ -121,17 +121,25 @@ const MarketplacePage = () => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-4 w-full md:max-w-md">
-                        <div className="relative flex-grow">
+                        <div className="relative flex-grow group">
                              <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none group-focus-within:text-agri-primary transition-colors">
                                 <Search className="h-5 w-5 text-gray-400" />
                             </div>
                             <input
                                 type="text"
-                                className="block w-full pl-12 pr-4 py-5 glass dark:bg-slate-900 border-gray-200 dark:border-gray-800 rounded-2xl text-agri-dark dark:text-white shadow-premium focus:ring-2 focus:ring-agri-primary transition-all font-medium"
+                                className="block w-full pl-12 pr-12 py-5 glass dark:bg-slate-900 border-gray-200 dark:border-gray-800 rounded-2xl text-agri-dark dark:text-white shadow-premium focus:ring-2 focus:ring-agri-primary transition-all font-medium"
                                 placeholder="Search produce..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
+                            {searchQuery && (
+                                <button 
+                                    onClick={() => setSearchQuery('')}
+                                    className="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-400 hover:text-agri-primary transition-colors"
+                                >
+                                    <X size={18} />
+                                </button>
+                            )}
                         </div>
                         <button 
                             onClick={() => setIsFiltersOpen(true)}
@@ -145,21 +153,23 @@ const MarketplacePage = () => {
                 {/* Delivery Options Brief */}
                 <DeliveryOptions />
 
-                {/* Category Navigation */}
-                <div className="flex overflow-x-auto hide-scrollbar gap-4 mb-10 pb-4">
-                    {categories.map((cat) => (
-                        <button
-                            key={cat}
-                            onClick={() => setActiveCategory(cat)}
-                            className={`whitespace-nowrap px-8 py-3 rounded-xl font-bold text-sm transition-all duration-300 border ${
-                                activeCategory === cat
-                                ? 'bg-agri-primary text-white border-agri-primary shadow-glow ring-4 ring-agri-primary/10'
-                                : 'bg-white dark:bg-slate-900 text-gray-500 dark:text-gray-400 border-gray-100 dark:border-gray-800 hover:border-agri-primary hover:text-agri-primary'
-                            }`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
+                {/* Category Navigation - Sticky */}
+                <div className="sticky top-20 z-30 -mx-4 px-4 py-4 bg-agri-surface/80 dark:bg-slate-950/80 backdrop-blur-md mb-10">
+                    <div className="flex overflow-x-auto hide-scrollbar gap-4">
+                        {categories.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => setActiveCategory(cat)}
+                                className={`whitespace-nowrap px-8 py-3 rounded-xl font-bold text-sm transition-all duration-300 border ${
+                                    activeCategory === cat
+                                    ? 'bg-agri-primary text-white border-agri-primary shadow-glow ring-4 ring-agri-primary/10'
+                                    : 'bg-white dark:bg-slate-900 text-gray-500 dark:text-gray-400 border-gray-100 dark:border-gray-800 hover:border-agri-primary hover:text-agri-primary shadow-sm'
+                                }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Category Banner */}

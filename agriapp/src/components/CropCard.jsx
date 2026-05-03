@@ -564,38 +564,68 @@ const CropCard = ({ crop, index }) => {
                     </div>
 
                     {/* Professional Action Footer */}
-                    <div className="mt-auto space-y-3 pt-4 border-t border-gray-100 dark:border-slate-800">
+                    <div className="mt-auto space-y-4 pt-4 border-t border-gray-100 dark:border-slate-800">
                         <div className="flex items-center justify-between gap-2">
-                             <div className="flex items-center gap-1 text-[8px] font-black text-gray-400 uppercase tracking-tight group/secure shrink-0">
-                                <div className="p-1 bg-blue-500/10 rounded-lg text-blue-500 group-hover/secure:bg-blue-500/20 transition-colors shrink-0">
-                                    <ShieldCheck size={10} strokeWidth={3} />
-                                </div>
-                                <span className="whitespace-nowrap">Verified Transaction</span>
+                             <div className="flex items-center gap-1.5 text-[8px] font-black text-gray-500 uppercase tracking-tight group/secure shrink-0">
+                                 <div className="p-1.5 bg-blue-500/10 rounded-lg text-blue-500 group-hover/secure:bg-blue-500/20 transition-colors shrink-0">
+                                     <ShieldCheck size={12} strokeWidth={3} />
+                                 </div>
+                                 <div className="flex flex-col">
+                                     <span className="whitespace-nowrap">Verified Transaction</span>
+                                     <span className="text-[6px] text-gray-400">100% Secure Farmer Pay</span>
+                                 </div>
                              </div>
-                             <div className="flex items-center gap-2 bg-gray-100/50 dark:bg-slate-800/50 px-2 py-1 rounded-lg border border-gray-100/50 dark:border-slate-700/50 shrink-0">
-                                <button 
-                                    onClick={() => setWeight(Math.max(0.5, weight - 0.5))}
-                                    className="text-gray-400 hover:text-agri-primary transition-colors"
-                                >
-                                    <Minus size={11} />
-                                </button>
-                                <span className="text-[9px] font-black text-agri-dark dark:text-white min-w-[3ch] text-center">{weight} {crop.unit}</span>
-                                <button 
-                                    onClick={() => setWeight(weight + 0.5)}
-                                    className="text-gray-400 hover:text-agri-primary transition-colors"
-                                >
-                                    <Plus size={11} />
-                                </button>
+                             
+                             <div className="flex flex-col items-end shrink-0">
+                                <div className="flex items-center gap-2 bg-gray-100/50 dark:bg-slate-800/50 px-2.5 py-1.5 rounded-xl border border-gray-100/50 dark:border-slate-700/50 mb-1">
+                                    <button 
+                                        onClick={() => setWeight(Math.max(0.5, weight - 0.5))}
+                                        className="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-agri-primary hover:bg-agri-primary/10 rounded-md transition-all"
+                                    >
+                                        <Minus size={11} />
+                                    </button>
+                                    <span className="text-[10px] font-black text-agri-dark dark:text-white min-w-[3.5ch] text-center">{weight} {crop.unit}</span>
+                                    <button 
+                                        onClick={() => setWeight(weight + 0.5)}
+                                        className="w-5 h-5 flex items-center justify-center text-gray-400 hover:text-agri-primary hover:bg-agri-primary/10 rounded-md transition-all"
+                                    >
+                                        <Plus size={11} />
+                                    </button>
+                                </div>
+                                {weight > 1 && (
+                                    <motion.p 
+                                        initial={{ opacity: 0, y: 5 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="text-[9px] font-bold text-agri-primary uppercase tracking-wider"
+                                    >
+                                        Total: ₹{(parseInt(crop.price.replace(/[^0-9]/g, '')) * weight).toLocaleString()}
+                                    </motion.p>
+                                )}
                              </div>
                         </div>
 
-                        <button
-                            onClick={isInCart ? () => navigate('/cart') : handleAddToCart}
-                            className="w-full py-4 bg-gradient-to-r from-agri-primary to-emerald-700 hover:from-emerald-600 hover:to-agri-primary text-white rounded-[2rem] font-black text-[11px] uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 shadow-glow flex items-center justify-center gap-2 group"
-                        >
-                            {isInCart ? <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" /> : <ShoppingCart size={18} />}
-                            {isInCart ? 'View in Cart' : 'Add to Cart'}
-                        </button>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={isInCart ? () => navigate('/cart') : handleAddToCart}
+                                className={`flex-grow py-4 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 shadow-glow flex items-center justify-center gap-2 group ${
+                                    isInCart 
+                                    ? 'bg-white dark:bg-slate-800 text-agri-primary border border-agri-primary/20' 
+                                    : 'bg-gradient-to-r from-agri-primary to-emerald-700 text-white'
+                                }`}
+                            >
+                                {isInCart ? <Check size={18} /> : <ShoppingCart size={18} />}
+                                {isInCart ? 'In Cart' : 'Add to Cart'}
+                            </button>
+                            {!isInCart && (
+                                <button
+                                    onClick={handleBuyNow}
+                                    disabled={isLoading}
+                                    className="px-6 py-4 bg-agri-dark dark:bg-white text-white dark:text-agri-dark rounded-[2rem] font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center disabled:opacity-50"
+                                >
+                                    {isLoading ? <Loader2 size={18} className="animate-spin" /> : 'Buy Now'}
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
 
