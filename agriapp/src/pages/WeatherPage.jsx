@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, Sun, Cloud, CloudRain, CloudLightning, 
   Wind, Droplets, MapPin, Navigation, 
-  ArrowLeft, AlertTriangle, Info, Thermometer, Clock
+  ArrowLeft, AlertTriangle, Info, Thermometer, Clock,
+  Sunrise, Sunset, Gauge, Cloudy
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -167,6 +168,18 @@ const WeatherPage = () => {
             </div>
 
             <div className="max-w-4xl mx-auto px-4 relative z-10">
+                {/* Back Button */}
+                <motion.div
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    className="mb-6"
+                >
+                    <Link to="/dashboard" className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors group font-bold text-xs uppercase tracking-widest">
+                        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+                        Back to Dashboard
+                    </Link>
+                </motion.div>
+
                 {/* Compact Search Bar */}
                 <motion.div 
                     initial={{ y: -20, opacity: 0 }}
@@ -247,16 +260,28 @@ const WeatherPage = () => {
                                     <div className="text-[10px] font-bold text-white/50 uppercase">
                                         H: {Math.round(weather.daily.temperature_2m_max[0])}° • L: {Math.round(weather.daily.temperature_2m_min[0])}°
                                     </div>
+                                    <div className="mt-3 flex gap-4 text-[10px] font-bold text-white/40 uppercase">
+                                        <div className="flex items-center gap-1">
+                                            <Sunrise size={12} className="text-yellow-400/60" />
+                                            {new Date(weather.daily.sunrise[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        </div>
+                                        <div className="flex items-center gap-1">
+                                            <Sunset size={12} className="text-orange-400/60" />
+                                            {new Date(weather.daily.sunset[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
                             {/* Dense Details Grid */}
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
                                 {[
                                     { label: 'Humidity', value: `${weather.current.relative_humidity_2m}%`, icon: <Droplets size={16} className="text-blue-300" /> },
                                     { label: 'Wind', value: `${weather.current.wind_speed_10m} km/h`, icon: <Wind size={16} className="text-agri-light" /> },
+                                    { label: 'Pressure', value: `${Math.round(weather.current.pressure_msl)} hPa`, icon: <Gauge size={16} className="text-purple-300" /> },
+                                    { label: 'Cloud Cover', value: `${weather.current.cloud_cover}%`, icon: <Cloudy size={16} className="text-blue-200" /> },
                                     { label: 'Rain', value: (weather.current.precipitation > 0 || (weather.current.weather_code >= 51 && weather.current.weather_code <= 82)) ? "Yes" : "No", icon: <CloudRain size={16} className="text-blue-400" /> },
-                                    { label: 'UV Index', value: `${weather.current.uv_index} (${weather.daily.uv_index_max[0]} Max)`, icon: <Sun size={16} className="text-yellow-400" /> }
+                                    { label: 'UV Index', value: `${weather.current.uv_index}`, icon: <Sun size={16} className="text-yellow-400" /> }
                                 ].map((item, i) => (
                                     <div key={i} className="bg-white/5 hover:bg-white/10 transition-colors rounded-xl p-3 border border-white/10 flex items-center gap-3">
                                         <div className="shrink-0">{item.icon}</div>
@@ -274,13 +299,17 @@ const WeatherPage = () => {
                             initial={{ y: 10, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ delay: 0.1 }}
-                            className="bg-agri-dark/40 backdrop-blur-xl border border-white/10 p-4 rounded-2xl flex items-center gap-4 shadow-premium"
+                            className="bg-agri-dark/40 backdrop-blur-xl border border-white/10 p-5 rounded-2xl flex items-start gap-5 shadow-premium relative overflow-hidden group"
                         >
-                            <div className="p-3 bg-agri-primary/20 rounded-xl shrink-0">
-                                <Info size={20} className="text-agri-primary" />
+                            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                                <Info size={80} className="text-agri-primary" />
                             </div>
-                            <div>
-                                <p className="text-xs sm:text-sm font-medium leading-tight italic text-white/90">
+                            <div className="p-3 bg-agri-primary/20 rounded-xl shrink-0">
+                                <Info size={24} className="text-agri-primary" />
+                            </div>
+                            <div className="relative z-10">
+                                <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-agri-primary mb-1">Farmer's Agri-Advisory</h3>
+                                <p className="text-sm sm:text-base font-medium leading-relaxed italic text-white/90">
                                     "{getAdvice(weather.current.temperature_2m, weather.current.rain, weather.current.weather_code)}"
                                 </p>
                             </div>
@@ -294,7 +323,8 @@ const WeatherPage = () => {
                                     initial={{ y: 10, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.05 * i }}
-                                    className="glass py-4 px-2 rounded-2xl text-center border border-white/5"
+                                    whileHover={{ y: -5, backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
+                                    className="glass py-4 px-2 rounded-2xl text-center border border-white/5 transition-colors cursor-default"
                                 >
                                     <div className="text-[8px] font-bold uppercase text-white/40 mb-2">
                                         {new Date(day).toLocaleDateString('en-IN', { weekday: 'short' })}
