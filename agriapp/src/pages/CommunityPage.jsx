@@ -45,7 +45,13 @@ const postsData = [
     }
 ];
 
-const categories = ["General", "Expert Advice", "Market Trends", "Success Stories", "Tech Support"];
+const categoryList = [
+    { name: "General", icon: MessageSquare },
+    { name: "Expert Advice", icon: Sparkles },
+    { name: "Market Trends", icon: TrendingUp },
+    { name: "Success Stories", icon: Award },
+    { name: "Tech Support", icon: CheckCircle }
+];
 
 const CommunityPage = () => {
     const [posts, setPosts] = useState([
@@ -93,8 +99,8 @@ const CommunityPage = () => {
         }
     ]);
 
-    const categories = ["General", "Expert Advice", "Market Trends", "Success Stories", "Tech Support"];
     const [activeCategory, setActiveCategory] = useState("General");
+    const [sortBy, setSortBy] = useState("Newest");
     const [searchQuery, setSearchQuery] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newPostContent, setNewPostContent] = useState("");
@@ -143,6 +149,12 @@ const CommunityPage = () => {
         return matchesCategory && matchesSearch;
     });
 
+    const sortedPosts = [...filteredPosts].sort((a, b) => {
+        if (sortBy === "Popular") return b.likes - a.likes;
+        if (sortBy === "Trending") return (b.likes + b.comments) - (a.likes + a.comments);
+        return b.id - a.id; // Newest (by ID since ID is Date.now() for new posts)
+    });
+
     return (
         <div className="bg-agri-surface dark:bg-slate-950 min-h-screen pt-24 pb-24 transition-colors duration-500 overflow-x-hidden">
             <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-agri-primary/5 to-transparent blur-3xl opacity-50" />
@@ -160,9 +172,15 @@ const CommunityPage = () => {
                         <h1 className="text-4xl md:text-6xl font-display font-black text-agri-dark dark:text-white mb-6 uppercase tracking-tighter">
                             Grow <span className="text-agri-primary">Together</span>
                         </h1>
-                        <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
-                            Connect with {50000 + posts.length} verified farmers and experts. Share insights, solve challenges, and access professional guidance.
-                        </p>
+                        <div className="flex items-center gap-3 mb-6">
+                            <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+                                Connect with {50000 + posts.length} verified farmers and experts.
+                            </p>
+                            <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+                                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                                <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">1.2k Active Now</span>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="flex gap-4">
@@ -180,17 +198,18 @@ const CommunityPage = () => {
                         <div className="glass p-8 rounded-[2.5rem] border-agri-primary/10">
                             <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-6">Discovery</h3>
                             <div className="space-y-2">
-                                {categories.map((cat) => (
+                                {categoryList.map((cat) => (
                                     <button
-                                        key={cat}
-                                        onClick={() => setActiveCategory(cat)}
-                                        className={`w-full text-left px-5 py-3 rounded-xl font-bold text-sm transition-all ${
-                                            activeCategory === cat 
+                                        key={cat.name}
+                                        onClick={() => setActiveCategory(cat.name)}
+                                        className={`w-full flex items-center gap-3 px-5 py-3 rounded-xl font-bold text-sm transition-all ${
+                                            activeCategory === cat.name 
                                             ? 'bg-agri-primary/10 text-agri-primary border-l-4 border-agri-primary' 
                                             : 'text-gray-500 hover:text-agri-dark dark:hover:text-white hover:bg-agri-primary/5'
                                         }`}
                                     >
-                                        {cat}
+                                        <cat.icon size={16} className={activeCategory === cat.name ? "text-agri-primary" : "text-gray-400"} />
+                                        {cat.name}
                                     </button>
                                 ))}
                             </div>
@@ -207,22 +226,36 @@ const CommunityPage = () => {
                     </div>
 
                     <div className="lg:col-span-6 space-y-8">
-                        <div className="relative group">
-                            <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none group-focus-within:text-agri-primary transition-colors">
-                                <Search className="h-5 w-5 text-gray-400" />
+                            <div className="flex flex-col md:flex-row gap-4">
+                                <div className="relative flex-grow group">
+                                    <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none group-focus-within:text-agri-primary transition-colors">
+                                        <Search className="h-5 w-5 text-gray-400" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        className="block w-full pl-12 pr-4 py-4 glass dark:bg-slate-900 border-gray-200 dark:border-gray-800 rounded-2xl text-agri-dark dark:text-white shadow-premium focus:ring-2 focus:ring-agri-primary transition-all font-medium"
+                                        placeholder="Search discussions..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
+                                </div>
+                                <div className="flex items-center gap-2 px-4 py-2 glass dark:bg-slate-900 border-gray-200 dark:border-gray-800 rounded-2xl min-w-[160px]">
+                                    <Filter size={16} className="text-agri-primary" />
+                                    <select 
+                                        value={sortBy}
+                                        onChange={(e) => setSortBy(e.target.value)}
+                                        className="bg-transparent border-none text-xs font-bold text-gray-500 focus:ring-0 uppercase tracking-widest cursor-pointer w-full"
+                                    >
+                                        <option value="Newest">Newest First</option>
+                                        <option value="Popular">Most Popular</option>
+                                        <option value="Trending">Trending</option>
+                                    </select>
+                                </div>
                             </div>
-                            <input
-                                type="text"
-                                className="block w-full pl-12 pr-4 py-4 glass dark:bg-slate-900 border-gray-200 dark:border-gray-800 rounded-2xl text-agri-dark dark:text-white shadow-premium focus:ring-2 focus:ring-agri-primary transition-all font-medium"
-                                placeholder="Search discussions..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                        </div>
 
                         <div className="space-y-6">
                             <AnimatePresence mode="popLayout">
-                                {filteredPosts.map((post) => (
+                                {sortedPosts.map((post) => (
                                     <motion.div 
                                         key={post.id}
                                         layout
@@ -279,6 +312,12 @@ const CommunityPage = () => {
                                     </motion.div>
                                 ))}
                             </AnimatePresence>
+                            
+                            <div className="pt-10 text-center">
+                                <button className="px-10 py-4 glass dark:bg-slate-900 border-agri-primary/20 text-agri-primary rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-agri-primary hover:text-white transition-all">
+                                    Load More Discussions
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -356,18 +395,24 @@ const CommunityPage = () => {
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Category</label>
                                         <div className="flex flex-wrap gap-2">
-                                            {categories.map(cat => (
+                                            {categoryList.map(cat => (
                                                 <button
-                                                    key={cat}
+                                                    key={cat.name}
                                                     type="button"
-                                                    onClick={() => setActiveCategory(cat)}
-                                                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${activeCategory === cat ? 'bg-agri-primary text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-500'}`}
+                                                    onClick={() => setActiveCategory(cat.name)}
+                                                    className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${activeCategory === cat.name ? 'bg-agri-primary text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-500'}`}
                                                 >
-                                                    {cat}
+                                                    <cat.icon size={14} />
+                                                    {cat.name}
                                                 </button>
                                             ))}
                                         </div>
                                     </div>
+
+                                    <button type="button" className="w-full py-4 border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-2xl flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-agri-primary hover:border-agri-primary transition-all group">
+                                        <Plus size={24} className="group-hover:scale-110 transition-transform" />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">Attach Media / Photos</span>
+                                    </button>
                                 </div>
 
                                 <div className="pt-8">
