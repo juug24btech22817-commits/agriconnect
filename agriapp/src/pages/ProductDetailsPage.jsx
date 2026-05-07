@@ -350,15 +350,32 @@ const ProductDetailsPage = () => {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                  <button
                                     onClick={handleAddToCart}
-                                    className="w-full py-6 bg-agri-primary hover:bg-emerald-700 text-white rounded-[2.5rem] font-black text-sm uppercase tracking-[0.2em] transition-all shadow-glow flex items-center justify-center gap-3 group"
+                                    className={`w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 group active:scale-[0.98] ${
+                                        isInCart 
+                                        ? 'bg-emerald-50 dark:bg-emerald-900/10 text-agri-primary border border-agri-primary/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/20' 
+                                        : 'bg-agri-primary text-white hover:bg-emerald-600 shadow-lg shadow-agri-primary/10'
+                                    }`}
                                 >
-                                    <span className="flex items-center justify-center gap-3">
-                                        {isInCart ? <ArrowRight size={20} /> : <ShoppingBag size={20} />}
-                                        {isInCart ? 'View Cart' : 'Add to Cart'}
-                                    </span>
+                                    {isInCart ? <CheckCircle2 size={18} strokeWidth={2.5} /> : <ShoppingCart size={18} strokeWidth={2.5} />}
+                                    <span>{isInCart ? 'In Cart' : 'Add to Cart'}</span>
+                                </button>
+                                
+                                <button
+                                    onClick={handleBuyNow}
+                                    disabled={buyLoading}
+                                    className="w-full py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 hover:bg-slate-800 dark:hover:bg-gray-100 active:scale-[0.98] shadow-xl shadow-slate-900/10 disabled:opacity-50"
+                                >
+                                    {buyLoading ? (
+                                        <Loader2 size={18} className="animate-spin" />
+                                    ) : (
+                                        <>
+                                            <CreditCard size={18} strokeWidth={2.5} />
+                                            <span>Buy Now</span>
+                                        </>
+                                    )}
                                 </button>
                             </div>
                         </div>

@@ -6,7 +6,7 @@ import React, { useState, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { 
-  ShoppingCart, Star, StarHalf, MapPin, Check, Zap, Plus, Minus, 
+  ShoppingCart, ShoppingBag, Star, StarHalf, MapPin, Check, Zap, Plus, Minus, 
   X, User, ShieldCheck, Phone, PhoneCall, Info, HeartPulse, 
   TrendingUp, BarChart3, Globe, Sparkles, LogIn, Loader2,
   Truck, Lock, Package, ChevronDown, ChevronRight, CreditCard,
@@ -604,27 +604,22 @@ const CropCard = ({ crop, index }) => {
                              </div>
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="mt-4">
                             <button
                                 onClick={isInCart ? () => navigate('/cart') : handleAddToCart}
-                                className={`flex-grow py-4 rounded-[2rem] font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 shadow-glow flex items-center justify-center gap-2 group ${
+                                className={`w-full py-3.5 rounded-xl font-bold text-[11px] uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2 group active:scale-[0.98] shadow-lg ${
                                     isInCart 
-                                    ? 'bg-white dark:bg-slate-800 text-agri-primary border border-agri-primary/20' 
-                                    : 'bg-gradient-to-r from-agri-primary to-emerald-700 text-white'
+                                    ? 'bg-emerald-50 dark:bg-emerald-900/10 text-agri-primary border border-agri-primary/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/20' 
+                                    : 'bg-agri-primary text-white hover:bg-emerald-600 shadow-agri-primary/20'
                                 }`}
                             >
-                                {isInCart ? <Check size={18} /> : <ShoppingCart size={18} />}
-                                {isInCart ? 'In Cart' : 'Add to Cart'}
+                                {isInCart ? (
+                                    <Check size={16} strokeWidth={3} className="group-hover:scale-110 transition-transform" />
+                                ) : (
+                                    <ShoppingCart size={16} strokeWidth={2.5} className="group-hover:-translate-y-0.5 transition-transform" />
+                                )}
+                                <span>{isInCart ? 'View in Cart' : 'Add to Cart'}</span>
                             </button>
-                            {!isInCart && (
-                                <button
-                                    onClick={handleBuyNow}
-                                    disabled={isLoading}
-                                    className="px-6 py-4 bg-agri-dark dark:bg-white text-white dark:text-agri-dark rounded-[2rem] font-black text-[10px] uppercase tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 flex items-center justify-center disabled:opacity-50"
-                                >
-                                    {isLoading ? <Loader2 size={18} className="animate-spin" /> : 'Buy Now'}
-                                </button>
-                            )}
                         </div>
                     </div>
                 </div>
