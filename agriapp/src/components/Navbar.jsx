@@ -90,9 +90,9 @@ const Navbar = () => {
                             {/* Hamburger Menu Icon */}
                             <button
                                 onClick={() => setIsOpen(true)}
-                                className="p-2.5 rounded-2xl bg-agri-primary/10 text-agri-primary hover:bg-agri-primary/20 transition-all group"
+                                className="p-2.5 rounded-2xl bg-agri-primary/10 text-agri-primary hover:bg-agri-primary/20 hover:scale-105 active:scale-95 transition-all group shadow-sm hover:shadow-premium-sm border border-agri-primary/5 hover:border-agri-primary/20"
                             >
-                                <Menu size={24} className="group-hover:rotate-180 transition-transform duration-500" />
+                                <Menu size={24} className="group-hover:rotate-90 transition-transform duration-300" />
                             </button>
                         </div>
                     </div>
@@ -126,9 +126,9 @@ const Navbar = () => {
                                     </div>
                                     <button 
                                         onClick={() => setIsOpen(false)}
-                                        className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+                                        className="p-2.5 rounded-2xl hover:bg-red-50 dark:hover:bg-red-500/10 text-gray-400 hover:text-red-500 transition-all hover:rotate-90"
                                     >
-                                        <X size={24} className="text-gray-400" />
+                                        <X size={24} />
                                     </button>
                                 </div>
 

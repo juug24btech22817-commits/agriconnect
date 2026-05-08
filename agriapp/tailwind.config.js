@@ -25,6 +25,7 @@ export default {
       },
       boxShadow: {
         'premium': '0 20px 50px -12px rgba(0, 0, 0, 0.08)',
+        'premium-sm': '0 10px 25px -5px rgba(0, 0, 0, 0.05)',
         'glow': '0 0 20px rgba(16, 185, 129, 0.4)',
       },
       backgroundImage: {
