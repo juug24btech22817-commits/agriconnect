@@ -3,47 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Users, MessageSquare, Heart, Share2, Search, 
   TrendingUp, Award, User, Clock, CheckCircle, 
-  Plus, MessageCircle, Sparkles, Filter, X
+  Plus, MessageCircle, Sparkles, Filter, X,
+  Bookmark, Eye
 } from 'lucide-react';
-
-const postsData = [
-    {
-        id: 1,
-        author: "Farmer Gurdeep",
-        avatar: null,
-        location: "Amritsar, Punjab",
-        time: "2h ago",
-        content: "Just started the organic transition for my 5-acre wheat farm. Any tips on natural pest control for the early stages?",
-        likes: 24,
-        comments: 12,
-        tags: ["OrganicTransition", "WheatFarming"],
-        isVerified: true
-    },
-    {
-        id: 2,
-        author: "Dr. Ananya Rao",
-        avatar: null,
-        location: "AgriTech Expert",
-        time: "5h ago",
-        content: "High moisture levels detected in Southern Karnataka this week. Farmers should monitor for fungal growth in paddy fields.",
-        likes: 56,
-        comments: 8,
-        tags: ["WeatherAlert", "PaddyHealth"],
-        isExpert: true
-    },
-    {
-        id: 3,
-        author: "Venkatesh K.",
-        avatar: null,
-        location: "Kolar, Karnataka",
-        time: "1d ago",
-        content: "Successfully harvested the first batch of hybrid tomatoes. The yield is 20% higher thanks to the new drip irrigation setup!",
-        likes: 89,
-        comments: 45,
-        tags: ["SuccessStory", "SmartIrrigation"],
-        isVerified: true
-    }
-];
 
 const categoryList = [
     { name: "General", icon: MessageSquare },
@@ -57,6 +19,7 @@ const CommunityPage = () => {
     const [posts, setPosts] = useState([
         {
             id: 1,
+            title: "Organic Pest Control Tips?",
             author: "Farmer Gurdeep",
             avatar: null,
             location: "Amritsar, Punjab",
@@ -64,6 +27,8 @@ const CommunityPage = () => {
             content: "Just started the organic transition for my 5-acre wheat farm. Any tips on natural pest control for the early stages?",
             likes: 24,
             liked: false,
+            isBookmarked: false,
+            views: 142,
             comments: 12,
             tags: ["OrganicTransition", "WheatFarming"],
             category: "General",
@@ -71,6 +36,7 @@ const CommunityPage = () => {
         },
         {
             id: 2,
+            title: "Southern Karnataka Moisture Alert",
             author: "Dr. Ananya Rao",
             avatar: null,
             location: "AgriTech Expert",
@@ -78,6 +44,8 @@ const CommunityPage = () => {
             content: "High moisture levels detected in Southern Karnataka this week. Farmers should monitor for fungal growth in paddy fields.",
             likes: 56,
             liked: false,
+            isBookmarked: true,
+            views: 892,
             comments: 8,
             tags: ["WeatherAlert", "PaddyHealth"],
             category: "Expert Advice",
@@ -85,6 +53,7 @@ const CommunityPage = () => {
         },
         {
             id: 3,
+            title: "Hybrid Tomato Success Story",
             author: "Venkatesh K.",
             avatar: null,
             location: "Kolar, Karnataka",
@@ -92,6 +61,8 @@ const CommunityPage = () => {
             content: "Successfully harvested the first batch of hybrid tomatoes. The yield is 20% higher thanks to the new drip irrigation setup!",
             likes: 89,
             liked: false,
+            isBookmarked: false,
+            views: 1240,
             comments: 45,
             tags: ["SuccessStory", "SmartIrrigation"],
             category: "Success Stories",
@@ -103,6 +74,7 @@ const CommunityPage = () => {
     const [sortBy, setSortBy] = useState("Newest");
     const [searchQuery, setSearchQuery] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newPostTitle, setNewPostTitle] = useState("");
     const [newPostContent, setNewPostContent] = useState("");
 
     const handleLike = (id) => {
@@ -118,12 +90,25 @@ const CommunityPage = () => {
         }));
     };
 
+    const handleBookmark = (id) => {
+        setPosts(posts.map(post => {
+            if (post.id === id) {
+                return {
+                    ...post,
+                    isBookmarked: !post.isBookmarked
+                };
+            }
+            return post;
+        }));
+    };
+
     const handleAddPost = (e) => {
         e.preventDefault();
-        if (!newPostContent.trim()) return;
+        if (!newPostContent.trim() || !newPostTitle.trim()) return;
 
         const newPost = {
             id: Date.now(),
+            title: newPostTitle,
             author: "Farmer Shaswat",
             avatar: null,
             location: "Bengaluru, Karnataka",
@@ -131,6 +116,8 @@ const CommunityPage = () => {
             content: newPostContent,
             likes: 0,
             liked: false,
+            isBookmarked: false,
+            views: 0,
             comments: 0,
             tags: ["Community", "AgriConnect"],
             category: activeCategory,
@@ -138,6 +125,7 @@ const CommunityPage = () => {
         };
 
         setPosts([newPost, ...posts]);
+        setNewPostTitle("");
         setNewPostContent("");
         setIsModalOpen(false);
     };
@@ -145,6 +133,7 @@ const CommunityPage = () => {
     const filteredPosts = posts.filter(post => {
         const matchesCategory = activeCategory === "General" || post.category === activeCategory;
         const matchesSearch = post.content.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                             post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                              post.author.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
     });
@@ -215,13 +204,17 @@ const CommunityPage = () => {
                             </div>
                         </div>
 
-                        <div className="p-8 bg-agri-dark rounded-[2.5rem] text-white overflow-hidden relative group">
-                            <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform">
-                                <Award size={80} />
+                        <div className="p-8 bg-gradient-to-br from-agri-dark to-slate-900 rounded-[2.5rem] text-white overflow-hidden relative group border border-white/5 shadow-2xl">
+                            <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-500">
+                                <Award size={100} />
                             </div>
-                            <h4 className="text-xl font-display font-black mb-2 uppercase tracking-tight">Expert Access</h4>
-                            <p className="text-sm text-white/50 mb-6">Upgrade to Premium to get priority answers from industry scientists.</p>
-                            <button className="w-full py-4 bg-agri-primary rounded-xl font-bold text-xs uppercase tracking-widest shadow-glow">Join Elite</button>
+                            <div className="relative z-10">
+                                <h4 className="text-xl font-display font-black mb-2 uppercase tracking-tight flex items-center gap-2">
+                                    Expert Access <Sparkles size={18} className="text-agri-secondary" />
+                                </h4>
+                                <p className="text-sm text-white/50 mb-6 leading-relaxed">Upgrade to Premium to get priority answers from industry scientists.</p>
+                                <button className="w-full py-4 bg-agri-primary hover:bg-agri-primary/90 rounded-xl font-bold text-xs uppercase tracking-widest shadow-glow transition-all active:scale-95">Join Elite Network</button>
+                            </div>
                         </div>
                     </div>
 
@@ -271,7 +264,7 @@ const CommunityPage = () => {
                                         )}
                                         <div className="flex justify-between items-start mb-6">
                                             <div className="flex gap-4">
-                                                <div className="w-12 h-12 bg-agri-primary/10 rounded-2xl flex items-center justify-center text-agri-primary">
+                                                <div className="w-12 h-12 bg-agri-primary/10 rounded-2xl flex items-center justify-center text-agri-primary ring-4 ring-white/5">
                                                     <User size={24} />
                                                 </div>
                                                 <div>
@@ -283,10 +276,22 @@ const CommunityPage = () => {
                                                     <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{post.location} • {post.time}</p>
                                                 </div>
                                             </div>
-                                            <button className="p-2 text-gray-300 hover:text-agri-primary transition-colors">
-                                                <Share2 size={18} />
-                                            </button>
+                                            <div className="flex gap-1">
+                                                <button 
+                                                    onClick={() => handleBookmark(post.id)}
+                                                    className={`p-2 transition-colors ${post.isBookmarked ? 'text-agri-primary' : 'text-gray-300 hover:text-agri-primary'}`}
+                                                >
+                                                    <Bookmark size={18} fill={post.isBookmarked ? "currentColor" : "none"} />
+                                                </button>
+                                                <button className="p-2 text-gray-300 hover:text-agri-primary transition-colors">
+                                                    <Share2 size={18} />
+                                                </button>
+                                            </div>
                                         </div>
+
+                                        <h3 className="text-xl font-display font-black text-agri-dark dark:text-white mb-3 tracking-tight">
+                                            {post.title}
+                                        </h3>
 
                                         <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6 font-medium">
                                             {post.content}
@@ -308,14 +313,20 @@ const CommunityPage = () => {
                                             <button className="flex items-center gap-2 text-gray-400 hover:text-agri-primary transition-colors font-bold text-sm">
                                                 <MessageCircle size={18} /> {post.comments}
                                             </button>
+                                            <div className="flex items-center gap-2 text-gray-400 font-bold text-sm ml-auto">
+                                                <Eye size={16} /> {post.views > 1000 ? `${(post.views / 1000).toFixed(1)}k` : post.views}
+                                            </div>
                                         </div>
                                     </motion.div>
                                 ))}
                             </AnimatePresence>
                             
                             <div className="pt-10 text-center">
-                                <button className="px-10 py-4 glass dark:bg-slate-900 border-agri-primary/20 text-agri-primary rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-agri-primary hover:text-white transition-all">
-                                    Load More Discussions
+                                <button className="px-10 py-5 bg-white dark:bg-slate-900 border border-agri-primary/20 text-agri-primary rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-agri-primary hover:text-white hover:shadow-glow transition-all active:scale-95 group">
+                                    <span className="flex items-center gap-2">
+                                        Load More Discussions
+                                        <TrendingUp size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -379,10 +390,20 @@ const CommunityPage = () => {
                                         <X size={24} className="text-gray-400" />
                                     </button>
                                 </div>
-                                
-                                <div className="space-y-6">
+                                                                <div className="space-y-6">
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Your Post</label>
+                                        <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Discussion Title</label>
+                                        <input 
+                                            type="text"
+                                            value={newPostTitle}
+                                            onChange={(e) => setNewPostTitle(e.target.value)}
+                                            className="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-5 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary font-bold" 
+                                            placeholder="What's your discussion about?"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Details</label>
                                         <textarea 
                                             rows="4"
                                             value={newPostContent}
