@@ -45,7 +45,13 @@ const MarketPricePage = () => {
         const savedPrices = JSON.parse(localStorage.getItem('agri-market-prices') || '{}');
     }, []);
 
-    const categories = ['All', 'Groceries', 'Fruits', 'Vegetables', 'Dry Fruits'];
+    const categories = [
+        { name: 'All', icon: Globe },
+        { name: 'Groceries', icon: Zap },
+        { name: 'Fruits', icon: Sparkles },
+        { name: 'Vegetables', icon: Activity },
+        { name: 'Dry Fruits', icon: Info }
+    ];
 
     /**
      * Unified 'Per Kg' Pricing Engine for all commodities.
@@ -134,13 +140,14 @@ const MarketPricePage = () => {
             commodity: query.charAt(0).toUpperCase() + query.slice(1),
             avgPrice: Math.round(basePrice),
             minPrice: Math.round(basePrice - variation),
-            minLocation: "Mandi A, India",
+            minLocation: ["Azadpur Mandi", "Vashi Mandi", "Koyambedu", "Gultekadi"][Math.abs(hash) % 4] + ", India",
             maxPrice: Math.round(basePrice + (variation * 1.5)),
-            maxLocation: "Mandi B, India",
-            mandiCount: "25+",
-            stateCount: "8+",
+            maxLocation: ["Yeshwanthpur", "Sardarpura Mandi", "Mandi Parishad", "APMC Yard"][Math.abs(hash * 7) % 4] + ", India",
+            mandiCount: (Math.abs(hash) % 45 + 15).toString() + "+",
+            stateCount: (Math.abs(hash) % 12 + 4).toString() + "+",
             arrivalDate: new Date().toLocaleDateString('en-GB'),
             unit: 'Kg', 
+            volume: (Math.abs(hash) % 500 + 100).toString() + " Tons",
             category: rule.category,
             isLive: true
         };
@@ -275,15 +282,16 @@ const MarketPricePage = () => {
                 <div className="flex flex-wrap gap-3 mb-10">
                     {categories.map((cat) => (
                         <button
-                            key={cat}
-                            onClick={() => setActiveCategory(cat)}
-                            className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 border ${
-                                activeCategory === cat 
+                            key={cat.name}
+                            onClick={() => setActiveCategory(cat.name)}
+                            className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 border flex items-center gap-2 ${
+                                activeCategory === cat.name 
                                     ? 'bg-agri-primary text-white border-agri-primary shadow-glow scale-105' 
                                     : 'bg-white dark:bg-slate-900 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-800 hover:border-agri-primary/50'
                             }`}
                         >
-                            {cat}
+                            <cat.icon size={14} />
+                            {cat.name}
                         </button>
                     ))}
                 </div>
@@ -317,19 +325,38 @@ const MarketPricePage = () => {
 
                                             </div>
                                             <div className="grid grid-cols-2 gap-4">
-                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl">
-                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Min</p>
-                                                    <p className="text-lg font-black text-red-500">₹{searchResult.minPricePerKg}</p>
+                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent hover:border-agri-primary/20 transition-colors">
+                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Min Price</p>
+                                                    <p className="text-lg font-black text-rose-500">₹{searchResult.minPricePerKg}</p>
                                                 </div>
-                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl">
-                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Max</p>
-                                                    <p className="text-lg font-black text-agri-primary">₹{searchResult.maxPricePerKg}</p>
+                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent hover:border-agri-primary/20 transition-colors">
+                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Max Price</p>
+                                                    <p className="text-lg font-black text-emerald-500">₹{searchResult.maxPricePerKg}</p>
                                                 </div>
+                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent hover:border-agri-primary/20 transition-colors">
+                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Daily Volume</p>
+                                                    <p className="text-lg font-black text-agri-dark dark:text-white">{searchResult.volume}</p>
+                                                </div>
+                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent hover:border-agri-primary/20 transition-colors">
+                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Price Spread</p>
+                                                    <p className="text-lg font-black text-agri-dark dark:text-white">₹{searchResult.maxPricePerKg - searchResult.minPricePerKg}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-3">
+                                                <button className="flex-1 py-3 bg-agri-primary/10 text-agri-primary rounded-xl text-xs font-bold hover:bg-agri-primary hover:text-white transition-all flex items-center justify-center gap-2">
+                                                    <Zap size={14} /> Set Alert
+                                                </button>
+                                                <button className="flex-1 py-3 bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-400 rounded-xl text-xs font-bold hover:bg-gray-200 dark:hover:bg-slate-700 transition-all">
+                                                    Full Report
+                                                </button>
                                             </div>
                                         </div>
                                         <div className="bg-gradient-to-br from-agri-primary to-emerald-600 p-8 rounded-2xl flex flex-col justify-center text-center text-white shadow-glow-sm relative overflow-hidden group">
-                                            <div className="absolute -right-4 -top-4 opacity-10 group-hover:scale-110 transition-transform duration-700">
-                                                <TrendingUp size={120} />
+                                            <div className="absolute top-4 right-4">
+                                                <div className="flex items-center gap-2 px-2 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase">
+                                                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
+                                                    Live
+                                                </div>
                                             </div>
                                             <div className="relative z-10">
                                                 <div className="text-[10px] opacity-80 font-bold uppercase tracking-widest mb-2">Average Mandi Price</div>
