@@ -47,19 +47,19 @@ const StoriesPage = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
                 <header className="text-center mb-24 max-w-4xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <span className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-agri-primary/10 text-agri-primary border border-agri-primary/20 text-sm font-bold mb-6">
-                            <Heart size={14} className="fill-current" /> Voices of Change
-                        </span>
-                        <h1 className="text-5xl md:text-7xl font-display font-black text-agri-dark dark:text-white mb-8 leading-[1.1] tracking-tight">
-                            Real Farmers. <br /> <span className="text-gradient">Real Success Stories.</span>
+                        <motion.div
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.5, type: 'spring' }}
+                            className="inline-flex items-center gap-2 py-2.5 px-5 rounded-full bg-gradient-to-r from-agri-primary/20 to-agri-secondary/20 text-agri-primary dark:text-agri-light border border-agri-primary/20 text-xs font-black uppercase tracking-[0.2em] mb-8 shadow-glow-sm"
+                        >
+                            <Heart size={12} className="fill-agri-primary animate-pulse" /> Voices of Change
+                        </motion.div>
+                        <h1 className="text-6xl md:text-8xl font-display font-black text-agri-dark dark:text-white mb-8 leading-[1] tracking-tighter">
+                            Real Farmers. <br /> <span className="bg-clip-text text-transparent bg-gradient-to-r from-agri-primary via-agri-secondary to-agri-primary bg-[length:200%_auto] animate-gradient-x">Success Stories.</span>
                         </h1>
-                        <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 font-medium max-w-3xl mx-auto leading-relaxed">
-                            Hear directly from the community that grows our food about how AgriConnect is transforming livelihoods through direct trade.
+                        <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 font-medium max-w-2xl mx-auto leading-relaxed">
+                            Empowering the backbone of our nation through transparency, technology, and trust.
                         </p>
                     </motion.div>
                 </header>
@@ -75,36 +75,35 @@ const StoriesPage = () => {
                             className={`flex flex-col ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 lg:gap-20 items-center`}
                         >
 
-                            {/* Media Section */}
                             <div className="w-full lg:w-1/2 relative group">
-                                <div className="relative rounded-[2.5rem] overflow-hidden shadow-premium aspect-[4/3]">
+                                <motion.div 
+                                    whileHover={{ scale: 1.02 }}
+                                    className="relative rounded-[3rem] overflow-hidden shadow-2xl aspect-[4/3] border-4 border-white/10"
+                                >
                                     <img 
                                         src={story.videoBg} 
                                         alt="Farm background" 
                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" 
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:via-black/10 transition-all duration-500"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500"></div>
                                     
                                     {/* Video Button */}
                                     <button
                                         onClick={() => setSelectedStory(story)}
-                                        className="absolute inset-0 m-auto w-24 h-24 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/30 text-white hover:bg-agri-primary hover:border-agri-primary hover:scale-110 transition-all z-10 shadow-2xl group/btn"
+                                        className="absolute inset-0 m-auto w-20 h-20 bg-white/10 backdrop-blur-2xl rounded-full flex items-center justify-center border border-white/20 text-white hover:bg-agri-primary hover:border-agri-primary hover:scale-110 transition-all z-10 shadow-[0_0_50px_rgba(255,255,255,0.2)] group/btn"
                                     >
-                                        <PlayCircle size={48} className="ml-1 group-hover/btn:fill-white/20" />
+                                        <PlayCircle size={40} className="ml-1 group-hover/btn:fill-white/20 transition-all" />
                                     </button>
-
-                                    {/* Tags */}
-                                    <div className="absolute bottom-6 left-8 flex gap-2">
-                                        {story.tags.map(tag => (
-                                            <span key={tag} className="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold text-white border border-white/20">
-                                                {tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
+                                </motion.div>
                                 
-                                {/* Decorative elements */}
-                                <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-agri-primary/10 rounded-full blur-3xl -z-10 group-hover:bg-agri-primary/20 transition-colors" />
+                                {/* Tags */}
+                                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex gap-3 z-20">
+                                    {story.tags.map(tag => (
+                                        <span key={tag} className="px-5 py-2.5 bg-agri-dark/80 backdrop-blur-xl rounded-2xl text-[10px] font-black uppercase tracking-widest text-white border border-white/10 shadow-xl">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
 
                             {/* Text Context */}
@@ -116,16 +115,16 @@ const StoriesPage = () => {
                                     </blockquote>
                                 </div>
 
-                                <div className="flex items-center gap-6 p-6 glass rounded-3xl border-white/40 shadow-sm">
+                                <div className="flex items-center gap-6 p-8 bg-white/5 dark:bg-white/5 backdrop-blur-md rounded-[2.5rem] border border-white/10 shadow-2xl hover:border-agri-primary/30 transition-all group/info">
                                     <div className="relative">
-                                        <img src={story.image} alt={story.name} className="w-20 h-20 rounded-2xl object-cover ring-4 ring-agri-primary/10 shadow-lg" />
-                                        <div className="absolute -bottom-2 -right-2 bg-agri-primary text-white p-1.5 rounded-lg shadow-lg">
-                                            <ShieldCheck size={14} />
+                                        <img src={story.image} alt={story.name} className="w-24 h-24 rounded-3xl object-cover ring-4 ring-agri-primary/10 shadow-2xl group-hover/info:scale-105 transition-transform" />
+                                        <div className="absolute -bottom-2 -right-2 bg-agri-primary text-white p-2 rounded-xl shadow-xl">
+                                            <ShieldCheck size={16} />
                                         </div>
                                     </div>
                                     <div>
-                                        <h3 className="text-2xl font-display font-bold text-agri-dark dark:text-white">{story.name}</h3>
-                                        <p className="text-agri-primary dark:text-agri-secondary font-bold tracking-wide uppercase text-xs mt-1">{story.farm}</p>
+                                        <h3 className="text-3xl font-display font-black text-agri-dark dark:text-white leading-none">{story.name}</h3>
+                                        <p className="text-agri-primary dark:text-agri-secondary font-black tracking-[0.2em] uppercase text-[10px] mt-3">{story.farm}</p>
                                     </div>
                                 </div>
                             </div>
@@ -173,30 +172,32 @@ const StoriesPage = () => {
                     )}
                 </AnimatePresence>
 
-                {/* Bottom CTA Section */}
                 <motion.section 
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-40 relative rounded-[3rem] bg-agri-dark p-12 md:p-24 overflow-hidden"
+                    className="mt-60 relative rounded-[4rem] bg-agri-dark p-16 md:p-32 overflow-hidden border border-white/5"
                 >
-                    <div className="absolute inset-0 bg-mesh-gradient opacity-20" />
-                    <div className="relative z-10 text-center max-w-3xl mx-auto">
-                        <h2 className="text-4xl md:text-6xl font-display font-black text-white mb-8">
-                            Ready to write your own <br /> <span className="text-agri-primary">Success Story?</span>
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.15),transparent)] pointer-events-none" />
+                    <div className="absolute -top-24 -left-24 w-96 h-96 bg-agri-primary/10 rounded-full blur-[100px]" />
+                    <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-agri-secondary/10 rounded-full blur-[100px]" />
+                    
+                    <div className="relative z-10 text-center max-w-4xl mx-auto">
+                        <h2 className="text-5xl md:text-7xl font-display font-black text-white mb-10 tracking-tight">
+                            Ready to write your own <br /> <span className="bg-clip-text text-transparent bg-gradient-to-r from-agri-primary to-agri-secondary">Success Story?</span>
                         </h2>
-                        <p className="text-xl text-agri-light/70 mb-12 font-medium">
-                            Join thousands of farmers who are already trading directly and earning more.
+                        <p className="text-xl md:text-2xl text-agri-light/60 mb-16 font-medium leading-relaxed">
+                            Join thousands of farmers who are already trading directly and earning more. Your future starts here.
                         </p>
-                        <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                            <Link to="/register">
-                                <button className="px-10 py-5 bg-agri-primary text-white rounded-2xl font-bold text-lg shadow-glow hover:scale-105 transition-all w-full sm:w-auto">
-                                    Register as a Farmer
+                        <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
+                            <Link to="/register" className="w-full sm:w-auto">
+                                <button className="px-12 py-6 bg-agri-primary text-white rounded-2xl font-black text-lg shadow-[0_0_30px_rgba(34,197,94,0.4)] hover:shadow-[0_0_50px_rgba(34,197,94,0.6)] hover:scale-105 active:scale-95 transition-all uppercase tracking-widest">
+                                    Start Your Journey
                                 </button>
                             </Link>
-                            <Link to="/marketplace">
-                                <button className="px-10 py-5 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-2xl font-bold text-lg hover:bg-white/20 transition-all w-full sm:w-auto flex items-center justify-center gap-2">
-                                    Support Our Farmers <ArrowRight size={20} />
+                            <Link to="/marketplace" className="w-full sm:w-auto">
+                                <button className="px-12 py-6 bg-white/5 backdrop-blur-2xl text-white border border-white/10 rounded-2xl font-black text-lg hover:bg-white/10 hover:border-white/20 transition-all uppercase tracking-widest flex items-center justify-center gap-3 group">
+                                    Explore Market <ArrowRight size={22} className="group-hover:translate-x-2 transition-transform" />
                                 </button>
                             </Link>
                         </div>
