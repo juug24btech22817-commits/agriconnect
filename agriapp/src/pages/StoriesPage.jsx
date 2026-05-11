@@ -47,10 +47,15 @@ const StoriesPage = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
                 <header className="text-center mb-24 max-w-4xl mx-auto">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                    >
                         <motion.div
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.5, type: 'spring' }}
+                            transition={{ duration: 0.5, type: 'spring', delay: 0.2 }}
                             className="inline-flex items-center gap-2 py-2.5 px-5 rounded-full bg-gradient-to-r from-agri-primary/20 to-agri-secondary/20 text-agri-primary dark:text-agri-light border border-agri-primary/20 text-xs font-black uppercase tracking-[0.2em] mb-8 shadow-glow-sm"
                         >
                             <Heart size={12} className="fill-agri-primary animate-pulse" /> Voices of Change
