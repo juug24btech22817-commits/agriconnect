@@ -1,8 +1,12 @@
 {
   "name": "agriapp",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "author": {
+    "name": "shaswat",
+    "email": "juug24btech22817@jainuniversity.ac.in"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
