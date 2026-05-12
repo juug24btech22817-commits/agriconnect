@@ -216,19 +216,27 @@ const MarketPricePage = () => {
     };
 
     return (
-        <div className="bg-agri-surface dark:bg-slate-950 min-h-screen pt-24 pb-24 transition-colors duration-500 overflow-x-hidden">
+        <div className="bg-agri-surface dark:bg-slate-950 min-h-screen pt-24 pb-24 transition-colors duration-500 overflow-x-hidden relative">
+            {/* Premium Background Decorations */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+                <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-agri-primary/10 rounded-full blur-[120px] animate-pulse" />
+                <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] bg-emerald-500/10 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '2s' }} />
+                <div className="absolute -bottom-[10%] left-[20%] w-[35%] h-[35%] bg-agri-primary/5 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '4s' }} />
+            </div>
             
             {/* High-Contrast Seamless Price Ticker */}
-            <div className="sticky top-16 lg:top-20 left-0 w-full bg-agri-dark dark:bg-black border-y border-white/5 py-3 z-40 shadow-xl">
+            <div className="sticky top-16 lg:top-20 left-0 w-full bg-white/80 dark:bg-black/80 backdrop-blur-xl border-y border-agri-primary/10 py-3 z-40 shadow-xl">
+                <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white dark:from-black to-transparent z-10" />
+                <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white dark:from-black to-transparent z-10" />
                 <motion.div 
                     animate={{ x: [0, "-50%"] }}
                     transition={{ repeat: Infinity, duration: 40, ease: "linear" }}
                     className="flex whitespace-nowrap gap-16 items-center px-4"
                 >
                     {[...tickerItems, ...tickerItems].map((item, i) => (
-                        <div key={i} className="flex items-center gap-3 shrink-0">
+                        <div key={i} className="flex items-center gap-3 shrink-0 group">
                             <div className="w-2 h-2 rounded-full bg-agri-primary animate-pulse shadow-glow-sm" />
-                            <span className="text-sm font-black text-white/90 uppercase tracking-widest flex items-center gap-2">
+                            <span className="text-[10px] font-black text-agri-dark/60 dark:text-white/60 uppercase tracking-widest flex items-center gap-2 group-hover:text-agri-primary transition-colors">
                                 {item}
                             </span>
                         </div>
@@ -236,139 +244,150 @@ const MarketPricePage = () => {
                 </motion.div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 relative z-10">
 
                 <header className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-10">
                     <div className="max-w-xl">
                         <motion.div 
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
-                            className="flex items-center gap-2 text-agri-primary font-bold text-sm mb-4"
+                            className="flex items-center gap-2 text-agri-primary font-bold text-xs mb-4 tracking-[0.2em] uppercase"
                         >
-                            <Globe size={16} /> National Mandi Database
+                            <div className="w-8 h-[2px] bg-agri-primary/30" />
+                            <Globe size={14} className="animate-spin-slow" /> National Mandi Database
                         </motion.div>
-                        <h1 className="text-4xl md:text-6xl font-display font-black text-agri-dark dark:text-white mb-4 tracking-tight">Market <span className="text-agri-primary">Insights</span></h1>
-                        <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
-                            Access real-time pricing intelligence from over 5,000 mandis across India.
+                        <h1 className="text-4xl md:text-7xl font-display font-black text-agri-dark dark:text-white mb-4 tracking-tighter leading-none">
+                            Market <span className="text-transparent bg-clip-text bg-gradient-to-r from-agri-primary to-emerald-600">Insights</span>
+                        </h1>
+                        <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
+                            Access real-time pricing intelligence from over 5,000 mandis across India with AI-powered forecasting.
                         </p>
                     </div>
 
                     <div className="w-full md:max-w-md">
                         <form onSubmit={handleSearch} className="relative group">
-                            <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none group-focus-within:text-agri-primary transition-colors">
-                                <Search className="h-5 w-5 text-gray-400" />
-                            </div>
-                            <input
-                                type="text"
-                                className="block w-full pl-12 pr-32 py-5 glass dark:bg-slate-900 border-gray-200 dark:border-gray-800 rounded-2xl text-agri-dark dark:text-white shadow-premium focus:ring-2 focus:ring-agri-primary transition-all font-medium"
-                                placeholder="Search crop..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                            <div className="absolute inset-y-2 right-2">
-                                <button
-                                    type="submit"
-                                    disabled={isLoading}
-                                    className="h-full px-6 bg-agri-primary text-white rounded-xl text-xs font-bold shadow-glow hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
-                                >
-                                    {isLoading ? <Loader2 size={16} className="animate-spin" /> : <><Zap size={14}/> Check Price</>}
-                                </button>
+                            <div className="absolute -inset-1 bg-gradient-to-r from-agri-primary to-emerald-600 rounded-[2rem] blur opacity-20 group-focus-within:opacity-40 transition duration-500" />
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-gray-400 group-focus-within:text-agri-primary transition-colors">
+                                    <Search className="h-5 w-5" />
+                                </div>
+                                <input
+                                    type="text"
+                                    className="block w-full pl-14 pr-36 py-6 bg-white dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] text-agri-dark dark:text-white shadow-2xl focus:ring-2 focus:ring-agri-primary/50 outline-none transition-all font-medium text-lg placeholder:text-gray-400"
+                                    placeholder="Search crop..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                                <div className="absolute inset-y-2 right-2">
+                                    <button
+                                        type="submit"
+                                        disabled={isLoading}
+                                        className="h-full px-8 bg-agri-primary text-white rounded-[1rem] text-xs font-black uppercase tracking-widest shadow-glow hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
+                                    >
+                                        {isLoading ? <Loader2 size={16} className="animate-spin" /> : <><Zap size={14}/> Check</>}
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </header>
 
                 {/* Category Filters */}
-                <div className="flex flex-wrap gap-3 mb-10">
+                <div className="flex flex-wrap gap-4 mb-12">
                     {categories.map((cat) => (
                         <button
                             key={cat.name}
                             onClick={() => setActiveCategory(cat.name)}
-                            className={`px-6 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 border flex items-center gap-2 ${
+                            className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-500 border flex items-center gap-3 ${
                                 activeCategory === cat.name 
                                     ? 'bg-agri-primary text-white border-agri-primary shadow-glow scale-105' 
-                                    : 'bg-white dark:bg-slate-900 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-800 hover:border-agri-primary/50'
+                                    : 'bg-white/50 dark:bg-white/5 backdrop-blur-md text-gray-500 dark:text-gray-400 border-gray-200 dark:border-white/10 hover:border-agri-primary/50'
                             }`}
                         >
-                            <cat.icon size={14} />
+                            <cat.icon size={14} className={activeCategory === cat.name ? "animate-pulse" : ""} />
                             {cat.name}
                         </button>
                     ))}
                 </div>
 
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                     
-                    <div className="lg:col-span-8 space-y-8">
+                    <div className="lg:col-span-8 space-y-10">
                         
                         <AnimatePresence mode="wait">
                             {searchResult ? (
                                 <motion.div
                                     key="result"
-                                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                                    initial={{ opacity: 0, scale: 0.98, y: 30 }}
                                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.95 }}
-                                    className="glass p-6 rounded-[2rem] shadow-premium border-agri-primary/20 relative overflow-hidden"
+                                    exit={{ opacity: 0, scale: 0.98, y: -30 }}
+                                    className="glass p-8 rounded-[3rem] shadow-premium border-agri-primary/20 relative overflow-hidden group"
                                 >
-                                    <div className="relative z-10 grid md:grid-cols-2 gap-6 items-center">
-                                        <div className="space-y-4">
+                                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-agri-primary to-emerald-600" />
+                                    
+                                    <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
+                                        <div className="space-y-6">
                                             <div>
-                                                <div className="flex items-center gap-3 mb-2">
-                                                    <h2 className="text-2xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter">
+                                                <div className="flex items-center gap-4 mb-3">
+                                                    <h2 className="text-3xl md:text-4xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter">
                                                         {searchResult.commodity}
                                                     </h2>
-                                                    <div className="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 rounded text-[10px] font-black uppercase flex items-center gap-1 border border-emerald-500/20">
-                                                        <Sparkles size={10} /> Verified
+                                                    <div className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-[10px] font-black uppercase flex items-center gap-1.5 border border-emerald-500/20">
+                                                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /> Verified
                                                     </div>
                                                 </div>
-                                                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{searchResult.arrivalDate}</p>
-
+                                                <div className="flex items-center gap-2 text-gray-400 font-black text-[10px] uppercase tracking-widest">
+                                                    <Calendar size={12} /> {searchResult.arrivalDate}
+                                                </div>
                                             </div>
                                             <div className="grid grid-cols-2 gap-4">
-                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent hover:border-agri-primary/20 transition-colors">
-                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Min Price</p>
-                                                    <p className="text-lg font-black text-rose-500">₹{searchResult.minPricePerKg}</p>
+                                                <div className="p-5 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-transparent hover:border-agri-primary/20 transition-all group/stat">
+                                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 group-hover/stat:text-agri-primary transition-colors">Min Price</p>
+                                                    <p className="text-2xl font-black text-rose-500">₹{searchResult.minPricePerKg}</p>
                                                 </div>
-                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent hover:border-agri-primary/20 transition-colors">
-                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Max Price</p>
-                                                    <p className="text-lg font-black text-emerald-500">₹{searchResult.maxPricePerKg}</p>
+                                                <div className="p-5 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-transparent hover:border-agri-primary/20 transition-all group/stat">
+                                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 group-hover/stat:text-agri-primary transition-colors">Max Price</p>
+                                                    <p className="text-2xl font-black text-emerald-500">₹{searchResult.maxPricePerKg}</p>
                                                 </div>
-                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent hover:border-agri-primary/20 transition-colors">
-                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Daily Volume</p>
-                                                    <p className="text-lg font-black text-agri-dark dark:text-white">{searchResult.volume}</p>
+                                                <div className="p-5 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-transparent hover:border-agri-primary/20 transition-all group/stat">
+                                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 group-hover/stat:text-agri-primary transition-colors">Daily Volume</p>
+                                                    <p className="text-2xl font-black text-agri-dark dark:text-white">{searchResult.volume}</p>
                                                 </div>
-                                                <div className="p-3 bg-gray-50 dark:bg-slate-900 rounded-xl border border-transparent hover:border-agri-primary/20 transition-colors">
-                                                    <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest mb-1">Price Spread</p>
-                                                    <p className="text-lg font-black text-agri-dark dark:text-white">₹{searchResult.maxPricePerKg - searchResult.minPricePerKg}</p>
+                                                <div className="p-5 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-transparent hover:border-agri-primary/20 transition-all group/stat">
+                                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 group-hover/stat:text-agri-primary transition-colors">Price Spread</p>
+                                                    <p className="text-2xl font-black text-agri-dark dark:text-white">₹{searchResult.maxPricePerKg - searchResult.minPricePerKg}</p>
                                                 </div>
                                             </div>
-                                            <div className="flex gap-3">
-                                                <button className="flex-1 py-3 bg-agri-primary/10 text-agri-primary rounded-xl text-xs font-bold hover:bg-agri-primary hover:text-white transition-all flex items-center justify-center gap-2">
+                                            <div className="flex gap-4">
+                                                <button className="flex-1 py-4 bg-agri-primary text-white rounded-2xl text-xs font-black uppercase tracking-widest shadow-glow hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2">
                                                     <Zap size={14} /> Set Alert
                                                 </button>
-                                                <button className="flex-1 py-3 bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-400 rounded-xl text-xs font-bold hover:bg-gray-200 dark:hover:bg-slate-700 transition-all">
+                                                <button className="flex-1 py-4 bg-white/50 dark:bg-white/5 backdrop-blur-md text-gray-500 dark:text-gray-400 rounded-2xl text-xs font-black uppercase tracking-widest border border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/10 transition-all">
                                                     Full Report
                                                 </button>
                                             </div>
                                         </div>
-                                        <div className="bg-gradient-to-br from-agri-primary to-emerald-600 p-8 rounded-2xl flex flex-col justify-center text-center text-white shadow-glow-sm relative overflow-hidden group">
-                                            <div className="absolute top-4 right-4">
-                                                <div className="flex items-center gap-2 px-2 py-1 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase">
-                                                    <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-                                                    Live
+                                        <div className="bg-gradient-to-br from-agri-primary via-emerald-600 to-teal-700 p-10 rounded-[2.5rem] flex flex-col justify-center text-center text-white shadow-2xl relative overflow-hidden group/card">
+                                            <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+                                            <div className="absolute top-6 right-6">
+                                                <div className="flex items-center gap-2 px-3 py-1.5 bg-white/20 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-widest">
+                                                    <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
+                                                    Live Mandi Rate
                                                 </div>
                                             </div>
                                             <div className="relative z-10">
-                                                <div className="text-[10px] opacity-80 font-bold uppercase tracking-widest mb-2">Average Mandi Price</div>
-                                                <div className="text-5xl font-display font-black mb-1 drop-shadow-md">
+                                                <div className="text-[11px] opacity-80 font-black uppercase tracking-[0.3em] mb-4">Average Price</div>
+                                                <div className="text-7xl font-display font-black mb-2 drop-shadow-2xl tracking-tighter">
                                                     ₹{searchResult.avgPrice}
                                                 </div>
-                                                <div className="text-xs font-bold opacity-90">Per {searchResult.unit}</div>
-                                                <div className="mt-6 pt-4 border-t border-white/20 flex justify-between items-center text-[10px] font-black uppercase tracking-wider">
-                                                    <span className="flex items-center gap-1"><MapPin size={10}/> {searchResult.mandiCount} Mandis</span>
-                                                    <span>{searchResult.stateCount} States</span>
+                                                <div className="text-sm font-black opacity-90 uppercase tracking-widest">Per {searchResult.unit}</div>
+                                                <div className="mt-10 pt-6 border-t border-white/20 flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em]">
+                                                    <span className="flex items-center gap-2"><MapPin size={12} className="text-emerald-300"/> {searchResult.mandiCount} Mandis</span>
+                                                    <span className="flex items-center gap-2"><Globe size={12} className="text-emerald-300"/> {searchResult.stateCount} States</span>
                                                 </div>
                                             </div>
+                                            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover/card:scale-150 transition-transform duration-700" />
                                         </div>
 
                                     </div>
@@ -378,18 +397,19 @@ const MarketPricePage = () => {
                                     key="empty"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    className="glass p-16 rounded-[2.5rem] shadow-premium border-2 border-dashed border-gray-200 dark:border-gray-800 flex flex-col items-center text-center space-y-6"
+                                    className="glass p-20 rounded-[4rem] shadow-premium border-2 border-dashed border-gray-200 dark:border-white/10 flex flex-col items-center text-center space-y-8 relative overflow-hidden"
                                 >
-                                    <div className="w-24 h-24 bg-agri-primary/10 rounded-full flex items-center justify-center text-agri-primary">
-                                        <Sparkles size={40} />
+                                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-agri-primary/5 to-transparent pointer-events-none" />
+                                    <div className="w-28 h-28 bg-agri-primary/10 rounded-[2.5rem] flex items-center justify-center text-agri-primary rotate-12 hover:rotate-0 transition-transform duration-500 shadow-xl border border-agri-primary/20">
+                                        <Sparkles size={48} className="animate-pulse" />
                                     </div>
-                                    <div className="max-w-md">
-                                        <h3 className="text-xl font-display font-black text-agri-dark dark:text-white mb-1">Find the Best Prices</h3>
-                                        <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">
-                                            Search any crop to see live rates across India.
+                                    <div className="max-w-md relative z-10">
+                                        <h3 className="text-2xl md:text-3xl font-display font-black text-agri-dark dark:text-white mb-3 tracking-tight">Market Intelligence</h3>
+                                        <p className="text-gray-500 dark:text-gray-400 text-base font-medium">
+                                            Search any crop or commodity to unlock real-time pricing, historical data, and mandi-wise analysis.
                                         </p>
                                     </div>
-                                    <div className="flex flex-wrap justify-center gap-3">
+                                    <div className="flex flex-wrap justify-center gap-4 relative z-10">
                                         {(activeCategory === 'All' 
                                             ? ['Mango', 'Basmati Rice', 'Red Onion', 'Banana']
                                             : activeCategory === 'Fruits'
@@ -406,7 +426,7 @@ const MarketPricePage = () => {
                                                     setSearchQuery(tag);
                                                     performSearch(tag);
                                                 }}
-                                                className="px-4 py-2 bg-gray-100 dark:bg-slate-800 hover:bg-agri-primary hover:text-white rounded-xl text-xs font-bold text-gray-500 transition-all"
+                                                className="px-6 py-3 bg-white dark:bg-white/5 hover:bg-agri-primary hover:text-white dark:hover:bg-agri-primary rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400 transition-all shadow-md hover:shadow-glow hover:-translate-y-1"
                                             >
                                                 {tag}
                                             </button>
@@ -417,23 +437,24 @@ const MarketPricePage = () => {
                             )}
                         </AnimatePresence>
 
-                        <div className="bg-agri-dark rounded-[3rem] p-10 shadow-premium border border-white/5 relative overflow-hidden">
-                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+                        <div className="bg-agri-dark rounded-[4rem] p-12 shadow-2xl border border-white/5 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-96 h-96 bg-agri-primary/10 rounded-full blur-[100px] pointer-events-none" />
+                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-8">
                                 <div>
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <h3 className="text-2xl font-display font-black text-white">Price Trajectory</h3>
-                                        <span className="px-2 py-0.5 bg-agri-primary/20 text-agri-primary rounded text-[10px] font-black uppercase">Sona Masuri Rice</span>
+                                    <div className="flex items-center gap-4 mb-3">
+                                        <h3 className="text-3xl font-display font-black text-white tracking-tight">Price Trajectory</h3>
+                                        <span className="px-3 py-1 bg-agri-primary/20 text-agri-primary rounded-full text-[10px] font-black uppercase tracking-widest border border-agri-primary/30">Sona Masuri Rice</span>
                                     </div>
                                     <p className="text-white/40 text-sm font-medium flex items-center gap-2">
-                                        <BarChart3 size={14} /> Historical trends for last 30 days
+                                        <BarChart3 size={16} className="text-agri-primary" /> Historical price analytics (30D)
                                     </p>
                                 </div>
-                                <div className="flex bg-white/5 backdrop-blur-md rounded-xl p-1.5 border border-white/10">
+                                <div className="flex bg-white/5 backdrop-blur-2xl rounded-2xl p-2 border border-white/10">
                                     {['1W', '1M', '3M', '1Y'].map(range => (
                                         <button 
                                             key={range}
                                             onClick={() => setSelectedRange(range)}
-                                            className={`px-4 py-1.5 rounded-lg text-xs font-black transition-all ${selectedRange === range ? 'bg-agri-primary text-white shadow-glow' : 'text-white/40 hover:text-white'}`}
+                                            className={`px-6 py-2 rounded-xl text-[10px] font-black transition-all uppercase tracking-widest ${selectedRange === range ? 'bg-agri-primary text-white shadow-glow' : 'text-white/40 hover:text-white'}`}
                                         >
                                             {range}
                                         </button>
@@ -441,30 +462,31 @@ const MarketPricePage = () => {
                                 </div>
                             </div>
 
-                            <div className="h-96 w-full">
+                            <div className="h-[450px] w-full">
                                 <ResponsiveContainer width="100%" height="100%">
                                     <AreaChart data={chartData}>
                                         <defs>
                                             <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                                                <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
                                                 <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                                             </linearGradient>
                                         </defs>
                                         <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                                        <XAxis dataKey="day" stroke="rgba(255,255,255,0.2)" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
+                                        <XAxis dataKey="day" stroke="rgba(255,255,255,0.2)" axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: '900', letterSpacing: '0.1em' }} />
                                         <YAxis hide />
                                         <Tooltip 
-                                            contentStyle={{ backgroundColor: '#0f172a', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '1rem', color: '#fff' }}
-                                            itemStyle={{ color: '#10b981', fontWeight: 'bold' }}
+                                            contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '1.5rem', padding: '1rem' }}
+                                            itemStyle={{ color: '#10b981', fontWeight: '900', fontSize: '14px' }}
+                                            cursor={{ stroke: 'rgba(255,255,255,0.1)', strokeWidth: 2 }}
                                         />
                                         <Area 
                                             type="monotone" 
                                             dataKey="price" 
                                             stroke="#10b981" 
-                                            strokeWidth={4} 
+                                            strokeWidth={6} 
                                             fillOpacity={1} 
                                             fill="url(#chartGradient)" 
-                                            animationDuration={2000}
+                                            animationDuration={2500}
                                         />
                                     </AreaChart>
                                 </ResponsiveContainer>
@@ -473,28 +495,32 @@ const MarketPricePage = () => {
 
                     </div>
 
-                    <div className="lg:col-span-4 space-y-8">
-                        <div className="glass p-8 rounded-[2.5rem] shadow-premium">
-                            <h3 className="text-xl font-display font-bold text-agri-dark dark:text-white mb-8 flex items-center gap-2">
-                                <TrendingUp size={24} className="text-agri-primary" /> Active Trends
+                    <div className="lg:col-span-4 space-y-10">
+                        <div className="glass p-10 rounded-[3rem] shadow-premium relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-agri-primary/5 rounded-full blur-3xl pointer-events-none" />
+                            <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white mb-10 flex items-center gap-3 tracking-tight">
+                                <div className="p-2 bg-agri-primary/10 rounded-xl">
+                                    <TrendingUp size={24} className="text-agri-primary animate-bounce-slow" /> 
+                                </div>
+                                Active Trends
                             </h3>
-                            <div className="space-y-6">
+                            <div className="space-y-4">
                                 {trendingCrops.map((crop, i) => (
                                     <motion.div 
                                         key={i} 
-                                        whileHover={{ x: 6 }}
-                                        className="flex items-center justify-between p-4 rounded-2xl hover:bg-agri-primary/5 transition-colors cursor-pointer group"
+                                        whileHover={{ scale: 1.02, x: 8 }}
+                                        className="flex items-center justify-between p-5 rounded-3xl bg-gray-50/50 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 border border-transparent hover:border-agri-primary/20 transition-all cursor-pointer group shadow-sm hover:shadow-md"
                                     >
-                                        <div className="flex items-center gap-4">
-                                            <div className={`p-3 rounded-xl ${crop.isPositive ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'}`}>
-                                                {crop.isPositive ? <ArrowUpRight size={20} /> : <ArrowDownRight size={20} />}
+                                        <div className="flex items-center gap-5">
+                                            <div className={`p-4 rounded-2xl ${crop.isPositive ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'} transition-transform group-hover:rotate-12`}>
+                                                {crop.isPositive ? <ArrowUpRight size={24} /> : <ArrowDownRight size={24} />}
                                             </div>
                                             <div>
-                                                <h4 className="font-bold text-agri-dark dark:text-white text-sm">{crop.name}</h4>
-                                                <p className="text-xs text-gray-400 font-bold">{crop.currentPrice}</p>
+                                                <h4 className="font-black text-agri-dark dark:text-white text-sm uppercase tracking-tight">{crop.name}</h4>
+                                                <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">{crop.currentPrice}</p>
                                             </div>
                                         </div>
-                                        <div className={`text-sm font-black ${crop.isPositive ? 'text-emerald-500' : 'text-rose-500'}`}>
+                                        <div className={`text-xs font-black px-3 py-1 rounded-full ${crop.isPositive ? 'bg-emerald-500/10 text-emerald-500' : 'bg-rose-500/10 text-rose-500'}`}>
                                             {crop.change}
                                         </div>
                                     </motion.div>
@@ -502,17 +528,24 @@ const MarketPricePage = () => {
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-agri-primary to-emerald-800 rounded-[2.5rem] p-8 text-white shadow-premium relative overflow-hidden group">
-                           <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                                <Activity size={100} />
+                        <div className="bg-gradient-to-br from-agri-dark to-slate-900 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden group border border-white/5">
+                           <div className="absolute -top-10 -right-10 p-4 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-700">
+                                <Activity size={250} />
                            </div>
-                           <h4 className="text-lg font-display font-bold mb-4">Export Analysis</h4>
-                           <p className="text-sm font-medium text-white/70 leading-relaxed mb-6">
-                             Rice exports are expected to surge by 15% this quarter due to increased global demand.
-                           </p>
-                           <button className="px-6 py-3 bg-white text-agri-dark rounded-xl text-xs font-bold hover:bg-agri-light transition-colors">
-                              Download Forecast
-                           </button>
+                           <div className="relative z-10">
+                               <div className="flex items-center gap-3 mb-6">
+                                   <div className="w-10 h-10 bg-agri-primary/20 rounded-xl flex items-center justify-center">
+                                       <Sparkles size={20} className="text-agri-primary" />
+                                   </div>
+                                   <h4 className="text-xl font-display font-black tracking-tight uppercase">Export Analysis</h4>
+                               </div>
+                               <p className="text-base font-medium text-white/60 leading-relaxed mb-8">
+                                 Rice exports are projected to surge by <span className="text-emerald-400 font-black">15%</span> this quarter. Access the full strategic report now.
+                               </p>
+                               <button className="w-full py-4 bg-agri-primary text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-glow hover:scale-[1.02] active:scale-95 transition-all">
+                                  Download Q3 Forecast
+                               </button>
+                           </div>
                         </div>
                     </div>
                 </div>
