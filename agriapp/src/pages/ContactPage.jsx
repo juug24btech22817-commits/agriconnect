@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, Mail, MapPin, Send, MessageSquare, CheckCircle2, ChevronDown, Globe2, HelpCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, MessageSquare, CheckCircle2, ChevronDown, Globe2, HelpCircle, Twitter, Facebook, Instagram, Linkedin, Clock, Loader2 } from 'lucide-react';
 
 const ContactPage = () => {
     const [submitted, setSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [openFaq, setOpenFaq] = useState(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 5000);
+        setIsSubmitting(true);
+        
+        // Simulate network request
+        setTimeout(() => {
+            setIsSubmitting(false);
+            setSubmitted(true);
+            setTimeout(() => setSubmitted(false), 8000);
+        }, 1500);
     };
 
     const contactMethods = [
@@ -33,6 +40,13 @@ const ContactPage = () => {
         }
     ];
 
+    const socialLinks = [
+        { icon: <Twitter size={20} />, label: "Twitter", color: "hover:text-blue-400" },
+        { icon: <Facebook size={20} />, label: "Facebook", color: "hover:text-blue-600" },
+        { icon: <Instagram size={20} />, label: "Instagram", color: "hover:text-pink-500" },
+        { icon: <Linkedin size={20} />, label: "LinkedIn", color: "hover:text-blue-700" }
+    ];
+
     const faqs = [
         { q: "How long does it take to verify my farmer account?", a: "Verification typically takes 24-48 hours after you upload your government ID and land documents." },
         { q: "What are the service fees for direct trading?", a: "AgriConnect charges a nominal 2% platform fee on successful transactions. There are no registration or listing fees." },
@@ -43,8 +57,8 @@ const ContactPage = () => {
     return (
         <div className="bg-agri-surface dark:bg-slate-950 min-h-screen pt-24 pb-32 transition-colors duration-500 overflow-hidden relative">
             {/* Background Decoration */}
-            <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-agri-primary/5 rounded-full blur-[120px] -mr-32 -mt-32" />
-            <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-agri-secondary/5 rounded-full blur-[120px] -ml-32 -mb-32" />
+            <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-agri-primary/5 rounded-full blur-[140px] -mr-40 -mt-40 animate-pulse" />
+            <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-agri-secondary/5 rounded-full blur-[140px] -ml-40 -mb-40" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <motion.div
@@ -53,10 +67,10 @@ const ContactPage = () => {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-20"
                 >
-                    <span className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-agri-primary/10 text-agri-primary border border-agri-primary/20 text-xs font-bold mb-6 tracking-widest uppercase">
-                        <Globe2 size={14} /> Multi-Language Support Available
+                    <span className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-agri-primary/10 text-agri-primary border border-agri-primary/20 text-xs font-bold mb-6 tracking-widest uppercase shadow-sm">
+                        <Globe2 size={14} className="animate-spin-slow" /> Multi-Language Support Available
                     </span>
-                    <h1 className="text-5xl md:text-7xl font-display font-black text-agri-dark dark:text-white mb-6 tracking-tight">
+                    <h1 className="text-5xl md:text-8xl font-display font-black text-agri-dark dark:text-white mb-6 tracking-tight leading-tight">
                         We're Here to <span className="text-gradient">Support You.</span>
                     </h1>
                     <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-medium">
@@ -66,15 +80,18 @@ const ContactPage = () => {
 
                 <div className="grid lg:grid-cols-12 gap-16 items-start">
                     {/* Contact Info Sidebar */}
-                    <div className="lg:col-span-5 space-y-12">
+                    <div className="lg:col-span-5 space-y-10">
                         <div className="space-y-6">
                             {contactMethods.map((method, idx) => (
                                 <motion.div
                                     key={idx}
-                                    whileHover={{ x: 8 }}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: idx * 0.1 }}
+                                    whileHover={{ x: 10 }}
                                     className="glass p-8 rounded-[2.5rem] border-white/40 dark:border-white/10 flex items-start gap-6 shadow-premium group transition-all hover:border-agri-primary/30"
                                 >
-                                    <div className="w-14 h-14 rounded-2xl bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center p-3 group-hover:scale-110 transition-transform">
+                                    <div className="w-14 h-14 rounded-2xl bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center p-3 group-hover:scale-110 transition-transform duration-500">
                                         {method.icon}
                                     </div>
                                     <div>
@@ -88,17 +105,43 @@ const ContactPage = () => {
 
                         <div className="glass p-10 rounded-[3rem] border border-white/20 bg-agri-primary/5 dark:bg-agri-primary/5 relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-agri-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
-                            <div className="flex items-start gap-5 relative z-10">
-                                <div className="p-4 bg-agri-primary rounded-2xl text-white shadow-glow group-hover:rotate-12 transition-transform">
-                                    <MapPin size={28} />
+                            <div className="flex flex-col gap-8 relative z-10">
+                                <div className="flex items-start gap-5">
+                                    <div className="p-4 bg-agri-primary rounded-2xl text-white shadow-glow group-hover:rotate-12 transition-transform duration-500">
+                                        <MapPin size={28} />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-2xl font-display font-bold text-agri-dark dark:text-white mb-3 tracking-tight">India Headquarters</h3>
+                                        <p className="text-lg text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
+                                            Level 4, Agri-Tech Park, <br />
+                                            M.G. Road, Hebbal, <br />
+                                            Bengaluru, Karnataka - 560024
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 className="text-2xl font-display font-bold text-agri-dark dark:text-white mb-3 tracking-tight">India Headquarters</h3>
-                                    <p className="text-lg text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
-                                        Level 4, Agri-Tech Park, <br />
-                                        M.G. Road, Hebbal, <br />
-                                        Bengaluru, Karnataka - 560024
-                                    </p>
+
+                                <div className="flex items-center gap-5 pt-4 border-t border-gray-200 dark:border-gray-800">
+                                    <div className="p-3 bg-agri-secondary/10 rounded-xl text-agri-secondary">
+                                        <Clock size={20} />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-bold text-agri-dark dark:text-white uppercase tracking-wider">Office Hours</p>
+                                        <p className="text-gray-500 dark:text-gray-400 font-medium">Mon - Sat: 9:00 AM - 6:00 PM</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-4 pt-4">
+                                    {socialLinks.map((social, i) => (
+                                        <motion.a
+                                            key={i}
+                                            href="#"
+                                            whileHover={{ y: -5, scale: 1.1 }}
+                                            className={`p-3 bg-white dark:bg-gray-800 rounded-xl text-gray-400 shadow-sm transition-colors ${social.color}`}
+                                            title={social.label}
+                                        >
+                                            {social.icon}
+                                        </motion.a>
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -124,13 +167,13 @@ const ContactPage = () => {
                                         <div className="w-24 h-24 bg-agri-primary/10 rounded-full flex items-center justify-center text-agri-primary mb-8 animate-bounce">
                                             <CheckCircle2 size={48} />
                                         </div>
-                                        <h2 className="text-3xl font-bold text-agri-dark dark:text-white mb-4">Message Sent!</h2>
+                                        <h2 className="text-3xl font-bold text-agri-dark dark:text-white mb-4">Message Sent Successfully!</h2>
                                         <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">
-                                            Our representative will get back to you within 24 hours in your preferred language.
+                                            Thank you for reaching out. Our representative will get back to you within 24 hours in your preferred language.
                                         </p>
                                         <button 
                                             onClick={() => setSubmitted(false)}
-                                            className="mt-12 text-agri-primary font-bold hover:underline"
+                                            className="mt-12 py-3 px-8 bg-agri-primary/10 text-agri-primary rounded-xl font-bold hover:bg-agri-primary hover:text-white transition-all duration-300"
                                         >
                                             Send another message
                                         </button>
@@ -146,34 +189,45 @@ const ContactPage = () => {
                                         <div className="grid md:grid-cols-2 gap-8">
                                             <div className="space-y-2 group">
                                                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">Full Name</label>
-                                                <input required type="text" placeholder="Rahul Sharma" className="w-full bg-gray-50 dark:bg-gray-800 border border-transparent rounded-2xl p-4 focus:ring-2 focus:ring-agri-primary/30 focus:bg-white dark:focus:bg-gray-700 transition-all font-medium text-agri-dark dark:text-white" />
+                                                <input required type="text" placeholder="Rahul Sharma" className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700 transition-all font-medium text-agri-dark dark:text-white outline-none" />
                                             </div>
                                             <div className="space-y-2 group">
                                                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">Email Address</label>
-                                                <input required type="email" placeholder="rahul@example.com" className="w-full bg-gray-50 dark:bg-gray-800 border border-transparent rounded-2xl p-4 focus:ring-2 focus:ring-agri-primary/30 focus:bg-white dark:focus:bg-gray-700 transition-all font-medium text-agri-dark dark:text-white" />
+                                                <input required type="email" placeholder="rahul@example.com" className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700 transition-all font-medium text-agri-dark dark:text-white outline-none" />
                                             </div>
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">How can we help?</label>
+                                        <div className="space-y-2 group">
+                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">How can we help?</label>
                                             <div className="relative">
-                                                <select className="w-full bg-gray-50 dark:bg-gray-800 border border-transparent rounded-2xl p-4 focus:ring-2 focus:ring-agri-primary/30 transition-all font-medium text-agri-dark dark:text-white appearance-none cursor-pointer">
+                                                <select className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 transition-all font-medium text-agri-dark dark:text-white appearance-none cursor-pointer outline-none">
                                                     <option>General Inquiry</option>
                                                     <option>Sell Crops Support</option>
                                                     <option>Buyer Onboarding</option>
                                                     <option>Technical Issue</option>
                                                 </select>
-                                                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" size={20} />
+                                                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-agri-primary transition-colors" size={20} />
                                             </div>
                                         </div>
                                         <div className="space-y-2 group">
                                             <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">Message</label>
-                                            <textarea required rows="5" placeholder="Tell us more about your needs..." className="w-full bg-gray-50 dark:bg-gray-800 border border-transparent rounded-2xl p-4 focus:ring-2 focus:ring-agri-primary/30 focus:bg-white dark:focus:bg-gray-700 transition-all font-medium text-agri-dark dark:text-white resize-none"></textarea>
+                                            <textarea required rows="5" placeholder="Tell us more about your needs..." className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700 transition-all font-medium text-agri-dark dark:text-white resize-none outline-none"></textarea>
                                         </div>
                                         <button 
                                             type="submit"
-                                            className="w-full py-5 bg-agri-primary text-white rounded-2xl font-bold text-xl shadow-glow hover:bg-agri-dark transition-all transform hover:-translate-y-1 flex items-center justify-center gap-3 active:scale-95"
+                                            disabled={isSubmitting}
+                                            className="w-full py-5 bg-agri-primary text-white rounded-2xl font-bold text-xl shadow-glow hover:bg-agri-dark transition-all transform hover:-translate-y-1 flex items-center justify-center gap-3 active:scale-95 disabled:opacity-70 disabled:transform-none disabled:cursor-not-allowed overflow-hidden relative group"
                                         >
-                                            Send Message <Send size={22} />
+                                            {isSubmitting ? (
+                                                <>
+                                                    <Loader2 size={22} className="animate-spin" />
+                                                    Processing...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    Send Message 
+                                                    <Send size={22} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                                </>
+                                            )}
                                         </button>
                                     </motion.form>
                                 )}
@@ -196,16 +250,16 @@ const ContactPage = () => {
 
                     <div className="space-y-4">
                         {faqs.map((faq, idx) => (
-                            <div key={idx} className="glass rounded-[2rem] border-white/20 overflow-hidden shadow-sm">
+                            <div key={idx} className="glass rounded-[2rem] border-white/20 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <button 
                                     onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                                    className="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-agri-primary/5 transition-colors"
+                                    className="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-agri-primary/5 transition-colors group"
                                 >
-                                    <span className="text-lg font-bold text-agri-dark dark:text-white flex items-center gap-3">
+                                    <span className="text-lg font-bold text-agri-dark dark:text-white flex items-center gap-3 group-hover:text-agri-primary transition-colors">
                                         <HelpCircle size={20} className="text-agri-primary opacity-50" />
                                         {faq.q}
                                     </span>
-                                    <ChevronDown className={`text-gray-400 transition-transform duration-300 ${openFaq === idx ? 'rotate-180' : ''}`} />
+                                    <ChevronDown className={`text-gray-400 transition-transform duration-300 ${openFaq === idx ? 'rotate-180 text-agri-primary' : ''}`} />
                                 </button>
                                 <AnimatePresence>
                                     {openFaq === idx && (
@@ -215,7 +269,7 @@ const ContactPage = () => {
                                             exit={{ height: 0, opacity: 0 }}
                                             className="overflow-hidden"
                                         >
-                                            <div className="px-8 pb-6 text-gray-500 dark:text-gray-400 font-medium leading-relaxed ml-8">
+                                            <div className="px-8 pb-8 text-gray-500 dark:text-gray-400 font-medium leading-relaxed ml-8">
                                                 {faq.a}
                                             </div>
                                         </motion.div>
