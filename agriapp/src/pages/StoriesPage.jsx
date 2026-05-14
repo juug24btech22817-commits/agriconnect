@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Quote, PlayCircle, X, ArrowRight, Heart, Users, ShieldCheck, TrendingUp, Globe, Award, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
