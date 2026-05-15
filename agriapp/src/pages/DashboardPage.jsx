@@ -157,7 +157,13 @@ const DashboardPage = () => {
                 {/* Header section */}
                 <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
                     <div>
-                        <h1 className="text-4xl font-display font-black text-agri-dark dark:text-white mb-2 tracking-tight">Farmer <span className="text-agri-primary">Dashboard</span></h1>
+                        <h1 className="text-4xl font-display font-black text-agri-dark dark:text-white mb-2 tracking-tight flex items-center gap-3">
+                            Farmer <span className="text-agri-primary">Dashboard</span>
+                            <span className="relative flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-agri-primary opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-agri-primary"></span>
+                            </span>
+                        </h1>
                         <p className="text-gray-500 dark:text-gray-400 font-medium flex items-center gap-2">
                            <MapPin size={16} className="text-agri-primary" /> 
                            {user ? `Welcome back, ${user.name}` : 'Please log in to manage your inventory'}
@@ -198,8 +204,8 @@ const DashboardPage = () => {
                                     : 'bg-gradient-to-br from-indigo-900 to-slate-900 shadow-indigo-900/20'
                             }`}
                         >
-                            <div className="absolute top-0 right-0 p-4 opacity-10">
-                                {weather.isDay ? <Sun size={80} /> : <Moon size={80} />}
+                            <div className="absolute top-0 right-0 p-4 opacity-20 transform -rotate-12 group-hover:rotate-0 transition-transform duration-700">
+                                {weather.isDay ? <Sun size={120} /> : <Moon size={120} />}
                             </div>
                             <div className="relative z-10">
                                 <div className="flex justify-between items-start mb-4">
@@ -212,7 +218,7 @@ const DashboardPage = () => {
                                                 value={searchQuery}
                                                 onChange={(e) => setSearchQuery(e.target.value)}
                                                 onKeyDown={handleSearch}
-                                                className="w-full bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg px-3 py-1.5 text-xs text-white placeholder-white/40 outline-none transition-all pr-8"
+                                                className="w-full bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl px-4 py-2 text-xs text-white placeholder-white/40 outline-none transition-all pr-10 backdrop-blur-sm"
                                             />
                                             <button 
                                                 onClick={() => fetchWeather(searchQuery)}
@@ -260,10 +266,12 @@ const DashboardPage = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="p-4 bg-black/20 rounded-xl border border-white/10 flex gap-3">
-                                    <AlertCircle size={16} className="text-agri-secondary shrink-0" />
-                                    <p className="text-[10px] font-medium leading-tight text-agri-light/90 italic">
-                                        {weather.isLoading ? "Analyzing..." : weather.advice}
+                                <div className="p-4 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 flex gap-4 group/advice cursor-help transition-all hover:bg-white/10">
+                                    <div className="bg-agri-secondary/20 p-2 rounded-lg shrink-0">
+                                        <AlertCircle size={18} className="text-agri-secondary" />
+                                    </div>
+                                    <p className="text-[11px] font-medium leading-relaxed text-agri-light/90">
+                                        {weather.isLoading ? "Analyzing crop conditions..." : weather.advice}
                                     </p>
                                 </div>
                             </div>
@@ -272,19 +280,28 @@ const DashboardPage = () => {
                         {/* Quick Stats Card */}
                         <div className="glass p-8 rounded-[2.5rem] shadow-premium">
                             <h4 className="font-display font-bold text-agri-dark dark:text-white mb-6">Financial Overview</h4>
-                            <div className="space-y-6">
+                            <div className="space-y-4">
                                 {[
-                                    { label: 'Total Sales', value: '₹1,24,450', icon: <DollarSign size={20}/>, color: 'text-agri-primary bg-agri-primary/10' },
-                                    { label: 'Active Listings', value: listings.length, icon: <Package size={14}/>, color: 'text-blue-500 bg-blue-500/10' },
-                                    { label: 'Pending Orders', value: '05', icon: <Clock size={20}/>, color: 'text-amber-500 bg-amber-500/10' }
+                                    { label: 'Total Sales', value: '₹1,24,450', icon: <DollarSign size={20}/>, color: 'text-agri-primary bg-agri-primary/10', trend: '+12% this week' },
+                                    { label: 'Active Listings', value: listings.length, icon: <Package size={14}/>, color: 'text-blue-500 bg-blue-500/10', trend: '3 updated today' },
+                                    { label: 'Pending Orders', value: '05', icon: <Clock size={20}/>, color: 'text-amber-500 bg-amber-500/10', trend: 'Needs action' }
                                 ].map((stat, i) => (
-                                    <div key={i} className="flex items-center justify-between p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-900 transition-colors">
+                                    <motion.div 
+                                        key={i} 
+                                        whileHover={{ scale: 1.02, x: 5 }}
+                                        className="flex items-center justify-between p-5 rounded-[1.5rem] bg-gray-50/50 dark:bg-slate-800/30 border border-gray-100 dark:border-gray-800 hover:border-agri-primary/30 transition-all cursor-pointer group"
+                                    >
                                         <div className="flex items-center gap-4">
-                                            <div className={`p-3 rounded-xl ${stat.color}`}>{stat.icon}</div>
-                                            <span className="font-medium text-gray-500 dark:text-gray-400">{stat.label}</span>
+                                            <div className={`p-3.5 rounded-xl transition-all group-hover:scale-110 ${stat.color}`}>{stat.icon}</div>
+                                            <div>
+                                                <span className="block font-bold text-gray-400 dark:text-gray-500 text-[10px] uppercase tracking-wider mb-0.5">{stat.label}</span>
+                                                <span className="font-black text-agri-dark dark:text-white text-xl leading-none">{stat.value}</span>
+                                            </div>
                                         </div>
-                                        <span className="font-bold text-agri-dark dark:text-white text-lg">{stat.value}</span>
-                                    </div>
+                                        <div className="text-right">
+                                            <span className="text-[9px] font-bold text-agri-primary bg-agri-primary/5 px-2 py-1 rounded-full">{stat.trend}</span>
+                                        </div>
+                                    </motion.div>
                                 ))}
                             </div>
                         </div>
@@ -298,7 +315,7 @@ const DashboardPage = () => {
                             <div className="glass rounded-[2.5rem] shadow-premium overflow-hidden">
                                 <div className="p-8 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-6">
                                     <h2 className="text-2xl font-display font-bold text-agri-dark dark:text-white">Active Inventory</h2>
-                                    <div className="flex glass rounded-2xl p-1.5 border-gray-200 dark:border-gray-800">
+                                    <div className="flex bg-gray-100 dark:bg-slate-800/50 rounded-2xl p-1.5 border border-gray-200/50 dark:border-gray-700/50">
                                         {['listings', 'drafts', 'history'].map(tab => (
                                             <button
                                                 key={tab}
@@ -314,13 +331,14 @@ const DashboardPage = () => {
                                 <div className="divide-y divide-gray-100 dark:divide-gray-800">
                                     <AnimatePresence>
                                         {listings.map((item, idx) => (
-                                            <motion.div
+                                                <motion.div
                                                 key={item.id}
                                                 initial={{ opacity: 0, y: 10 }}
+                                                whileHover={{ x: 10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, scale: 0.95 }}
                                                 transition={{ delay: idx * 0.1 }}
-                                                className="p-8 flex flex-col sm:flex-row items-center gap-8 hover:bg-agri-primary/[0.02] transition-colors"
+                                                className="p-8 flex flex-col sm:flex-row items-center gap-8 hover:bg-agri-primary/[0.03] transition-all border-b border-gray-50 dark:border-gray-800 last:border-0"
                                             >
                                                 <div className="relative group shrink-0">
                                                     <img src={item.image} alt={item.name} className="w-28 h-28 rounded-[1.5rem] object-cover shadow-lg" />
@@ -445,9 +463,15 @@ const DashboardPage = () => {
                                     </div>
 
                                     <div className="pt-8">
-                                        <button type="button" onClick={() => setIsAddModalOpen(false)} className="w-full bg-agri-primary text-white font-bold py-5 rounded-2xl shadow-glow hover:bg-agri-dark transition-all transform hover:-translate-y-1">
-                                            Publish Listing
-                                        </button>
+                                        <motion.button 
+                                            whileHover={{ scale: 1.02 }}
+                                            whileTap={{ scale: 0.98 }}
+                                            type="button" 
+                                            onClick={() => setIsAddModalOpen(false)} 
+                                            className="w-full bg-gradient-to-r from-agri-primary to-emerald-700 text-white font-black py-5 rounded-2xl shadow-glow transition-all"
+                                        >
+                                            Publish Harvest Listing
+                                        </motion.button>
                                     </div>
                                 </form>
                             </div>
