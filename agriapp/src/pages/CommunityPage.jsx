@@ -181,10 +181,10 @@ const CommunityPage = () => {
                     <div className="flex gap-4">
                         <button 
                             onClick={() => setIsModalOpen(true)}
-                            className="px-10 py-6 bg-agri-primary text-white rounded-[1.5rem] font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-3 relative overflow-hidden group"
+                            className="px-10 py-6 bg-agri-primary text-white rounded-[1.5rem] font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:shadow-agri-primary/40 active:scale-95 transition-all flex items-center gap-3 relative overflow-hidden group"
                         >
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                            <Plus size={20} className="relative z-10" /> <span className="relative z-10">New Discussion</span>
+                            <Plus size={20} className="relative z-10 group-hover:rotate-90 transition-transform duration-300" /> <span className="relative z-10">New Discussion</span>
                         </button>
                     </div>
                 </header>
@@ -197,18 +197,20 @@ const CommunityPage = () => {
                             </h3>
                             <div className="space-y-3">
                                 {categoryList.map((cat) => (
-                                    <button
+                                    <motion.button
                                         key={cat.name}
                                         onClick={() => setActiveCategory(cat.name)}
-                                        className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-500 ${
+                                        whileHover={{ scale: 1.02, x: 5 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 ${
                                             activeCategory === cat.name 
-                                            ? 'bg-agri-primary text-white shadow-glow scale-[1.02]' 
+                                            ? 'bg-agri-primary text-white shadow-glow' 
                                             : 'text-gray-500 hover:text-agri-dark dark:hover:text-white hover:bg-agri-primary/5'
                                         }`}
                                     >
-                                        <cat.icon size={16} className={activeCategory === cat.name ? "text-white" : "text-gray-400"} />
+                                        <cat.icon size={16} className={activeCategory === cat.name ? "text-white" : "text-gray-400 group-hover:text-agri-primary"} />
                                         {cat.name}
-                                    </button>
+                                    </motion.button>
                                 ))}
                             </div>
                         </div>
@@ -240,24 +242,29 @@ const CommunityPage = () => {
                                         </div>
                                         <input
                                             type="text"
-                                            className="block w-full pl-14 pr-6 py-5 bg-white dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] text-agri-dark dark:text-white shadow-2xl focus:ring-2 focus:ring-agri-primary/50 outline-none transition-all font-medium text-lg placeholder:text-gray-400"
+                                            className="block w-full pl-14 pr-6 py-5 bg-white dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] text-agri-dark dark:text-white shadow-2xl focus:ring-4 focus:ring-agri-primary/20 focus:border-agri-primary/50 outline-none transition-all font-medium text-lg placeholder:text-gray-400"
                                             placeholder="Search discussions..."
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                         />
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] min-w-[200px] shadow-lg">
-                                    <Filter size={16} className="text-agri-primary" />
-                                    <select 
-                                        value={sortBy}
-                                        onChange={(e) => setSortBy(e.target.value)}
-                                        className="bg-transparent border-none text-[10px] font-black text-gray-500 focus:ring-0 uppercase tracking-widest cursor-pointer w-full"
-                                    >
-                                        <option value="Newest">Newest First</option>
-                                        <option value="Popular">Most Popular</option>
-                                        <option value="Trending">Trending Now</option>
-                                    </select>
+                                <div className="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] min-w-[220px] shadow-lg group">
+                                    <div className="flex flex-col">
+                                        <span className="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em] mb-0.5">Order By</span>
+                                        <div className="flex items-center gap-2">
+                                            <Filter size={14} className="text-agri-primary" />
+                                            <select 
+                                                value={sortBy}
+                                                onChange={(e) => setSortBy(e.target.value)}
+                                                className="bg-transparent border-none p-0 text-[10px] font-black text-agri-dark dark:text-white focus:ring-0 uppercase tracking-widest cursor-pointer w-full"
+                                            >
+                                                <option value="Newest">Newest First</option>
+                                                <option value="Popular">Most Popular</option>
+                                                <option value="Trending">Trending Now</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -270,7 +277,8 @@ const CommunityPage = () => {
                                         initial={{ opacity: 0, scale: 0.98, y: 30 }}
                                         animate={{ opacity: 1, scale: 1, y: 0 }}
                                         exit={{ opacity: 0, scale: 0.98, y: -30 }}
-                                        className="glass p-10 rounded-[3.5rem] shadow-premium border-agri-primary/10 relative overflow-hidden group hover:shadow-2xl hover:-translate-y-1 transition-all duration-500"
+                                        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                                        className="glass p-10 rounded-[3.5rem] shadow-premium border-agri-primary/10 relative overflow-hidden group hover:shadow-2xl transition-all duration-500"
                                     >
                                         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-agri-primary to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                                         
@@ -300,15 +308,21 @@ const CommunityPage = () => {
                                                 </div>
                                             </div>
                                             <div className="flex gap-2">
-                                                <button 
+                                                <motion.button 
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
                                                     onClick={() => handleBookmark(post.id)}
                                                     className={`p-3 rounded-2xl transition-all ${post.isBookmarked ? 'bg-agri-primary/10 text-agri-primary shadow-inner' : 'bg-gray-50 dark:bg-white/5 text-gray-300 hover:text-agri-primary'}`}
                                                 >
                                                     <Bookmark size={20} fill={post.isBookmarked ? "currentColor" : "none"} />
-                                                </button>
-                                                <button className="p-3 bg-gray-50 dark:bg-white/5 text-gray-300 hover:text-agri-primary rounded-2xl transition-all">
+                                                </motion.button>
+                                                <motion.button 
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
+                                                    className="p-3 bg-gray-50 dark:bg-white/5 text-gray-300 hover:text-agri-primary rounded-2xl transition-all"
+                                                >
                                                     <Share2 size={20} />
-                                                </button>
+                                                </motion.button>
                                             </div>
                                         </div>
 
@@ -327,15 +341,21 @@ const CommunityPage = () => {
                                         </div>
 
                                         <div className="flex items-center gap-10 pt-8 border-t border-gray-100 dark:border-white/5">
-                                            <button 
+                                            <motion.button 
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
                                                 onClick={() => handleLike(post.id)}
-                                                className={`flex items-center gap-3 transition-all font-black text-[10px] uppercase tracking-[0.2em] ${post.liked ? 'text-rose-500 scale-110' : 'text-gray-400 hover:text-rose-500 hover:scale-105'}`}
+                                                className={`flex items-center gap-3 transition-all font-black text-[10px] uppercase tracking-[0.2em] ${post.liked ? 'text-rose-500' : 'text-gray-400 hover:text-rose-500'}`}
                                             >
-                                                <Heart size={20} fill={post.liked ? "currentColor" : "none"} /> {post.likes}
-                                            </button>
-                                            <button className="flex items-center gap-3 text-gray-400 hover:text-agri-primary hover:scale-105 transition-all font-black text-[10px] uppercase tracking-[0.2em]">
+                                                <Heart size={20} fill={post.liked ? "currentColor" : "none"} className={post.liked ? "animate-bounce-slow" : ""} /> {post.likes}
+                                            </motion.button>
+                                            <motion.button 
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                className="flex items-center gap-3 text-gray-400 hover:text-agri-primary transition-all font-black text-[10px] uppercase tracking-[0.2em]"
+                                            >
                                                 <MessageCircle size={20} /> {post.comments}
-                                            </button>
+                                            </motion.button>
                                             <div className="flex items-center gap-3 text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] ml-auto">
                                                 <Eye size={18} className="text-gray-300" /> {post.views > 1000 ? `${(post.views / 1000).toFixed(1)}k` : post.views}
                                             </div>
@@ -366,19 +386,23 @@ const CommunityPage = () => {
                             </h3>
                             <div className="space-y-6">
                                 {[
-                                    { topic: "Solar Dryer Subsidy", count: "1.2k posts", icon: Sparkles },
-                                    { topic: "Organic Fertilizers", count: "850 posts", icon: Award },
-                                    { topic: "Potato Blight Control", count: "640 posts", icon: CheckCircle }
+                                    { topic: "Solar Dryer Subsidy", count: "1.2k posts", icon: Sparkles, color: "text-amber-500" },
+                                    { topic: "Organic Fertilizers", count: "850 posts", icon: Award, color: "text-emerald-500" },
+                                    { topic: "Potato Blight Control", count: "640 posts", icon: CheckCircle, color: "text-blue-500" }
                                 ].map((item, i) => (
-                                    <div key={i} className="group cursor-pointer flex items-center gap-4 p-2 rounded-2xl hover:bg-agri-primary/5 transition-all">
-                                        <div className="p-3 bg-gray-50 dark:bg-white/5 rounded-xl text-gray-400 group-hover:text-agri-primary transition-colors">
+                                    <motion.div 
+                                        key={i} 
+                                        whileHover={{ x: 5 }}
+                                        className="group cursor-pointer flex items-center gap-4 p-3 rounded-2xl hover:bg-agri-primary/5 transition-all border border-transparent hover:border-agri-primary/10"
+                                    >
+                                        <div className={`p-3 bg-gray-50 dark:bg-white/5 rounded-xl ${item.color} group-hover:scale-110 transition-transform shadow-sm`}>
                                             <item.icon size={18} />
                                         </div>
                                         <div>
                                             <h4 className="font-black text-agri-dark dark:text-white text-xs uppercase tracking-tight group-hover:text-agri-primary transition-colors">#{item.topic}</h4>
-                                            <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{item.count}</p>
+                                            <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-0.5">{item.count}</p>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
                         </div>
@@ -415,9 +439,10 @@ const CommunityPage = () => {
                             className="absolute inset-0 bg-agri-dark/80 backdrop-blur-xl" 
                         />
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                            initial={{ opacity: 0, scale: 0.9, y: 100 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95, y: 30 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 100 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
                             className="bg-white dark:bg-slate-900 rounded-[4rem] shadow-2xl w-full max-w-2xl overflow-hidden relative z-[70] border border-white/20"
                         >
                             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-agri-primary to-emerald-600" />
