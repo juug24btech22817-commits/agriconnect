@@ -65,5 +65,12 @@ export const api = {
     const res = await fetch(`${API_URL}/market-prices`);
     if (!res.ok) throw new Error('Failed to fetch prices');
     return res.json();
+  },
+
+  // === Delivery / Tracking ===
+  getTrackingDetails: async (trackingId) => {
+    const res = await fetch(`${API_URL}/delivery/track/${trackingId}`);
+    if (!res.ok) throw new Error('Failed to fetch tracking details');
+    return res.json();
   }
 };

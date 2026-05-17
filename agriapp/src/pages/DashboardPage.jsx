@@ -17,11 +17,116 @@ const DashboardPage = () => {
     const [activeTab, setActiveTab] = useState('listings');
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [language, setLanguage] = useState('EN');
-    const [listings, setListings] = useState([
-        { id: 1, name: 'Alphonso Mangoes', quantity: '120 dozen', price: '₹800/dozen', status: 'Active', image: '/images/crops/alphonso_mangoes_1773328054659.png' },
-        { id: 2, name: 'Basmati Rice', quantity: '1500 kg', price: '₹120/kg', status: 'Active', image: '/images/crops/basmati_rice_organic_1773328180216.png' },
-        { id: 3, name: 'Red Onions', quantity: '800 kg', price: '₹35/kg', status: 'Low Stock', image: '/images/crops/red_onions.png' },
-    ]);
+    
+    const [listings, setListings] = useState([]);
+    const [loadingListings, setLoadingListings] = useState(true);
+
+    const [newCropName, setNewCropName] = useState('');
+    const [newCropCategory, setNewCropCategory] = useState('Grains');
+    const [newCropQuantity, setNewCropQuantity] = useState('');
+    const [newCropPrice, setNewCropPrice] = useState('');
+    const [newCropUnit, setNewCropUnit] = useState('kg');
+
+    const loadProducts = async () => {
+        if (!user || (user.role !== 'farmer' && user.role !== 'admin')) {
+            setLoadingListings(false);
+            return;
+        }
+        try {
+            const res = await fetch(`http://localhost:5000/api/products?farmer=${user._id || user.id}`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data && data.length > 0) {
+                    const mappedListings = data.map(item => ({
+                        id: item._id,
+                        name: item.name,
+                        quantity: `${item.quantity} ${item.unit || 'kg'}`,
+                        price: `₹${item.price}/${item.unit || 'kg'}`,
+                        status: item.quantity > 10 ? 'Active' : 'Low Stock',
+                        image: item.image || 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=200&h=200&fit=crop'
+                    }));
+                    setListings(mappedListings);
+                } else {
+                    setListings([
+                        { id: 'mock-1', name: 'Alphonso Mangoes', quantity: '120 dozen', price: '₹800/dozen', status: 'Active', image: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=200&h=200&fit=crop' },
+                        { id: 'mock-2', name: 'Basmati Rice', quantity: '1500 kg', price: '₹120/kg', status: 'Active', image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=200&h=200&fit=crop' },
+                        { id: 'mock-3', name: 'Red Onions', quantity: '800 kg', price: '₹35/kg', status: 'Low Stock', image: 'https://images.unsplash.com/photo-1618519764620-7403abdbfee9?w=200&h=200&fit=crop' },
+                    ]);
+                }
+            } else {
+                throw new Error("Failed to fetch listings");
+            }
+        } catch (err) {
+            console.error("Error loading products:", err);
+            setListings([
+                { id: 'mock-1', name: 'Alphonso Mangoes', quantity: '120 dozen', price: '₹800/dozen', status: 'Active', image: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=200&h=200&fit=crop' },
+                { id: 'mock-2', name: 'Basmati Rice', quantity: '1500 kg', price: '₹120/kg', status: 'Active', image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=200&h=200&fit=crop' },
+                { id: 'mock-3', name: 'Red Onions', quantity: '800 kg', price: '₹35/kg', status: 'Low Stock', image: 'https://images.unsplash.com/photo-1618519764620-7403abdbfee9?w=200&h=200&fit=crop' },
+            ]);
+        } finally {
+            setLoadingListings(false);
+        }
+    };
+
+    useEffect(() => {
+        loadProducts();
+    }, [user]);
+
+    const handleAddCrop = async (e) => {
+        if (e) e.preventDefault();
+        if (!newCropName || !newCropQuantity || !newCropPrice) {
+            alert('Please fill out all required fields.');
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('You must be logged in.');
+            return;
+        }
+
+        try {
+            const cropPayload = {
+                name: newCropName,
+                category: newCropCategory,
+                quantity: parseFloat(newCropQuantity),
+                price: parseFloat(newCropPrice),
+                unit: newCropUnit,
+                image: newCropCategory === 'Fruits' 
+                    ? 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=500&h=500&fit=crop' 
+                    : newCropCategory === 'Vegetables' 
+                    ? 'https://images.unsplash.com/photo-1618519764620-7403abdbfee9?w=500&h=500&fit=crop' 
+                    : 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&h=500&fit=crop',
+                description: `Fresh organic ${newCropName} direct from farm.`,
+                mandiPrice: parseFloat(newCropPrice) * 0.85,
+                retailPrice: parseFloat(newCropPrice) * 1.2
+            };
+
+            const res = await fetch('http://localhost:5000/api/products', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(cropPayload)
+            });
+
+            if (res.ok) {
+                alert('Crop Listing Added Successfully!');
+                setIsAddModalOpen(false);
+                setNewCropName('');
+                setNewCropQuantity('');
+                setNewCropPrice('');
+                loadProducts();
+            } else {
+                const errorData = await res.json();
+                alert(`Failed to add crop: ${errorData.message}`);
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error adding crop. Please try again.');
+        }
+    };
 
     const [weather, setWeather] = useState({
         temp: "32°C",
@@ -435,30 +540,67 @@ const DashboardPage = () => {
                                     </button>
                                 </div>
                                 
-                                <form className="space-y-6">
+                                <form onSubmit={handleAddCrop} className="space-y-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
                                             <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Crop Name</label>
-                                            <input type="text" className="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-5 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary" placeholder="e.g. Basmati Rice" />
+                                            <input 
+                                                type="text" 
+                                                value={newCropName}
+                                                onChange={(e) => setNewCropName(e.target.value)}
+                                                className="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-5 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary" 
+                                                placeholder="e.g. Basmati Rice" 
+                                                required
+                                            />
                                         </div>
                                         <div className="space-y-2">
                                             <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Category</label>
-                                            <select className="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-5 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary">
-                                                <option>Grains</option>
-                                                <option>Fruits</option>
-                                                <option>Vegetables</option>
+                                            <select 
+                                                value={newCropCategory}
+                                                onChange={(e) => setNewCropCategory(e.target.value)}
+                                                className="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-5 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary"
+                                            >
+                                                <option value="Grains">Grains</option>
+                                                <option value="Fruits">Fruits</option>
+                                                <option value="Vegetables">Vegetables</option>
                                             </select>
                                         </div>
                                     </div>
                                     
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Quantity (KG/Tons)</label>
-                                            <input type="text" className="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-5 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary" placeholder="500" />
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div className="space-y-2 md:col-span-1">
+                                            <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Quantity</label>
+                                            <input 
+                                                type="number" 
+                                                value={newCropQuantity}
+                                                onChange={(e) => setNewCropQuantity(e.target.value)}
+                                                className="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-5 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary" 
+                                                placeholder="500" 
+                                                required
+                                            />
                                         </div>
-                                        <div className="space-y-2">
+                                        <div className="space-y-2 md:col-span-1">
+                                            <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Unit</label>
+                                            <select 
+                                                value={newCropUnit}
+                                                onChange={(e) => setNewCropUnit(e.target.value)}
+                                                className="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-5 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary"
+                                            >
+                                                <option value="kg">kg</option>
+                                                <option value="tons">tons</option>
+                                                <option value="dozen">dozen</option>
+                                            </select>
+                                        </div>
+                                        <div className="space-y-2 md:col-span-1">
                                             <label className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">Price per Unit (₹)</label>
-                                            <input type="text" className="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-5 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary" placeholder="120" />
+                                            <input 
+                                                type="number" 
+                                                value={newCropPrice}
+                                                onChange={(e) => setNewCropPrice(e.target.value)}
+                                                className="w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-5 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary" 
+                                                placeholder="120" 
+                                                required
+                                            />
                                         </div>
                                     </div>
 
@@ -466,8 +608,7 @@ const DashboardPage = () => {
                                         <motion.button 
                                             whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.98 }}
-                                            type="button" 
-                                            onClick={() => setIsAddModalOpen(false)} 
+                                            type="submit" 
                                             className="w-full bg-gradient-to-r from-agri-primary to-emerald-700 text-white font-black py-5 rounded-2xl shadow-glow transition-all"
                                         >
                                             Publish Harvest Listing

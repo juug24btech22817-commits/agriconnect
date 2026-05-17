@@ -44,10 +44,14 @@ const CartPage = () => {
                 status: "Pending"
             };
 
-            await api.createOrder(orderPayload);
-            alert(`Order Placed Successfully via ${partners[deliveryMethod].name}! Your total was ₹${total.toLocaleString()}`);
+            const createdOrder = await api.createOrder(orderPayload);
+            alert(`Order Placed Successfully via ${partners[deliveryMethod].name}!`);
             clearCart();
-            navigate('/dashboard');
+            if (createdOrder && createdOrder.trackingId) {
+                navigate(`/tracking?id=${createdOrder.trackingId}`);
+            } else {
+                navigate('/dashboard');
+            }
         } catch (err) {
             console.error(err);
             alert('Failed to place order. Please try again.');

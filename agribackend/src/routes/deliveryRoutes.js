@@ -5,9 +5,10 @@ const {
     getTrackingUpdate,
     deliveryWebhook
 } = require('../controllers/deliveryController');
+const { protect, authorize } = require('../middleware/authMiddleware');
 
-// Shipment creation
-router.post('/ship', createShipment);
+// Shipment creation - only authorized farmers/admins
+router.post('/ship', protect, authorize('admin', 'farmer'), createShipment);
 
 // Tracking update
 router.get('/track/:trackingId', getTrackingUpdate);

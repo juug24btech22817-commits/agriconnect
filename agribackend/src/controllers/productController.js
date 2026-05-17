@@ -4,7 +4,7 @@ const Product = require('../models/Product');
 // @route   GET /api/products
 // @access  Public
 const getProducts = async (req, res) => {
-  const { category, search } = req.query;
+  const { category, search, farmer } = req.query;
   const query = {};
 
   if (category && category !== 'All') {
@@ -13,6 +13,10 @@ const getProducts = async (req, res) => {
 
   if (search) {
     query.name = { $regex: search, $options: 'i' };
+  }
+
+  if (farmer) {
+    query.farmer = farmer;
   }
 
   try {

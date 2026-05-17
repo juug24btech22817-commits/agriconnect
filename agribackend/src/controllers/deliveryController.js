@@ -51,24 +51,76 @@ const getTrackingUpdate = async (req, res) => {
             return res.status(404).json({ message: 'Tracking ID not found' });
         }
 
-        // Mocking real-time tracking levels
-        const statuses = [
-            'Order Placed',
-            'Picked Up',
-            'In Transit',
-            'Out for Delivery',
-            'Delivered'
+        const now = new Date();
+        const createdTime = new Date(order.createdAt);
+        const diffMs = now - createdTime;
+        const diffMins = Math.floor(diffMs / 60000);
+
+        let currentStatus = order.deliveryStatus || 'Order Placed';
+        let isDelivered = order.isDelivered || false;
+        let status = order.status || 'pending';
+
+        if (order.status !== 'cancelled' && !order.isDelivered) {
+            if (diffMins >= 7) {
+                currentStatus = 'Delivered';
+                isDelivered = true;
+                status = 'delivered';
+                
+                order.deliveryStatus = 'Delivered';
+                order.isDelivered = true;
+                order.status = 'delivered';
+                order.deliveredAt = now;
+                await order.save();
+            } else if (diffMins >= 5) {
+                currentStatus = 'Out for Delivery';
+                if (order.deliveryStatus !== 'Out for Delivery') {
+                    order.deliveryStatus = 'Out for Delivery';
+                    await order.save();
+                }
+            } else if (diffMins >= 3) {
+                currentStatus = 'In Transit';
+                if (order.deliveryStatus !== 'In Transit') {
+                    order.deliveryStatus = 'In Transit';
+                    await order.save();
+                }
+            } else if (diffMins >= 1) {
+                currentStatus = 'Picked Up';
+                if (order.deliveryStatus !== 'Picked Up') {
+                    order.deliveryStatus = 'Picked Up';
+                    await order.save();
+                }
+            } else {
+                currentStatus = 'Order Placed';
+            }
+        }
+
+        const history = [
+            { status: 'Order Placed', time: createdTime }
         ];
-        
-        // Return current status or mock a progression
+
+        if (diffMins >= 1) {
+            const pickedUpTime = new Date(createdTime.getTime() + 1 * 60000);
+            history.push({ status: 'Picked Up', time: pickedUpTime < now ? pickedUpTime : now });
+        }
+        if (diffMins >= 3) {
+            const inTransitTime = new Date(createdTime.getTime() + 3 * 60000);
+            history.push({ status: 'In Transit', time: inTransitTime < now ? inTransitTime : now });
+        }
+        if (diffMins >= 5) {
+            const outForDeliveryTime = new Date(createdTime.getTime() + 5 * 60000);
+            history.push({ status: 'Out for Delivery', time: outForDeliveryTime < now ? outForDeliveryTime : now });
+        }
+        if (diffMins >= 7 || isDelivered) {
+            history.push({ status: 'Delivered', time: order.deliveredAt || now });
+        }
+
         res.status(200).json({
             trackingId,
-            status: order.deliveryStatus,
+            status: currentStatus,
             estimatedDelivery: order.estimatedDelivery,
-            history: [
-                { status: 'Order Placed', time: order.createdAt },
-                { status: order.deliveryStatus, time: new Date() }
-            ]
+            isDelivered,
+            orderStatus: status,
+            history
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
