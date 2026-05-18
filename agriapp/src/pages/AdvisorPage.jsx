@@ -55,7 +55,7 @@ const TypewriterMessage = ({ text }) => {
 
 const AdvisorPage = () => {
     const [messages, setMessages] = useState([
-        { role: 'bot', text: 'Hello! I am your AI Crop Advisor powered by Lyzr. You can ask me any farming questions or upload an image of your crop for immediate disease diagnosis.' }
+        { role: 'bot', text: 'Hello! I am your AI Crop Advisor. You can ask me any farming questions or upload an image of your crop for immediate disease diagnosis.' }
     ]);
     const [inputText, setInputText] = useState('');
     const [selectedImage, setSelectedImage] = useState(null);
