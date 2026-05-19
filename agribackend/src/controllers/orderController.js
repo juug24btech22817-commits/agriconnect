@@ -104,10 +104,9 @@ const addOrderItems = async (req, res) => {
 // @access  Private
 const getOrderById = async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id).populate(
-      'buyer',
-      'name email'
-    );
+    const order = await Order.findById(req.params.id)
+      .populate('buyer', 'name email')
+      .lean();
 
     if (order) {
       // Check if user is the buyer or the farmer for one of the items
@@ -152,7 +151,7 @@ const updateOrderToDelivered = async (req, res) => {
 // @access  Private
 const getMyOrders = async (req, res) => {
   try {
-    const orders = await Order.find({ buyer: req.user._id });
+    const orders = await Order.find({ buyer: req.user._id }).lean();
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -164,7 +163,7 @@ const getMyOrders = async (req, res) => {
 // @access  Private/Admin
 const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find({}).populate('buyer', 'id name');
+    const orders = await Order.find({}).populate('buyer', 'id name').lean();
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });

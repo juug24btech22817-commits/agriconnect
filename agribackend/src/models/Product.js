@@ -10,6 +10,7 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
       enum: ['Vegetables', 'Fruits', 'Grains', 'Dairy', 'Subscription'],
+      index: true,
     },
     price: {
       type: Number,
@@ -28,6 +29,7 @@ const productSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'User',
+      index: true,
     },
     mandiPrice: Number,
     retailPrice: Number,

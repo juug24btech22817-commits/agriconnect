@@ -6,6 +6,7 @@ const orderSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'User',
+      index: true,
     },
     items: [
       {
@@ -84,6 +85,7 @@ const orderSchema = mongoose.Schema(
     },
     trackingId: {
       type: String,
+      index: true,
     },
     deliveryStatus: {
       type: String,

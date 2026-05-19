@@ -1,11 +1,30 @@
 const axios = require('axios');
 
+// In-memory cache with a 15-minute Time-To-Live (TTL)
+const priceCache = new Map();
+const CACHE_TTL = 15 * 60 * 1000; // 15 minutes
+
+const getCacheKey = (commodity, state, limit) => {
+  return `${commodity || 'all'}_${state || 'all'}_${limit}`;
+};
+
 // @desc    Get live market prices from Agmarknet API
 // @route   GET /api/market-prices
 // @access  Public
 const getMarketPrices = async (req, res) => {
   const { commodity, state, limit = 50 } = req.query;
   const apiKey = process.env.AGMARKNET_API_KEY;
+
+  const cacheKey = getCacheKey(commodity, state, limit);
+  const cached = priceCache.get(cacheKey);
+
+  // If valid cache exists, return it immediately
+  if (cached && (Date.now() - cached.timestamp < CACHE_TTL)) {
+    return res.json({
+      ...cached.data,
+      fromCache: true
+    });
+  }
 
   try {
     let url = `https://api.data.gov.in/resource/9ef2731d-a65a-4a31-adb9-ad830832d57c?api-key=${apiKey || 'dummy'}&format=json&limit=${limit}`;
@@ -17,10 +36,9 @@ const getMarketPrices = async (req, res) => {
       url += `&filters[state]=${encodeURIComponent(state)}`;
     }
 
-    // If no API key, return a mock response or try to fetch from data.gov.in (will fail without key)
+    // If no API key, return a mock response
     if (!apiKey) {
-      // Return a simulated response for development if no API key is provided
-      return res.json({
+      const mockResponse = {
         records: [
           {
             state: "Karnataka",
@@ -47,10 +65,25 @@ const getMarketPrices = async (req, res) => {
         ],
         total: 2,
         isMock: true
+      };
+
+      // Cache the mock response too for consistency in development
+      priceCache.set(cacheKey, {
+        timestamp: Date.now(),
+        data: mockResponse
       });
+
+      return res.json(mockResponse);
     }
 
     const response = await axios.get(url);
+
+    // Save success response to cache
+    priceCache.set(cacheKey, {
+      timestamp: Date.now(),
+      data: response.data
+    });
+
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ message: 'Failed to fetch market prices', error: error.message });

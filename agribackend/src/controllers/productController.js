@@ -20,7 +20,7 @@ const getProducts = async (req, res) => {
   }
 
   try {
-    const products = await Product.find(query).populate('farmer', 'name farmerDetails location');
+    const products = await Product.find(query).populate('farmer', 'name farmerDetails location').lean();
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -32,7 +32,7 @@ const getProducts = async (req, res) => {
 // @access  Public
 const getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id).populate('farmer', 'name farmerDetails location');
+    const product = await Product.findById(req.params.id).populate('farmer', 'name farmerDetails location').lean();
     if (product) {
       res.json(product);
     } else {
