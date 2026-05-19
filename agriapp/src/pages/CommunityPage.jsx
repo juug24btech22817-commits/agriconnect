@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 
 const categoryList = [
+    { name: "All Discussions", icon: Users },
     { name: "General", icon: MessageSquare },
     { name: "Expert Advice", icon: Sparkles },
     { name: "Market Trends", icon: TrendingUp },
@@ -21,15 +22,20 @@ const CommunityPage = () => {
             id: 1,
             title: "Organic Pest Control Tips?",
             author: "Farmer Gurdeep",
-            avatar: null,
+            avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
             location: "Amritsar, Punjab",
             time: "2h ago",
-            content: "Just started the organic transition for my 5-acre wheat farm. Any tips on natural pest control for the early stages?",
+            content: "Just started the organic transition for my 5-acre wheat farm. Any tips on natural pest control for the early stages? I want to avoid chemical pesticides completely.",
+            image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&w=800&q=80",
             likes: 24,
             liked: false,
             isBookmarked: false,
             views: 142,
-            comments: 12,
+            comments: 2,
+            commentsList: [
+                { id: 101, author: "Dr. Ananya Rao", text: "I highly recommend using cold-pressed neem oil sprays and introducing beneficial insects like ladybugs early on.", time: "1h ago", isExpert: true, avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" },
+                { id: 102, author: "Farmer Ramesh", text: "Companion planting has worked wonders for my crop. Try planting marigolds around the border.", time: "45m ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" }
+            ],
             tags: ["OrganicTransition", "WheatFarming"],
             category: "General",
             isVerified: true
@@ -38,15 +44,19 @@ const CommunityPage = () => {
             id: 2,
             title: "Southern Karnataka Moisture Alert",
             author: "Dr. Ananya Rao",
-            avatar: null,
+            avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
             location: "AgriTech Expert",
             time: "5h ago",
-            content: "High moisture levels detected in Southern Karnataka this week. Farmers should monitor for fungal growth in paddy fields.",
+            content: "High moisture levels detected in Southern Karnataka this week. Farmers should monitor for fungal growth in paddy fields. Ensure good drainage immediately.",
+            image: null,
             likes: 56,
             liked: false,
             isBookmarked: true,
             views: 892,
-            comments: 8,
+            comments: 1,
+            commentsList: [
+                { id: 201, author: "Suresh Gowda", text: "Thanks for the warning doctor! Checking my fields right now.", time: "3h ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" }
+            ],
             tags: ["WeatherAlert", "PaddyHealth"],
             category: "Expert Advice",
             isExpert: true
@@ -55,27 +65,38 @@ const CommunityPage = () => {
             id: 3,
             title: "Hybrid Tomato Success Story",
             author: "Venkatesh K.",
-            avatar: null,
+            avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
             location: "Kolar, Karnataka",
             time: "1d ago",
-            content: "Successfully harvested the first batch of hybrid tomatoes. The yield is 20% higher thanks to the new drip irrigation setup!",
+            content: "Successfully harvested the first batch of hybrid tomatoes. The yield is 20% higher thanks to the new drip irrigation setup and soil testing analysis from AgriConnect!",
+            image: "https://images.unsplash.com/photo-1592841208221-a5808df736a6?auto=format&fit=crop&w=800&q=80",
             likes: 89,
             liked: false,
             isBookmarked: false,
             views: 1240,
-            comments: 45,
+            comments: 2,
+            commentsList: [
+                { id: 301, author: "Farmer Gurdeep", text: "This is phenomenal Venkatesh! What soil testing kit did you use?", time: "18h ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" },
+                { id: 302, author: "Venkatesh K.", text: "I used the AgriConnect soil kit, highly recommend it!", time: "16h ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" }
+            ],
             tags: ["SuccessStory", "SmartIrrigation"],
             category: "Success Stories",
             isVerified: true
         }
     ]);
 
-    const [activeCategory, setActiveCategory] = useState("General");
+    const [activeCategory, setActiveCategory] = useState("All Discussions");
     const [sortBy, setSortBy] = useState("Newest");
     const [searchQuery, setSearchQuery] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newPostTitle, setNewPostTitle] = useState("");
     const [newPostContent, setNewPostContent] = useState("");
+    const [newPostCategory, setNewPostCategory] = useState("General");
+    const [newPostImageUrl, setNewPostImageUrl] = useState("");
+    const [showImageInput, setShowImageInput] = useState(false);
+    const [expandedCommentsPostId, setExpandedCommentsPostId] = useState(null);
+    const [newComments, setNewComments] = useState({});
+    const [showEliteToast, setShowEliteToast] = useState(false);
 
     const handleLike = (id) => {
         setPosts(posts.map(post => {
@@ -110,28 +131,72 @@ const CommunityPage = () => {
             id: Date.now(),
             title: newPostTitle,
             author: "Farmer Shaswat",
-            avatar: null,
+            avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
             location: "Bengaluru, Karnataka",
             time: "Just now",
             content: newPostContent,
+            image: newPostImageUrl.trim() || null,
             likes: 0,
             liked: false,
             isBookmarked: false,
             views: 0,
             comments: 0,
+            commentsList: [],
             tags: ["Community", "AgriConnect"],
-            category: activeCategory,
+            category: newPostCategory,
             isVerified: true
         };
 
         setPosts([newPost, ...posts]);
         setNewPostTitle("");
         setNewPostContent("");
+        setNewPostImageUrl("");
+        setShowImageInput(false);
         setIsModalOpen(false);
     };
 
+    const handleAddComment = (postId) => {
+        const commentText = newComments[postId];
+        if (!commentText || !commentText.trim()) return;
+
+        setPosts(posts.map(post => {
+            if (post.id === postId) {
+                const newCommentObj = {
+                    id: Date.now(),
+                    author: "Farmer Shaswat",
+                    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
+                    text: commentText,
+                    time: "Just now",
+                    isVerified: true
+                };
+                return {
+                    ...post,
+                    comments: post.comments + 1,
+                    commentsList: [...post.commentsList, newCommentObj]
+                };
+            }
+            return post;
+        }));
+
+        setNewComments({
+            ...newComments,
+            [postId]: ""
+        });
+    };
+
+    const handleTagClick = (tag) => {
+        setSearchQuery(tag);
+    };
+
+    const handleJoinElite = () => {
+        setShowEliteToast(true);
+        setTimeout(() => {
+            setShowEliteToast(false);
+        }, 5000);
+    };
+
     const filteredPosts = posts.filter(post => {
-        const matchesCategory = activeCategory === "General" || post.category === activeCategory;
+        const matchesCategory = activeCategory === "All Discussions" || post.category === activeCategory;
         const matchesSearch = post.content.toLowerCase().includes(searchQuery.toLowerCase()) || 
                              post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                              post.author.toLowerCase().includes(searchQuery.toLowerCase());
@@ -227,7 +292,7 @@ const CommunityPage = () => {
                                     <h4 className="text-xl font-display font-black tracking-tight uppercase">Expert Access</h4>
                                 </div>
                                 <p className="text-sm text-white/50 mb-8 leading-relaxed">Upgrade to <span className="text-agri-primary font-black">Elite</span> to get direct priority answers from industry scientists.</p>
-                                <button className="w-full py-5 bg-white text-agri-dark rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-agri-primary hover:text-white transition-all shadow-xl active:scale-95">Join Elite Network</button>
+                                <button onClick={handleJoinElite} className="w-full py-5 bg-white text-agri-dark rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] hover:bg-agri-primary hover:text-white transition-all shadow-xl active:scale-95">Join Elite Network</button>
                             </div>
                         </div>
                     </div>
@@ -289,8 +354,12 @@ const CommunityPage = () => {
                                         )}
                                         <div className="flex justify-between items-start mb-8">
                                             <div className="flex gap-5">
-                                                <div className="w-14 h-14 bg-gradient-to-br from-agri-primary/10 to-emerald-500/10 rounded-[1.5rem] flex items-center justify-center text-agri-primary ring-4 ring-white/5 shadow-inner">
-                                                    <User size={28} />
+                                                <div className="w-14 h-14 bg-gradient-to-br from-agri-primary/10 to-emerald-500/10 rounded-[1.5rem] flex items-center justify-center text-agri-primary ring-4 ring-white/5 shadow-inner overflow-hidden">
+                                                    {post.avatar ? (
+                                                        <img src={post.avatar} alt={post.author} className="w-full h-full object-cover" />
+                                                    ) : (
+                                                        <User size={28} />
+                                                    )}
                                                 </div>
                                                 <div>
                                                     <div className="flex items-center gap-3 mb-1.5">
@@ -330,13 +399,29 @@ const CommunityPage = () => {
                                             {post.title}
                                         </h3>
 
-                                        <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-8 font-medium">
+                                        <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-6 font-medium">
                                             {post.content}
                                         </p>
 
+                                        {post.image && (
+                                            <div className="mb-8 rounded-3xl overflow-hidden max-h-[350px] border border-gray-100 dark:border-white/5 shadow-md">
+                                                <img 
+                                                    src={post.image} 
+                                                    alt={post.title} 
+                                                    className="w-full h-full object-cover object-center transform group-hover:scale-102 transition-transform duration-700" 
+                                                />
+                                            </div>
+                                        )}
+
                                         <div className="flex flex-wrap gap-2 mb-10">
                                             {post.tags.map(tag => (
-                                                <span key={tag} className="px-4 py-1.5 bg-gray-100 dark:bg-white/5 text-[9px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest rounded-xl hover:bg-agri-primary/10 hover:text-agri-primary transition-colors cursor-pointer">#{tag}</span>
+                                                <span 
+                                                    key={tag} 
+                                                    onClick={() => handleTagClick(tag)}
+                                                    className="px-4 py-1.5 bg-gray-100 dark:bg-white/5 text-[9px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest rounded-xl hover:bg-agri-primary/10 hover:text-agri-primary transition-colors cursor-pointer"
+                                                >
+                                                    #{tag}
+                                                </span>
                                             ))}
                                         </div>
 
@@ -352,7 +437,8 @@ const CommunityPage = () => {
                                             <motion.button 
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
-                                                className="flex items-center gap-3 text-gray-400 hover:text-agri-primary transition-all font-black text-[10px] uppercase tracking-[0.2em]"
+                                                onClick={() => setExpandedCommentsPostId(expandedCommentsPostId === post.id ? null : post.id)}
+                                                className={`flex items-center gap-3 transition-all font-black text-[10px] uppercase tracking-[0.2em] ${expandedCommentsPostId === post.id ? 'text-agri-primary' : 'text-gray-400 hover:text-agri-primary'}`}
                                             >
                                                 <MessageCircle size={20} /> {post.comments}
                                             </motion.button>
@@ -360,6 +446,73 @@ const CommunityPage = () => {
                                                 <Eye size={18} className="text-gray-300" /> {post.views > 1000 ? `${(post.views / 1000).toFixed(1)}k` : post.views}
                                             </div>
                                         </div>
+
+                                        {/* Interactive Comments Drawer */}
+                                        <AnimatePresence>
+                                            {expandedCommentsPostId === post.id && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, height: 0 }}
+                                                    animate={{ opacity: 1, height: "auto" }}
+                                                    exit={{ opacity: 0, height: 0 }}
+                                                    transition={{ duration: 0.3 }}
+                                                    className="mt-8 pt-8 border-t border-gray-100 dark:border-white/5 space-y-6 overflow-hidden"
+                                                >
+                                                    <h4 className="text-sm font-black text-agri-dark dark:text-white uppercase tracking-wider mb-4 flex items-center gap-2">
+                                                        <MessageSquare size={16} className="text-agri-primary animate-pulse" /> Replies ({post.commentsList ? post.commentsList.length : 0})
+                                                    </h4>
+
+                                                    {/* Comment List */}
+                                                    <div className="space-y-4 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                                                        {post.commentsList && post.commentsList.map((comment) => (
+                                                            <div key={comment.id} className="flex gap-4 p-4 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5">
+                                                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-agri-primary/10 to-emerald-500/10 flex items-center justify-center overflow-hidden shrink-0 border border-agri-primary/10">
+                                                                    {comment.avatar ? (
+                                                                        <img src={comment.avatar} alt={comment.author} className="w-full h-full object-cover" />
+                                                                    ) : (
+                                                                        <User size={20} className="text-agri-primary" />
+                                                                    )}
+                                                                </div>
+                                                                <div className="flex-grow">
+                                                                    <div className="flex items-center gap-2 mb-1">
+                                                                        <span className="font-black text-xs text-agri-dark dark:text-white uppercase tracking-tight">{comment.author}</span>
+                                                                        {comment.isExpert && (
+                                                                            <span className="px-1.5 py-0.5 bg-agri-secondary/20 text-agri-secondary rounded text-[6px] font-black uppercase tracking-widest flex items-center gap-0.5">
+                                                                                <Sparkles size={6} /> Expert
+                                                                            </span>
+                                                                        )}
+                                                                        {comment.isVerified && (
+                                                                            <CheckCircle size={10} className="text-blue-500" />
+                                                                        )}
+                                                                        <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest ml-auto">{comment.time}</span>
+                                                                    </div>
+                                                                    <p className="text-xs text-gray-600 dark:text-gray-300 font-medium leading-relaxed">{comment.text}</p>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+
+                                                    {/* Add Comment input */}
+                                                    <div className="flex gap-4 items-center mt-4">
+                                                        <input
+                                                            type="text"
+                                                            value={newComments[post.id] || ""}
+                                                            onChange={(e) => setNewComments({ ...newComments, [post.id]: e.target.value })}
+                                                            onKeyDown={(e) => {
+                                                                if (e.key === 'Enter') handleAddComment(post.id);
+                                                            }}
+                                                            placeholder="Write a reply..."
+                                                            className="flex-grow px-6 py-4 bg-gray-50 dark:bg-slate-800/80 border border-gray-200 dark:border-white/10 rounded-2xl text-xs font-medium text-agri-dark dark:text-white focus:outline-none focus:ring-2 focus:ring-agri-primary transition-all placeholder:text-gray-400"
+                                                        />
+                                                        <button
+                                                            onClick={() => handleAddComment(post.id)}
+                                                            className="px-6 py-4 bg-agri-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-agri-dark transition-all active:scale-95 shadow-sm"
+                                                        >
+                                                            Reply
+                                                        </button>
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
                                     </motion.div>
                                 ))}
                             </AnimatePresence>
@@ -492,13 +645,13 @@ const CommunityPage = () => {
                                     <div className="space-y-3">
                                         <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2">Select Category</label>
                                         <div className="flex flex-wrap gap-3">
-                                            {categoryList.map(cat => (
+                                            {categoryList.filter(cat => cat.name !== "All Discussions").map(cat => (
                                                 <button
                                                     key={cat.name}
                                                     type="button"
-                                                    onClick={() => setActiveCategory(cat.name)}
+                                                    onClick={() => setNewPostCategory(cat.name)}
                                                     className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 shadow-sm ${
-                                                        activeCategory === cat.name 
+                                                        newPostCategory === cat.name 
                                                         ? 'bg-agri-primary text-white scale-105 shadow-glow' 
                                                         : 'bg-gray-50 dark:bg-white/5 text-gray-500 hover:bg-agri-primary/10'
                                                     }`}
@@ -510,12 +663,47 @@ const CommunityPage = () => {
                                         </div>
                                     </div>
 
-                                    <button type="button" className="w-full py-6 border-2 border-dashed border-gray-200 dark:border-white/10 rounded-3xl flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-agri-primary hover:border-agri-primary transition-all group shadow-sm">
-                                        <div className="p-3 bg-gray-50 dark:bg-white/5 rounded-2xl group-hover:scale-110 transition-transform">
-                                            <Plus size={24} />
-                                        </div>
-                                        <span className="text-[10px] font-black uppercase tracking-[0.3em]">Attach Media / Photos</span>
-                                    </button>
+                                    <div className="space-y-4">
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setShowImageInput(!showImageInput)}
+                                            className={`w-full py-6 border-2 border-dashed rounded-3xl flex flex-col items-center justify-center gap-3 transition-all group shadow-sm ${
+                                                showImageInput 
+                                                ? 'border-agri-primary text-agri-primary bg-agri-primary/5' 
+                                                : 'border-gray-200 dark:border-white/10 text-gray-400 hover:text-agri-primary hover:border-agri-primary'
+                                            }`}
+                                        >
+                                            <div className="p-3 bg-gray-50 dark:bg-white/5 rounded-2xl group-hover:scale-110 transition-transform">
+                                                <Plus size={24} />
+                                            </div>
+                                            <span className="text-[10px] font-black uppercase tracking-[0.3em]">
+                                                {showImageInput ? "Remove / Hide Attachment" : "Attach Media / Photos"}
+                                            </span>
+                                        </button>
+
+                                        <AnimatePresence>
+                                            {showImageInput && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, height: 0 }}
+                                                    animate={{ opacity: 1, height: "auto" }}
+                                                    exit={{ opacity: 0, height: 0 }}
+                                                    className="space-y-2 overflow-hidden"
+                                                >
+                                                    <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2">Image URL</label>
+                                                    <div className="relative group">
+                                                        <div className="absolute -inset-0.5 bg-gradient-to-r from-agri-primary to-emerald-600 rounded-2xl blur opacity-10 group-focus-within:opacity-20 transition" />
+                                                        <input 
+                                                            type="url"
+                                                            value={newPostImageUrl}
+                                                            onChange={(e) => setNewPostImageUrl(e.target.value)}
+                                                            className="relative w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-6 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary font-medium text-xs placeholder:text-gray-400" 
+                                                            placeholder="Paste image URL (e.g. from Unsplash)..."
+                                                        />
+                                                    </div>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
                                 </div>
 
                                 <div className="pt-12">
@@ -526,6 +714,28 @@ const CommunityPage = () => {
                             </form>
                         </motion.div>
                     </div>
+                )}
+            </AnimatePresence>
+
+            {/* Elite Toast Notification */}
+            <AnimatePresence>
+                {showEliteToast && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        className="fixed bottom-10 right-10 z-[100] max-w-sm bg-gradient-to-r from-agri-dark to-slate-900 border border-agri-primary/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(16,185,129,0.3)] text-white"
+                    >
+                        <div className="flex gap-4 items-start">
+                            <div className="p-3 bg-agri-primary/20 rounded-xl text-agri-primary shrink-0">
+                                <Sparkles size={20} className="animate-pulse" />
+                            </div>
+                            <div>
+                                <h4 className="font-black text-sm uppercase tracking-wider text-agri-primary mb-1">Elite Access Initiated</h4>
+                                <p className="text-xs text-white/70 leading-relaxed font-medium">Thank you for your interest! A customized enrollment invitation has been sent to your registered AgriConnect email address.</p>
+                            </div>
+                        </div>
+                    </motion.div>
                 )}
             </AnimatePresence>
         </div>
