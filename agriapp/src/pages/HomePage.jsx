@@ -2,7 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
-  Leaf, ArrowRight, ShieldCheck, TrendingUp, Search 
+  Leaf, ArrowRight, ShieldCheck, TrendingUp, Search,
+  Users, MapPin, IndianRupee, Activity, Sparkles
 } from 'lucide-react';
 
 const HomePage = () => {
@@ -64,20 +65,55 @@ const HomePage = () => {
                         </div>
                     </motion.div>
 
-                    {/* Dashboard Preview / Visual */}
+                    {/* Dashboard Preview / Visual with Tech Badges */}
                     <motion.div 
                         initial={{ opacity: 0, y: 60 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5, duration: 1 }}
                         className="mt-20 relative px-4"
                     >
-                        <div className="max-w-5xl mx-auto glass rounded-[2.5rem] p-4 shadow-premium group border-white/40 overflow-hidden">
+                        <div className="max-w-5xl mx-auto glass rounded-[2.5rem] p-4 shadow-premium group border-white/40 overflow-hidden relative">
                            <img 
                             src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=2670&auto=format&fit=crop" 
                             className="w-full h-[400px] object-cover rounded-[2rem] opacity-90 group-hover:opacity-100 transition-opacity"
                             alt="Agriculture Technology"
                            />
                            <div className="absolute inset-0 bg-gradient-to-t from-agri-dark/40 to-transparent pointer-events-none rounded-[2.5rem]" />
+                           
+                           {/* Overlaid UI Badges for Premium tech feel */}
+                           <motion.div 
+                               initial={{ opacity: 0, x: -20 }}
+                               animate={{ opacity: 1, x: 0 }}
+                               transition={{ delay: 0.8, duration: 0.8 }}
+                               className="absolute top-8 left-8 glass p-4 rounded-2xl shadow-glow hidden md:flex items-center gap-3 border-white/30 backdrop-blur-md"
+                           >
+                               <div className="w-10 h-10 rounded-xl bg-agri-primary/20 flex items-center justify-center text-agri-primary">
+                                   <TrendingUp size={20} />
+                               </div>
+                               <div className="text-left">
+                                   <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Live Price Index</div>
+                                   <div className="text-sm font-black text-agri-dark dark:text-white flex items-center gap-1.5">
+                                       Wheat: ₹2,450/Qtl <span className="text-emerald-500 font-bold text-xs">+3.4%</span>
+                                   </div>
+                               </div>
+                           </motion.div>
+
+                           <motion.div 
+                               initial={{ opacity: 0, x: 20 }}
+                               animate={{ opacity: 1, x: 0 }}
+                               transition={{ delay: 1.0, duration: 0.8 }}
+                               className="absolute bottom-8 right-8 glass p-4 rounded-2xl shadow-premium hidden md:flex items-center gap-3 border-white/30 backdrop-blur-md"
+                           >
+                               <div className="w-10 h-10 rounded-xl bg-agri-secondary/20 flex items-center justify-center text-agri-secondary">
+                                   <Sparkles size={20} />
+                               </div>
+                               <div className="text-left">
+                                   <div className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Smart Crop Analytics</div>
+                                   <div className="text-sm font-black text-agri-dark dark:text-white">
+                                       Soil Health: <span className="text-agri-secondary">94% Excellent</span>
+                                   </div>
+                               </div>
+                           </motion.div>
                         </div>
                     </motion.div>
                 </div>
@@ -88,15 +124,112 @@ const HomePage = () => {
                 <div className="container mx-auto px-4">
                     <div className="glass rounded-[3rem] p-12 grid grid-cols-2 lg:grid-cols-4 gap-12 shadow-premium">
                         {[
-                            { number: '50K+', label: 'Active Farmers', accent: 'text-agri-primary' },
-                            { number: '1.2M', label: 'Tons Traded', accent: 'text-agri-secondary' },
-                            { number: '200+', label: 'Mandis Live', accent: 'text-agri-primary' },
-                            { number: '15Cr+', label: 'Monthly Earnings', accent: 'text-agri-secondary' }
+                            { number: '50K+', label: 'Active Farmers', accent: 'text-agri-primary', icon: <Users size={24} className="text-agri-primary" />, bg: 'bg-agri-primary/10' },
+                            { number: '1.2M', label: 'Tons Traded', accent: 'text-agri-secondary', icon: <TrendingUp size={24} className="text-agri-secondary" />, bg: 'bg-agri-secondary/10' },
+                            { number: '200+', label: 'Mandis Live', accent: 'text-agri-primary', icon: <MapPin size={24} className="text-agri-primary" />, bg: 'bg-agri-primary/10' },
+                            { number: '15Cr+', label: 'Monthly Earnings', accent: 'text-agri-secondary', icon: <IndianRupee size={24} className="text-agri-secondary" />, bg: 'bg-agri-secondary/10' }
                         ].map((stat, i) => (
-                            <div key={i} className="text-center group">
+                            <motion.div 
+                                key={i} 
+                                whileHover={{ scale: 1.05, y: -5 }}
+                                className="text-center group flex flex-col items-center justify-center p-6 rounded-[2rem] hover:bg-white/40 dark:hover:bg-slate-800/40 transition-all duration-300"
+                            >
+                                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${stat.bg} mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                                    {stat.icon}
+                                </div>
                                 <div className={`text-4xl md:text-5xl font-display font-black mb-2 ${stat.accent}`}>{stat.number}</div>
-                                <div className="text-sm font-bold text-gray-400 uppercase tracking-widest">{stat.label}</div>
+                                <div className="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{stat.label}</div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Live Market Hubs Section */}
+            <section className="py-16 relative overflow-hidden">
+                <div className="container mx-auto px-4 relative z-10">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                        <div>
+                            <div className="flex items-center gap-2 mb-3">
+                                <span className="relative flex h-3.5 w-3.5">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                  <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
+                                </span>
+                                <span className="text-sm font-black text-emerald-500 uppercase tracking-wider">Live Mandi Hubs</span>
                             </div>
+                            <h2 className="text-4xl md:text-5xl font-display font-bold text-agri-dark dark:text-white tracking-tight">
+                                Real-Time Regional Activity
+                            </h2>
+                        </div>
+                        <p className="text-lg text-gray-500 dark:text-gray-400 max-w-md mt-4 md:mt-0 font-medium">
+                            Direct connection established across major agricultural centers in India. Pulse signals show active high-volume trade.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {[
+                            {
+                                state: "Punjab & Haryana",
+                                hub: "Northern Grain Corridor",
+                                active: "4.2k active today",
+                                crops: "Wheat, Basmati, Mustard",
+                                priceTrend: "+4.2%",
+                                color: "border-l-4 border-emerald-500"
+                            },
+                            {
+                                state: "Maharashtra",
+                                hub: "Western Agro Hub",
+                                active: "6.8k active today",
+                                crops: "Onions, Sugarcane, Soy",
+                                priceTrend: "+2.8%",
+                                color: "border-l-4 border-amber-500"
+                            },
+                            {
+                                state: "Gujarat & Rajasthan",
+                                hub: "Cotton & Oilseed Zone",
+                                active: "3.5k active today",
+                                crops: "Cotton, Groundnut, Cumin",
+                                priceTrend: "+5.1%",
+                                color: "border-l-4 border-emerald-500"
+                            },
+                            {
+                                state: "Karnataka & AP",
+                                hub: "Southern Spice Belt",
+                                active: "2.9k active today",
+                                crops: "Ragi, Coffee, Turmeric",
+                                priceTrend: "+1.9%",
+                                color: "border-l-4 border-amber-500"
+                            }
+                        ].map((hub, idx) => (
+                            <motion.div
+                                key={idx}
+                                whileHover={{ y: -6, scale: 1.02 }}
+                                className={`glass p-6 rounded-3xl shadow-premium border-white/20 hover:border-agri-primary/30 transition-all flex flex-col justify-between ${hub.color}`}
+                            >
+                                <div>
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className="text-left">
+                                            <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{hub.hub}</span>
+                                            <h3 className="text-xl font-bold text-agri-dark dark:text-white mt-1">{hub.state}</h3>
+                                        </div>
+                                        <span className="px-2 py-1 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-xs font-extrabold rounded-lg flex items-center gap-1">
+                                            <Activity size={12} className="animate-pulse" />
+                                            {hub.priceTrend}
+                                        </span>
+                                    </div>
+                                    <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-6 text-left">
+                                        <div className="flex items-center gap-2 mb-1.5">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                            <span className="text-xs font-bold text-gray-600 dark:text-gray-300">{hub.active}</span>
+                                        </div>
+                                        <div className="text-xs text-gray-400 mt-2 font-medium">Crops: {hub.crops}</div>
+                                    </div>
+                                </div>
+                                <Link to="/marketplace" className="text-agri-primary hover:text-agri-dark dark:hover:text-white text-xs font-bold flex items-center gap-1.5 transition-colors group/link mt-2">
+                                    View Live Trades
+                                    <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
+                                </Link>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
@@ -143,8 +276,8 @@ const HomePage = () => {
                                 <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${feature.color} mb-8 group-hover:scale-110 transition-transform`}>
                                     {feature.icon}
                                 </div>
-                                <h3 className="text-3xl font-display font-bold text-agri-dark dark:text-white mb-4">{feature.title}</h3>
-                                <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-lg font-medium">{feature.desc}</p>
+                                <h3 className="text-3xl font-display font-bold text-agri-dark dark:text-white mb-4 text-left">{feature.title}</h3>
+                                <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-lg font-medium text-left">{feature.desc}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -155,7 +288,7 @@ const HomePage = () => {
             <section className="py-24 container mx-auto px-4 mb-32">
                 <div className="relative rounded-[4rem] bg-agri-dark dark:bg-agri-primary/10 p-16 md:p-24 overflow-hidden border border-white/10">
                     <div className="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
-                    <div className="relative z-10 max-w-4xl">
+                    <div className="relative z-10 max-w-4xl text-left">
                         <h2 className="text-4xl md:text-6xl font-display font-black text-white mb-8 leading-tight">
                             Ready to join the <br /> <span className="text-agri-primary">Digital Agri Revolution?</span>
                         </h2>
