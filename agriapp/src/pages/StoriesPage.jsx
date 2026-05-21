@@ -40,6 +40,16 @@ const stories = [
         videoBg: "https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?q=80&w=800&auto=format&fit=crop",
         tags: ["Organic", "Direct Sales"],
         metrics: { profit: "+55%", savings: "30%" }
+    },
+    {
+        id: 4,
+        name: "Ananya Nair",
+        farm: "Nair Spices & Horticulture, Kerala",
+        quote: "AgriConnect has helped us export our premium black pepper and cardamoms directly to buyers globally. Our family revenue grew by 85% in just 10 months.",
+        image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop",
+        videoBg: "https://images.unsplash.com/photo-1599940824399-b87987ceb72a?q=80&w=800&auto=format&fit=crop",
+        tags: ["Spices", "Direct Trade"],
+        metrics: { profit: "+85%", savings: "35%" }
     }
 ];
 
@@ -50,7 +60,7 @@ const StoriesPage = () => {
     const [selectedCategory, setSelectedCategory] = useState("All");
     
     // Likes state
-    const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215 });
+    const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215, 4: 189 });
     const [likedStories, setLikedStories] = useState({});
     
     // Video playback state
@@ -242,7 +252,7 @@ const StoriesPage = () => {
                     </div>
                     
                     <div className="flex flex-wrap gap-3 items-center justify-center">
-                        {["All", "Vegetables", "Coffee", "Organic", "Direct Trade", "Market Access"].map((cat) => (
+                        {["All", "Vegetables", "Coffee", "Spices", "Organic", "Direct Trade", "Market Access"].map((cat) => (
                             <button
                                 key={cat}
                                 onClick={() => setSelectedCategory(cat)}
@@ -549,7 +559,7 @@ const StoriesPage = () => {
                                             onChange={(e) => setNewStoryForm({...newStoryForm, category: e.target.value})}
                                             className="w-full px-5 py-4 bg-slate-800 border border-white/15 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-agri-secondary/50 font-medium"
                                         >
-                                            {["Vegetables", "Coffee", "Organic", "Direct Trade", "Market Access"].map(cat => (
+                                            {["Vegetables", "Coffee", "Spices", "Organic", "Direct Trade", "Market Access"].map(cat => (
                                                 <option key={cat} value={cat}>{cat}</option>
                                             ))}
                                         </select>
