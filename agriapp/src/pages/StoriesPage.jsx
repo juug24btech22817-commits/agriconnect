@@ -56,7 +56,6 @@ const StoriesPage = () => {
     // Video playback state
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(65);
-    const [currentTime, setCurrentTime] = useState("04:20");
     
     // Share story modal state
     const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
@@ -85,14 +84,12 @@ const StoriesPage = () => {
         return () => clearInterval(interval);
     }, [isPlaying, selectedStory]);
 
-    useEffect(() => {
-        // Calculate formatted time based on progress of a 5-minute video (300 seconds)
-        const totalDuration = 300; // 5:00
-        const currentSeconds = Math.floor((progress / 100) * totalDuration);
-        const mins = Math.floor(currentSeconds / 60);
-        const secs = currentSeconds % 60;
-        setCurrentTime(`${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`);
-    }, [progress]);
+    // Calculate formatted time based on progress of a 5-minute video (300 seconds)
+    const totalDuration = 300; // 5:00
+    const currentSeconds = Math.floor((progress / 100) * totalDuration);
+    const mins = Math.floor(currentSeconds / 60);
+    const secs = currentSeconds % 60;
+    const currentTime = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
 
     const handleSelectStory = (story) => {
         setSelectedStory(story);

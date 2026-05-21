@@ -16,21 +16,7 @@ export const AuthProvider = ({ children }) => {
   
   const [token, setToken] = useState(localStorage.getItem('token') || null);
 
-  // Still keep the check in useEffect for cross-tab sync or other side effects if needed,
-  // but it's now primarily handled in useState.
-  useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    const savedUser = localStorage.getItem('user');
-    
-    if (savedToken && savedUser) {
-      try {
-        setToken(savedToken);
-        setUser(JSON.parse(savedUser));
-      } catch (err) {
-        console.error("Trouble reading saved user logic", err);
-      }
-    }
-  }, []);
+
 
   // Standard simple login function
   const loginAction = (newToken, newUserObj) => {
