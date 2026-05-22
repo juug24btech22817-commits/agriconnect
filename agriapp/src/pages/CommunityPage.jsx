@@ -4,7 +4,7 @@ import {
   Users, MessageSquare, Heart, Share2, Search, 
   TrendingUp, Award, User, Clock, CheckCircle, 
   Plus, MessageCircle, Sparkles, Filter, X,
-  Bookmark, Eye
+  Bookmark, Eye, Trash2
 } from 'lucide-react';
 
 const categoryList = [
@@ -97,6 +97,8 @@ const CommunityPage = () => {
     const [expandedCommentsPostId, setExpandedCommentsPostId] = useState(null);
     const [newComments, setNewComments] = useState({});
     const [showEliteToast, setShowEliteToast] = useState(false);
+    const [newPostTags, setNewPostTags] = useState("");
+    const [showShareToast, setShowShareToast] = useState(false);
 
     const handleLike = (id) => {
         setPosts(posts.map(post => {
@@ -123,9 +125,25 @@ const CommunityPage = () => {
         }));
     };
 
+    const handleDeletePost = (id) => {
+        setPosts(posts.filter(post => post.id !== id));
+    };
+
+    const handleShare = (post) => {
+        navigator.clipboard.writeText(`${window.location.origin}/community/post/${post.id}`);
+        setShowShareToast(true);
+        setTimeout(() => {
+            setShowShareToast(false);
+        }, 3000);
+    };
+
     const handleAddPost = (e) => {
         e.preventDefault();
         if (!newPostContent.trim() || !newPostTitle.trim()) return;
+
+        const tagsArray = newPostTags
+            ? newPostTags.split(',').map(tag => tag.trim().replace(/^#/, '')).filter(Boolean)
+            : ["Community", "AgriConnect"];
 
         const newPost = {
             id: Date.now(),
@@ -142,7 +160,7 @@ const CommunityPage = () => {
             views: 0,
             comments: 0,
             commentsList: [],
-            tags: ["Community", "AgriConnect"],
+            tags: tagsArray,
             category: newPostCategory,
             isVerified: true
         };
@@ -151,6 +169,7 @@ const CommunityPage = () => {
         setNewPostTitle("");
         setNewPostContent("");
         setNewPostImageUrl("");
+        setNewPostTags("");
         setShowImageInput(false);
         setIsModalOpen(false);
     };
@@ -199,7 +218,8 @@ const CommunityPage = () => {
         const matchesCategory = activeCategory === "All Discussions" || post.category === activeCategory;
         const matchesSearch = post.content.toLowerCase().includes(searchQuery.toLowerCase()) || 
                              post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                             post.author.toLowerCase().includes(searchQuery.toLowerCase());
+                             post.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                             post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
         return matchesCategory && matchesSearch;
     });
 
@@ -307,11 +327,20 @@ const CommunityPage = () => {
                                         </div>
                                         <input
                                             type="text"
-                                            className="block w-full pl-14 pr-6 py-5 bg-white dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] text-agri-dark dark:text-white shadow-2xl focus:ring-4 focus:ring-agri-primary/20 focus:border-agri-primary/50 outline-none transition-all font-medium text-lg placeholder:text-gray-400"
+                                            className="block w-full pl-14 pr-14 py-5 bg-white dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] text-agri-dark dark:text-white shadow-2xl focus:ring-4 focus:ring-agri-primary/20 focus:border-agri-primary/50 outline-none transition-all font-medium text-lg placeholder:text-gray-400"
                                             placeholder="Search discussions..."
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                         />
+                                        {searchQuery && (
+                                            <button 
+                                                onClick={() => setSearchQuery("")}
+                                                className="absolute inset-y-0 right-0 pr-6 flex items-center text-gray-400 hover:text-rose-500 transition-colors"
+                                                title="Clear search"
+                                            >
+                                                <X size={18} />
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] min-w-[220px] shadow-lg group">
@@ -334,6 +363,24 @@ const CommunityPage = () => {
                             </div>
 
                         <div className="space-y-8">
+                            {/* Results count */}
+                            {(searchQuery || activeCategory !== "All Discussions") && (
+                                <div className="flex items-center gap-3">
+                                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                        {sortedPosts.length} result{sortedPosts.length !== 1 ? 's' : ''}
+                                    </span>
+                                    {searchQuery && (
+                                        <span className="px-3 py-1 bg-agri-primary/10 text-agri-primary rounded-xl text-[9px] font-black uppercase tracking-widest">
+                                            "{searchQuery}"
+                                        </span>
+                                    )}
+                                    {activeCategory !== "All Discussions" && (
+                                        <span className="px-3 py-1 bg-emerald-500/10 text-emerald-600 rounded-xl text-[9px] font-black uppercase tracking-widest">
+                                            {activeCategory}
+                                        </span>
+                                    )}
+                                </div>
+                            )}
                             <AnimatePresence mode="popLayout">
                                 {sortedPosts.map((post) => (
                                     <motion.div 
@@ -377,6 +424,17 @@ const CommunityPage = () => {
                                                 </div>
                                             </div>
                                             <div className="flex gap-2">
+                                                {post.author === "Farmer Shaswat" && (
+                                                    <motion.button 
+                                                        whileHover={{ scale: 1.1 }}
+                                                        whileTap={{ scale: 0.9 }}
+                                                        onClick={() => handleDeletePost(post.id)}
+                                                        className="p-3 bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white rounded-2xl transition-all"
+                                                        title="Delete Discussion"
+                                                    >
+                                                        <Trash2 size={20} />
+                                                    </motion.button>
+                                                )}
                                                 <motion.button 
                                                     whileHover={{ scale: 1.1 }}
                                                     whileTap={{ scale: 0.9 }}
@@ -388,7 +446,9 @@ const CommunityPage = () => {
                                                 <motion.button 
                                                     whileHover={{ scale: 1.1 }}
                                                     whileTap={{ scale: 0.9 }}
+                                                    onClick={() => handleShare(post)}
                                                     className="p-3 bg-gray-50 dark:bg-white/5 text-gray-300 hover:text-agri-primary rounded-2xl transition-all"
+                                                    title="Share Discussion"
                                                 >
                                                     <Share2 size={20} />
                                                 </motion.button>
@@ -516,7 +576,41 @@ const CommunityPage = () => {
                                     </motion.div>
                                 ))}
                             </AnimatePresence>
+
+                            {/* Empty State */}
+                            {sortedPosts.length === 0 && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="flex flex-col items-center justify-center py-24 text-center glass rounded-[3rem] border-dashed border-2 border-agri-primary/20"
+                                >
+                                    <div className="w-20 h-20 bg-agri-primary/10 rounded-[2rem] flex items-center justify-center mb-6 animate-pulse">
+                                        <Search size={36} className="text-agri-primary" />
+                                    </div>
+                                    <h3 className="text-xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter mb-2">No Discussions Found</h3>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400 font-medium max-w-xs leading-relaxed mb-8">
+                                        {searchQuery ? `No results for "${searchQuery}"` : `No posts in ${activeCategory} yet.`} Try a different search or category.
+                                    </p>
+                                    <div className="flex gap-3">
+                                        {searchQuery && (
+                                            <button
+                                                onClick={() => setSearchQuery("")}
+                                                className="px-6 py-3 bg-agri-primary/10 text-agri-primary rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-agri-primary hover:text-white transition-all"
+                                            >
+                                                Clear Search
+                                            </button>
+                                        )}
+                                        <button
+                                            onClick={() => { setActiveCategory("All Discussions"); setSearchQuery(""); }}
+                                            className="px-6 py-3 bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-agri-primary hover:text-white transition-all"
+                                        >
+                                            View All
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
                             
+                            {sortedPosts.length > 0 && (
                             <div className="pt-12 text-center">
                                 <button className="px-12 py-6 bg-white dark:bg-slate-900 border border-agri-primary/20 text-agri-primary rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] hover:bg-agri-primary hover:text-white hover:shadow-glow transition-all active:scale-95 group shadow-xl">
                                     <span className="flex items-center gap-3">
@@ -525,6 +619,7 @@ const CommunityPage = () => {
                                     </span>
                                 </button>
                             </div>
+                            )}
                         </div>
                     </div>
 
@@ -704,6 +799,20 @@ const CommunityPage = () => {
                                             )}
                                         </AnimatePresence>
                                     </div>
+
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2">Custom Tags <span className="normal-case font-medium text-gray-400">(comma-separated)</span></label>
+                                        <div className="relative group">
+                                            <div className="absolute -inset-0.5 bg-gradient-to-r from-agri-primary to-emerald-600 rounded-2xl blur opacity-10 group-focus-within:opacity-20 transition" />
+                                            <input
+                                                type="text"
+                                                value={newPostTags}
+                                                onChange={(e) => setNewPostTags(e.target.value)}
+                                                className="relative w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-8 py-5 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary font-medium text-lg placeholder:text-gray-400"
+                                                placeholder="e.g. OrganicFarming, Irrigation, Wheat"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div className="pt-12">
@@ -733,6 +842,28 @@ const CommunityPage = () => {
                             <div>
                                 <h4 className="font-black text-sm uppercase tracking-wider text-agri-primary mb-1">Elite Access Initiated</h4>
                                 <p className="text-xs text-white/70 leading-relaxed font-medium">Thank you for your interest! A customized enrollment invitation has been sent to your registered AgriConnect email address.</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Share Link Copied Toast */}
+            <AnimatePresence>
+                {showShareToast && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        className="fixed bottom-10 left-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-agri-dark border border-emerald-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(16,185,129,0.2)] text-white"
+                    >
+                        <div className="flex gap-4 items-center">
+                            <div className="p-3 bg-emerald-500/20 rounded-xl text-emerald-400 shrink-0">
+                                <Share2 size={20} />
+                            </div>
+                            <div>
+                                <h4 className="font-black text-sm uppercase tracking-wider text-emerald-400 mb-0.5">Link Copied!</h4>
+                                <p className="text-xs text-white/60 font-medium">Discussion link has been copied to your clipboard.</p>
                             </div>
                         </div>
                     </motion.div>
