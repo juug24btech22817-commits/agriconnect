@@ -6,15 +6,68 @@ const ContactPage = () => {
     const [submitted, setSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [openFaq, setOpenFaq] = useState(null);
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        category: 'General Inquiry',
+        message: ''
+    });
+    const [touched, setTouched] = useState({});
+    const [errors, setErrors] = useState({});
+
+    const validateField = (name, value) => {
+        switch(name) {
+            case 'name':
+                return value.trim().length < 2 ? 'Name must be at least 2 characters' : '';
+            case 'email':
+                return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? 'Please enter a valid email' : '';
+            case 'phone':
+                return value && !/^[6-9][0-9]{9}$/.test(value) ? 'Please enter a valid 10-digit number' : '';
+            case 'message':
+                return value.trim().length < 10 ? 'Message must be at least 10 characters' : '';
+            default:
+                return '';
+        }
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+        if (touched[name]) {
+            setErrors(prev => ({ ...prev, [name]: validateField(name, value) }));
+        }
+    };
+
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        setTouched(prev => ({ ...prev, [name]: true }));
+        setErrors(prev => ({ ...prev, [name]: validateField(name, value) }));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const newErrors = {};
+        Object.keys(formData).forEach(key => {
+            if (key !== 'category') {
+                const error = validateField(key, formData[key]);
+                if (error) newErrors[key] = error;
+            }
+        });
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            setTouched({ name: true, email: true, phone: true, message: true });
+            return;
+        }
+
         setIsSubmitting(true);
-        
-        // Simulate network request
         setTimeout(() => {
             setIsSubmitting(false);
             setSubmitted(true);
+            setFormData({ name: '', email: '', phone: '', category: 'General Inquiry', message: '' });
+            setTouched({});
+            setErrors({});
             setTimeout(() => setSubmitted(false), 8000);
         }, 1500);
     };
@@ -188,18 +241,74 @@ const ContactPage = () => {
                                     >
                                         <div className="grid md:grid-cols-2 gap-8">
                                             <div className="space-y-2 group">
-                                                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">Full Name</label>
-                                                <input required type="text" placeholder="Rahul Sharma" className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700 transition-all font-medium text-agri-dark dark:text-white outline-none" />
+                                                <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.name && touched.name ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Full Name</label>
+                                                <input
+                                                    type="text"
+                                                    name="name"
+                                                    placeholder="Rahul Sharma"
+                                                    value={formData.name}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
+                                                        errors.name && touched.name
+                                                            ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
+                                                            : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
+                                                    }`}
+                                                />
+                                                {errors.name && touched.name && <p className="text-xs text-red-500 font-medium mt-1">{errors.name}</p>}
                                             </div>
                                             <div className="space-y-2 group">
-                                                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">Email Address</label>
-                                                <input required type="email" placeholder="rahul@example.com" className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700 transition-all font-medium text-agri-dark dark:text-white outline-none" />
+                                                <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.email && touched.email ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Email Address</label>
+                                                <input
+                                                    type="email"
+                                                    name="email"
+                                                    placeholder="rahul@example.com"
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
+                                                        errors.email && touched.email
+                                                            ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
+                                                            : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
+                                                    }`}
+                                                />
+                                                {errors.email && touched.email && <p className="text-xs text-red-500 font-medium mt-1">{errors.email}</p>}
+                                            </div>
+                                        </div>
+                                        <div className="space-y-2 group">
+                                            <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.phone && touched.phone ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Phone Number</label>
+                                            <div className="flex gap-3">
+                                                <div className="flex items-center bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl px-4 py-4 font-medium text-agri-dark dark:text-white select-none shrink-0">
+                                                    🇮🇳 +91
+                                                </div>
+                                                <div className="flex-1">
+                                                    <input
+                                                        type="tel"
+                                                        name="phone"
+                                                        placeholder="98765 43210"
+                                                        value={formData.phone}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        maxLength={10}
+                                                        className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
+                                                            errors.phone && touched.phone
+                                                                ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
+                                                                : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
+                                                        }`}
+                                                    />
+                                                    {errors.phone && touched.phone && <p className="text-xs text-red-500 font-medium mt-1">{errors.phone}</p>}
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="space-y-2 group">
                                             <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">How can we help?</label>
                                             <div className="relative">
-                                                <select className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 transition-all font-medium text-agri-dark dark:text-white appearance-none cursor-pointer outline-none">
+                                                <select
+                                                    name="category"
+                                                    value={formData.category}
+                                                    onChange={handleChange}
+                                                    className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 transition-all font-medium text-agri-dark dark:text-white appearance-none cursor-pointer outline-none"
+                                                >
                                                     <option>General Inquiry</option>
                                                     <option>Sell Crops Support</option>
                                                     <option>Buyer Onboarding</option>
@@ -209,8 +318,21 @@ const ContactPage = () => {
                                             </div>
                                         </div>
                                         <div className="space-y-2 group">
-                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">Message</label>
-                                            <textarea required rows="5" placeholder="Tell us more about your needs..." className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700 transition-all font-medium text-agri-dark dark:text-white resize-none outline-none"></textarea>
+                                            <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.message && touched.message ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Message</label>
+                                            <textarea
+                                                rows="5"
+                                                name="message"
+                                                placeholder="Tell us more about your needs..."
+                                                value={formData.message}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white resize-none outline-none transition-all ${
+                                                    errors.message && touched.message
+                                                        ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
+                                                        : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
+                                                }`}
+                                            ></textarea>
+                                            {errors.message && touched.message && <p className="text-xs text-red-500 font-medium mt-1">{errors.message}</p>}
                                         </div>
                                         <button 
                                             type="submit"
