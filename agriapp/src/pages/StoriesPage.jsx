@@ -185,7 +185,7 @@ const StoriesPage = () => {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-                <header className="text-center mb-32 max-w-4xl mx-auto">
+                <header className="text-center mb-20 max-w-4xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -199,7 +199,7 @@ const StoriesPage = () => {
                         >
                             <Heart size={14} className="fill-agri-primary animate-pulse" /> Voices of Change
                         </motion.div>
-                        <h1 className="text-7xl md:text-9xl font-display font-black text-agri-dark dark:text-white mb-10 leading-[0.9] tracking-tighter">
+                        <h1 className="text-5xl md:text-8xl font-display font-black text-agri-dark dark:text-white mb-8 leading-[0.95] tracking-tighter">
                             Real Farmers. <br /> 
                             <span className="relative inline-block">
                                 <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-agri-primary via-agri-secondary to-agri-primary bg-[length:200%_auto] animate-gradient-x">Success Stories.</span>
@@ -211,7 +211,7 @@ const StoriesPage = () => {
                                 />
                             </span>
                         </h1>
-                        <p className="text-xl md:text-3xl text-gray-500 dark:text-gray-400 font-medium max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-lg md:text-2xl text-gray-500 dark:text-gray-400 font-medium max-w-2xl mx-auto leading-relaxed">
                             Empowering the backbone of our nation through transparency, technology, and trust.
                         </p>
                     </motion.div>
@@ -239,7 +239,7 @@ const StoriesPage = () => {
                 </div>
 
                 {/* Search and Filters Section */}
-                <div className="mb-24 p-8 rounded-[2.5rem] bg-white/40 dark:bg-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-premium flex flex-col md:flex-row gap-6 justify-between items-center relative z-20">
+                <div className="mb-20 p-6 rounded-[2.5rem] bg-white/40 dark:bg-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-premium flex flex-col md:flex-row gap-6 justify-between items-center relative z-20">
                     <div className="relative w-full md:w-96 group">
                         <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-agri-primary transition-colors" size={20} />
                         <input
@@ -275,7 +275,7 @@ const StoriesPage = () => {
                     </button>
                 </div>
 
-                <div className="space-y-48">
+                <div className="space-y-24">
                     {filteredStories.length > 0 ? (
                         filteredStories.map((story, idx) => (
                             <motion.div
@@ -323,13 +323,13 @@ const StoriesPage = () => {
                                 <div className="w-full lg:w-1/2 space-y-12">
                                     <div className="relative">
                                         <Quote className="text-agri-primary/20 dark:text-agri-secondary/10 w-32 h-32 absolute -top-16 -left-12 -z-10" />
-                                        <blockquote className="text-4xl md:text-5xl text-agri-dark dark:text-white font-display font-bold leading-[1.1] relative z-10 tracking-tight">
+                                        <blockquote className="text-3xl md:text-4xl text-agri-dark dark:text-white font-display font-bold leading-[1.12] relative z-10 tracking-tight">
                                             "{story.quote}"
                                         </blockquote>
                                     </div>
 
                                     <div className="flex flex-wrap gap-8">
-                                        <div className="flex-1 min-w-[200px] p-8 bg-white/60 dark:bg-white/5 backdrop-blur-xl rounded-[3rem] border border-white dark:border-white/10 shadow-premium hover:border-agri-primary/30 transition-all group/info">
+                                        <div className="flex-1 min-w-[200px] p-6 bg-white/60 dark:bg-white/5 backdrop-blur-xl rounded-[3rem] border border-white dark:border-white/10 shadow-premium hover:border-agri-primary/30 transition-all group/info">
                                             <div className="flex items-center gap-6 mb-8">
                                                 <div className="relative">
                                                     <img src={story.image} alt={story.name} className="w-20 h-20 rounded-[2rem] object-cover ring-4 ring-agri-primary/10 shadow-xl group-hover/info:scale-105 transition-transform" />
@@ -618,7 +618,7 @@ const StoriesPage = () => {
                     initial={{ opacity: 0, y: 60 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-60 relative rounded-[5rem] bg-agri-dark p-20 md:p-32 overflow-hidden border border-white/10 shadow-premium"
+                    className="mt-40 relative rounded-[5rem] bg-agri-dark p-20 md:p-32 overflow-hidden border border-white/10 shadow-premium"
                 >
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.2),transparent)] pointer-events-none" />
                     <motion.div 
