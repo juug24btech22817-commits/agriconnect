@@ -130,7 +130,17 @@ const CommunityPage = () => {
     };
 
     const handleShare = (post) => {
-        navigator.clipboard.writeText(`${window.location.origin}/community/post/${post.id}`);
+        const shareUrl = `${window.location.origin}/community/post/${post.id}`;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(shareUrl);
+        } else {
+            const el = document.createElement('textarea');
+            el.value = shareUrl;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+        }
         setShowShareToast(true);
         setTimeout(() => {
             setShowShareToast(false);
@@ -229,6 +239,9 @@ const CommunityPage = () => {
         return b.id - a.id; // Newest (by ID since ID is Date.now() for new posts)
     });
 
+    const verifiedCount = 50000 + posts.length;
+    const formattedVerifiedCount = new Intl.NumberFormat().format(verifiedCount);
+
     return (
         <div className="bg-agri-surface dark:bg-slate-950 min-h-screen pt-24 pb-24 transition-colors duration-500 overflow-x-hidden relative">
             {/* Premium Background Decorations */}
@@ -253,8 +266,8 @@ const CommunityPage = () => {
                             Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-agri-primary to-emerald-600">Together</span>
                         </h1>
                         <div className="flex items-center gap-4 mb-6">
-                            <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
-                                Connect with {50000 + posts.length} verified farmers and industry experts in our secure network.
+                                        <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
+                                Connect with {formattedVerifiedCount} verified farmers and industry experts in our secure network.
                             </p>
                             <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full shadow-sm">
                                 <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
@@ -266,6 +279,7 @@ const CommunityPage = () => {
                     <div className="flex gap-4">
                         <button 
                             onClick={() => setIsModalOpen(true)}
+                            aria-label="Start a new discussion"
                             className="px-10 py-6 bg-agri-primary text-white rounded-[1.5rem] font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:shadow-agri-primary/40 active:scale-95 transition-all flex items-center gap-3 relative overflow-hidden group"
                         >
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
@@ -329,6 +343,7 @@ const CommunityPage = () => {
                                             type="text"
                                             className="block w-full pl-14 pr-14 py-5 bg-white dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] text-agri-dark dark:text-white shadow-2xl focus:ring-4 focus:ring-agri-primary/20 focus:border-agri-primary/50 outline-none transition-all font-medium text-lg placeholder:text-gray-400"
                                             placeholder="Search discussions..."
+                                            aria-label="Search discussions"
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                         />
