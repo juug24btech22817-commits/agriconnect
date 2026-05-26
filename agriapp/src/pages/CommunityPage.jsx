@@ -241,6 +241,8 @@ const CommunityPage = () => {
 
     const verifiedCount = 50000 + posts.length;
     const formattedVerifiedCount = new Intl.NumberFormat().format(verifiedCount);
+    const totalExperts = posts.filter(post => post.isExpert).length;
+    const totalDiscussions = posts.length;
 
     return (
         <div className="bg-agri-surface dark:bg-slate-950 min-h-screen pt-24 pb-24 transition-colors duration-500 overflow-x-hidden relative">
@@ -265,14 +267,19 @@ const CommunityPage = () => {
                         <h1 className="text-4xl md:text-7xl font-display font-black text-agri-dark dark:text-white mb-6 uppercase tracking-tighter leading-none">
                             Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-agri-primary to-emerald-600">Together</span>
                         </h1>
-                        <div className="flex items-center gap-4 mb-6">
-                                        <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
+                        <div className="flex flex-col gap-4 mb-6">
+                            <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
                                 Connect with {formattedVerifiedCount} verified farmers and industry experts in our secure network.
                             </p>
-                            <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full shadow-sm">
-                                <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                                <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">1.2k Live Now</span>
+                            <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[0.24em] text-gray-400">
+                                <span>{totalDiscussions} active discussions</span>
+                                <span className="text-agri-primary">•</span>
+                                <span>{totalExperts} expert posts</span>
                             </div>
+                        </div>
+                        <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full shadow-sm">
+                            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                            <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">1.2k Live Now</span>
                         </div>
                     </div>
 
@@ -301,7 +308,7 @@ const CommunityPage = () => {
                                         onClick={() => setActiveCategory(cat.name)}
                                         whileHover={{ scale: 1.02, x: 5 }}
                                         whileTap={{ scale: 0.98 }}
-                                        className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 ${
+                                        className={`group w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 ${
                                             activeCategory === cat.name 
                                             ? 'bg-agri-primary text-white shadow-glow' 
                                             : 'text-gray-500 hover:text-agri-dark dark:hover:text-white hover:bg-agri-primary/5'
@@ -619,7 +626,7 @@ const CommunityPage = () => {
                                             onClick={() => { setActiveCategory("All Discussions"); setSearchQuery(""); }}
                                             className="px-6 py-3 bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-agri-primary hover:text-white transition-all"
                                         >
-                                            View All
+                                            Browse All Discussions
                                         </button>
                                     </div>
                                 </motion.div>
