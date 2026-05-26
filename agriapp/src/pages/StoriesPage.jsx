@@ -53,6 +53,8 @@ const stories = [
     }
 ];
 
+const categories = ["All", ...new Set(stories.flatMap((story) => story.tags))];
+
 const StoriesPage = () => {
     const [activeStories, setActiveStories] = useState(stories);
     const [selectedStory, setSelectedStory] = useState(null);
@@ -214,6 +216,9 @@ const StoriesPage = () => {
                         <p className="text-lg md:text-2xl text-gray-500 dark:text-gray-400 font-medium max-w-2xl mx-auto leading-relaxed">
                             Empowering the backbone of our nation through transparency, technology, and trust.
                         </p>
+                        <div className="mt-8 text-sm uppercase tracking-[0.3em] font-black text-agri-primary dark:text-agri-secondary">
+                            Showing {filteredStories.length} impact stories
+                        </div>
                     </motion.div>
                 </header>
 
@@ -244,6 +249,7 @@ const StoriesPage = () => {
                         <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-agri-primary transition-colors" size={20} />
                         <input
                             type="text"
+                            aria-label="Search stories, regions, crops"
                             placeholder="Search stories, regions, crops..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -252,7 +258,7 @@ const StoriesPage = () => {
                     </div>
                     
                     <div className="flex flex-wrap gap-3 items-center justify-center">
-                        {["All", "Vegetables", "Coffee", "Spices", "Organic", "Direct Trade", "Market Access"].map((cat) => (
+                        {categories.map((cat) => (
                             <button
                                 key={cat}
                                 onClick={() => setSelectedCategory(cat)}
@@ -358,7 +364,7 @@ const StoriesPage = () => {
 
                                     <div className="flex items-center gap-8">
                                         <button className="inline-flex items-center gap-4 text-agri-primary dark:text-agri-secondary font-black uppercase tracking-[0.3em] text-sm group/btn hover:gap-6 transition-all">
-                                            Read Full Case Study <ChevronRight size={20} className="group-hover/btn:translate-x-2 transition-transform" />
+                                            Read Full Story <ChevronRight size={20} className="group-hover/btn:translate-x-2 transition-transform" />
                                         </button>
                                         
                                         <motion.button 
@@ -382,7 +388,7 @@ const StoriesPage = () => {
                         <div className="text-center py-20 bg-white/20 dark:bg-white/5 rounded-[3rem] border border-white/10 backdrop-blur-xl p-12 max-w-xl mx-auto">
                             <MessageSquare className="mx-auto text-agri-primary/40 mb-6" size={48} />
                             <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white mb-3">No Success Stories Found</h3>
-                            <p className="text-gray-400 text-sm mb-8">We couldn't find any stories matching your search or filter. Be the first to share your journey!</p>
+                            <p className="text-gray-400 text-sm mb-8">No stories matched "{searchQuery || 'your selection'}" in {selectedCategory} yet. Try another crop, region, or share your own story.</p>
                             <button
                                 onClick={() => setIsSubmitModalOpen(true)}
                                 className="px-6 py-4 bg-agri-primary text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-glow-sm hover:scale-105 transition-all"
