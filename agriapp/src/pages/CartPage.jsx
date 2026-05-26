@@ -7,7 +7,7 @@ import { AuthContext } from '../context/AuthContext';
 import { api } from '../services/api';
 
 const CartPage = () => {
-    const { cart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart();
+    const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
     const navigate = useNavigate();
     const [deliveryMethod, setDeliveryMethod] = React.useState('shiprocket');
 
@@ -86,11 +86,19 @@ const CartPage = () => {
     return (
         <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-12 pb-24 transition-colors duration-300">
             <div className="max-w-5xl mx-auto px-4">
-                <div className="flex items-center gap-4 mb-8">
-                    <Link to="/marketplace" className="p-2 bg-white dark:bg-gray-800 rounded-xl text-gray-600 dark:text-gray-400 hover:text-agri-green transition-colors shadow-sm ring-1 ring-gray-200 dark:ring-gray-700">
-                        <ArrowLeft size={24} />
-                    </Link>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Shopping Cart</h1>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                    <div className="flex items-center gap-4">
+                        <Link to="/marketplace" className="p-2 bg-white dark:bg-gray-800 rounded-xl text-gray-600 dark:text-gray-400 hover:text-agri-green transition-colors shadow-sm ring-1 ring-gray-200 dark:ring-gray-700">
+                            <ArrowLeft size={24} />
+                        </Link>
+                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Shopping Cart</h1>
+                    </div>
+                    <button
+                        onClick={clearCart}
+                        className="inline-flex items-center justify-center px-5 py-3 rounded-2xl border border-red-200 text-red-600 hover:bg-red-50 dark:border-red-900 dark:text-red-300 dark:hover:bg-red-950 transition-all"
+                    >
+                        Clear Cart
+                    </button>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -112,18 +120,22 @@ const CartPage = () => {
                                     <div className="flex-grow text-center sm:text-left">
                                         <h3 className="text-lg font-bold text-gray-900 dark:text-white">{item.name}</h3>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">{item.farmer}</p>
-                                        <div className="flex items-center justify-center sm:justify-start gap-2 mt-1">
-                                            <span className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-tighter">
-                                                {item.quantity} {item.unit}
-                                            </span>
-                                            <p className="text-agri-green font-bold text-lg">{item.price}</p>
+                                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mt-3">
+                                            <div className="flex items-center gap-2">
+                                                <span className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 rounded-md text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-tighter">
+                                                    {item.quantity} {item.unit}
+                                                </span>
+                                                <p className="text-agri-green font-bold text-lg">{item.price}</p>
+                                            </div>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Item total: <span className="font-semibold text-gray-900 dark:text-white">₹{((parseFloat(String(item.price).replace('₹', '').replace(',', '')) || 0) * item.quantity).toLocaleString()}</span></p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <div className="flex items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-0.5 ring-1 ring-gray-200 dark:ring-gray-600">
                                             <button
                                                 onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-400 dark:text-gray-500 transition-colors"
+                                                disabled={item.quantity <= 1}
+                                                className="p-1 rounded-lg text-gray-400 dark:text-gray-500 transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-gray-600"
                                             >
                                                 <Minus size={9} />
                                             </button>
@@ -203,10 +215,8 @@ const CartPage = () => {
                                     <span className="font-bold text-white">₹{subtotal.toLocaleString()}</span>
                                 </div>
                                 <div className="flex justify-between text-gray-400">
-                                    <span>Delivery</span>
-                                    <span className={`font-bold ${deliveryMethod === 'apartment' ? 'text-green-400' : 'text-white'}`}>
-                                        {deliveryMethod === 'apartment' ? 'FREE' : `₹${deliveryCharge}`}
-                                    </span>
+                                    <span>Delivery ({partners[deliveryMethod]?.name})</span>
+                                    <span className="font-bold text-white">₹{deliveryCharge}</span>
                                 </div>
                                 {discount > 0 && (
                                     <div className="flex justify-between text-green-400">
