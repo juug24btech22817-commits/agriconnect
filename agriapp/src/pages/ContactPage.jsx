@@ -11,6 +11,7 @@ const ContactPage = () => {
         email: '',
         phone: '',
         category: 'General Inquiry',
+        subject: '',
         message: ''
     });
     const [touched, setTouched] = useState({});
@@ -23,7 +24,9 @@ const ContactPage = () => {
             case 'email':
                 return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? 'Please enter a valid email' : '';
             case 'phone':
-                return value && !/^[6-9][0-9]{9}$/.test(value) ? 'Please enter a valid 10-digit number' : '';
+                return value && !/^(?:\+91|0)?\s*[6-9][0-9]{9}$/.test(value.replace(/\s+/g, '')) ? 'Please enter a valid 10-digit Indian number (with optional +91)' : '';
+            case 'subject':
+                return value.trim().length < 3 ? 'Subject must be at least 3 characters' : '';
             case 'message':
                 return value.trim().length < 10 ? 'Message must be at least 10 characters' : '';
             default:
@@ -57,7 +60,7 @@ const ContactPage = () => {
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
-            setTouched({ name: true, email: true, phone: true, message: true });
+            setTouched({ name: true, email: true, phone: true, subject: true, message: true });
             return;
         }
 
@@ -65,7 +68,7 @@ const ContactPage = () => {
         setTimeout(() => {
             setIsSubmitting(false);
             setSubmitted(true);
-            setFormData({ name: '', email: '', phone: '', category: 'General Inquiry', message: '' });
+            setFormData({ name: '', email: '', phone: '', category: 'General Inquiry', subject: '', message: '' });
             setTouched({});
             setErrors({});
             setTimeout(() => setSubmitted(false), 8000);
@@ -245,34 +248,40 @@ const ContactPage = () => {
                                                 <input
                                                     type="text"
                                                     name="name"
+                                                    id="name"
                                                     placeholder="Rahul Sharma"
                                                     value={formData.name}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
+                                                    aria-invalid={errors.name && touched.name}
+                                                    aria-describedby={errors.name && touched.name ? 'name-error' : undefined}
                                                     className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
                                                         errors.name && touched.name
                                                             ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
                                                             : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
                                                     }`}
                                                 />
-                                                {errors.name && touched.name && <p className="text-xs text-red-500 font-medium mt-1">{errors.name}</p>}
+                                                {errors.name && touched.name && <p id="name-error" className="text-xs text-red-500 font-medium mt-1">{errors.name}</p>}
                                             </div>
                                             <div className="space-y-2 group">
                                                 <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.email && touched.email ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Email Address</label>
                                                 <input
                                                     type="email"
                                                     name="email"
+                                                    id="email"
                                                     placeholder="rahul@example.com"
                                                     value={formData.email}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
+                                                    aria-invalid={errors.email && touched.email}
+                                                    aria-describedby={errors.email && touched.email ? 'email-error' : undefined}
                                                     className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
                                                         errors.email && touched.email
                                                             ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
                                                             : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
                                                     }`}
                                                 />
-                                                {errors.email && touched.email && <p className="text-xs text-red-500 font-medium mt-1">{errors.email}</p>}
+                                                {errors.email && touched.email && <p id="email-error" className="text-xs text-red-500 font-medium mt-1">{errors.email}</p>}
                                             </div>
                                         </div>
                                         <div className="space-y-2 group">
@@ -285,18 +294,21 @@ const ContactPage = () => {
                                                     <input
                                                         type="tel"
                                                         name="phone"
+                                                        id="phone"
                                                         placeholder="98765 43210"
                                                         value={formData.phone}
                                                         onChange={handleChange}
                                                         onBlur={handleBlur}
-                                                        maxLength={10}
+                                                        maxLength={13}
+                                                        aria-invalid={errors.phone && touched.phone}
+                                                        aria-describedby={errors.phone && touched.phone ? 'phone-error' : undefined}
                                                         className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
                                                             errors.phone && touched.phone
                                                                 ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
                                                                 : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
                                                         }`}
                                                     />
-                                                    {errors.phone && touched.phone && <p className="text-xs text-red-500 font-medium mt-1">{errors.phone}</p>}
+                                                    {errors.phone && touched.phone && <p id="phone-error" className="text-xs text-red-500 font-medium mt-1">{errors.phone}</p>}
                                                 </div>
                                             </div>
                                         </div>
@@ -316,6 +328,26 @@ const ContactPage = () => {
                                                 </select>
                                                 <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-agri-primary transition-colors" size={20} />
                                             </div>
+                                        </div>
+                                        <div className="space-y-2 group">
+                                            <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.subject && touched.subject ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Subject</label>
+                                            <input
+                                                type="text"
+                                                id="subject"
+                                                name="subject"
+                                                placeholder="Short summary"
+                                                value={formData.subject}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                                aria-invalid={errors.subject && touched.subject}
+                                                aria-describedby={errors.subject && touched.subject ? 'subject-error' : undefined}
+                                                className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
+                                                    errors.subject && touched.subject
+                                                        ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
+                                                        : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
+                                                }`}
+                                            />
+                                            {errors.subject && touched.subject && <p id="subject-error" className="text-xs text-red-500 font-medium mt-1">{errors.subject}</p>}
                                         </div>
                                         <div className="space-y-2 group">
                                             <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.message && touched.message ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Message</label>
