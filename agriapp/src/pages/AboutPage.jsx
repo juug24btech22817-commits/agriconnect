@@ -18,10 +18,10 @@ const AboutPage = () => {
                     transition={{ duration: 0.8 }}
                 >
                     <h1 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white mb-6 tracking-tight">
-                        Reimagining the <br /> <span className="text-agri-green">Agricultural Supply Chain</span>
+                        Reimagining <br /> <span className="text-agri-green">Agricultural Markets</span>
                     </h1>
                     <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                        AgriConnect was founded with a simple mission: to empower farmers and provide buyers with fresher, more affordable produce by eliminating the middleman.
+                        Connecting farmers and buyers with transparent pricing, reliable logistics, and fresher produce for everyone.
                     </p>
                 </motion.div>
             </section>
@@ -72,9 +72,13 @@ const AboutPage = () => {
                         <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
                             AgriConnect uses technology to solve this. Our platform handles the logistics, payments, and discovery, allowing farmers and buyers to securely trade directly and fairly.
                         </p>
-                        <Link to="/marketplace">
-                            <button className="mt-4 flex items-center gap-2 text-agri-green hover:text-agri-dark font-bold text-lg group">
-                                Experience the difference <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                        <Link to="/marketplace" aria-label="Go to marketplace">
+                            <button
+                                className="mt-4 inline-flex items-center gap-2 bg-agri-green text-white px-5 py-3 rounded-full hover:bg-agri-dark font-bold text-lg transition"
+                                aria-label="Explore the marketplace"
+                            >
+                                Explore the marketplace
+                                <ArrowRight className="ml-2" />
                             </button>
                         </Link>
                     </div>
