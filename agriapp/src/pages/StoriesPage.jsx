@@ -50,6 +50,16 @@ const stories = [
         videoBg: "https://images.unsplash.com/photo-1599940824399-b87987ceb72a?q=80&w=800&auto=format&fit=crop",
         tags: ["Spices", "Direct Trade"],
         metrics: { profit: "+85%", savings: "35%" }
+    },
+    {
+        id: 5,
+        name: "Rajesh Grewal",
+        farm: "Grewal Wheat Farms, Haryana",
+        quote: "Selling our premium wheat crop directly to big processing plants in Delhi was a dream before AgriConnect. We got paid in 48 hours and saw a massive increase in our household income!",
+        image: "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=600&auto=format&fit=crop",
+        videoBg: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=800&auto=format&fit=crop",
+        tags: ["Grains", "Direct Sales"],
+        metrics: { profit: "+48%", savings: "22%" }
     }
 ];
 
@@ -62,7 +72,7 @@ const StoriesPage = () => {
     const [selectedCategory, setSelectedCategory] = useState("All");
     
     // Likes state
-    const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215, 4: 189 });
+    const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215, 4: 189, 5: 310 });
     const [likedStories, setLikedStories] = useState({});
     
     // Video playback state
