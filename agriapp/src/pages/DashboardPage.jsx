@@ -141,6 +141,12 @@ const DashboardPage = () => {
     });
     const [searchQuery, setSearchQuery] = useState("");
 
+    const filteredListings = listings.filter((item) => {
+        if (activeTab === 'listings') return item.status === 'Active';
+        if (activeTab === 'drafts') return item.status !== 'Active';
+        return true;
+    });
+
     const fetchWeather = async (query) => {
         if (!query) return;
         setWeather(prev => ({ ...prev, isLoading: true, error: "" }));
@@ -327,6 +333,7 @@ const DashboardPage = () => {
                                             />
                                             <button 
                                                 onClick={() => fetchWeather(searchQuery)}
+                                                aria-label="Search weather location"
                                                 className="absolute right-2 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
                                             >
                                                 <Search size={14} />
@@ -419,8 +426,11 @@ const DashboardPage = () => {
                         {isAuthorized ? (
                             <div className="glass rounded-[2.5rem] shadow-premium overflow-hidden">
                                 <div className="p-8 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-6">
-                                    <h2 className="text-2xl font-display font-bold text-agri-dark dark:text-white">Active Inventory</h2>
-                                    <div className="flex bg-gray-100 dark:bg-slate-800/50 rounded-2xl p-1.5 border border-gray-200/50 dark:border-gray-700/50">
+                                    <div>
+                                    <h2 className="text-2xl font-display font-bold text-agri-dark dark:text-white">Inventory Overview</h2>
+                                    <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Browse, update, and manage your crop inventory from one place.</p>
+                                </div>
+                                <div className="flex bg-gray-100 dark:bg-slate-800/50 rounded-2xl p-1.5 border border-gray-200/50 dark:border-gray-700/50">
                                         {['listings', 'drafts', 'history'].map(tab => (
                                             <button
                                                 key={tab}
@@ -435,7 +445,7 @@ const DashboardPage = () => {
 
                                 <div className="divide-y divide-gray-100 dark:divide-gray-800">
                                     <AnimatePresence>
-                                        {listings.map((item, idx) => (
+                                        {filteredListings.length > 0 ? filteredListings.map((item, idx) => (
                                                 <motion.div
                                                 key={item.id}
                                                 initial={{ opacity: 0, y: 10 }}
@@ -475,7 +485,11 @@ const DashboardPage = () => {
                                                     </button>
                                                 </div>
                                             </motion.div>
-                                        ))}
+                                        )) : (
+                                            <div className="p-12 text-center text-sm text-gray-500 dark:text-gray-400">
+                                                No inventory found for this tab yet. Switch tabs or add a new crop listing to get started.
+                                            </div>
+                                        )}
                                     </AnimatePresence>
                                 </div>
                             </div>
