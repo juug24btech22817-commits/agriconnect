@@ -11,6 +11,7 @@ const ContactPage = () => {
         email: '',
         phone: '',
         category: 'General Inquiry',
+        language: 'English',
         subject: '',
         message: ''
     });
@@ -52,7 +53,7 @@ const ContactPage = () => {
         e.preventDefault();
         const newErrors = {};
         Object.keys(formData).forEach(key => {
-            if (key !== 'category') {
+            if (key !== 'category' && key !== 'language') {
                 const error = validateField(key, formData[key]);
                 if (error) newErrors[key] = error;
             }
@@ -68,7 +69,7 @@ const ContactPage = () => {
         setTimeout(() => {
             setIsSubmitting(false);
             setSubmitted(true);
-            setFormData({ name: '', email: '', phone: '', category: 'General Inquiry', subject: '', message: '' });
+            setFormData({ name: '', email: '', phone: '', category: 'General Inquiry', language: 'English', subject: '', message: '' });
             setTouched({});
             setErrors({});
             setTimeout(() => setSubmitted(false), 8000);
@@ -80,18 +81,21 @@ const ContactPage = () => {
             icon: <Phone className="text-agri-primary" />, 
             title: "Toll-Free Support", 
             value: "1800-419-8444", 
+            link: "tel:18004198444",
             desc: "Available in 8+ Indian Languages" 
         },
         { 
             icon: <MessageSquare className="text-emerald-500" />, 
             title: "WhatsApp Bot", 
             value: "+91 99887 76655", 
+            link: "https://wa.me/919988776655",
             desc: "Instant price alerts & support" 
         },
         { 
             icon: <Mail className="text-agri-secondary" />, 
             title: "Email Assistance", 
             value: "support@agriconnect.in", 
+            link: "mailto:support@agriconnect.in",
             desc: "24/7 technical support desk" 
         }
     ];
@@ -144,7 +148,7 @@ const ContactPage = () => {
                                     initial={{ opacity: 0, x: -20 }}
                                     whileInView={{ opacity: 1, x: 0 }}
                                     transition={{ delay: idx * 0.1 }}
-                                    whileHover={{ x: 10 }}
+                                    whileHover={{ x: 5 }}
                                     className="glass p-8 rounded-[2.5rem] border-white/40 dark:border-white/10 flex items-start gap-6 shadow-premium group transition-all hover:border-agri-primary/30"
                                 >
                                     <div className="w-14 h-14 rounded-2xl bg-white dark:bg-gray-800 shadow-sm flex items-center justify-center p-3 group-hover:scale-110 transition-transform duration-500">
@@ -152,7 +156,9 @@ const ContactPage = () => {
                                     </div>
                                     <div>
                                         <h3 className="font-display font-bold text-gray-400 uppercase tracking-widest text-[10px] mb-2">{method.title}</h3>
-                                        <p className="text-2xl font-bold text-agri-dark dark:text-white mb-1 tracking-tight">{method.value}</p>
+                                        <a href={method.link} className="text-2xl font-bold text-agri-dark dark:text-white mb-1 tracking-tight hover:text-agri-primary transition-colors block">
+                                            {method.value}
+                                        </a>
                                         <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{method.desc}</p>
                                     </div>
                                 </motion.div>
@@ -305,28 +311,51 @@ const ContactPage = () => {
                                                         className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
                                                             errors.phone && touched.phone
                                                                 ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
-                                                                : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
+                                                                 : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
                                                         }`}
                                                     />
                                                     {errors.phone && touched.phone && <p id="phone-error" className="text-xs text-red-500 font-medium mt-1">{errors.phone}</p>}
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="space-y-2 group">
-                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">How can we help?</label>
-                                            <div className="relative">
-                                                <select
-                                                    name="category"
-                                                    value={formData.category}
-                                                    onChange={handleChange}
-                                                    className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 transition-all font-medium text-agri-dark dark:text-white appearance-none cursor-pointer outline-none"
-                                                >
-                                                    <option>General Inquiry</option>
-                                                    <option>Sell Crops Support</option>
-                                                    <option>Buyer Onboarding</option>
-                                                    <option>Technical Issue</option>
-                                                </select>
-                                                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-agri-primary transition-colors" size={20} />
+                                        <div className="grid md:grid-cols-2 gap-8">
+                                            <div className="space-y-2 group">
+                                                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">How can we help?</label>
+                                                <div className="relative">
+                                                    <select
+                                                        name="category"
+                                                        value={formData.category}
+                                                        onChange={handleChange}
+                                                        className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 transition-all font-medium text-agri-dark dark:text-white appearance-none cursor-pointer outline-none"
+                                                    >
+                                                        <option>General Inquiry</option>
+                                                        <option>Sell Crops Support</option>
+                                                        <option>Buyer Onboarding</option>
+                                                        <option>Technical Issue</option>
+                                                    </select>
+                                                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-agri-primary transition-colors" size={20} />
+                                                </div>
+                                            </div>
+                                            <div className="space-y-2 group">
+                                                <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">Preferred Language</label>
+                                                <div className="relative">
+                                                    <select
+                                                        name="language"
+                                                        value={formData.language}
+                                                        onChange={handleChange}
+                                                        className="w-full bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl p-4 focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 transition-all font-medium text-agri-dark dark:text-white appearance-none cursor-pointer outline-none"
+                                                    >
+                                                        <option>English</option>
+                                                        <option>Hindi (हिन्दी)</option>
+                                                        <option>Kannada (ಕನ್ನಡ)</option>
+                                                        <option>Telugu (తెలుగు)</option>
+                                                        <option>Tamil (தமிழ்)</option>
+                                                        <option>Marathi (मराठी)</option>
+                                                        <option>Bengali (বাংলা)</option>
+                                                        <option>Gujarati (ગુજરાતી)</option>
+                                                    </select>
+                                                    <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-agri-primary transition-colors" size={20} />
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="space-y-2 group">
