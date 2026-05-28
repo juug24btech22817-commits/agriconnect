@@ -13,7 +13,8 @@ const categoryList = [
     { name: "Expert Advice", icon: Sparkles },
     { name: "Market Trends", icon: TrendingUp },
     { name: "Success Stories", icon: Award },
-    { name: "Tech Support", icon: CheckCircle }
+    { name: "Tech Support", icon: CheckCircle },
+    { name: "Saved Discussions", icon: Bookmark }
 ];
 
 const CommunityPage = () => {
@@ -99,6 +100,7 @@ const CommunityPage = () => {
     const [showEliteToast, setShowEliteToast] = useState(false);
     const [newPostTags, setNewPostTags] = useState("");
     const [showShareToast, setShowShareToast] = useState(false);
+    const [newPostLocation, setNewPostLocation] = useState("");
 
     const handleLike = (id) => {
         setPosts(posts.map(post => {
@@ -160,7 +162,7 @@ const CommunityPage = () => {
             title: newPostTitle,
             author: "Farmer Shaswat",
             avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
-            location: "Bengaluru, Karnataka",
+            location: newPostLocation.trim() || "Bengaluru, Karnataka",
             time: "Just now",
             content: newPostContent,
             image: newPostImageUrl.trim() || null,
@@ -180,6 +182,7 @@ const CommunityPage = () => {
         setNewPostContent("");
         setNewPostImageUrl("");
         setNewPostTags("");
+        setNewPostLocation("");
         setShowImageInput(false);
         setIsModalOpen(false);
     };
@@ -225,7 +228,8 @@ const CommunityPage = () => {
     };
 
     const filteredPosts = posts.filter(post => {
-        const matchesCategory = activeCategory === "All Discussions" || post.category === activeCategory;
+        const matchesCategory = activeCategory === "All Discussions" || 
+                                (activeCategory === "Saved Discussions" ? post.isBookmarked : post.category === activeCategory);
         const matchesSearch = post.content.toLowerCase().includes(searchQuery.toLowerCase()) || 
                              post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                              post.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -684,9 +688,8 @@ const CommunityPage = () => {
                             </div>
                             <h4 className="text-xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter mb-2">Community Hero</h4>
                             <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-8">Top contributor of the week</p>
-                            <div className="w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-slate-800 dark:to-slate-900 rounded-full mx-auto mb-4 overflow-hidden shadow-xl ring-4 ring-white dark:ring-white/5 relative">
-                                <User size={64} className="absolute inset-0 translate-y-3 opacity-30 mx-auto" />
-                                <div className="absolute inset-0 bg-agri-primary/10" />
+                            <div className="w-16 h-16 rounded-full mx-auto mb-4 overflow-hidden shadow-xl ring-4 ring-white dark:ring-white/5 relative">
+                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80" alt="Sunil Verma" className="w-full h-full object-cover" />
                             </div>
                             <p className="font-black text-agri-dark dark:text-white text-base uppercase tracking-tighter">Sunil Verma</p>
                             <div className="mt-4 flex justify-center gap-1">
@@ -762,7 +765,7 @@ const CommunityPage = () => {
                                     <div className="space-y-3">
                                         <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2">Select Category</label>
                                         <div className="flex flex-wrap gap-3">
-                                            {categoryList.filter(cat => cat.name !== "All Discussions").map(cat => (
+                                            {categoryList.filter(cat => cat.name !== "All Discussions" && cat.name !== "Saved Discussions").map(cat => (
                                                 <button
                                                     key={cat.name}
                                                     type="button"
@@ -820,6 +823,20 @@ const CommunityPage = () => {
                                                 </motion.div>
                                             )}
                                         </AnimatePresence>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <label className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 ml-2">Your Location</label>
+                                        <div className="relative group">
+                                            <div className="absolute -inset-0.5 bg-gradient-to-r from-agri-primary to-emerald-600 rounded-2xl blur opacity-10 group-focus-within:opacity-20 transition" />
+                                            <input
+                                                type="text"
+                                                value={newPostLocation}
+                                                onChange={(e) => setNewPostLocation(e.target.value)}
+                                                className="relative w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-8 py-5 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary font-medium text-lg placeholder:text-gray-400"
+                                                placeholder="e.g. Amritsar, Punjab"
+                                            />
+                                        </div>
                                     </div>
 
                                     <div className="space-y-3">
