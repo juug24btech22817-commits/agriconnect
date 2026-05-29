@@ -3,15 +3,31 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   Leaf, ArrowRight, ShieldCheck, TrendingUp, Search,
-  Users, MapPin, IndianRupee, Activity, Sparkles
+  Users, MapPin, IndianRupee, Activity, Sparkles, Star, ShoppingBag, ArrowUpRight
 } from 'lucide-react';
 
 const HomePage = () => {
     return (
         <div className="bg-agri-surface dark:bg-slate-950 min-h-screen overflow-x-hidden">
+            {/* Live Ticker Banner */}
+            <div className="bg-agri-primary text-white py-2 px-4 text-sm font-semibold tracking-wide relative overflow-hidden select-none border-b border-agri-primary/20">
+                <div className="flex whitespace-nowrap animate-marquee">
+                    <span className="mx-4 flex items-center gap-1.5"><Activity size={14} className="text-emerald-300 animate-pulse" /> Live Mandi Rates: Basmati Rice (Punjab) ₹6,200/Qtl <span className="text-emerald-300 font-bold">+4.2%</span></span>
+                    <span className="mx-4">|</span>
+                    <span className="mx-4">Alphonso Mango (Ratnagiri) ₹1,200/Dozen <span className="text-emerald-300 font-bold">+6.5%</span></span>
+                    <span className="mx-4">|</span>
+                    <span className="mx-4">Golden Wheat (MP) ₹2,750/Qtl <span className="text-emerald-300 font-bold">+2.8%</span></span>
+                    <span className="mx-4">|</span>
+                    <span className="mx-4">Cotton (Gujarat) ₹7,100/Qtl <span className="text-rose-300 font-bold">-1.2%</span></span>
+                    <span className="mx-4">|</span>
+                    <span className="mx-4 flex items-center gap-1.5"><Sparkles size={14} className="text-yellow-300" /> New Mandi Hub established in Karnataka! Instant payout activated.</span>
+                    <span className="mx-4">|</span>
+                    <span className="mx-4">Potato (UP) ₹1,400/Qtl <span className="text-emerald-300 font-bold">+3.1%</span></span>
+                </div>
+            </div>
 
             {/* Hero Section */}
-            <section className="relative min-h-screen flex items-center justify-center pt-20">
+            <section className="relative min-h-[90vh] flex items-center justify-center pt-12 pb-20">
                 {/* Modern Mesh Gradient Background */}
                 <div className="absolute inset-0 z-0 overflow-hidden">
                     <div className="absolute inset-0 premium-gradient opacity-40 dark:opacity-20" />
@@ -139,6 +155,116 @@ const HomePage = () => {
                                 </div>
                                 <div className={`text-4xl md:text-5xl font-display font-black mb-2 ${stat.accent}`}>{stat.number}</div>
                                 <div className="text-sm font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">{stat.label}</div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Trending Crops Section */}
+            <section className="py-12 relative z-10">
+                <div className="container mx-auto px-4">
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                        <div>
+                            <span className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-bold mb-3 border border-amber-500/20">
+                                <Sparkles size={12} className="animate-spin-slow text-amber-500" /> Premium Listings
+                            </span>
+                            <h2 className="text-4xl md:text-5xl font-display font-bold text-agri-dark dark:text-white tracking-tight">
+                                Trending Harvests Today
+                            </h2>
+                        </div>
+                        <Link to="/marketplace" className="text-agri-primary hover:text-agri-dark dark:hover:text-white font-bold flex items-center gap-1.5 transition-colors group/all mt-4 md:mt-0">
+                            View All 850+ Listings
+                            <ArrowRight size={18} className="group-hover/all:translate-x-1.5 transition-transform" />
+                        </Link>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {[
+                            {
+                                title: "Organic Basmati Rice (1121)",
+                                farmer: "Gurpreet Singh",
+                                location: "Amritsar, Punjab",
+                                price: "₹6,800",
+                                unit: "Quintal",
+                                stock: "45 Tons available",
+                                rating: "4.9",
+                                badge: "Best Seller",
+                                bg: "https://images.unsplash.com/photo-1586201375761-83865001e31c?q=80&w=600&auto=format&fit=crop"
+                            },
+                            {
+                                title: "Premium Alphonso Mangoes",
+                                farmer: "Devendra Patil",
+                                location: "Ratnagiri, Maharashtra",
+                                price: "₹1,200",
+                                unit: "Dozen",
+                                stock: "120 Crates available",
+                                rating: "5.0",
+                                badge: "Limited Deal",
+                                bg: "https://images.unsplash.com/photo-1553279768-865429fa0078?q=80&w=600&auto=format&fit=crop"
+                            },
+                            {
+                                title: "Golden Sharbati Wheat",
+                                farmer: "Ram Charan Yadav",
+                                location: "Sehore, Madhya Pradesh",
+                                price: "₹2,750",
+                                unit: "Quintal",
+                                stock: "80 Tons available",
+                                rating: "4.8",
+                                badge: "High Demand",
+                                bg: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=600&auto=format&fit=crop"
+                            }
+                        ].map((crop, idx) => (
+                            <motion.div
+                                key={idx}
+                                whileHover={{ y: -8 }}
+                                className="glass rounded-[2rem] overflow-hidden shadow-premium border-white/20 hover:border-agri-primary/30 transition-all flex flex-col h-full group"
+                            >
+                                <div className="h-48 overflow-hidden relative">
+                                    <img 
+                                        src={crop.bg} 
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                                        alt={crop.title}
+                                    />
+                                    <div className="absolute top-4 left-4 py-1.5 px-3 rounded-xl bg-agri-dark/80 backdrop-blur-md text-white text-xs font-black">
+                                        {crop.badge}
+                                    </div>
+                                    <div className="absolute bottom-4 right-4 py-1 px-2.5 rounded-lg bg-white/90 dark:bg-slate-900/90 text-amber-500 text-xs font-extrabold flex items-center gap-1">
+                                        <Star size={12} fill="currentColor" /> {crop.rating}
+                                    </div>
+                                </div>
+                                <div className="p-6 flex flex-col justify-between flex-grow text-left">
+                                    <div>
+                                        <h3 className="text-xl font-bold text-agri-dark dark:text-white group-hover:text-agri-primary transition-colors line-clamp-1">
+                                            {crop.title}
+                                        </h3>
+                                        <div className="flex items-center gap-1.5 mt-2 text-gray-500 dark:text-gray-400 text-xs font-semibold">
+                                            <MapPin size={12} />
+                                            <span>{crop.location}</span>
+                                        </div>
+                                        <div className="mt-1 text-[11px] text-gray-400 font-bold uppercase tracking-wider">
+                                            Farmer: {crop.farmer}
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="border-t border-gray-100 dark:border-slate-800/80 my-4 pt-4 flex items-center justify-between">
+                                        <div>
+                                            <span className="text-2xl font-black text-agri-primary dark:text-agri-primary">{crop.price}</span>
+                                            <span className="text-xs text-gray-400 dark:text-gray-500 font-bold"> / {crop.unit}</span>
+                                        </div>
+                                        <div className="text-right">
+                                            <div className="text-[10px] text-emerald-500 font-bold uppercase tracking-widest bg-emerald-500/10 py-0.5 px-2 rounded-full">
+                                                {crop.stock}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <Link to={`/marketplace`} className="w-full">
+                                        <button className="w-full py-3 bg-agri-surface hover:bg-agri-primary hover:text-white dark:bg-slate-900 dark:hover:bg-agri-primary text-agri-dark dark:text-white font-bold rounded-xl text-sm transition-all flex items-center justify-center gap-1.5 border border-gray-200 dark:border-slate-800 hover:border-transparent">
+                                            <ShoppingBag size={14} /> Trade Now <ArrowUpRight size={14} />
+                                        </button>
+                                    </Link>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
