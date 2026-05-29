@@ -106,6 +106,18 @@ const StoriesPage = () => {
         return () => clearInterval(interval);
     }, [isPlaying, selectedStory]);
 
+    useEffect(() => {
+        const handleEscape = (event) => {
+            if (event.key === "Escape") {
+                setSelectedStory(null);
+                setIsSubmitModalOpen(false);
+            }
+        };
+
+        window.addEventListener("keydown", handleEscape);
+        return () => window.removeEventListener("keydown", handleEscape);
+    }, []);
+
     // Calculate formatted time based on progress of a 5-minute video (300 seconds)
     const totalDuration = 300; // 5:00
     const currentSeconds = Math.floor((progress / 100) * totalDuration);
@@ -123,7 +135,7 @@ const StoriesPage = () => {
         e.preventDefault();
         if (!newStoryForm.name || !newStoryForm.farm || !newStoryForm.quote) return;
         
-        const newId = activeStories.length + 1;
+        const newId = Math.max(...activeStories.map((story) => story.id), 0) + 1;
         const newStory = {
             id: newId,
             name: newStoryForm.name,
@@ -157,7 +169,7 @@ const StoriesPage = () => {
         }));
         setStoryLikes(prev => ({
             ...prev,
-            [storyId]: prev[storyId] + (isLiked ? -1 : 1)
+            [storyId]: Math.max(0, prev[storyId] + (isLiked ? -1 : 1))
         }));
     };
 
@@ -263,8 +275,18 @@ const StoriesPage = () => {
                             placeholder="Search stories, regions, crops..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-14 pr-6 py-4 bg-white/60 dark:bg-slate-900/60 rounded-2xl text-agri-dark dark:text-white border border-gray-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-agri-primary/50 transition-all font-medium placeholder-gray-400"
+                            className="w-full pl-14 pr-12 py-4 bg-white/60 dark:bg-slate-900/60 rounded-2xl text-agri-dark dark:text-white border border-gray-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-agri-primary/50 transition-all font-medium placeholder-gray-400"
                         />
+                        {searchQuery && (
+                            <button
+                                type="button"
+                                onClick={() => setSearchQuery("")}
+                                aria-label="Clear search"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-agri-primary transition-colors"
+                            >
+                                <X size={18} />
+                            </button>
+                        )}
                     </div>
                     
                     <div className="flex flex-wrap gap-3 items-center justify-center">
@@ -417,6 +439,7 @@ const StoriesPage = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
+                            onClick={() => setSelectedStory(null)}
                             className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-12 bg-agri-dark/95 backdrop-blur-2xl"
                         >
                             <motion.div
@@ -424,6 +447,7 @@ const StoriesPage = () => {
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.9, y: 40 }}
                                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                                onClick={(e) => e.stopPropagation()}
                                 className="bg-slate-900 rounded-[3.5rem] overflow-hidden max-w-6xl w-full aspect-video relative flex flex-col items-center justify-center text-white border border-white/10 shadow-[0_0_120px_rgba(16,185,129,0.3)] group/modal"
                             >
                                 <button 
@@ -518,6 +542,7 @@ const StoriesPage = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
+                            onClick={() => setIsSubmitModalOpen(false)}
                             className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-12 bg-agri-dark/95 backdrop-blur-2xl"
                         >
                             <motion.div
@@ -525,6 +550,7 @@ const StoriesPage = () => {
                                 animate={{ opacity: 1, scale: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.95, y: 30 }}
                                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                                onClick={(e) => e.stopPropagation()}
                                 className="bg-slate-900/90 rounded-[3.5rem] border border-white/10 p-12 max-w-2xl w-full relative max-h-[90vh] overflow-y-auto"
                             >
                                 <button
