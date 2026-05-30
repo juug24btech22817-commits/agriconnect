@@ -9,25 +9,8 @@ import {
 const HomePage = () => {
     return (
         <div className="bg-agri-surface dark:bg-slate-950 min-h-screen overflow-x-hidden">
-            {/* Live Ticker Banner */}
-            <div className="bg-agri-primary text-white py-2 px-4 text-sm font-semibold tracking-wide relative overflow-hidden select-none border-b border-agri-primary/20">
-                <div className="flex whitespace-nowrap animate-marquee">
-                    <span className="mx-4 flex items-center gap-1.5"><Activity size={14} className="text-emerald-300 animate-pulse" /> Live Mandi Rates: Basmati Rice (Punjab) ₹6,200/Qtl <span className="text-emerald-300 font-bold">+4.2%</span></span>
-                    <span className="mx-4">|</span>
-                    <span className="mx-4">Alphonso Mango (Ratnagiri) ₹1,200/Dozen <span className="text-emerald-300 font-bold">+6.5%</span></span>
-                    <span className="mx-4">|</span>
-                    <span className="mx-4">Golden Wheat (MP) ₹2,750/Qtl <span className="text-emerald-300 font-bold">+2.8%</span></span>
-                    <span className="mx-4">|</span>
-                    <span className="mx-4">Cotton (Gujarat) ₹7,100/Qtl <span className="text-rose-300 font-bold">-1.2%</span></span>
-                    <span className="mx-4">|</span>
-                    <span className="mx-4 flex items-center gap-1.5"><Sparkles size={14} className="text-yellow-300" /> New Mandi Hub established in Karnataka! Instant payout activated.</span>
-                    <span className="mx-4">|</span>
-                    <span className="mx-4">Potato (UP) ₹1,400/Qtl <span className="text-emerald-300 font-bold">+3.1%</span></span>
-                </div>
-            </div>
-
             {/* Hero Section */}
-            <section className="relative min-h-[90vh] flex items-center justify-center pt-12 pb-20">
+            <section className="relative min-h-[90vh] flex items-center justify-center pt-20 pb-20">
                 {/* Modern Mesh Gradient Background */}
                 <div className="absolute inset-0 z-0 overflow-hidden">
                     <div className="absolute inset-0 premium-gradient opacity-40 dark:opacity-20" />
