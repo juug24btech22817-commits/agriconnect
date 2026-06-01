@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Quote, PlayCircle, X, ArrowRight, Heart, Users, ShieldCheck, TrendingUp, Globe, Award, ChevronRight, Search, Plus, Play, Pause, MessageSquare } from 'lucide-react';
+import { Quote, PlayCircle, X, ArrowRight, Heart, Users, ShieldCheck, TrendingUp, Globe, Award, ChevronRight, Search, Plus, Play, Pause, MessageSquare, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const stats = [
@@ -19,7 +19,7 @@ const stories = [
         image: "https://images.unsplash.com/photo-1595804365737-12681fbfa968?q=80&w=600&auto=format&fit=crop",
         videoBg: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=800&auto=format&fit=crop",
         tags: ["Vegetables", "Direct Trade"],
-        metrics: { profit: "+40%", savings: "25%" }
+        metrics: { profit: "+40%", savings: "25%", rating: "4.9", reviews: "48" }
     },
     {
         id: 2,
@@ -29,7 +29,7 @@ const stories = [
         image: "https://images.unsplash.com/photo-1587326442657-3b28b7ed661c?q=80&w=600&auto=format&fit=crop",
         videoBg: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=800&auto=format&fit=crop",
         tags: ["Coffee", "Market Access"],
-        metrics: { profit: "+32%", savings: "18%" }
+        metrics: { profit: "+32%", savings: "18%", rating: "4.8", reviews: "36" }
     },
     {
         id: 3,
@@ -39,7 +39,7 @@ const stories = [
         image: "https://images.unsplash.com/photo-1506807803408-db287eeb22bd?q=80&w=600&auto=format&fit=crop",
         videoBg: "https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?q=80&w=800&auto=format&fit=crop",
         tags: ["Organic", "Direct Sales"],
-        metrics: { profit: "+55%", savings: "30%" }
+        metrics: { profit: "+55%", savings: "30%", rating: "5.0", reviews: "64" }
     },
     {
         id: 4,
@@ -49,7 +49,7 @@ const stories = [
         image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop",
         videoBg: "https://images.unsplash.com/photo-1599940824399-b87987ceb72a?q=80&w=800&auto=format&fit=crop",
         tags: ["Spices", "Direct Trade"],
-        metrics: { profit: "+85%", savings: "35%" }
+        metrics: { profit: "+85%", savings: "35%", rating: "4.9", reviews: "52" }
     },
     {
         id: 5,
@@ -59,7 +59,7 @@ const stories = [
         image: "https://images.unsplash.com/photo-1560493676-04071c5f467b?q=80&w=600&auto=format&fit=crop",
         videoBg: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?q=80&w=800&auto=format&fit=crop",
         tags: ["Grains", "Direct Sales"],
-        metrics: { profit: "+48%", savings: "22%" }
+        metrics: { profit: "+48%", savings: "22%", rating: "4.7", reviews: "29" }
     }
 ];
 
@@ -144,7 +144,7 @@ const StoriesPage = () => {
             image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop", // Elegant default farmer avatar
             videoBg: "https://images.unsplash.com/photo-1500937386664-56d159062255?q=80&w=800&auto=format&fit=crop", // Beautiful farm default
             tags: [newStoryForm.category, "Direct Trade"],
-            metrics: { profit: newStoryForm.profit, savings: newStoryForm.savings }
+            metrics: { profit: newStoryForm.profit, savings: newStoryForm.savings, rating: "5.0", reviews: "1" }
         };
         
         setActiveStories([newStory, ...activeStories]);
@@ -378,6 +378,11 @@ const StoriesPage = () => {
                                                 <div>
                                                     <h3 className="text-3xl font-display font-black text-agri-dark dark:text-white leading-none">{story.name}</h3>
                                                     <p className="text-agri-primary dark:text-agri-secondary font-black tracking-[0.2em] uppercase text-[10px] mt-3">{story.farm}</p>
+                                                    <div className="flex items-center gap-1.5 mt-2 bg-amber-500/10 text-amber-500 dark:text-amber-400 px-3 py-1 rounded-lg w-fit">
+                                                        <Star size={12} className="fill-amber-500 text-amber-500" />
+                                                        <span className="text-xs font-black">{story.metrics.rating || "5.0"}</span>
+                                                        <span className="text-[10px] opacity-70">({story.metrics.reviews || "1"})</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             
@@ -395,7 +400,10 @@ const StoriesPage = () => {
                                     </div>
 
                                     <div className="flex items-center gap-8">
-                                        <button className="inline-flex items-center gap-4 text-agri-primary dark:text-agri-secondary font-black uppercase tracking-[0.3em] text-sm group/btn hover:gap-6 transition-all">
+                                        <button 
+                                            onClick={() => handleSelectStory(story)}
+                                            className="inline-flex items-center gap-4 text-agri-primary dark:text-agri-secondary font-black uppercase tracking-[0.3em] text-sm group/btn hover:gap-6 transition-all"
+                                        >
                                             Read Full Story <ChevronRight size={20} className="group-hover/btn:translate-x-2 transition-transform" />
                                         </button>
                                         
