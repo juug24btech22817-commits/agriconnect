@@ -217,6 +217,7 @@ const CommunityPage = () => {
     };
 
     const handleTagClick = (tag) => {
+        setActiveCategory("All Discussions");
         setSearchQuery(tag);
     };
 
@@ -273,10 +274,10 @@ const CommunityPage = () => {
                         </h1>
                         <div className="flex flex-col gap-4 mb-6">
                             <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
-                                Connect with {formattedVerifiedCount} verified farmers and industry experts in our secure network.
+                                Connect with {formattedVerifiedCount} verified farmers and industry experts in our active community forum.
                             </p>
                             <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[0.24em] text-gray-400">
-                                <span>{totalDiscussions} active discussions</span>
+                                <span>{totalDiscussions} active community discussions</span>
                                 <span className="text-agri-primary">•</span>
                                 <span>{totalExperts} expert posts</span>
                             </div>
@@ -294,7 +295,7 @@ const CommunityPage = () => {
                             className="px-10 py-6 bg-agri-primary text-white rounded-[1.5rem] font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:shadow-agri-primary/40 active:scale-95 transition-all flex items-center gap-3 relative overflow-hidden group"
                         >
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                            <Plus size={20} className="relative z-10 group-hover:rotate-90 transition-transform duration-300" /> <span className="relative z-10">New Discussion</span>
+                            <Plus size={20} className="relative z-10 group-hover:rotate-90 transition-transform duration-300" /> <span className="relative z-10">Start Discussion</span>
                         </button>
                     </div>
                 </header>
@@ -391,7 +392,7 @@ const CommunityPage = () => {
                         <div className="space-y-8">
                             {/* Results count */}
                             {(searchQuery || activeCategory !== "All Discussions") && (
-                                <div className="flex items-center gap-3">
+                                <div className="flex flex-wrap items-center gap-3">
                                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
                                         {sortedPosts.length} result{sortedPosts.length !== 1 ? 's' : ''}
                                     </span>
@@ -404,6 +405,15 @@ const CommunityPage = () => {
                                         <span className="px-3 py-1 bg-emerald-500/10 text-emerald-600 rounded-xl text-[9px] font-black uppercase tracking-widest">
                                             {activeCategory}
                                         </span>
+                                    )}
+                                    {(searchQuery || activeCategory !== "All Discussions") && (
+                                        <button
+                                            type="button"
+                                            onClick={() => { setSearchQuery(""); setActiveCategory("All Discussions"); }}
+                                            className="px-3 py-1 bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-agri-primary hover:text-white transition-all"
+                                        >
+                                            Clear Filters
+                                        </button>
                                     )}
                                 </div>
                             )}
