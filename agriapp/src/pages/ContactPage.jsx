@@ -82,29 +82,29 @@ const ContactPage = () => {
             title: "Toll-Free Support", 
             value: "1800-419-8444", 
             link: "tel:18004198444",
-            desc: "Available in 8+ Indian Languages" 
+            desc: "Available in 8+ Indian languages" 
         },
         { 
             icon: <MessageSquare className="text-emerald-500" />, 
-            title: "WhatsApp Bot", 
+            title: "WhatsApp Support", 
             value: "+91 99887 76655", 
             link: "https://wa.me/919988776655",
-            desc: "Instant price alerts & support" 
+            desc: "Instant chat support and updates" 
         },
         { 
             icon: <Mail className="text-agri-secondary" />, 
             title: "Email Assistance", 
             value: "support@agriconnect.in", 
             link: "mailto:support@agriconnect.in",
-            desc: "24/7 technical support desk" 
+            desc: "24/7 email help desk" 
         }
     ];
 
     const socialLinks = [
-        { icon: <Twitter size={20} />, label: "Twitter", color: "hover:text-blue-400" },
-        { icon: <Facebook size={20} />, label: "Facebook", color: "hover:text-blue-600" },
-        { icon: <Instagram size={20} />, label: "Instagram", color: "hover:text-pink-500" },
-        { icon: <Linkedin size={20} />, label: "LinkedIn", color: "hover:text-blue-700" }
+        { icon: <Twitter size={20} />, label: "Twitter", color: "hover:text-blue-400", href: "https://twitter.com/agriconnect" },
+        { icon: <Facebook size={20} />, label: "Facebook", color: "hover:text-blue-600", href: "https://facebook.com/agriconnect" },
+        { icon: <Instagram size={20} />, label: "Instagram", color: "hover:text-pink-500", href: "https://instagram.com/agriconnect" },
+        { icon: <Linkedin size={20} />, label: "LinkedIn", color: "hover:text-blue-700", href: "https://linkedin.com/company/agriconnect" }
     ];
 
     const faqs = [
@@ -134,7 +134,7 @@ const ContactPage = () => {
                         We're Here to <span className="text-gradient">Support You.</span>
                     </h1>
                     <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-medium">
-                        Whether you are a farmer, a trader, or just curious about AgriConnect, our team is ready to help you thrive.
+                        Whether you're a farmer, trader, or agri-entrepreneur, our support team helps you move forward faster—day or night.
                     </p>
                 </motion.div>
 
@@ -196,7 +196,9 @@ const ContactPage = () => {
                                     {socialLinks.map((social, i) => (
                                         <motion.a
                                             key={i}
-                                            href="#"
+                                            href={social.href}
+                                            target="_blank"
+                                            rel="noreferrer"
                                             whileHover={{ y: -5, scale: 1.1 }}
                                             className={`p-3 bg-white dark:bg-gray-800 rounded-xl text-gray-400 shadow-sm transition-colors ${social.color}`}
                                             title={social.label}
