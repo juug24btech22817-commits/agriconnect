@@ -122,11 +122,11 @@ const CartPage = () => {
                                     <motion.div
                                         key={itemId}
                                         layout
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, scale: 0.95 }}
-                                    className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row gap-4 items-center"
-                                >
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, scale: 0.95 }}
+                                        className="bg-white dark:bg-gray-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col sm:flex-row gap-4 items-center"
+                                    >
                                     <div className="w-24 h-24 rounded-xl overflow-hidden shrink-0">
                                         <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                                     </div>
@@ -168,7 +168,7 @@ const CartPage = () => {
                                         </button>
                                     </div>
                                 </motion.div>
-                            ))}
+                            )})}
                         </AnimatePresence>
                     </div>
 
