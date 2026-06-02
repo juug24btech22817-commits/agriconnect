@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../context/CartContext';
-import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag, CreditCard, Truck, Building2, ChevronRight } from 'lucide-react';
+import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag, CreditCard, ChevronRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { api } from '../services/api';
@@ -10,6 +10,8 @@ const CartPage = () => {
     const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
     const navigate = useNavigate();
     const [deliveryMethod, setDeliveryMethod] = React.useState('shiprocket');
+    const [pinCode, setPinCode] = React.useState('');
+    const [serviceable, setServiceable] = React.useState(null);
 
     const subtotal = cart.reduce((acc, item) => {
         const priceStr = typeof item.price === 'string' ? item.price : String(item.price || 0);
@@ -28,6 +30,15 @@ const CartPage = () => {
     const deliveryCharge = partners[deliveryMethod]?.cost || 0;
     const discount = 0; // Planned: Cluster discount logic
     const total = subtotal + deliveryCharge - discount;
+
+    const handleCheckServiceability = () => {
+        if (!pinCode.match(/^\d{6}$/)) {
+            setServiceable('Please enter a valid 6-digit PIN code.');
+            return;
+        }
+        const isServiceable = ['110001', '560001', '400001'].includes(pinCode);
+        setServiceable(isServiceable ? 'Yes, delivery is available here.' : 'Sorry, delivery is unavailable for this PIN.');
+    };
 
     const handleCheckout = async () => {
         if (!user) {
@@ -105,10 +116,12 @@ const CartPage = () => {
                     {/* Items List */}
                     <div className="lg:col-span-2 space-y-4">
                         <AnimatePresence>
-                            {cart.map((item) => (
-                                <motion.div
-                                    key={item.id}
-                                    layout
+                            {cart.map((item) => {
+                                const itemId = item.id || item._id;
+                                return (
+                                    <motion.div
+                                        key={itemId}
+                                        layout
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
@@ -133,7 +146,7 @@ const CartPage = () => {
                                     <div className="flex items-center gap-2">
                                         <div className="flex items-center bg-gray-50 dark:bg-gray-700 rounded-xl p-0.5 ring-1 ring-gray-200 dark:ring-gray-600">
                                             <button
-                                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                onClick={() => updateQuantity(itemId, item.quantity - 1)}
                                                 disabled={item.quantity <= 1}
                                                 className="p-1 rounded-lg text-gray-400 dark:text-gray-500 transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-gray-600"
                                             >
@@ -141,14 +154,14 @@ const CartPage = () => {
                                             </button>
                                             <span className="w-5 text-center font-black text-gray-900 dark:text-white text-[9px]">{item.quantity}</span>
                                             <button
-                                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                onClick={() => updateQuantity(itemId, item.quantity + 1)}
                                                 className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-400 dark:text-gray-500 transition-colors"
                                             >
                                                 <Plus size={9} />
                                             </button>
                                         </div>
                                         <button
-                                            onClick={() => removeFromCart(item.id)}
+                                            onClick={() => removeFromCart(itemId)}
                                             className="p-2 text-red-500/70 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all"
                                         >
                                             <Trash2 size={14} />
@@ -197,14 +210,28 @@ const CartPage = () => {
                         {/* Serviceability Check */}
                         <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
                             <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2 uppercase tracking-wide">Check Serviceability</h3>
+                            <div className="space-y-3">
                             <div className="flex gap-2">
                                 <input 
                                     type="text" 
+                                    value={pinCode}
+                                    onChange={(e) => setPinCode(e.target.value.replace(/\D/g, ''))}
+                                    maxLength={6}
                                     placeholder="Enter PIN Code" 
                                     className="flex-grow bg-gray-50 dark:bg-gray-700 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-agri-green transition-all"
                                 />
-                                <button className="bg-agri-green text-white px-4 py-2 rounded-xl text-sm font-bold">Check</button>
+                                <button
+                                    onClick={handleCheckServiceability}
+                                    className="bg-agri-green text-white px-4 py-2 rounded-xl text-sm font-bold disabled:opacity-60 disabled:cursor-not-allowed"
+                                    disabled={!pinCode.match(/^\d{6}$/)}
+                                >
+                                    Check
+                                </button>
                             </div>
+                            {serviceable && (
+                                <p className="text-sm text-gray-600 dark:text-gray-300">{serviceable}</p>
+                            )}
+                        </div>
                         </div>
 
                         <div className="bg-gray-900 text-white p-8 rounded-3xl shadow-xl shadow-gray-900/20 sticky top-24">
