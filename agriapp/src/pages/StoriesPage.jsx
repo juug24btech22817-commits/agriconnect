@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Quote, PlayCircle, X, ArrowRight, Heart, Users, ShieldCheck, TrendingUp, Globe, Award, ChevronRight, Search, Plus, Play, Pause, MessageSquare, Star } from 'lucide-react';
+import { Quote, PlayCircle, X, ArrowRight, Heart, Users, ShieldCheck, TrendingUp, Globe, Award, ChevronRight, Search, Plus, Play, Pause, MessageSquare, Star, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const stats = [
@@ -63,13 +63,12 @@ const stories = [
     }
 ];
 
-const categories = ["All", ...new Set(stories.flatMap((story) => story.tags))];
-
 const StoriesPage = () => {
     const [activeStories, setActiveStories] = useState(stories);
     const [selectedStory, setSelectedStory] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All");
+    const [sortMode, setSortMode] = useState("impact");
     
     // Likes state
     const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215, 4: 189, 5: 310 });
@@ -173,6 +172,8 @@ const StoriesPage = () => {
         }));
     };
 
+    const categories = useMemo(() => ["All", ...new Set(activeStories.flatMap((story) => story.tags))], [activeStories]);
+
     const filteredStories = activeStories.filter(story => {
         const matchesSearch = story.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                               story.farm.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -181,7 +182,19 @@ const StoriesPage = () => {
         
         const matchesCategory = selectedCategory === "All" || story.tags.includes(selectedCategory);
         return matchesSearch && matchesCategory;
+    }).sort((a, b) => {
+        if (sortMode === "liked") return (storyLikes[b.id] || 0) - (storyLikes[a.id] || 0);
+        if (sortMode === "rating") return Number(b.metrics.rating || 0) - Number(a.metrics.rating || 0);
+        return parseInt(b.metrics.profit, 10) - parseInt(a.metrics.profit, 10);
     });
+
+    const featuredStory = filteredStories[0] || activeStories[0];
+
+    const resetFilters = () => {
+        setSearchQuery("");
+        setSelectedCategory("All");
+        setSortMode("impact");
+    };
 
     return (
         <div className="bg-agri-surface dark:bg-slate-950 min-h-screen pt-20 pb-32 transition-colors duration-300 overflow-x-hidden">
@@ -209,7 +222,7 @@ const StoriesPage = () => {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-                <header className="text-center mb-20 max-w-4xl mx-auto">
+                <header className="text-center mb-14 max-w-4xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -219,11 +232,11 @@ const StoriesPage = () => {
                             initial={{ scale: 0.8, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 0.5, type: 'spring', delay: 0.2 }}
-                            className="inline-flex items-center gap-2 py-2.5 px-6 rounded-full bg-white/50 dark:bg-white/5 backdrop-blur-md text-agri-primary dark:text-agri-secondary border border-agri-primary/10 text-xs font-black uppercase tracking-[0.3em] mb-10 shadow-premium-sm"
+                            className="inline-flex items-center gap-2 py-2.5 px-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md text-agri-primary dark:text-agri-secondary border border-agri-primary/10 text-xs font-black uppercase tracking-[0.22em] mb-8 shadow-premium-sm"
                         >
                             <Heart size={14} className="fill-agri-primary animate-pulse" /> Voices of Change
                         </motion.div>
-                        <h1 className="text-5xl md:text-8xl font-display font-black text-agri-dark dark:text-white mb-8 leading-[0.95] tracking-tighter">
+                        <h1 className="text-5xl md:text-7xl font-display font-black text-agri-dark dark:text-white mb-7 leading-[0.98] tracking-tight">
                             Real Farmers. <br /> 
                             <span className="relative inline-block">
                                 <span className="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-agri-primary via-agri-secondary to-agri-primary bg-[length:200%_auto] animate-gradient-x">Success Stories.</span>
@@ -235,17 +248,17 @@ const StoriesPage = () => {
                                 />
                             </span>
                         </h1>
-                        <p className="text-lg md:text-2xl text-gray-500 dark:text-gray-400 font-medium max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 font-medium max-w-2xl mx-auto leading-relaxed">
                             Empowering the backbone of our nation through transparency, technology, and trust.
                         </p>
-                        <div className="mt-8 text-sm uppercase tracking-[0.3em] font-black text-agri-primary dark:text-agri-secondary">
+                        <div className="mt-7 text-sm uppercase tracking-[0.22em] font-black text-agri-primary dark:text-agri-secondary">
                             Showing {filteredStories.length} impact stories
                         </div>
                     </motion.div>
                 </header>
 
                 {/* Stats Showcase */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-40">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-14">
                     {stats.map((stat, idx) => (
                         <motion.div
                             key={stat.label}
@@ -253,21 +266,21 @@ const StoriesPage = () => {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ delay: idx * 0.1 }}
-                            whileHover={{ y: -10 }}
-                            className="p-8 rounded-[2.5rem] bg-white/40 dark:bg-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-premium group"
+                            whileHover={{ y: -6 }}
+                            className="p-5 sm:p-6 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-premium group"
                         >
-                            <div className={`w-14 h-14 rounded-2xl bg-white dark:bg-white/10 flex items-center justify-center mb-6 shadow-glow-sm group-hover:scale-110 transition-transform ${stat.color}`}>
-                                <stat.icon size={28} />
+                            <div className={`w-12 h-12 rounded-xl bg-white dark:bg-white/10 flex items-center justify-center mb-5 shadow-glow-sm group-hover:scale-110 transition-transform ${stat.color}`}>
+                                <stat.icon size={24} />
                             </div>
-                            <div className="text-4xl font-display font-black text-agri-dark dark:text-white mb-2">{stat.value}</div>
-                            <div className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">{stat.label}</div>
+                            <div className="text-3xl font-display font-black text-agri-dark dark:text-white mb-2">{stat.value}</div>
+                            <div className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">{stat.label}</div>
                         </motion.div>
                     ))}
                 </div>
 
                 {/* Search and Filters Section */}
-                <div className="mb-20 p-6 rounded-[2.5rem] bg-white/40 dark:bg-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-premium flex flex-col md:flex-row gap-6 justify-between items-center relative z-20">
-                    <div className="relative w-full md:w-96 group">
+                <div className="mb-10 p-5 rounded-2xl bg-white/75 dark:bg-white/5 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-premium flex flex-col xl:flex-row gap-4 justify-between items-center relative z-20">
+                    <div className="relative w-full xl:w-96 group">
                         <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-agri-primary transition-colors" size={20} />
                         <input
                             type="text"
@@ -275,7 +288,7 @@ const StoriesPage = () => {
                             placeholder="Search stories, regions, crops..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-14 pr-12 py-4 bg-white/60 dark:bg-slate-900/60 rounded-2xl text-agri-dark dark:text-white border border-gray-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-agri-primary/50 transition-all font-medium placeholder-gray-400"
+                            className="w-full pl-14 pr-12 py-4 bg-white/80 dark:bg-slate-900/60 rounded-xl text-agri-dark dark:text-white border border-gray-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-agri-primary/50 transition-all font-medium placeholder-gray-400"
                         />
                         {searchQuery && (
                             <button
@@ -289,12 +302,12 @@ const StoriesPage = () => {
                         )}
                     </div>
                     
-                    <div className="flex flex-wrap gap-3 items-center justify-center">
+                    <div className="flex flex-wrap gap-2 items-center justify-center">
                         {categories.map((cat) => (
                             <button
                                 key={cat}
                                 onClick={() => setSelectedCategory(cat)}
-                                className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-[0.15em] transition-all border ${
+                                className={`px-4 py-3 rounded-xl text-xs font-black uppercase tracking-[0.12em] transition-all border ${
                                     selectedCategory === cat
                                         ? "bg-agri-primary text-white border-agri-primary shadow-glow-sm scale-105"
                                         : "bg-white/40 dark:bg-white/5 text-gray-500 dark:text-gray-400 border-white/20 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10"
@@ -304,14 +317,91 @@ const StoriesPage = () => {
                             </button>
                         ))}
                     </div>
+
+                    <div className="flex w-full sm:w-auto items-center gap-2 rounded-xl bg-white/50 dark:bg-white/5 border border-white/30 dark:border-white/10 p-1">
+                        <SlidersHorizontal size={16} className="ml-3 text-gray-400" />
+                        {[
+                            ["impact", "Impact"],
+                            ["liked", "Liked"],
+                            ["rating", "Rating"]
+                        ].map(([value, label]) => (
+                            <button
+                                key={value}
+                                type="button"
+                                onClick={() => setSortMode(value)}
+                                className={`px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
+                                    sortMode === value
+                                        ? "bg-agri-dark text-white dark:bg-white dark:text-agri-dark"
+                                        : "text-gray-500 dark:text-gray-400 hover:text-agri-primary"
+                                }`}
+                            >
+                                {label}
+                            </button>
+                        ))}
+                    </div>
                     
                     <button
                         onClick={() => setIsSubmitModalOpen(true)}
-                        className="w-full md:w-auto px-6 py-4 bg-agri-secondary text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-glow-sm hover:bg-agri-secondary/80 hover:scale-105 transition-all flex items-center justify-center gap-2"
+                        className="w-full xl:w-auto px-6 py-4 bg-agri-secondary text-white rounded-xl font-black text-xs uppercase tracking-[0.16em] shadow-glow-sm hover:bg-agri-secondary/80 hover:scale-105 transition-all flex items-center justify-center gap-2"
                     >
                         <Plus size={16} /> Share Your Story
                     </button>
                 </div>
+
+                {featuredStory && (
+                    <motion.section
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mb-20 grid lg:grid-cols-[1.1fr_0.9fr] gap-6 items-stretch rounded-3xl bg-agri-dark text-white overflow-hidden shadow-premium border border-white/10"
+                    >
+                        <div className="p-8 md:p-10 flex flex-col justify-between gap-8">
+                            <div>
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 text-agri-secondary text-[10px] font-black uppercase tracking-[0.22em] mb-6">
+                                    <Sparkles size={14} /> Featured Impact
+                                </div>
+                                <h2 className="text-3xl md:text-5xl font-display font-black text-white leading-tight mb-5">
+                                    {featuredStory.name} grew profits by {featuredStory.metrics.profit}
+                                </h2>
+                                <p className="text-agri-light/70 text-lg leading-relaxed max-w-2xl">
+                                    {featuredStory.quote}
+                                </p>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-3">
+                                {featuredStory.tags.map((tag) => (
+                                    <span key={tag} className="px-4 py-2 rounded-xl bg-white/10 text-xs font-black uppercase tracking-widest text-white/80">
+                                        {tag}
+                                    </span>
+                                ))}
+                                <button
+                                    type="button"
+                                    onClick={() => handleSelectStory(featuredStory)}
+                                    className="ml-0 sm:ml-auto px-5 py-3 rounded-xl bg-agri-primary text-white text-xs font-black uppercase tracking-widest inline-flex items-center gap-2 hover:bg-agri-accent transition-colors"
+                                >
+                                    Watch Story <PlayCircle size={18} />
+                                </button>
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => handleSelectStory(featuredStory)}
+                            className="relative min-h-[280px] overflow-hidden text-left group"
+                        >
+                            <img src={featuredStory.videoBg} alt={`${featuredStory.name} farm`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                            <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+                                <div>
+                                    <div className="text-sm font-black uppercase tracking-widest text-white/70">{featuredStory.farm}</div>
+                                    <div className="mt-2 flex items-center gap-2 text-amber-300 font-black">
+                                        <Star size={16} className="fill-amber-300" /> {featuredStory.metrics.rating} rating
+                                    </div>
+                                </div>
+                                <span className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-xl flex items-center justify-center border border-white/20">
+                                    <PlayCircle size={30} />
+                                </span>
+                            </div>
+                        </button>
+                    </motion.section>
+                )}
 
                 <div className="space-y-24">
                     {filteredStories.length > 0 ? (
@@ -329,7 +419,7 @@ const StoriesPage = () => {
                                 <div className="w-full lg:w-1/2 relative group">
                                     <motion.div 
                                         whileHover={{ scale: 1.02 }}
-                                        className="relative rounded-[4rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] aspect-[4/3] border-8 border-white dark:border-white/5"
+                                        className="relative rounded-3xl overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] aspect-[4/3] border-8 border-white dark:border-white/5"
                                     >
                                         <img 
                                             src={story.videoBg} 
@@ -341,16 +431,16 @@ const StoriesPage = () => {
                                         {/* Video Button */}
                                         <button
                                             onClick={() => handleSelectStory(story)}
-                                            className="absolute inset-0 m-auto w-24 h-24 bg-white/20 backdrop-blur-3xl rounded-full flex items-center justify-center border border-white/30 text-white hover:bg-agri-primary hover:border-agri-primary hover:scale-110 transition-all z-10 shadow-[0_0_60px_rgba(255,255,255,0.2)] group/btn"
+                                            className="absolute inset-0 m-auto w-20 h-20 bg-white/20 backdrop-blur-3xl rounded-2xl flex items-center justify-center border border-white/30 text-white hover:bg-agri-primary hover:border-agri-primary hover:scale-110 transition-all z-10 shadow-[0_0_60px_rgba(255,255,255,0.2)] group/btn"
                                         >
-                                            <PlayCircle size={48} className="ml-1 group-hover/btn:fill-white/20 transition-all" />
+                                            <PlayCircle size={42} className="group-hover/btn:fill-white/20 transition-all" />
                                         </button>
                                     </motion.div>
                                     
                                     {/* Tags */}
                                     <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-4 z-20">
                                         {story.tags.map(tag => (
-                                            <span key={tag} className="px-6 py-3 bg-white dark:bg-agri-dark/90 backdrop-blur-2xl rounded-2xl text-xs font-black uppercase tracking-[0.2em] text-agri-dark dark:text-white border border-agri-primary/20 shadow-premium">
+                                            <span key={tag} className="px-5 py-3 bg-white dark:bg-agri-dark/90 backdrop-blur-2xl rounded-xl text-xs font-black uppercase tracking-[0.16em] text-agri-dark dark:text-white border border-agri-primary/20 shadow-premium">
                                                 {tag}
                                             </span>
                                         ))}
@@ -361,23 +451,23 @@ const StoriesPage = () => {
                                 <div className="w-full lg:w-1/2 space-y-12">
                                     <div className="relative">
                                         <Quote className="text-agri-primary/20 dark:text-agri-secondary/10 w-32 h-32 absolute -top-16 -left-12 -z-10" />
-                                        <blockquote className="text-3xl md:text-4xl text-agri-dark dark:text-white font-display font-bold leading-[1.12] relative z-10 tracking-tight">
+                                        <blockquote className="text-2xl md:text-4xl text-agri-dark dark:text-white font-display font-bold leading-[1.16] relative z-10 tracking-tight">
                                             "{story.quote}"
                                         </blockquote>
                                     </div>
 
                                     <div className="flex flex-wrap gap-8">
-                                        <div className="flex-1 min-w-[200px] p-6 bg-white/60 dark:bg-white/5 backdrop-blur-xl rounded-[3rem] border border-white dark:border-white/10 shadow-premium hover:border-agri-primary/30 transition-all group/info">
+                                        <div className="flex-1 min-w-[200px] p-6 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-3xl border border-white dark:border-white/10 shadow-premium hover:border-agri-primary/30 transition-all group/info">
                                             <div className="flex items-center gap-6 mb-8">
                                                 <div className="relative">
-                                                    <img src={story.image} alt={story.name} className="w-20 h-20 rounded-[2rem] object-cover ring-4 ring-agri-primary/10 shadow-xl group-hover/info:scale-105 transition-transform" />
+                                                    <img src={story.image} alt={story.name} className="w-20 h-20 rounded-2xl object-cover ring-4 ring-agri-primary/10 shadow-xl group-hover/info:scale-105 transition-transform" />
                                                     <div className="absolute -bottom-2 -right-2 bg-agri-primary text-white p-2 rounded-xl shadow-xl">
                                                         <ShieldCheck size={16} />
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <h3 className="text-3xl font-display font-black text-agri-dark dark:text-white leading-none">{story.name}</h3>
-                                                    <p className="text-agri-primary dark:text-agri-secondary font-black tracking-[0.2em] uppercase text-[10px] mt-3">{story.farm}</p>
+                                                    <h3 className="text-2xl md:text-3xl font-display font-black text-agri-dark dark:text-white leading-none">{story.name}</h3>
+                                                    <p className="text-agri-primary dark:text-agri-secondary font-black tracking-[0.14em] uppercase text-[10px] mt-3">{story.farm}</p>
                                                     <div className="flex items-center gap-1.5 mt-2 bg-amber-500/10 text-amber-500 dark:text-amber-400 px-3 py-1 rounded-lg w-fit">
                                                         <Star size={12} className="fill-amber-500 text-amber-500" />
                                                         <span className="text-xs font-black">{story.metrics.rating || "5.0"}</span>
@@ -429,12 +519,20 @@ const StoriesPage = () => {
                             <MessageSquare className="mx-auto text-agri-primary/40 mb-6" size={48} />
                             <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white mb-3">No Success Stories Found</h3>
                             <p className="text-gray-400 text-sm mb-8">No stories matched "{searchQuery || 'your selection'}" in {selectedCategory} yet. Try another crop, region, or share your own story.</p>
-                            <button
-                                onClick={() => setIsSubmitModalOpen(true)}
-                                className="px-6 py-4 bg-agri-primary text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] shadow-glow-sm hover:scale-105 transition-all"
-                            >
-                                Share Your Story
-                            </button>
+                            <div className="flex flex-col sm:flex-row justify-center gap-3">
+                                <button
+                                    onClick={resetFilters}
+                                    className="px-6 py-4 bg-white text-agri-dark rounded-xl font-black text-xs uppercase tracking-[0.16em] shadow-glow-sm hover:scale-105 transition-all"
+                                >
+                                    Reset Filters
+                                </button>
+                                <button
+                                    onClick={() => setIsSubmitModalOpen(true)}
+                                    className="px-6 py-4 bg-agri-primary text-white rounded-xl font-black text-xs uppercase tracking-[0.16em] shadow-glow-sm hover:scale-105 transition-all"
+                                >
+                                    Share Your Story
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -735,4 +833,3 @@ const StoriesPage = () => {
 };
 
 export default StoriesPage;
-
