@@ -762,6 +762,183 @@ const StoriesPage = () => {
                     )}
                 </AnimatePresence>
 
+                {/* ── Impact Timeline ─────────────────────────────── */}
+                <motion.section
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    className="mt-40 mb-24"
+                >
+                    <div className="text-center mb-16">
+                        <div className="inline-flex items-center gap-2 py-2 px-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md text-agri-primary dark:text-agri-secondary border border-agri-primary/10 text-xs font-black uppercase tracking-[0.22em] mb-6 shadow-premium-sm">
+                            <TrendingUp size={13} /> Our Journey
+                        </div>
+                        <h2 className="text-4xl md:text-6xl font-display font-black text-agri-dark dark:text-white tracking-tight mb-4">
+                            Impact Timeline
+                        </h2>
+                        <p className="text-gray-500 dark:text-gray-400 text-lg max-w-xl mx-auto">
+                            Every milestone tells the story of thousands of farmers we've empowered.
+                        </p>
+                    </div>
+
+                    <div className="relative">
+                        {/* Central line */}
+                        <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-agri-primary via-agri-secondary to-agri-primary/20 hidden lg:block" />
+
+                        <div className="space-y-10 lg:space-y-0">
+                            {[
+                                { year: "2021", title: "AgriConnect Launched", desc: "Started with 50 pilot farmers across Maharashtra, bridging the gap between fields and markets.", icon: "🌱", side: "left", color: "from-emerald-500/20 to-emerald-500/5" },
+                                { year: "2022", title: "1,000 Farmers Onboarded", desc: "Expanded to 8 states. Average income rose 28% for registered farmers within the first year.", icon: "🚀", side: "right", color: "from-blue-500/20 to-blue-500/5" },
+                                { year: "2023", title: "₹100M in Direct Trades", desc: "Crossed the ₹100 million mark in direct farmer-to-buyer transactions, cutting out middlemen.", icon: "💰", side: "left", color: "from-amber-500/20 to-amber-500/5" },
+                                { year: "2024", title: "Global Reach — 50 Countries", desc: "Premium Indian produce now exports directly to buyers in 50+ countries, powered by our platform.", icon: "🌍", side: "right", color: "from-purple-500/20 to-purple-500/5" },
+                                { year: "2025", title: "10,000+ Lives Transformed", desc: "A decade of impact compressed into 4 years. ₹500M+ in generated revenue for farming families.", icon: "🏆", side: "left", color: "from-agri-primary/20 to-agri-secondary/5" },
+                            ].map((item, i) => (
+                                <motion.div
+                                    key={item.year}
+                                    initial={{ opacity: 0, x: item.side === "left" ? -40 : 40 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true, margin: "-60px" }}
+                                    transition={{ duration: 0.7, delay: i * 0.1 }}
+                                    className={`lg:flex ${item.side === "right" ? "lg:flex-row-reverse" : "lg:flex-row"} items-center gap-8 lg:gap-0 mb-10 lg:mb-16`}
+                                >
+                                    <div className={`lg:w-[calc(50%-3rem)] ${item.side === "right" ? "lg:pl-12" : "lg:pr-12 lg:text-right"}`}>
+                                        <motion.div
+                                            whileHover={{ y: -4, scale: 1.02 }}
+                                            className={`p-7 rounded-3xl bg-gradient-to-br ${item.color} border border-white/40 dark:border-white/10 backdrop-blur-xl shadow-premium`}
+                                        >
+                                            <div className="text-4xl mb-3">{item.icon}</div>
+                                            <div className="text-agri-primary dark:text-agri-secondary font-black text-xs uppercase tracking-[0.22em] mb-2">{item.year}</div>
+                                            <h3 className="text-xl font-display font-black text-agri-dark dark:text-white mb-2">{item.title}</h3>
+                                            <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+                                        </motion.div>
+                                    </div>
+                                    {/* Dot on timeline */}
+                                    <div className="hidden lg:flex w-24 justify-center shrink-0">
+                                        <div className="w-6 h-6 rounded-full bg-agri-primary shadow-glow-sm border-4 border-white dark:border-slate-950 relative z-10" />
+                                    </div>
+                                    <div className="lg:w-[calc(50%-3rem)]" />
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </motion.section>
+
+                {/* ── Crop Categories Showcase ─────────────────────── */}
+                <motion.section
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    className="mb-24"
+                >
+                    <div className="text-center mb-16">
+                        <div className="inline-flex items-center gap-2 py-2 px-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md text-agri-secondary border border-agri-secondary/10 text-xs font-black uppercase tracking-[0.22em] mb-6 shadow-premium-sm">
+                            <Globe size={13} /> Produce Categories
+                        </div>
+                        <h2 className="text-4xl md:text-6xl font-display font-black text-agri-dark dark:text-white tracking-tight mb-4">
+                            What Farmers Grow
+                        </h2>
+                        <p className="text-gray-500 dark:text-gray-400 text-lg max-w-xl mx-auto">
+                            From grains to spices, AgriConnect spans every corner of Indian agriculture.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        {[
+                            { emoji: "🌾", name: "Grains", count: "2,400+", color: "hover:border-amber-400/50 hover:bg-amber-400/5", badge: "amber" },
+                            { emoji: "🥦", name: "Vegetables", count: "3,100+", color: "hover:border-green-400/50 hover:bg-green-400/5", badge: "green" },
+                            { emoji: "🍊", name: "Fruits", count: "1,800+", color: "hover:border-orange-400/50 hover:bg-orange-400/5", badge: "orange" },
+                            { emoji: "🌶️", name: "Spices", count: "940+", color: "hover:border-red-400/50 hover:bg-red-400/5", badge: "red" },
+                            { emoji: "☕", name: "Beverages", count: "520+", color: "hover:border-brown-400/50 hover:bg-yellow-900/10", badge: "yellow" },
+                            { emoji: "🌿", name: "Organic", count: "1,200+", color: "hover:border-emerald-400/50 hover:bg-emerald-400/5", badge: "emerald" },
+                        ].map((cat, i) => (
+                            <motion.div
+                                key={cat.name}
+                                initial={{ opacity: 0, scale: 0.85 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.07, duration: 0.5 }}
+                                whileHover={{ y: -8, scale: 1.04 }}
+                                className={`flex flex-col items-center justify-center p-7 rounded-3xl bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-premium cursor-pointer transition-all duration-300 ${cat.color} group`}
+                            >
+                                <div className="text-5xl mb-4 group-hover:scale-125 transition-transform duration-300">{cat.emoji}</div>
+                                <div className="font-display font-black text-agri-dark dark:text-white text-sm mb-1">{cat.name}</div>
+                                <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{cat.count} farmers</div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </motion.section>
+
+                {/* ── Testimonials Ticker ──────────────────────────── */}
+                <motion.section
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    className="mb-24 overflow-hidden"
+                >
+                    <div className="text-center mb-10">
+                        <div className="inline-flex items-center gap-2 py-2 px-5 rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-md text-purple-500 border border-purple-500/10 text-xs font-black uppercase tracking-[0.22em] mb-6 shadow-premium-sm">
+                            <MessageSquare size={13} /> Live Voices
+                        </div>
+                        <h2 className="text-4xl md:text-5xl font-display font-black text-agri-dark dark:text-white tracking-tight">
+                            What Farmers Are Saying
+                        </h2>
+                    </div>
+
+                    {/* Row 1 — scrolls left */}
+                    <div className="relative flex overflow-hidden mb-4 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+                        <motion.div
+                            animate={{ x: ["0%", "-50%"] }}
+                            transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+                            className="flex gap-4 shrink-0"
+                        >
+                            {[...Array(2)].flatMap(() => [
+                                { text: "Profits up 40% in one season!", name: "Sandeep P.", tag: "Vegetables" },
+                                { text: "Finally selling at true market value.", name: "Meera R.", tag: "Coffee" },
+                                { text: "Buyers trust us because of our ratings.", name: "Deepak S.", tag: "Organic" },
+                                { text: "85% revenue growth in 10 months!", name: "Ananya N.", tag: "Spices" },
+                                { text: "Paid in 48 hours — incredible!", name: "Rajesh G.", tag: "Grains" },
+                                { text: "No more waiting for the middleman.", name: "Priya K.", tag: "Fruits" },
+                            ]).map((q, i) => (
+                                <div key={i} className="shrink-0 flex items-center gap-4 px-6 py-4 rounded-2xl bg-white/70 dark:bg-white/5 border border-white/40 dark:border-white/10 backdrop-blur-xl shadow-premium-sm">
+                                    <Quote size={18} className="text-agri-primary shrink-0" />
+                                    <div>
+                                        <p className="text-sm font-bold text-agri-dark dark:text-white whitespace-nowrap">{q.text}</p>
+                                        <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-0.5">{q.name} · {q.tag}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </motion.div>
+                    </div>
+
+                    {/* Row 2 — scrolls right */}
+                    <div className="relative flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+                        <motion.div
+                            animate={{ x: ["-50%", "0%"] }}
+                            transition={{ duration: 34, repeat: Infinity, ease: "linear" }}
+                            className="flex gap-4 shrink-0"
+                        >
+                            {[...Array(2)].flatMap(() => [
+                                { text: "Best platform for small farmers.", name: "Arjun M.", tag: "Grains" },
+                                { text: "Exported to 3 countries this year!", name: "Kavya T.", tag: "Spices" },
+                                { text: "Real-time prices — no more cheating.", name: "Mohan D.", tag: "Dairy" },
+                                { text: "My children can stay in farming now.", name: "Sunita B.", tag: "Fruits" },
+                                { text: "Processing plants contact us directly.", name: "Ranjit S.", tag: "Wheat" },
+                                { text: "Savings on logistics are phenomenal.", name: "Geeta L.", tag: "Organic" },
+                            ]).map((q, i) => (
+                                <div key={i} className="shrink-0 flex items-center gap-4 px-6 py-4 rounded-2xl bg-white/70 dark:bg-white/5 border border-white/40 dark:border-white/10 backdrop-blur-xl shadow-premium-sm">
+                                    <Star size={16} className="text-amber-400 fill-amber-400 shrink-0" />
+                                    <div>
+                                        <p className="text-sm font-bold text-agri-dark dark:text-white whitespace-nowrap">{q.text}</p>
+                                        <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest mt-0.5">{q.name} · {q.tag}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </motion.div>
+                    </div>
+                </motion.section>
+
                 <motion.section 
                     initial={{ opacity: 0, y: 60 }}
                     whileInView={{ opacity: 1, y: 0 }}
