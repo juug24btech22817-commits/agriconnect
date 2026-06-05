@@ -252,7 +252,7 @@ const StoriesPage = () => {
                             Empowering the backbone of our nation through transparency, technology, and trust.
                         </p>
                         <div className="mt-7 text-sm uppercase tracking-[0.22em] font-black text-agri-primary dark:text-agri-secondary">
-                            Showing {filteredStories.length} impact stories
+                            Showing {filteredStories.length} impact {filteredStories.length === 1 ? 'story' : 'stories'}
                         </div>
                     </motion.div>
                 </header>
@@ -423,7 +423,7 @@ const StoriesPage = () => {
                                     >
                                         <img 
                                             src={story.videoBg} 
-                                            alt="Farm background" 
+                                            alt={`${story.name} story background`} 
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" 
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500"></div>
@@ -494,7 +494,7 @@ const StoriesPage = () => {
                                             onClick={() => handleSelectStory(story)}
                                             className="inline-flex items-center gap-4 text-agri-primary dark:text-agri-secondary font-black uppercase tracking-[0.3em] text-sm group/btn hover:gap-6 transition-all"
                                         >
-                                            Read Full Story <ChevronRight size={20} className="group-hover/btn:translate-x-2 transition-transform" />
+                                            View Story Details <ChevronRight size={20} className="group-hover/btn:translate-x-2 transition-transform" />
                                         </button>
                                         
                                         <motion.button 
@@ -586,7 +586,7 @@ const StoriesPage = () => {
                                         )}
                                     </motion.div>
                                     <h3 className="text-4xl md:text-6xl font-display font-black mb-6 tracking-tighter">
-                                        {isPlaying ? "Playing Documentary" : "Documentary"}: {selectedStory.name}
+                                        {isPlaying ? "Playing Story" : "Story Preview"}: {selectedStory.name}
                                     </h3>
                                     <p className="text-gray-300 text-xl leading-relaxed mb-10 font-medium">
                                         {isPlaying 
@@ -602,7 +602,7 @@ const StoriesPage = () => {
                                         ) : (
                                             <Users size={16} />
                                         )}
-                                        {isPlaying ? "LIVE STREAMING DEMO" : "Exclusive Farmer Series"}
+                                        {isPlaying ? "LIVE STORY PREVIEW" : "Story Preview"}
                                     </div>
                                 </div>
 
