@@ -210,6 +210,7 @@ const CommunityPage = () => {
             return post;
         }));
 
+        setExpandedCommentsPostId(postId);
         setNewComments({
             ...newComments,
             [postId]: ""
@@ -274,7 +275,7 @@ const CommunityPage = () => {
                         </h1>
                         <div className="flex flex-col gap-4 mb-6">
                             <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
-                                Connect with {formattedVerifiedCount} verified farmers and industry experts in our active community forum.
+                                Join over {formattedVerifiedCount} verified farmers and experts sharing real advice, success stories, and market insights.
                             </p>
                             <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[0.24em] text-gray-400">
                                 <span>{totalDiscussions} active community discussions</span>
@@ -454,9 +455,14 @@ const CommunityPage = () => {
                                                             </div>
                                                         )}
                                                     </div>
-                                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
-                                                        <Clock size={12} /> {post.time} • <div className="w-1 h-1 bg-gray-300 rounded-full" /> {post.location}
+                                                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest flex flex-wrap items-center gap-2">
+                                                        <Clock size={12} /> {post.time}
+                                                        <span className="w-1 h-1 bg-gray-300 rounded-full" />
+                                                        {post.location}
                                                     </p>
+                                                    <div className="mt-3 inline-flex items-center gap-2 bg-gray-100 dark:bg-white/5 text-[9px] uppercase tracking-[0.22em] text-gray-500 dark:text-gray-400 px-3 py-2 rounded-full font-black">
+                                                        <span>{post.category}</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div className="flex gap-2">
@@ -539,7 +545,7 @@ const CommunityPage = () => {
                                                 <MessageCircle size={20} /> {post.comments}
                                             </motion.button>
                                             <div className="flex items-center gap-3 text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] ml-auto">
-                                                <Eye size={18} className="text-gray-300" /> {post.views > 1000 ? `${(post.views / 1000).toFixed(1)}k` : post.views}
+                                                <Eye size={18} className="text-gray-300" /> {post.views === 0 ? 'New' : post.views > 1000 ? `${(post.views / 1000).toFixed(1)}k` : post.views}
                                             </div>
                                         </div>
 
