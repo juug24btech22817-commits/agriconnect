@@ -111,7 +111,8 @@ const ContactPage = () => {
         { q: "How long does it take to verify my farmer account?", a: "Verification typically takes 24-48 hours after you upload your government ID and land documents." },
         { q: "What are the service fees for direct trading?", a: "AgriConnect charges a nominal 2% platform fee on successful transactions. There are no registration or listing fees." },
         { q: "Is payment guaranteed for my produce?", a: "Yes, we use a secure escrow system. Payment is collected from the buyer before shipment and released to you upon delivery." },
-        { q: "Can I sell in small quantities?", a: "Absolutely! Our platform supports both small-scale farmers and large commercial producers." }
+        { q: "Can I sell in small quantities?", a: "Absolutely! Our platform supports both small-scale farmers and large commercial producers." },
+        { q: "Can I get support in my regional language?", a: "Yes — our support team offers assistance in 8+ Indian languages, including Hindi, Kannada, Telugu, Tamil, Marathi and more." }
     ];
 
     return (
@@ -134,7 +135,10 @@ const ContactPage = () => {
                         We're Here to <span className="text-gradient">Support You.</span>
                     </h1>
                     <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-medium">
-                        Whether you're a farmer, trader, or agri-entrepreneur, our support team helps you move forward faster—day or night.
+                        Whether you're a farmer, trader, or agri-entrepreneur, our support team helps you move forward faster—day or night, in your preferred language.
+                    </p>
+                    <p className="mt-4 text-sm text-gray-400 dark:text-gray-500 max-w-2xl mx-auto">
+                        Need help fast? Choose your category and language, and we'll route your request to the right team.
                     </p>
                 </motion.div>
 
@@ -227,6 +231,7 @@ const ContactPage = () => {
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.9 }}
                                         className="text-center py-20 flex flex-col items-center justify-center"
+                                        aria-live="polite"
                                     >
                                         <div className="w-24 h-24 bg-agri-primary/10 rounded-full flex items-center justify-center text-agri-primary mb-8 animate-bounce">
                                             <CheckCircle2 size={48} />
@@ -316,6 +321,7 @@ const ContactPage = () => {
                                                                  : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
                                                         }`}
                                                     />
+                                                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Enter a 10-digit mobile number, either with +91 or without country code.</p>
                                                     {errors.phone && touched.phone && <p id="phone-error" className="text-xs text-red-500 font-medium mt-1">{errors.phone}</p>}
                                                 </div>
                                             </div>
@@ -409,7 +415,7 @@ const ContactPage = () => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    Send Message 
+                                                    Send Inquiry
                                                     <Send size={22} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                                 </>
                                             )}
