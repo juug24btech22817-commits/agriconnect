@@ -39,7 +39,7 @@ const HomePage = () => {
                         </h1>
                         
                         <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
-                            Empowering millions through a transparent marketplace, real-time market insights, and AI-powered crop tracking.
+                            Connecting farmers directly to buyers with transparent pricing, real-time market insights, and AI crop tools.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -49,7 +49,7 @@ const HomePage = () => {
                                     whileTap={{ scale: 0.98 }}
                                     className="w-full sm:w-auto px-10 py-5 bg-agri-primary text-white rounded-2xl font-bold text-lg shadow-glow transition-all flex items-center justify-center gap-2 group"
                                 >
-                                    Explore Market <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                                    Explore Marketplace <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                                 </motion.button>
                             </Link>
                             <Link to="/dashboard">
@@ -58,7 +58,7 @@ const HomePage = () => {
                                     whileTap={{ scale: 0.98 }}
                                     className="w-full sm:w-auto px-10 py-5 glass text-agri-dark dark:text-white rounded-2xl font-bold text-lg transition-all border-gray-200 dark:border-gray-800"
                                 >
-                                    List Your Harvest
+                                    Sell Your Harvest
                                 </motion.button>
                             </Link>
                         </div>
@@ -399,7 +399,7 @@ const HomePage = () => {
                     <div className="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
                     <div className="relative z-10 max-w-4xl text-left">
                         <h2 className="text-4xl md:text-6xl font-display font-black text-white mb-8 leading-tight">
-                            Ready to join the <br /> <span className="text-agri-primary">Digital Agri Revolution?</span>
+                            Join the <br /> <span className="text-agri-primary">Digital Agri Revolution</span>
                         </h2>
                         <p className="text-xl text-agri-light/80 mb-12 max-w-2xl font-medium">
                             Join over 50,000 farmers and 2,000 institutional buyers across India.
