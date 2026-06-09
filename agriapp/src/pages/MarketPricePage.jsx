@@ -37,12 +37,16 @@ const MarketPricePage = () => {
     const [searchResult, setSearchResult] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [lastSearch, setLastSearch] = useState(null);
     const [activeCategory, setActiveCategory] = useState('All');
 
-    // Initial State: No auto-load of last search to keep it clean and fresh
+    // Initial State: load recent search hint from local storage
     useEffect(() => {
-        // We still keep the dictionary for consistency, but don't auto-select the last search
         const savedPrices = JSON.parse(localStorage.getItem('agri-market-prices') || '{}');
+        const savedLastSearch = localStorage.getItem('agri-last-search');
+        if (savedLastSearch) {
+            setLastSearch(savedLastSearch);
+        }
     }, []);
 
     const categories = [
@@ -155,7 +159,11 @@ const MarketPricePage = () => {
 
     const performSearch = async (query) => {
         const trimmedQuery = query.trim();
-        if (!trimmedQuery) return;
+        if (!trimmedQuery) {
+            setError('Please enter a commodity or crop name.');
+            setSearchResult(null);
+            return;
+        }
         setIsLoading(true);
         setError(null);
         try {
@@ -203,6 +211,7 @@ const MarketPricePage = () => {
             savedPrices[trimmedQuery.toLowerCase()] = result;
             localStorage.setItem('agri-market-prices', JSON.stringify(savedPrices));
             localStorage.setItem('agri-last-search', trimmedQuery.toLowerCase());
+            setLastSearch(trimmedQuery.toLowerCase());
             
             setSearchResult(result);
         } finally {
@@ -274,7 +283,7 @@ const MarketPricePage = () => {
                                 <input
                                     type="text"
                                     className="block w-full pl-14 pr-36 py-6 bg-white dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] text-agri-dark dark:text-white shadow-2xl focus:ring-2 focus:ring-agri-primary/50 outline-none transition-all font-medium text-lg placeholder:text-gray-400"
-                                    placeholder="Search crop..."
+                                    placeholder="Search commodity or crop..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
@@ -284,11 +293,18 @@ const MarketPricePage = () => {
                                         disabled={isLoading}
                                         className="h-full px-8 bg-agri-primary text-white rounded-[1rem] text-xs font-black uppercase tracking-widest shadow-glow hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
                                     >
-                                        {isLoading ? <Loader2 size={16} className="animate-spin" /> : <><Zap size={14}/> Check</>}
+                                        {isLoading ? <Loader2 size={16} className="animate-spin" /> : <><Zap size={14}/> Get Price</>}
                                     </button>
                                 </div>
                             </div>
                         </form>
+                        {error ? (
+                            <p className="mt-3 text-sm text-rose-500 font-semibold">{error}</p>
+                        ) : lastSearch ? (
+                            <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
+                                Last searched: <button onClick={() => performSearch(lastSearch)} className="font-black text-agri-primary hover:underline">{lastSearch}</button>
+                            </p>
+                        ) : null}
                     </div>
                 </header>
 
@@ -329,12 +345,15 @@ const MarketPricePage = () => {
                                     <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
                                         <div className="space-y-6">
                                             <div>
-                                                <div className="flex items-center gap-4 mb-3">
+                                                <div className="flex flex-wrap items-center gap-4 mb-3">
                                                     <h2 className="text-3xl md:text-4xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter">
                                                         {searchResult.commodity}
                                                     </h2>
                                                     <div className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-[10px] font-black uppercase flex items-center gap-1.5 border border-emerald-500/20">
                                                         <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" /> Verified
+                                                    </div>
+                                                    <div className="px-3 py-1 bg-white/10 text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] flex items-center gap-2 border border-white/10">
+                                                        <Zap size={12} /> {searchResult.category || 'General'}
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2 text-gray-400 font-black text-[10px] uppercase tracking-widest">
