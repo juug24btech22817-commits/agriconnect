@@ -72,7 +72,7 @@ const ContactPage = () => {
             setFormData({ name: '', email: '', phone: '', category: 'General Inquiry', language: 'English', subject: '', message: '' });
             setTouched({});
             setErrors({});
-            setTimeout(() => setSubmitted(false), 8000);
+            setTimeout(() => setSubmitted(false), 5000);
         }, 1500);
     };
 
@@ -248,7 +248,7 @@ const ContactPage = () => {
                                         </button>
                                     </motion.div>
                                 ) : (
-                                    <motion.form
+                                        <motion.form
                                         key="form"
                                         initial={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
@@ -257,7 +257,7 @@ const ContactPage = () => {
                                     >
                                         <div className="grid md:grid-cols-2 gap-8">
                                             <div className="space-y-2 group">
-                                                <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.name && touched.name ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Full Name</label>
+                                                <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.name && touched.name ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Full Name *</label>
                                                 <input
                                                     type="text"
                                                     name="name"
@@ -268,6 +268,8 @@ const ContactPage = () => {
                                                     onBlur={handleBlur}
                                                     aria-invalid={errors.name && touched.name}
                                                     aria-describedby={errors.name && touched.name ? 'name-error' : undefined}
+                                                    aria-label="Full Name"
+                                                    autoFocus
                                                     className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
                                                         errors.name && touched.name
                                                             ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
@@ -277,7 +279,7 @@ const ContactPage = () => {
                                                 {errors.name && touched.name && <p id="name-error" className="text-xs text-red-500 font-medium mt-1">{errors.name}</p>}
                                             </div>
                                             <div className="space-y-2 group">
-                                                <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.email && touched.email ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Email Address</label>
+                                                <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.email && touched.email ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Email Address *</label>
                                                 <input
                                                     type="email"
                                                     name="email"
@@ -288,6 +290,7 @@ const ContactPage = () => {
                                                     onBlur={handleBlur}
                                                     aria-invalid={errors.email && touched.email}
                                                     aria-describedby={errors.email && touched.email ? 'email-error' : undefined}
+                                                    aria-label="Email Address"
                                                     className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
                                                         errors.email && touched.email
                                                             ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
@@ -367,7 +370,7 @@ const ContactPage = () => {
                                             </div>
                                         </div>
                                         <div className="space-y-2 group">
-                                            <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.subject && touched.subject ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Subject</label>
+                                            <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.subject && touched.subject ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Subject *</label>
                                             <input
                                                 type="text"
                                                 id="subject"
@@ -378,6 +381,7 @@ const ContactPage = () => {
                                                 onBlur={handleBlur}
                                                 aria-invalid={errors.subject && touched.subject}
                                                 aria-describedby={errors.subject && touched.subject ? 'subject-error' : undefined}
+                                                aria-label="Subject"
                                                 className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
                                                     errors.subject && touched.subject
                                                         ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
@@ -387,7 +391,7 @@ const ContactPage = () => {
                                             {errors.subject && touched.subject && <p id="subject-error" className="text-xs text-red-500 font-medium mt-1">{errors.subject}</p>}
                                         </div>
                                         <div className="space-y-2 group">
-                                            <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.message && touched.message ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Message</label>
+                                            <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.message && touched.message ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Message *</label>
                                             <textarea
                                                 rows="5"
                                                 name="message"
@@ -395,6 +399,7 @@ const ContactPage = () => {
                                                 value={formData.message}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
+                                                aria-label="Message"
                                                 className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white resize-none outline-none transition-all ${
                                                     errors.message && touched.message
                                                         ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
