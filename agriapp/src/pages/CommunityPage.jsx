@@ -271,11 +271,11 @@ const CommunityPage = () => {
                             <Users size={16} className="animate-bounce-slow" /> Global Agri Knowledge Network
                         </motion.div>
                         <h1 className="text-4xl md:text-7xl font-display font-black text-agri-dark dark:text-white mb-6 uppercase tracking-tighter leading-none">
-                            Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-agri-primary to-emerald-600">Together</span>
+                            Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-agri-primary to-emerald-600">Stronger</span> Together
                         </h1>
                         <div className="flex flex-col gap-4 mb-6">
                             <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
-                                Join over {formattedVerifiedCount} verified farmers and experts sharing real advice, success stories, and market insights.
+                                Join over {formattedVerifiedCount} verified farmers, experts, and agri-innovators sharing real advice, success stories, and market insights.
                             </p>
                             <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[0.24em] text-gray-400">
                                 <span>{totalDiscussions} active community discussions</span>
@@ -676,9 +676,9 @@ const CommunityPage = () => {
                             </h3>
                             <div className="space-y-6">
                                 {[
-                                    { topic: "Solar Dryer Subsidy", count: "1.2k posts", icon: Sparkles, color: "text-amber-500" },
-                                    { topic: "Organic Fertilizers", count: "850 posts", icon: Award, color: "text-emerald-500" },
-                                    { topic: "Potato Blight Control", count: "640 posts", icon: CheckCircle, color: "text-blue-500" }
+                                    { topic: "Seed Rate Best Practices", count: "1.2k posts", icon: Sparkles, color: "text-amber-500" },
+                                    { topic: "Soil Moisture Monitoring", count: "850 posts", icon: Award, color: "text-emerald-500" },
+                                    { topic: "Pest Forecast", count: "640 posts", icon: CheckCircle, color: "text-blue-500" }
                                 ].map((item, i) => (
                                     <motion.div 
                                         key={i} 
@@ -703,7 +703,7 @@ const CommunityPage = () => {
                                 <Award size={40} />
                             </div>
                             <h4 className="text-xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter mb-2">Community Hero</h4>
-                            <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-8">Top contributor of the week</p>
+                            <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-8">Community champion of the week</p>
                             <div className="w-16 h-16 rounded-full mx-auto mb-4 overflow-hidden shadow-xl ring-4 ring-white dark:ring-white/5 relative">
                                 <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80" alt="Sunil Verma" className="w-full h-full object-cover" />
                             </div>
