@@ -12,6 +12,16 @@ const stats = [
 
 const stories = [
     {
+        id: 6,
+        name: "Harish Patel",
+        farm: "Patil Smart Farms, Gujarat",
+        quote: "Implementing drone-based crop monitoring and purchasing inputs directly through AgriConnect reduced our input costs by 30% and increased wheat yield by 45%.",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop",
+        videoBg: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=800&auto=format&fit=crop",
+        tags: ["Smart Farming", "Grains"],
+        metrics: { profit: "+45%", savings: "30%", rating: "5.0", reviews: "72" }
+    },
+    {
         id: 1,
         name: "Sandeep Patil",
         farm: "Patil Family Farm, Maharashtra",
@@ -71,7 +81,7 @@ const StoriesPage = () => {
     const [sortMode, setSortMode] = useState("impact");
     
     // Likes state
-    const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215, 4: 189, 5: 310 });
+    const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215, 4: 189, 5: 310, 6: 425 });
     const [likedStories, setLikedStories] = useState({});
     
     // Video playback state
