@@ -183,7 +183,7 @@ const MarketPricePage = () => {
                      setIsLoading(false);
                      return;
                 }
-            } catch (err) {
+            } catch {
                 console.log("Backend price fetch failed or missing commodity, falling back to simulated engine.");
             }
 

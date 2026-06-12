@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, Edit2, Trash2, Package, TrendingUp, Clock, 
@@ -23,7 +23,7 @@ const DashboardPage = () => {
     const [showNotif, setShowNotif] = useState(false);
     
     const [listings, setListings] = useState([]);
-    const [loadingListings, setLoadingListings] = useState(true);
+    const [, setLoadingListings] = useState(true);
 
     const [newCropName, setNewCropName] = useState('');
     const [newCropCategory, setNewCropCategory] = useState('Grains');
@@ -45,7 +45,7 @@ const DashboardPage = () => {
     const weekLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
     const maxSale = Math.max(...weekSales);
 
-    const loadProducts = async () => {
+    const loadProducts = useCallback(async () => {
         if (!user || (user.role !== 'farmer' && user.role !== 'admin')) {
             setLoadingListings(false);
             return;
@@ -85,11 +85,11 @@ const DashboardPage = () => {
         } finally {
             setLoadingListings(false);
         }
-    };
+    }, [user]);
 
     useEffect(() => {
         loadProducts();
-    }, [user]);
+    }, [loadProducts]);
 
     const handleAddCrop = async (e) => {
         if (e) e.preventDefault();
@@ -226,7 +226,7 @@ const DashboardPage = () => {
             });
 
             localStorage.setItem('lastWeatherLocation', query);
-        } catch (err) {
+        } catch {
             setWeather(prev => ({ ...prev, isLoading: false, error: "Location not found." }));
         }
     };
@@ -248,7 +248,7 @@ const DashboardPage = () => {
                         const data = await res.json();
                         const city = data.address.city || data.address.town || data.address.village || "Current Location";
                         fetchWeather(city);
-                    } catch (e) {
+                    } catch {
                         fetchWeather("Bengaluru");
                     }
                 },

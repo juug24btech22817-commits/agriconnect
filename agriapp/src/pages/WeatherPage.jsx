@@ -33,7 +33,7 @@ const WeatherPage = () => {
 
             // Save last location for persistence
             localStorage.setItem('lastWeatherLocation', JSON.stringify({ lat, lon, name }));
-        } catch (err) {
+        } catch {
             setError("Failed to fetch weather data. Please try again.");
         } finally {
             setLoading(false);
@@ -60,13 +60,13 @@ const WeatherPage = () => {
             const name = city && state ? `${city}, ${state}` : city || state || geoData[0].display_name.split(',')[0];
             
             fetchWeather(lat, lon, name);
-        } catch (err) {
-            setError(err.message);
+        } catch (error) {
+            setError(error.message);
             setLoading(false);
         }
     };
 
-    const handleMyLocation = () => {
+    const handleMyLocation = useCallback(() => {
         if (!navigator.geolocation) {
             setError("Geolocation is not supported by your browser.");
             return;
@@ -85,11 +85,11 @@ const WeatherPage = () => {
                     const state = addr.state || addr.state_district || "";
                     const name = city && state ? `${city}, ${state}` : city || state || revData.display_name.split(',')[0] || "Your Location";
                     fetchWeather(latitude, longitude, name);
-                } catch (err) {
+                } catch {
                     fetchWeather(latitude, longitude, "Your Location");
                 }
             },
-            (err) => {
+            () => {
                 // If location access denied, try loading the last saved location
                 const saved = localStorage.getItem('lastWeatherLocation');
                 if (saved) {
@@ -99,26 +99,25 @@ const WeatherPage = () => {
                             fetchWeather(lat, lon, name);
                             return;
                         }
-                    } catch (e) {
+                    } catch {
                          localStorage.removeItem('lastWeatherLocation');
                     }
                 }
-                
                 setError("Location access denied. Please enter a pincode.");
                 setLoading(false);
                 // Default fallback to Bengaluru if nothing else
                 fetchWeather(12.9716, 77.5946, "Bengaluru, Karnataka");
             }
         );
-    };
+    }, [fetchWeather]);
 
     useEffect(() => {
         // ALWAYS prioritize current location on fresh load as requested.
         // Fallbacks are handled inside handleMyLocation().
         handleMyLocation();
-    }, []);
+    }, [handleMyLocation]);
 
-    const getWeatherIcon = (code, isDay) => {
+    const getWeatherIcon = (code) => {
         if (code === 0) return <Sun className="text-yellow-400" size={48} />;
         if (code >= 1 && code <= 3) return <Cloud className="text-blue-200" size={48} />;
         if (code >= 51 && code <= 67) return <CloudRain className="text-blue-400" size={48} />;

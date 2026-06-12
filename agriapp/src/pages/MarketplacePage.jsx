@@ -78,7 +78,7 @@ const MarketplacePage = () => {
                 } else {
                     setCrops(initialCropsData);
                 }
-            } catch (err) {
+            } catch {
                 console.error("Failed to load backend crops, using offline data.");
                 setCrops(initialCropsData);
             }

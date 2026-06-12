@@ -21,7 +21,7 @@ const RegisterPage = () => {
       // Immediately log them in after registering
       loginAction(data.token, data.user);
       navigate('/');
-    } catch (err) {
+    } catch {
       setError('Registration failed. Email might already be in use.');
     }
   };

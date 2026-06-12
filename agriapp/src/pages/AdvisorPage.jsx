@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Search, Bot, User, Send, Paperclip, X } from 'lucide-react';
 
@@ -68,7 +68,7 @@ const AdvisorPage = () => {
     const cameraInputRef = useRef(null);
     const chatContainerRef = useRef(null);
 
-    const scrollToBottom = () => {
+    const scrollToBottom = useCallback(() => {
         if (chatContainerRef.current) {
             requestAnimationFrame(() => {
                 if (chatContainerRef.current) {
@@ -76,11 +76,11 @@ const AdvisorPage = () => {
                 }
             });
         }
-    };
+    }, []);
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages, isLoading]);
+    }, [messages, isLoading, scrollToBottom]);
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
@@ -103,7 +103,7 @@ const AdvisorPage = () => {
             let stream;
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-            } catch (err) {
+            } catch {
                 console.warn("Environment camera failed, falling back to default camera");
                 stream = await navigator.mediaDevices.getUserMedia({ video: true });
             }

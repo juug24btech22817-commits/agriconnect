@@ -281,7 +281,7 @@ const CropCard = ({ crop, index }) => {
     const [showFarmerModal, setShowFarmerModal] = useState(false);
     const [showPriceModal, setShowPriceModal] = useState(false);
     const [showLoginModal, setShowLoginModal] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [, setIsLoading] = useState(false);
     
     const { user } = useContext(AuthContext);
     const { cart, addToCart } = useCart();

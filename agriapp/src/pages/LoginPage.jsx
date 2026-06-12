@@ -29,7 +29,7 @@ const LoginPage = () => {
       } else {
         navigate('/');
       }
-    } catch (err) {
+    } catch {
       setError('Login failed. Please check your credentials.');
     }
   };
