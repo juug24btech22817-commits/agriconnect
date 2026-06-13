@@ -4,10 +4,10 @@ import { Quote, PlayCircle, X, ArrowRight, Heart, Users, ShieldCheck, TrendingUp
 import { Link } from 'react-router-dom';
 
 const stats = [
-    { label: "Lives Impacted", value: "10,000+", icon: Users, color: "text-blue-500" },
-    { label: "Revenue Generated", value: "₹500M+", icon: TrendingUp, color: "text-agri-primary" },
-    { label: "Global Reach", value: "100+ Regions", icon: Globe, color: "text-agri-secondary" },
-    { label: "Quality Awards", value: "25+", icon: Award, color: "text-purple-500" },
+    { label: "Lives Impacted", value: "15,000+", icon: Users, color: "text-blue-500" },
+    { label: "Revenue Generated", value: "₹750M+", icon: TrendingUp, color: "text-agri-primary" },
+    { label: "Global Reach", value: "120+ Regions", icon: Globe, color: "text-agri-secondary" },
+    { label: "Quality Awards", value: "30+", icon: Award, color: "text-purple-500" },
 ];
 
 const stories = [
@@ -802,7 +802,7 @@ const StoriesPage = () => {
                                 { year: "2022", title: "1,000 Farmers Onboarded", desc: "Expanded to 8 states. Average income rose 28% for registered farmers within the first year.", icon: "🚀", side: "right", color: "from-blue-500/20 to-blue-500/5" },
                                 { year: "2023", title: "₹100M in Direct Trades", desc: "Crossed the ₹100 million mark in direct farmer-to-buyer transactions, cutting out middlemen.", icon: "💰", side: "left", color: "from-amber-500/20 to-amber-500/5" },
                                 { year: "2024", title: "Global Reach — 50 Countries", desc: "Premium Indian produce now exports directly to buyers in 50+ countries, powered by our platform.", icon: "🌍", side: "right", color: "from-purple-500/20 to-purple-500/5" },
-                                { year: "2025", title: "10,000+ Lives Transformed", desc: "A decade of impact compressed into 4 years. ₹500M+ in generated revenue for farming families.", icon: "🏆", side: "left", color: "from-agri-primary/20 to-agri-secondary/5" },
+                                { year: "2025", title: "15,000+ Lives Transformed", desc: "A decade of impact compressed into 4 years. ₹750M+ in generated revenue for farming families.", icon: "🏆", side: "left", color: "from-agri-primary/20 to-agri-secondary/5" },
                             ].map((item, i) => (
                                 <motion.div
                                     key={item.year}
