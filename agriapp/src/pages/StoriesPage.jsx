@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Quote, PlayCircle, X, ArrowRight, Heart, Users, ShieldCheck, TrendingUp, Globe, Award, ChevronRight, Search, Plus, Play, Pause, MessageSquare, Star, SlidersHorizontal, Sparkles } from 'lucide-react';
+import { Quote, PlayCircle, X, ArrowRight, Heart, Users, ShieldCheck, TrendingUp, Globe, Award, ChevronRight, Search, Plus, Play, Pause, MessageSquare, Star, SlidersHorizontal, Sparkles, Eye } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const stats = [
@@ -80,8 +80,9 @@ const StoriesPage = () => {
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [sortMode, setSortMode] = useState("impact");
     
-    // Likes state
+    // Likes and Views state
     const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215, 4: 189, 5: 310, 6: 425 });
+    const [storyViews, setStoryViews] = useState({ 1: 1240, 2: 950, 3: 1840, 4: 1530, 5: 2200, 6: 3100 });
     const [likedStories, setLikedStories] = useState({});
     
     // Video playback state
@@ -138,6 +139,10 @@ const StoriesPage = () => {
         setSelectedStory(story);
         setIsPlaying(false);
         setProgress(0);
+        setStoryViews(prev => ({
+            ...prev,
+            [story.id]: (prev[story.id] || 0) + 1
+        }));
     };
 
     const handleAddStory = (e) => {
@@ -158,6 +163,7 @@ const StoriesPage = () => {
         
         setActiveStories([newStory, ...activeStories]);
         setStoryLikes(prev => ({ ...prev, [newId]: 0 }));
+        setStoryViews(prev => ({ ...prev, [newId]: 0 }));
         setIsSubmitModalOpen(false);
         // Reset form
         setNewStoryForm({
@@ -499,7 +505,7 @@ const StoriesPage = () => {
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-8">
+                                    <div className="flex items-center gap-4 sm:gap-6 flex-wrap">
                                         <button 
                                             onClick={() => handleSelectStory(story)}
                                             className="inline-flex items-center gap-4 text-agri-primary dark:text-agri-secondary font-black uppercase tracking-[0.3em] text-sm group/btn hover:gap-6 transition-all"
@@ -507,18 +513,25 @@ const StoriesPage = () => {
                                             View Story Details <ChevronRight size={20} className="group-hover/btn:translate-x-2 transition-transform" />
                                         </button>
                                         
-                                        <motion.button 
-                                            whileTap={{ scale: 0.8 }}
-                                            onClick={() => toggleLike(story.id)}
-                                            className={`flex items-center gap-2 px-5 py-3 rounded-full border transition-all ${
-                                                likedStories[story.id]
-                                                    ? "bg-red-500/10 border-red-500/30 text-red-500"
-                                                    : "bg-white/50 dark:bg-white/5 border-white/20 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:text-red-500 hover:border-red-500/20"
-                                            }`}
-                                        >
-                                            <Heart size={16} className={likedStories[story.id] ? "fill-red-500" : ""} />
-                                            <span className="text-xs font-black">{storyLikes[story.id] || 0}</span>
-                                        </motion.button>
+                                        <div className="flex items-center gap-3">
+                                            <motion.button 
+                                                whileTap={{ scale: 0.8 }}
+                                                onClick={() => toggleLike(story.id)}
+                                                className={`flex items-center gap-2 px-5 py-3 rounded-full border transition-all ${
+                                                    likedStories[story.id]
+                                                        ? "bg-red-500/10 border-red-500/30 text-red-500"
+                                                        : "bg-white/50 dark:bg-white/5 border-white/20 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:text-red-500 hover:border-red-500/20"
+                                                }`}
+                                            >
+                                                <Heart size={16} className={likedStories[story.id] ? "fill-red-500" : ""} />
+                                                <span className="text-xs font-black">{storyLikes[story.id] || 0}</span>
+                                            </motion.button>
+
+                                            <div className="flex items-center gap-2 px-5 py-3 rounded-full border bg-white/50 dark:bg-white/5 border-white/20 dark:border-white/10 text-gray-500 dark:text-gray-400">
+                                                <Eye size={16} />
+                                                <span className="text-xs font-black">{storyViews[story.id] || 0}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
