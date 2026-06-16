@@ -34,8 +34,8 @@ const CommunityPage = () => {
             views: 142,
             comments: 2,
             commentsList: [
-                { id: 101, author: "Dr. Ananya Rao", text: "I highly recommend using cold-pressed neem oil sprays and introducing beneficial insects like ladybugs early on.", time: "1h ago", isExpert: true, avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" },
-                { id: 102, author: "Farmer Ramesh", text: "Companion planting has worked wonders for my crop. Try planting marigolds around the border.", time: "45m ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" }
+                { id: 101, author: "Dr. Ananya Rao", text: "I highly recommend using cold-pressed neem oil sprays and introducing beneficial insects like ladybugs early on.", time: "1h ago", isExpert: true, avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80", likes: 4, liked: false },
+                { id: 102, author: "Farmer Ramesh", text: "Companion planting has worked wonders for my crop. Try planting marigolds around the border.", time: "45m ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80", likes: 2, liked: false }
             ],
             tags: ["OrganicTransition", "WheatFarming"],
             category: "General",
@@ -56,7 +56,7 @@ const CommunityPage = () => {
             views: 892,
             comments: 1,
             commentsList: [
-                { id: 201, author: "Suresh Gowda", text: "Thanks for the warning doctor! Checking my fields right now.", time: "3h ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" }
+                { id: 201, author: "Suresh Gowda", text: "Thanks for the warning doctor! Checking my fields right now.", time: "3h ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80", likes: 1, liked: false }
             ],
             tags: ["WeatherAlert", "PaddyHealth"],
             category: "Expert Advice",
@@ -77,8 +77,8 @@ const CommunityPage = () => {
             views: 1240,
             comments: 2,
             commentsList: [
-                { id: 301, author: "Farmer Gurdeep", text: "This is phenomenal Venkatesh! What soil testing kit did you use?", time: "18h ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" },
-                { id: 302, author: "Venkatesh K.", text: "I used the AgriConnect soil kit, highly recommend it!", time: "16h ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" }
+                { id: 301, author: "Farmer Gurdeep", text: "This is phenomenal Venkatesh! What soil testing kit did you use?", time: "18h ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80", likes: 3, liked: false },
+                { id: 302, author: "Venkatesh K.", text: "I used the AgriConnect soil kit, highly recommend it!", time: "16h ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80", likes: 1, liked: false }
             ],
             tags: ["SuccessStory", "SmartIrrigation"],
             category: "Success Stories",
@@ -199,7 +199,9 @@ const CommunityPage = () => {
                     avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
                     text: commentText,
                     time: "Just now",
-                    isVerified: true
+                    isVerified: true,
+                    likes: 0,
+                    liked: false
                 };
                 return {
                     ...post,
@@ -215,6 +217,41 @@ const CommunityPage = () => {
             ...newComments,
             [postId]: ""
         });
+    };
+
+    const handleLikeComment = (postId, commentId) => {
+        setPosts(posts.map(post => {
+            if (post.id === postId) {
+                return {
+                    ...post,
+                    commentsList: post.commentsList.map(comment => {
+                        if (comment.id === commentId) {
+                            const currentLikes = comment.likes || 0;
+                            return {
+                                ...comment,
+                                likes: comment.liked ? currentLikes - 1 : currentLikes + 1,
+                                liked: !comment.liked
+                            };
+                        }
+                        return comment;
+                    })
+                };
+            }
+            return post;
+        }));
+    };
+
+    const handleDeleteComment = (postId, commentId) => {
+        setPosts(posts.map(post => {
+            if (post.id === postId) {
+                return {
+                    ...post,
+                    comments: Math.max(0, post.comments - 1),
+                    commentsList: post.commentsList.filter(comment => comment.id !== commentId)
+                };
+            }
+            return post;
+        }));
     };
 
     const handleTagClick = (tag) => {
@@ -308,22 +345,38 @@ const CommunityPage = () => {
                                 <Filter size={12} className="text-agri-primary" /> Discovery
                             </h3>
                             <div className="space-y-3">
-                                {categoryList.map((cat) => (
-                                    <motion.button
-                                        key={cat.name}
-                                        onClick={() => setActiveCategory(cat.name)}
-                                        whileHover={{ scale: 1.02, x: 5 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        className={`group w-full flex items-center gap-4 px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 ${
-                                            activeCategory === cat.name 
-                                            ? 'bg-agri-primary text-white shadow-glow' 
-                                            : 'text-gray-500 hover:text-agri-dark dark:hover:text-white hover:bg-agri-primary/5'
-                                        }`}
-                                    >
-                                        <cat.icon size={16} className={activeCategory === cat.name ? "text-white" : "text-gray-400 group-hover:text-agri-primary"} />
-                                        {cat.name}
-                                    </motion.button>
-                                ))}
+                                {categoryList.map((cat) => {
+                                    const count = cat.name === "All Discussions" 
+                                        ? posts.length 
+                                        : cat.name === "Saved Discussions" 
+                                            ? posts.filter(p => p.isBookmarked).length
+                                            : posts.filter(p => p.category === cat.name).length;
+                                    return (
+                                        <motion.button
+                                            key={cat.name}
+                                            onClick={() => setActiveCategory(cat.name)}
+                                            whileHover={{ scale: 1.02, x: 5 }}
+                                            whileTap={{ scale: 0.98 }}
+                                            className={`group w-full flex items-center justify-between px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 ${
+                                                activeCategory === cat.name 
+                                                ? 'bg-agri-primary text-white shadow-glow' 
+                                                : 'text-gray-500 hover:text-agri-dark dark:hover:text-white hover:bg-agri-primary/5'
+                                            }`}
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                <cat.icon size={16} className={activeCategory === cat.name ? "text-white" : "text-gray-400 group-hover:text-agri-primary"} />
+                                                {cat.name}
+                                            </div>
+                                            <span className={`px-2 py-0.5 rounded-full text-[8px] font-bold ${
+                                                activeCategory === cat.name
+                                                ? 'bg-white/20 text-white'
+                                                : 'bg-gray-100 dark:bg-white/5 text-gray-400 group-hover:text-agri-primary'
+                                            }`}>
+                                                {count}
+                                            </span>
+                                        </motion.button>
+                                    );
+                                })}
                             </div>
                         </div>
 
@@ -587,7 +640,25 @@ const CommunityPage = () => {
                                                                         )}
                                                                         <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest ml-auto">{comment.time}</span>
                                                                     </div>
-                                                                    <p className="text-xs text-gray-600 dark:text-gray-300 font-medium leading-relaxed">{comment.text}</p>
+                                                                    <p className="text-xs text-gray-600 dark:text-gray-300 font-medium leading-relaxed mb-2">{comment.text}</p>
+                                                                    <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-wider">
+                                                                        <button 
+                                                                            onClick={() => handleLikeComment(post.id, comment.id)}
+                                                                            className={`flex items-center gap-1 transition-colors ${comment.liked ? 'text-rose-500' : 'text-gray-400 hover:text-rose-500'}`}
+                                                                        >
+                                                                            <Heart size={12} fill={comment.liked ? "currentColor" : "none"} />
+                                                                            <span>{comment.likes || 0}</span>
+                                                                        </button>
+                                                                        {comment.author === "Farmer Shaswat" && (
+                                                                            <button 
+                                                                                onClick={() => handleDeleteComment(post.id, comment.id)}
+                                                                                className="text-gray-400 hover:text-rose-500 transition-colors flex items-center gap-1 ml-auto"
+                                                                            >
+                                                                                <Trash2 size={12} />
+                                                                                <span>Delete</span>
+                                                                            </button>
+                                                                        )}
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         ))}
