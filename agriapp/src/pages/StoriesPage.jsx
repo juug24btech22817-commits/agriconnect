@@ -4,13 +4,23 @@ import { Quote, PlayCircle, X, ArrowRight, Heart, Users, ShieldCheck, TrendingUp
 import { Link } from 'react-router-dom';
 
 const stats = [
-    { label: "Lives Impacted", value: "15,000+", icon: Users, color: "text-blue-500" },
-    { label: "Revenue Generated", value: "₹750M+", icon: TrendingUp, color: "text-agri-primary" },
-    { label: "Global Reach", value: "120+ Regions", icon: Globe, color: "text-agri-secondary" },
-    { label: "Quality Awards", value: "30+", icon: Award, color: "text-purple-500" },
+    { label: "Lives Impacted", value: "20,000+", icon: Users, color: "text-blue-500" },
+    { label: "Revenue Generated", value: "₹950M+", icon: TrendingUp, color: "text-agri-primary" },
+    { label: "Global Reach", value: "150+ Regions", icon: Globe, color: "text-agri-secondary" },
+    { label: "Quality Awards", value: "35+", icon: Award, color: "text-purple-500" },
 ];
 
 const stories = [
+    {
+        id: 7,
+        name: "Devendra Hegde",
+        farm: "Western Ghats Vanilla Plantation, Karnataka",
+        quote: "Direct exports via AgriConnect doubled our vanilla beans revenue. This gave us the resource to invest in automated drip irrigation and scale our farm operations globally.",
+        image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=600&auto=format&fit=crop",
+        videoBg: "https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?q=80&w=800&auto=format&fit=crop",
+        tags: ["Vanilla", "Smart Farming", "Direct Trade"],
+        metrics: { profit: "+110%", savings: "40%", rating: "5.0", reviews: "45" }
+    },
     {
         id: 6,
         name: "Harish Patel",
@@ -81,8 +91,8 @@ const StoriesPage = () => {
     const [sortMode, setSortMode] = useState("impact");
     
     // Likes and Views state
-    const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215, 4: 189, 5: 310, 6: 425 });
-    const [storyViews, setStoryViews] = useState({ 1: 1240, 2: 950, 3: 1840, 4: 1530, 5: 2200, 6: 3100 });
+    const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215, 4: 189, 5: 310, 6: 425, 7: 512 });
+    const [storyViews, setStoryViews] = useState({ 1: 1240, 2: 950, 3: 1840, 4: 1530, 5: 2200, 6: 3100, 7: 4120 });
     const [likedStories, setLikedStories] = useState({});
     
     // Video playback state
