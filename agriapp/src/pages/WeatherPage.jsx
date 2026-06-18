@@ -8,6 +8,14 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+const PRESETS = [
+    { name: "Nashik, MH", lat: 19.9975, lon: 73.7898 },
+    { name: "Nagpur, MH", lat: 21.1458, lon: 79.0882 },
+    { name: "Guntur, AP", lat: 16.3067, lon: 80.4365 },
+    { name: "Shimla, HP", lat: 31.1048, lon: 77.1734 },
+    { name: "Anand, GJ", lat: 22.5645, lon: 72.9289 }
+];
+
 const WeatherPage = () => {
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
@@ -117,13 +125,13 @@ const WeatherPage = () => {
         handleMyLocation();
     }, [handleMyLocation]);
 
-    const getWeatherIcon = (code) => {
-        if (code === 0) return <Sun className="text-yellow-400" size={48} />;
-        if (code >= 1 && code <= 3) return <Cloud className="text-blue-200" size={48} />;
-        if (code >= 51 && code <= 67) return <CloudRain className="text-blue-400" size={48} />;
-        if (code >= 80 && code <= 82) return <CloudRain className="text-blue-500" size={48} />;
-        if (code >= 95) return <CloudLightning className="text-purple-400" size={48} />;
-        return <Cloud className="text-gray-400" size={48} />;
+    const getWeatherIcon = (code, size = 48) => {
+        if (code === 0) return <Sun className="text-yellow-400" size={size} />;
+        if (code >= 1 && code <= 3) return <Cloud className="text-blue-200" size={size} />;
+        if (code >= 51 && code <= 67) return <CloudRain className="text-blue-400" size={size} />;
+        if (code >= 80 && code <= 82) return <CloudRain className="text-blue-500" size={size} />;
+        if (code >= 95) return <CloudLightning className="text-purple-400" size={size} />;
+        return <Cloud className="text-gray-400" size={size} />;
     };
 
     const getConditionName = (code) => {
@@ -219,11 +227,24 @@ const WeatherPage = () => {
                             </button>
                         </div>
                     </form>
+                    <div className="flex flex-wrap items-center gap-2 mt-3 px-2">
+                        <span className="text-[10px] text-white/40 font-black uppercase tracking-[0.2em] mr-1">Hubs:</span>
+                        {PRESETS.map((hub) => (
+                            <button
+                                key={hub.name}
+                                type="button"
+                                onClick={() => fetchWeather(hub.lat, hub.lon, hub.name)}
+                                className="text-[11px] font-bold bg-white/5 hover:bg-white/15 border border-white/10 hover:border-white/20 px-3.5 py-1.5 rounded-full transition-all text-white/80 hover:text-white hover:scale-105 active:scale-95"
+                            >
+                                {hub.name}
+                            </button>
+                        ))}
+                    </div>
                     {error && (
                         <motion.p 
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="text-red-300 mt-2 flex items-center gap-2 font-bold px-4 text-xs"
+                            className="text-red-300 mt-3 flex items-center gap-2 font-bold px-4 text-xs"
                         >
                             <AlertTriangle size={14} /> {error}
                         </motion.p>
@@ -272,7 +293,7 @@ const WeatherPage = () => {
                                         transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
                                         className="mb-4 p-6 bg-white/10 backdrop-blur-xl rounded-[2rem] border border-white/20 shadow-2xl"
                                     >
-                                        {getWeatherIcon(weather.current.weather_code, weather.current.is_day)}
+                                        {getWeatherIcon(weather.current.weather_code, 48)}
                                     </motion.div>
                                     <div className="bg-black/20 backdrop-blur-md px-4 py-2 rounded-2xl flex flex-col items-center sm:items-end gap-1">
                                         <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">Today's Range</div>
@@ -311,6 +332,48 @@ const WeatherPage = () => {
                                         </div>
                                     </div>
                                 ))}
+                            </div>
+                        </motion.div>
+
+                        {/* Hourly Forecast */}
+                        <motion.div
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.05 }}
+                            className="bg-white/5 backdrop-blur-3xl border border-white/10 p-6 rounded-[2rem] shadow-2xl"
+                        >
+                            <h3 className="text-[11px] font-black uppercase tracking-[0.3em] text-white/40 mb-4 flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+                                Hourly Forecast (Next 8 Hours)
+                            </h3>
+                            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                                {(() => {
+                                    const now = new Date();
+                                    const currentHourStr = now.toISOString().slice(0, 13) + ":00";
+                                    let startIndex = weather.hourly.time.findIndex(t => t.startsWith(currentHourStr));
+                                    if (startIndex === -1) startIndex = 0;
+                                    
+                                    return weather.hourly.time.slice(startIndex, startIndex + 8).map((time, idx) => {
+                                        const realIdx = startIndex + idx;
+                                        const temp = weather.hourly.temperature_2m[realIdx];
+                                        const code = weather.hourly.weather_code[realIdx];
+                                        const prob = weather.hourly.precipitation_probability[realIdx];
+                                        const hour = new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                        
+                                        return (
+                                            <div key={time} className="flex-1 min-w-[80px] bg-white/5 rounded-2xl p-3 text-center border border-white/5 hover:bg-white/10 transition-colors">
+                                                <div className="text-[10px] text-white/40 font-bold mb-2">{hour}</div>
+                                                <div className="flex justify-center mb-2">
+                                                    {getWeatherIcon(code, 24)}
+                                                </div>
+                                                <div className="text-sm font-black mb-1">{Math.round(temp)}°</div>
+                                                {prob > 0 && (
+                                                    <div className="text-[9px] text-blue-300 font-bold">{prob}% Rain</div>
+                                                )}
+                                            </div>
+                                        );
+                                    });
+                                })()}
                             </div>
                         </motion.div>
 
@@ -361,7 +424,7 @@ const WeatherPage = () => {
                                         whileHover={{ scale: 1.2, rotate: 5 }}
                                         className="flex justify-center mb-4"
                                     >
-                                        {getWeatherIcon(weather.daily.weather_code[i], true)}
+                                        {getWeatherIcon(weather.daily.weather_code[i], 32)}
                                     </motion.div>
                                     <div className="font-black text-xl mb-1">
                                         {Math.round(weather.daily.temperature_2m_max[i])}°
