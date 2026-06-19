@@ -30,16 +30,16 @@ const HomePage = () => {
                             transition={{ delay: 0.2 }}
                             className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-agri-primary/10 text-agri-primary border border-agri-primary/20 text-sm font-bold mb-8"
                         >
-                            <Leaf size={16} /> Revolutionizing Indian Agriculture
+                            <Leaf size={16} /> #1 Platform for Indian Farmers
                         </motion.span>
                         
                         <h1 className="text-6xl md:text-8xl font-display font-extrabold text-agri-dark dark:text-white mb-8 leading-[1.1] tracking-tight">
-                            Direct Trade for <br /> 
-                            <span className="text-gradient">Every Indian Farmer</span>
+                            Smarter Trade for <br /> 
+                            <span className="text-gradient">India's 50K+ Farmers</span>
                         </h1>
                         
                         <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
-                            Connecting farmers directly to buyers with transparent pricing, real-time market insights, and AI crop tools.
+                            Skip the middlemen. Get fair prices, real-time mandi rates, AI-powered crop advice, and direct buyer connections — all in one place.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
@@ -56,12 +56,15 @@ const HomePage = () => {
                                 <motion.button
                                     whileHover={{ scale: 1.02, y: -2 }}
                                     whileTap={{ scale: 0.98 }}
-                                    className="w-full sm:w-auto px-10 py-5 glass text-agri-dark dark:text-white rounded-2xl font-bold text-lg transition-all border-gray-200 dark:border-gray-800"
+                                    className="w-full sm:w-auto px-10 py-5 glass text-agri-dark dark:text-white rounded-2xl font-bold text-lg transition-all border-gray-200 dark:border-gray-800 flex items-center justify-center gap-2 group"
                                 >
-                                    Sell Your Harvest
+                                    <ShoppingBag size={18} className="text-agri-primary" /> Sell Your Harvest
                                 </motion.button>
                             </Link>
                         </div>
+                        <p className="mt-6 text-sm text-gray-400 dark:text-gray-500 font-medium">
+                            ✅ No signup fee &nbsp;·&nbsp; 🔒 Secure payments &nbsp;·&nbsp; 📊 Real-time mandi prices
+                        </p>
                     </motion.div>
 
                     {/* Dashboard Preview / Visual with Tech Badges */}
@@ -123,10 +126,10 @@ const HomePage = () => {
                 <div className="container mx-auto px-4">
                     <div className="glass rounded-[3rem] p-12 grid grid-cols-2 lg:grid-cols-4 gap-12 shadow-premium">
                         {[
-                            { number: '50K+', label: 'Active Farmers', accent: 'text-agri-primary', icon: <Users size={24} className="text-agri-primary" />, bg: 'bg-agri-primary/10' },
-                            { number: '1.2M', label: 'Tons Traded', accent: 'text-agri-secondary', icon: <TrendingUp size={24} className="text-agri-secondary" />, bg: 'bg-agri-secondary/10' },
-                            { number: '200+', label: 'Mandis Live', accent: 'text-agri-primary', icon: <MapPin size={24} className="text-agri-primary" />, bg: 'bg-agri-primary/10' },
-                            { number: '15Cr+', label: 'Monthly Earnings', accent: 'text-agri-secondary', icon: <IndianRupee size={24} className="text-agri-secondary" />, bg: 'bg-agri-secondary/10' }
+                            { number: '72K+', label: 'Active Farmers', accent: 'text-agri-primary', icon: <Users size={24} className="text-agri-primary" />, bg: 'bg-agri-primary/10' },
+                            { number: '2.4M', label: 'Tons Traded', accent: 'text-agri-secondary', icon: <TrendingUp size={24} className="text-agri-secondary" />, bg: 'bg-agri-secondary/10' },
+                            { number: '340+', label: 'Mandis Live', accent: 'text-agri-primary', icon: <MapPin size={24} className="text-agri-primary" />, bg: 'bg-agri-primary/10' },
+                            { number: '28Cr+', label: 'Monthly Earnings', accent: 'text-agri-secondary', icon: <IndianRupee size={24} className="text-agri-secondary" />, bg: 'bg-agri-secondary/10' }
                         ].map((stat, i) => (
                             <motion.div 
                                 key={i} 
@@ -150,10 +153,10 @@ const HomePage = () => {
                     <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
                         <div>
                             <span className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-bold mb-3 border border-amber-500/20">
-                                <Sparkles size={12} className="animate-spin-slow text-amber-500" /> Premium Listings
+                                <Sparkles size={12} className="animate-spin-slow text-amber-500" /> Top Picks This Season
                             </span>
                             <h2 className="text-4xl md:text-5xl font-display font-bold text-agri-dark dark:text-white tracking-tight">
-                                Trending Harvests Today
+                                Trending Harvests <span className="text-agri-primary">Right Now</span>
                             </h2>
                         </div>
                         <Link to="/marketplace" className="text-agri-primary hover:text-agri-dark dark:hover:text-white font-bold flex items-center gap-1.5 transition-colors group/all mt-4 md:mt-0">
@@ -399,10 +402,10 @@ const HomePage = () => {
                     <div className="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
                     <div className="relative z-10 max-w-4xl text-left">
                         <h2 className="text-4xl md:text-6xl font-display font-black text-white mb-8 leading-tight">
-                            Join the <br /> <span className="text-agri-primary">Digital Agri Revolution</span>
+                            Grow More, <br /> <span className="text-agri-primary">Earn More — Together</span>
                         </h2>
                         <p className="text-xl text-agri-light/80 mb-12 max-w-2xl font-medium">
-                            Join over 50,000 farmers and 2,000 institutional buyers across India.
+                            Join 72,000+ farmers and 3,500 institutional buyers already trading smarter on AgriConnect.
                         </p>
                         <div className="flex flex-wrap gap-6">
                             <Link to="/marketplace">
