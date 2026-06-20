@@ -275,7 +275,7 @@ const StoriesPage = () => {
                             </span>
                         </h1>
                         <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 font-medium max-w-2xl mx-auto leading-relaxed">
-                            Empowering the backbone of our nation through transparency, technology, and trust.
+                            Empowering farmers through transparency, technology, and trust.
                         </p>
                         <div className="mt-7 text-sm uppercase tracking-[0.22em] font-black text-agri-primary dark:text-agri-secondary">
                             Showing {filteredStories.length} impact {filteredStories.length === 1 ? 'story' : 'stories'}
@@ -311,7 +311,7 @@ const StoriesPage = () => {
                         <input
                             type="text"
                             aria-label="Search stories, regions, crops"
-                            placeholder="Search stories, regions, crops..."
+                            placeholder="Search stories, regions, crops, farmers..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full pl-14 pr-12 py-4 bg-white/80 dark:bg-slate-900/60 rounded-xl text-agri-dark dark:text-white border border-gray-200 dark:border-white/10 focus:outline-none focus:ring-2 focus:ring-agri-primary/50 transition-all font-medium placeholder-gray-400"
@@ -370,7 +370,7 @@ const StoriesPage = () => {
                         onClick={() => setIsSubmitModalOpen(true)}
                         className="w-full xl:w-auto px-6 py-4 bg-agri-secondary text-white rounded-xl font-black text-xs uppercase tracking-[0.16em] shadow-glow-sm hover:bg-agri-secondary/80 hover:scale-105 transition-all flex items-center justify-center gap-2"
                     >
-                        <Plus size={16} /> Share Your Story
+                        <Plus size={16} /> Submit Your Story
                     </button>
                 </div>
 
@@ -563,7 +563,7 @@ const StoriesPage = () => {
                                     onClick={() => setIsSubmitModalOpen(true)}
                                     className="px-6 py-4 bg-agri-primary text-white rounded-xl font-black text-xs uppercase tracking-[0.16em] shadow-glow-sm hover:scale-105 transition-all"
                                 >
-                                    Share Your Story
+                                    Submit Your Story
                                 </button>
                             </div>
                         </div>
