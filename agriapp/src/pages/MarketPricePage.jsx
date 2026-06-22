@@ -170,21 +170,33 @@ const MarketPricePage = () => {
             // First, try the real backend
             try {
                 const backendPrices = await api.getMarketPrices();
-                // Check if the backend has our commodity
-                const found = backendPrices.find(p => p.commodity.toLowerCase() === trimmedQuery.toLowerCase());
+                const pricesArray = Array.isArray(backendPrices.records)
+                    ? backendPrices.records
+                    : backendPrices;
+                const found = Array.isArray(pricesArray)
+                    ? pricesArray.find(p => p.commodity?.toLowerCase() === trimmedQuery.toLowerCase())
+                    : null;
                 if (found) {
                      setSearchResult({
-                         ...found,
-                         avgPricePerKg: found.avgPrice,
-                         minPricePerKg: found.minPrice,
-                         maxPricePerKg: found.maxPrice,
+                         commodity: found.commodity || trimmedQuery,
+                         avgPrice: Number(found.modal_price || found.avgPrice || found.avgPricePerKg || found.price) || 0,
+                         minPricePerKg: Number(found.min_price || found.minPrice) || 0,
+                         maxPricePerKg: Number(found.max_price || found.maxPrice) || 0,
+                         minLocation: found.market || found.minLocation || 'Local Mandi',
+                         maxLocation: found.market || found.maxLocation || 'Local Mandi',
+                         mandiCount: found.mandiCount || '—',
+                         stateCount: found.stateCount || '—',
+                         arrivalDate: found.arrival_date || found.arrivalDate || new Date().toLocaleDateString('en-GB'),
+                         unit: 'Kg',
+                         volume: found.volume || '—',
+                         category: found.category || 'General',
                          isLive: true
                      });
                      setIsLoading(false);
                      return;
                 }
-            } catch {
-                console.log("Backend price fetch failed or missing commodity, falling back to simulated engine.");
+            } catch (err) {
+                console.log("Backend price fetch failed or missing commodity, falling back to simulated engine.", err);
             }
 
             // Fallback to simulated prices
@@ -193,10 +205,10 @@ const MarketPricePage = () => {
             
             const result = {
                 ...simulated,
+                avgPrice: simulated.avgPrice,
                 avgPricePerKg: simulated.avgPrice,
                 minPricePerKg: simulated.minPrice,
                 maxPricePerKg: simulated.maxPrice,
-                isQuintal: false,
                 isLive: true
             };
             
@@ -283,7 +295,7 @@ const MarketPricePage = () => {
                                 <input
                                     type="text"
                                     className="block w-full pl-14 pr-36 py-6 bg-white dark:bg-slate-900/80 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] text-agri-dark dark:text-white shadow-2xl focus:ring-2 focus:ring-agri-primary/50 outline-none transition-all font-medium text-lg placeholder:text-gray-400"
-                                    placeholder="Search commodity or crop..."
+                                    placeholder="Search commodity or crop, e.g. Mango, Onion, Wheat..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                 />
@@ -293,7 +305,7 @@ const MarketPricePage = () => {
                                         disabled={isLoading}
                                         className="h-full px-8 bg-agri-primary text-white rounded-[1rem] text-xs font-black uppercase tracking-widest shadow-glow hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
                                     >
-                                        {isLoading ? <Loader2 size={16} className="animate-spin" /> : <><Zap size={14}/> Get Price</>}
+                                        {isLoading ? <Loader2 size={16} className="animate-spin" /> : <><Zap size={14}/> Fetch Price</>}
                                     </button>
                                 </div>
                             </div>
@@ -304,7 +316,9 @@ const MarketPricePage = () => {
                             <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
                                 Last searched: <button onClick={() => performSearch(lastSearch)} className="font-black text-agri-primary hover:underline">{lastSearch}</button>
                             </p>
-                        ) : null}
+                        ) : (
+                            <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">Search by crop or commodity name to get live mandi pricing and location context.</p>
+                        )}
                     </div>
                 </header>
 
@@ -398,7 +412,7 @@ const MarketPricePage = () => {
                                             <div className="relative z-10">
                                                 <div className="text-[11px] opacity-80 font-black uppercase tracking-[0.3em] mb-4">Average Price</div>
                                                 <div className="text-7xl font-display font-black mb-2 drop-shadow-2xl tracking-tighter">
-                                                    ₹{searchResult.avgPrice}
+                                                    ₹{searchResult.avgPrice ?? searchResult.avgPricePerKg}
                                                 </div>
                                                 <div className="text-sm font-black opacity-90 uppercase tracking-widest">Per {searchResult.unit}</div>
                                                 <div className="mt-10 pt-6 border-t border-white/20 flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em]">
