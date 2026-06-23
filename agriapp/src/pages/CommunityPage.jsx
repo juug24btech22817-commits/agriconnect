@@ -320,20 +320,20 @@ const CommunityPage = () => {
                                 <span>{totalExperts} expert posts</span>
                             </div>
                         </div>
-                        <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full shadow-sm">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full shadow-sm">
                             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                            <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">1.2k Live Now</span>
+                            <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Live: 1.2k</span>
                         </div>
                     </div>
 
                     <div className="flex gap-4">
                         <button 
                             onClick={() => setIsModalOpen(true)}
-                            aria-label="Start a new discussion"
+                            aria-label="Create a new post"
                             className="px-10 py-6 bg-agri-primary text-white rounded-[1.5rem] font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:shadow-agri-primary/40 active:scale-95 transition-all flex items-center gap-3 relative overflow-hidden group"
                         >
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                            <Plus size={20} className="relative z-10 group-hover:rotate-90 transition-transform duration-300" /> <span className="relative z-10">Start Discussion</span>
+                            <Plus size={20} className="relative z-10 group-hover:rotate-90 transition-transform duration-300" /> <span className="relative z-10">New Post</span>
                         </button>
                     </div>
                 </header>
@@ -426,7 +426,7 @@ const CommunityPage = () => {
                                 </div>
                                 <div className="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[1.5rem] min-w-[220px] shadow-lg group">
                                     <div className="flex flex-col">
-                                        <span className="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em] mb-0.5">Order By</span>
+                                        <span className="text-[8px] font-black text-gray-400 uppercase tracking-[0.2em] mb-0.5">Sort By</span>
                                         <div className="flex items-center gap-2">
                                             <Filter size={14} className="text-agri-primary" />
                                             <select 
@@ -700,7 +700,7 @@ const CommunityPage = () => {
                                     <div className="w-20 h-20 bg-agri-primary/10 rounded-[2rem] flex items-center justify-center mb-6 animate-pulse">
                                         <Search size={36} className="text-agri-primary" />
                                     </div>
-                                    <h3 className="text-xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter mb-2">No Discussions Found</h3>
+                                        <h3 className="text-xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter mb-2">No Posts Found</h3>
                                     <p className="text-sm text-gray-500 dark:text-gray-400 font-medium max-w-xs leading-relaxed mb-8">
                                         {searchQuery ? `No results for "${searchQuery}"` : `No posts in ${activeCategory} yet.`} Try a different search or category.
                                     </p>
@@ -717,7 +717,7 @@ const CommunityPage = () => {
                                             onClick={() => { setActiveCategory("All Discussions"); setSearchQuery(""); }}
                                             className="px-6 py-3 bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-agri-primary hover:text-white transition-all"
                                         >
-                                            Browse All Discussions
+                                            Browse All Posts
                                         </button>
                                     </div>
                                 </motion.div>
@@ -725,9 +725,9 @@ const CommunityPage = () => {
                             
                             {sortedPosts.length > 0 && (
                             <div className="pt-12 text-center">
-                                <button className="px-12 py-6 bg-white dark:bg-slate-900 border border-agri-primary/20 text-agri-primary rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] hover:bg-agri-primary hover:text-white hover:shadow-glow transition-all active:scale-95 group shadow-xl">
+                                    <button className="px-12 py-6 bg-white dark:bg-slate-900 border border-agri-primary/20 text-agri-primary rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] hover:bg-agri-primary hover:text-white hover:shadow-glow transition-all active:scale-95 group shadow-xl">
                                     <span className="flex items-center gap-3">
-                                        Load More Discussions
+                                        Load More Posts
                                         <TrendingUp size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                     </span>
                                 </button>
@@ -810,8 +810,8 @@ const CommunityPage = () => {
                             <form onSubmit={handleAddPost} className="p-12 md:p-16">
                                 <div className="flex justify-between items-center mb-12">
                                     <div>
-                                        <h2 className="text-4xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter">Start Discussion</h2>
-                                        <p className="text-sm text-gray-500 font-medium mt-2 tracking-tight">Share knowledge, ask for help, grow together.</p>
+                                        <h2 className="text-4xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter">Create Post</h2>
+                                        <p className="text-sm text-gray-500 font-medium mt-2 tracking-tight">Share knowledge, ask for help — grow together.</p>
                                     </div>
                                     <button type="button" onClick={() => setIsModalOpen(false)} className="p-4 bg-gray-50 dark:bg-white/5 hover:bg-rose-500 hover:text-white rounded-2xl transition-all shadow-sm">
                                         <X size={24} />
@@ -828,7 +828,7 @@ const CommunityPage = () => {
                                                 value={newPostTitle}
                                                 onChange={(e) => setNewPostTitle(e.target.value)}
                                                 className="relative w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-8 py-5 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary font-black text-lg placeholder:text-gray-400 placeholder:font-medium" 
-                                                placeholder="What's your discussion about?"
+                                                placeholder="What's your post about?"
                                                 required
                                             />
                                         </div>
@@ -943,7 +943,7 @@ const CommunityPage = () => {
 
                                 <div className="pt-12">
                                     <button type="submit" className="w-full bg-agri-primary text-white font-black py-6 rounded-3xl shadow-glow hover:bg-agri-dark transition-all transform hover:-translate-y-1 uppercase tracking-[0.3em] text-xs">
-                                        Publish Discussion
+                                        Publish Post
                                     </button>
                                 </div>
                             </form>
