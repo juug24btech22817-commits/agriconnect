@@ -30,7 +30,7 @@ const HomePage = () => {
                             transition={{ delay: 0.2 }}
                             className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-agri-primary/10 text-agri-primary border border-agri-primary/20 text-sm font-bold mb-8"
                         >
-                            <Leaf size={16} /> #1 Agri Trading Platform for Indian Farmers
+                            <Leaf size={16} /> Trusted by 75,000+ farmers and 4,200 verified buyers
                         </motion.span>
                         
                         <h1 className="text-6xl md:text-8xl font-display font-extrabold text-agri-dark dark:text-white mb-8 leading-[1.1] tracking-tight">
@@ -38,9 +38,17 @@ const HomePage = () => {
                             <span className="text-gradient">75,000+ Farmers Across India</span>
                         </h1>
                         
-                        <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
-                            Skip the middlemen with fast payouts, real-time mandi rates, AI crop advice, and direct buyer connections — all in one place.
+                        <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 mb-8 max-w-3xl mx-auto font-medium leading-relaxed">
+                            Skip the middlemen with fast payouts, real-time mandi rates, expert crop insights, and direct buyer connections — all in one place.
                         </p>
+
+                        <div className="flex flex-wrap items-center justify-center gap-3 max-w-2xl mx-auto mb-10">
+                            {['Fast Payouts', 'Verified Buyers', 'AI Crop Advice'].map((benefit, index) => (
+                                <span key={index} className="inline-flex items-center rounded-full border border-gray-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm">
+                                    {benefit}
+                                </span>
+                            ))}
+                        </div>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
                             <Link to="/marketplace">
@@ -58,7 +66,7 @@ const HomePage = () => {
                                     whileTap={{ scale: 0.98 }}
                                     className="w-full sm:w-auto px-10 py-5 glass text-agri-dark dark:text-white rounded-2xl font-bold text-lg transition-all border-gray-200 dark:border-gray-800 flex items-center justify-center gap-2 group"
                                 >
-                                    <ShoppingBag size={18} className="text-agri-primary" /> List Your Harvest
+                                    <ShoppingBag size={18} className="text-agri-primary" /> Sell Your Produce
                                 </motion.button>
                             </Link>
                         </div>
@@ -129,7 +137,7 @@ const HomePage = () => {
                             { number: '75K+', label: 'Active Farmers', accent: 'text-agri-primary', icon: <Users size={24} className="text-agri-primary" />, bg: 'bg-agri-primary/10' },
                             { number: '2.4M', label: 'Tons Traded', accent: 'text-agri-secondary', icon: <TrendingUp size={24} className="text-agri-secondary" />, bg: 'bg-agri-secondary/10' },
                             { number: '340+', label: 'Mandis Live', accent: 'text-agri-primary', icon: <MapPin size={24} className="text-agri-primary" />, bg: 'bg-agri-primary/10' },
-                            { number: '28Cr+', label: 'Monthly Earnings', accent: 'text-agri-secondary', icon: <IndianRupee size={24} className="text-agri-secondary" />, bg: 'bg-agri-secondary/10' }
+                            { number: '28Cr+', label: 'Monthly Farmer Earnings', accent: 'text-agri-secondary', icon: <IndianRupee size={24} className="text-agri-secondary" />, bg: 'bg-agri-secondary/10' }
                         ].map((stat, i) => (
                             <motion.div 
                                 key={i} 
