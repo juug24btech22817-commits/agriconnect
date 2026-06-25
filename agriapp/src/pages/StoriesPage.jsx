@@ -214,7 +214,7 @@ const StoriesPage = () => {
         return parseInt(b.metrics.profit, 10) - parseInt(a.metrics.profit, 10);
     });
 
-    const featuredStory = filteredStories[0] || activeStories[0];
+    const featuredStory = filteredStories.length > 0 ? filteredStories[0] : null;
 
     const resetFilters = () => {
         setSearchQuery("");
@@ -367,6 +367,13 @@ const StoriesPage = () => {
                     </div>
                     
                     <button
+                        onClick={resetFilters}
+                        className="hidden xl:inline-flex px-5 py-3 bg-white/40 dark:bg-white/5 text-agri-dark dark:text-white rounded-xl font-black text-xs uppercase tracking-[0.16em] transition-all border border-white/20 dark:border-white/10 hover:bg-white/70 dark:hover:bg-white/10"
+                    >
+                        Reset Filters
+                    </button>
+                    
+                    <button
                         onClick={() => setIsSubmitModalOpen(true)}
                         className="w-full xl:w-auto px-6 py-4 bg-agri-secondary text-white rounded-xl font-black text-xs uppercase tracking-[0.16em] shadow-glow-sm hover:bg-agri-secondary/80 hover:scale-105 transition-all flex items-center justify-center gap-2"
                     >
@@ -411,8 +418,9 @@ const StoriesPage = () => {
                             type="button"
                             onClick={() => handleSelectStory(featuredStory)}
                             className="relative min-h-[280px] overflow-hidden text-left group"
+                            aria-label={`Watch featured story from ${featuredStory.name}`}
                         >
-                            <img src={featuredStory.videoBg} alt={`${featuredStory.name} farm`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                            <img loading="lazy" src={featuredStory.videoBg} alt={`${featuredStory.name} farm`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                             <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
                                 <div>
@@ -448,6 +456,7 @@ const StoriesPage = () => {
                                         className="relative rounded-3xl overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] aspect-[4/3] border-8 border-white dark:border-white/5"
                                     >
                                         <img 
+                                            loading="lazy"
                                             src={story.videoBg} 
                                             alt={`${story.name} story background`} 
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" 
@@ -486,7 +495,7 @@ const StoriesPage = () => {
                                         <div className="flex-1 min-w-[200px] p-6 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-3xl border border-white dark:border-white/10 shadow-premium hover:border-agri-primary/30 transition-all group/info">
                                             <div className="flex items-center gap-6 mb-8">
                                                 <div className="relative">
-                                                    <img src={story.image} alt={story.name} className="w-20 h-20 rounded-2xl object-cover ring-4 ring-agri-primary/10 shadow-xl group-hover/info:scale-105 transition-transform" />
+                                                    <img loading="lazy" src={story.image} alt={story.name} className="w-20 h-20 rounded-2xl object-cover ring-4 ring-agri-primary/10 shadow-xl group-hover/info:scale-105 transition-transform" />
                                                     <div className="absolute -bottom-2 -right-2 bg-agri-primary text-white p-2 rounded-xl shadow-xl">
                                                         <ShieldCheck size={16} />
                                                     </div>
