@@ -35,15 +35,15 @@ const HomePage = () => {
                         
                         <h1 className="text-6xl md:text-8xl font-display font-extrabold text-agri-dark dark:text-white mb-8 leading-[1.1] tracking-tight">
                             Smarter Trade for <br /> 
-                            <span className="text-gradient">75,000+ Farmers Across India</span>
+                            <span className="text-gradient">Farmers Across India</span>
                         </h1>
                         
                         <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 mb-8 max-w-3xl mx-auto font-medium leading-relaxed">
-                            Skip the middlemen with fast payouts, real-time mandi rates, expert crop insights, and direct buyer connections — all in one place.
+                            Sell direct to verified buyers with fast payouts, real-time mandi rates, expert crop insights, and marketplace support.
                         </p>
 
                         <div className="flex flex-wrap items-center justify-center gap-3 max-w-2xl mx-auto mb-10">
-                            {['Fast Payouts', 'Verified Buyers', 'AI Crop Advice'].map((benefit, index) => (
+                            {['Fast Payouts', 'Verified Buyers', 'Direct Buyer Connect'].map((benefit, index) => (
                                 <span key={index} className="inline-flex items-center rounded-full border border-gray-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm">
                                     {benefit}
                                 </span>
