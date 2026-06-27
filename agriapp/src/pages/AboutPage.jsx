@@ -21,7 +21,7 @@ const AboutPage = () => {
                         Reimagining <br /> <span className="text-agri-green">Agricultural Markets</span>
                     </h1>
                     <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                        Connecting farmers and buyers with transparent pricing, reliable logistics, and fresher produce for everyone.
+                        Connecting farmers and buyers with transparent pricing, reliable logistics, and fresher produce — so every harvest finds the right home.
                     </p>
                 </motion.div>
             </section>
@@ -75,9 +75,9 @@ const AboutPage = () => {
                         <Link to="/marketplace" aria-label="Go to marketplace">
                             <button
                                 className="mt-4 inline-flex items-center gap-2 bg-agri-green text-white px-5 py-3 rounded-full hover:bg-agri-dark font-bold text-lg transition"
-                                aria-label="Explore the marketplace"
+                                aria-label="Start trading now"
                             >
-                                Explore the marketplace
+                                Start trading now
                                 <ArrowRight className="ml-2" />
                             </button>
                         </Link>
@@ -166,6 +166,10 @@ const AboutPage = () => {
                     <FAQItem 
                         question="What are the shipping and delivery options?" 
                         answer="AgriConnect handles full logistics end-to-end through our network of verified delivery partners. Produce is picked up directly from the farm gates and delivered safely to buyers."
+                    />
+                    <FAQItem 
+                        question="Can I buy from multiple farmers in one order?" 
+                        answer="Yes. You can mix and match produce from different farmers in a single checkout, making it easier to source everything you need at once."
                     />
                     <FAQItem 
                         question="How do payments work?" 
