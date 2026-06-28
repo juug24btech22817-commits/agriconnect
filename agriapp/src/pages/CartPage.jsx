@@ -232,6 +232,7 @@ const CartPage = () => {
                                     <p className="text-sm text-gray-600 dark:text-gray-300">{serviceable}</p>
                                 )}
                             </div>
+                        </div>
 
                         <div className="bg-gray-900 text-white p-8 rounded-3xl shadow-xl shadow-gray-900/20 sticky top-24">
                             <h3 className="text-xl font-bold mb-6">Order Summary</h3>
