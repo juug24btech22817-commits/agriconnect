@@ -97,7 +97,7 @@ const CartPage = () => {
     return (
         <div className="bg-gray-50 dark:bg-gray-900 min-h-screen pt-12 pb-24 transition-colors duration-300">
             <div className="max-w-5xl mx-auto px-4">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
                     <div className="flex items-center gap-4">
                         <Link to="/marketplace" className="p-2 bg-white dark:bg-gray-800 rounded-xl text-gray-600 dark:text-gray-400 hover:text-agri-green transition-colors shadow-sm ring-1 ring-gray-200 dark:ring-gray-700">
                             <ArrowLeft size={24} />
@@ -148,16 +148,16 @@ const CartPage = () => {
                                             <button
                                                 onClick={() => updateQuantity(itemId, item.quantity - 1)}
                                                 disabled={item.quantity <= 1}
-                                                className="p-1 rounded-lg text-gray-400 dark:text-gray-500 transition-colors disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-gray-600"
+                                                className="p-1.5 rounded-lg text-gray-500 dark:text-gray-500 transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white dark:hover:bg-gray-600 hover:text-gray-700 dark:hover:text-gray-400"
                                             >
-                                                <Minus size={9} />
+                                                <Minus size={10} />
                                             </button>
-                                            <span className="w-5 text-center font-black text-gray-900 dark:text-white text-[9px]">{item.quantity}</span>
+                                            <span className="w-6 text-center font-bold text-gray-900 dark:text-white text-xs">{item.quantity}</span>
                                             <button
                                                 onClick={() => updateQuantity(itemId, item.quantity + 1)}
-                                                className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-400 dark:text-gray-500 transition-colors"
+                                                className="p-1.5 hover:bg-white dark:hover:bg-gray-600 rounded-lg text-gray-500 dark:text-gray-500 transition-all hover:text-gray-700 dark:hover:text-gray-400"
                                             >
-                                                <Plus size={9} />
+                                                <Plus size={10} />
                                             </button>
                                         </div>
                                         <button
@@ -186,10 +186,10 @@ const CartPage = () => {
                                     <button
                                         key={p.id}
                                         onClick={() => setDeliveryMethod(p.id)}
-                                        className={`w-full p-4 rounded-2xl border-2 transition-all flex items-center justify-between ${
+                                        className={`w-full p-4 rounded-2xl border-2 transition-all flex items-center justify-between cursor-pointer ${
                                             deliveryMethod === p.id 
-                                            ? 'border-agri-green bg-agri-green/5' 
-                                            : 'border-gray-100 dark:border-gray-700 hover:border-gray-200'
+                                            ? 'border-agri-green bg-agri-green/5 shadow-md shadow-agri-green/10' 
+                                            : 'border-gray-200 dark:border-gray-700 hover:border-agri-green/50 hover:bg-gray-50/50 dark:hover:bg-gray-700/50'
                                         }`}
                                     >
                                         <div className="flex items-center gap-3">
@@ -211,28 +211,27 @@ const CartPage = () => {
                         <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
                             <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2 uppercase tracking-wide">Check Serviceability</h3>
                             <div className="space-y-3">
-                            <div className="flex gap-2">
-                                <input 
-                                    type="text" 
-                                    value={pinCode}
-                                    onChange={(e) => setPinCode(e.target.value.replace(/\D/g, ''))}
-                                    maxLength={6}
-                                    placeholder="Enter PIN Code" 
-                                    className="flex-grow bg-gray-50 dark:bg-gray-700 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-agri-green transition-all"
-                                />
-                                <button
-                                    onClick={handleCheckServiceability}
-                                    className="bg-agri-green text-white px-4 py-2 rounded-xl text-sm font-bold disabled:opacity-60 disabled:cursor-not-allowed"
-                                    disabled={!pinCode.match(/^\d{6}$/)}
-                                >
-                                    Check
-                                </button>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text" 
+                                        value={pinCode}
+                                        onChange={(e) => setPinCode(e.target.value.replace(/\D/g, ''))}
+                                        maxLength={6}
+                                        placeholder="Enter PIN Code" 
+                                        className="flex-grow bg-gray-50 dark:bg-gray-700 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-agri-green transition-all"
+                                    />
+                                    <button
+                                        onClick={handleCheckServiceability}
+                                        className="bg-agri-green text-white px-4 py-2 rounded-xl text-sm font-bold disabled:opacity-60 disabled:cursor-not-allowed"
+                                        disabled={!pinCode.match(/^\d{6}$/)}
+                                    >
+                                        Check
+                                    </button>
+                                </div>
+                                {serviceable && (
+                                    <p className="text-sm text-gray-600 dark:text-gray-300">{serviceable}</p>
+                                )}
                             </div>
-                            {serviceable && (
-                                <p className="text-sm text-gray-600 dark:text-gray-300">{serviceable}</p>
-                            )}
-                        </div>
-                        </div>
 
                         <div className="bg-gray-900 text-white p-8 rounded-3xl shadow-xl shadow-gray-900/20 sticky top-24">
                             <h3 className="text-xl font-bold mb-6">Order Summary</h3>
@@ -259,7 +258,7 @@ const CartPage = () => {
                             </div>
                             <button
                                 onClick={handleCheckout}
-                                className="w-full flex items-center justify-center gap-2 bg-agri-green hover:bg-agri-dark text-white py-4 rounded-2xl font-bold transition-all shadow-md shadow-agri-green/20 group"
+                                className="w-full flex items-center justify-center gap-2 bg-agri-green hover:bg-agri-dark text-white py-4 rounded-2xl font-bold transition-all shadow-lg shadow-agri-green/30 hover:shadow-xl hover:shadow-agri-green/40 group"
                             >
                                 <CreditCard size={20} />
                                 <span>Checkout Now</span>
