@@ -217,6 +217,9 @@ const AdvisorPage = () => {
                     <h1 className="text-3xl md:text-4xl font-display font-black text-agri-dark dark:text-white mb-2">
                         Crop Health <span className="text-agri-primary">Advisor</span>
                     </h1>
+                    <p className="mx-auto max-w-2xl text-sm md:text-base text-gray-600 dark:text-gray-300">
+                        Upload crop photos or ask about soil, pests, weather, and harvest planning for actionable advice.
+                    </p>
                 </div>
 
                 {/* Chat Container */}
@@ -296,6 +299,9 @@ const AdvisorPage = () => {
                                 </button>
                             </div>
                         )}
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                            Tip: Attach a clear crop photo for faster diagnosis and advice.
+                        </p>
 
                         <div className="flex items-end gap-2">
                             <button 
