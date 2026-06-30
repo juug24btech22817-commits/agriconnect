@@ -308,11 +308,14 @@ const CommunityPage = () => {
                             <Users size={16} className="animate-bounce-slow" /> Global Agri Knowledge Network
                         </motion.div>
                         <h1 className="text-4xl md:text-7xl font-display font-black text-agri-dark dark:text-white mb-6 uppercase tracking-tighter leading-none">
-                            Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-agri-primary to-emerald-600">Stronger</span> Together
+                            Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-agri-primary to-emerald-600">Stronger</span>, Together
                         </h1>
                         <div className="flex flex-col gap-4 mb-6">
                             <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
                                 Join over {formattedVerifiedCount} verified farmers, experts, and agri-innovators sharing real advice, success stories, and market insights.
+                            </p>
+                            <p className="text-sm text-gray-400 dark:text-gray-500 max-w-lg">
+                                New ideas and urgent field updates arrive instantly, so your community stays connected and ready for the season.
                             </p>
                             <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[0.24em] text-gray-400">
                                 <span>{totalDiscussions} active community discussions</span>
@@ -322,7 +325,7 @@ const CommunityPage = () => {
                         </div>
                         <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full shadow-sm">
                             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                            <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Live: 1.2k</span>
+                            <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Live: 1.2k farmers online</span>
                         </div>
                     </div>
 
@@ -333,7 +336,7 @@ const CommunityPage = () => {
                             className="px-10 py-6 bg-agri-primary text-white rounded-[1.5rem] font-black text-xs uppercase tracking-[0.2em] shadow-glow hover:shadow-agri-primary/40 active:scale-95 transition-all flex items-center gap-3 relative overflow-hidden group"
                         >
                             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                            <Plus size={20} className="relative z-10 group-hover:rotate-90 transition-transform duration-300" /> <span className="relative z-10">New Post</span>
+                            <Plus size={20} className="relative z-10 group-hover:rotate-90 transition-transform duration-300" /> <span className="relative z-10">Start Discussion</span>
                         </button>
                     </div>
                 </header>
@@ -680,7 +683,7 @@ const CommunityPage = () => {
                                                             onClick={() => handleAddComment(post.id)}
                                                             className="px-6 py-4 bg-agri-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-agri-dark transition-all active:scale-95 shadow-sm"
                                                         >
-                                                            Reply
+                                                            Post Reply
                                                         </button>
                                                     </div>
                                                 </motion.div>
@@ -749,7 +752,8 @@ const CommunityPage = () => {
                                 {[
                                     { topic: "Seed Rate Best Practices", count: "1.2k posts", icon: Sparkles, color: "text-amber-500" },
                                     { topic: "Soil Moisture Monitoring", count: "850 posts", icon: Award, color: "text-emerald-500" },
-                                    { topic: "Pest Forecast", count: "640 posts", icon: CheckCircle, color: "text-blue-500" }
+                                    { topic: "Pest Forecast", count: "640 posts", icon: CheckCircle, color: "text-blue-500" },
+                                    { topic: "Irrigation Efficiency", count: "530 posts", icon: MessageCircle, color: "text-fuchsia-500" }
                                 ].map((item, i) => (
                                     <motion.div 
                                         key={i} 
@@ -938,6 +942,7 @@ const CommunityPage = () => {
                                                 placeholder="e.g. OrganicFarming, Irrigation, Wheat"
                                             />
                                         </div>
+                                        <p className="text-[10px] text-gray-400 dark:text-gray-500 font-medium">Tip: Use 2–3 short tags for better discoverability.</p>
                                     </div>
                                 </div>
 
