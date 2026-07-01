@@ -132,13 +132,13 @@ const ContactPage = () => {
                         <Globe2 size={14} className="animate-spin-slow" /> Multi-Language Support Available
                     </span>
                     <h1 className="text-5xl md:text-8xl font-display font-black text-agri-dark dark:text-white mb-6 tracking-tight leading-tight">
-                        We're Here to <span className="text-gradient">Support You.</span>
+                        Contact Our <span className="text-gradient">Support Team</span>
                     </h1>
                     <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-medium">
-                        Whether you're a farmer, trader, or agri-entrepreneur, our support team helps you move forward faster—day or night, in your preferred language.
+                        Whether you're a farmer, trader, or agri-entrepreneur, our team is ready to help you move forward faster—day or night, in your preferred language.
                     </p>
                     <p className="mt-4 text-sm text-gray-400 dark:text-gray-500 max-w-2xl mx-auto">
-                        Need help fast? Choose your category and language, and we'll route your request to the right team.
+                        Need help fast? Select your issue and language, and we will route your request to the right specialist within 24 hours.
                     </p>
                 </motion.div>
 
@@ -301,7 +301,7 @@ const ContactPage = () => {
                                             </div>
                                         </div>
                                         <div className="space-y-2 group">
-                                            <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.phone && touched.phone ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Phone Number</label>
+                                            <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.phone && touched.phone ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Phone Number (Optional)</label>
                                             <div className="flex gap-3">
                                                 <div className="flex items-center bg-gray-50 dark:bg-gray-800 border-2 border-transparent rounded-2xl px-4 py-4 font-medium text-agri-dark dark:text-white select-none shrink-0">
                                                     🇮🇳 +91
@@ -420,7 +420,7 @@ const ContactPage = () => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    Send Inquiry
+                                                    Submit Request
                                                     <Send size={22} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                                 </>
                                             )}
