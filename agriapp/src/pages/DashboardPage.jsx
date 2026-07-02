@@ -44,6 +44,8 @@ const DashboardPage = () => {
     const weekSales = [42, 68, 55, 80, 95, 60, 78];
     const weekLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
     const maxSale = Math.max(...weekSales);
+    const activeListingCount = listings.filter((item) => item.status === 'Active').length;
+    const totalViews = listings.reduce((sum, item) => sum + (item.views || 0), 0);
 
     const loadProducts = useCallback(async () => {
         if (!user || (user.role !== 'farmer' && user.role !== 'admin')) {
@@ -299,6 +301,9 @@ const DashboardPage = () => {
                            {user ? `Welcome back, ${user.name}` : 'Please log in to manage your inventory'}
                            {weather.location && ` • ${weather.location}`}
                         </p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                           Quick tip: keep your latest listings fresh and review buyer activity before noon.
+                        </p>
                     </div>
                     <div className="flex items-center gap-3">
                         {/* Notification Bell */}
@@ -367,9 +372,9 @@ const DashboardPage = () => {
                     >
                         {[
                             { label: 'Total Revenue', value: '₹1,24,450', change: '+12.4%', up: true, icon: <DollarSign size={18}/>, color: 'from-emerald-500 to-green-600' },
-                            { label: 'Active Listings', value: listings.length || 3, change: '+2 today', up: true, icon: <Package size={18}/>, color: 'from-blue-500 to-indigo-600' },
+                            { label: 'Active Listings', value: activeListingCount || 3, change: '+2 today', up: true, icon: <Package size={18}/>, color: 'from-blue-500 to-indigo-600' },
                             { label: 'Pending Orders', value: '05', change: 'Needs action', up: false, icon: <Clock size={18}/>, color: 'from-amber-500 to-orange-600' },
-                            { label: 'Total Views', value: '2,841', change: '+8.2% vs last week', up: true, icon: <Eye size={18}/>, color: 'from-purple-500 to-pink-600' },
+                            { label: 'Total Views', value: totalViews.toLocaleString(), change: '+8.2% vs last week', up: true, icon: <Eye size={18}/>, color: 'from-purple-500 to-pink-600' },
                         ].map((kpi, i) => (
                             <motion.div
                                 key={i}
