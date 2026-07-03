@@ -34,12 +34,12 @@ const HomePage = () => {
                         </motion.span>
                         
                         <h1 className="text-6xl md:text-8xl font-display font-extrabold text-agri-dark dark:text-white mb-8 leading-[1.1] tracking-tight">
-                            Smarter Trade for <br /> 
-                            <span className="text-gradient">Farmers Across India</span>
+                            Smarter Trade, Better Prices for <br />
+                            <span className="text-gradient">Farmers Nationwide</span>
                         </h1>
-                        
+
                         <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 mb-8 max-w-3xl mx-auto font-medium leading-relaxed">
-                            Sell direct to verified buyers with fast payouts, real-time mandi rates, expert crop insights, and marketplace support.
+                            Sell directly to verified buyers with instant payouts, live mandi rates, and expert insights.
                         </p>
 
                         <div className="flex flex-wrap items-center justify-center gap-3 max-w-2xl mx-auto mb-10">
@@ -57,7 +57,7 @@ const HomePage = () => {
                                     whileTap={{ scale: 0.98 }}
                                     className="w-full sm:w-auto px-10 py-5 bg-agri-primary text-white rounded-2xl font-bold text-lg shadow-glow transition-all flex items-center justify-center gap-2 group"
                                 >
-                                    Start Trading <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                                    Explore Marketplace <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                                 </motion.button>
                             </Link>
                             <Link to="/dashboard">
@@ -66,7 +66,7 @@ const HomePage = () => {
                                     whileTap={{ scale: 0.98 }}
                                     className="w-full sm:w-auto px-10 py-5 glass text-agri-dark dark:text-white rounded-2xl font-bold text-lg transition-all border-gray-200 dark:border-gray-800 flex items-center justify-center gap-2 group"
                                 >
-                                    <ShoppingBag size={18} className="text-agri-primary" /> Sell Your Produce
+                                    <ShoppingBag size={18} className="text-agri-primary" /> Sell Produce
                                 </motion.button>
                             </Link>
                         </div>
@@ -418,7 +418,7 @@ const HomePage = () => {
                         <div className="flex flex-wrap gap-6">
                             <Link to="/marketplace">
                                 <button className="px-10 py-5 bg-white text-agri-dark hover:bg-agri-primary hover:text-white rounded-2xl font-bold text-lg shadow-2xl transition-all active:scale-95">
-                                    Browse Marketplace
+                                    Explore Marketplace
                                 </button>
                             </Link>
                             <Link to="/about">
