@@ -25,7 +25,7 @@ const ContactPage = () => {
             case 'email':
                 return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? 'Please enter a valid email' : '';
             case 'phone':
-                return value && !/^(?:\+91|0)?\s*[6-9][0-9]{9}$/.test(value.replace(/\s+/g, '')) ? 'Please enter a valid 10-digit Indian number (with optional +91)' : '';
+                return value && !/^[6-9][0-9]{9}$/.test(value.replace(/\s+/g, '')) ? 'Please enter a valid 10-digit Indian mobile number' : '';
             case 'subject':
                 return value.trim().length < 3 ? 'Subject must be at least 3 characters' : '';
             case 'message':
@@ -236,15 +236,16 @@ const ContactPage = () => {
                                         <div className="w-24 h-24 bg-agri-primary/10 rounded-full flex items-center justify-center text-agri-primary mb-8 animate-bounce">
                                             <CheckCircle2 size={48} />
                                         </div>
-                                        <h2 className="text-3xl font-bold text-agri-dark dark:text-white mb-4">Message Sent Successfully!</h2>
+                                        <h2 className="text-3xl font-bold text-agri-dark dark:text-white mb-2">Message Sent, {formData.name}! 🎉</h2>
+                                        <p className="text-gray-400 dark:text-gray-500 text-sm mb-4">Ticket confirmed</p>
                                         <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">
-                                            Thank you for reaching out. Our representative will get back to you within 24 hours in your preferred language.
+                                            Our team will reach out to you within 24 hours in your preferred language.
                                         </p>
                                         <button 
                                             onClick={() => setSubmitted(false)}
-                                            className="mt-12 py-3 px-8 bg-agri-primary/10 text-agri-primary rounded-xl font-bold hover:bg-agri-primary hover:text-white transition-all duration-300"
+                                            className="mt-12 py-3 px-8 bg-agri-primary text-white rounded-xl font-bold hover:bg-agri-primary/90 transition-all duration-300 shadow-sm"
                                         >
-                                            Send another message
+                                            Send Another Message
                                         </button>
                                     </motion.div>
                                 ) : (
@@ -324,7 +325,7 @@ const ContactPage = () => {
                                                                  : 'border-transparent focus:border-agri-primary/20 focus:ring-4 focus:ring-agri-primary/10 focus:bg-white dark:focus:bg-gray-700'
                                                         }`}
                                                     />
-                                                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">Enter a 10-digit mobile number, either with +91 or without country code.</p>
+                                                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">10-digit mobile number (e.g., 98765 43210)</p>
                                                     {errors.phone && touched.phone && <p id="phone-error" className="text-xs text-red-500 font-medium mt-1">{errors.phone}</p>}
                                                 </div>
                                             </div>
@@ -391,11 +392,15 @@ const ContactPage = () => {
                                             {errors.subject && touched.subject && <p id="subject-error" className="text-xs text-red-500 font-medium mt-1">{errors.subject}</p>}
                                         </div>
                                         <div className="space-y-2 group">
-                                            <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.message && touched.message ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Message *</label>
+                                            <div className="flex justify-between items-center">
+                                                <label className={`text-xs font-bold uppercase tracking-widest ml-1 transition-colors ${errors.message && touched.message ? 'text-red-500' : 'text-gray-400 group-focus-within:text-agri-primary'}`}>Message *</label>
+                                                <span className={`text-xs font-medium ${formData.message.trim().length < 10 ? 'text-gray-400' : 'text-agri-primary'}`}>{formData.message.length}/500</span>
+                                            </div>
                                             <textarea
                                                 rows="5"
                                                 name="message"
                                                 placeholder="Tell us more about your needs..."
+                                                maxLength={500}
                                                 value={formData.message}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
@@ -416,11 +421,11 @@ const ContactPage = () => {
                                             {isSubmitting ? (
                                                 <>
                                                     <Loader2 size={22} className="animate-spin" />
-                                                    Processing...
+                                                    Sending...
                                                 </>
                                             ) : (
                                                 <>
-                                                    Submit Request
+                                                    Send Message
                                                     <Send size={22} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                                 </>
                                             )}
