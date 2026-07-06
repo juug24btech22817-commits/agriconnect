@@ -13,6 +13,7 @@ const AdminDashboardPage = () => {
   const [category, setCategory] = useState('Vegetables');
   const [inStock, setInStock] = useState(true);
   const [image, setImage] = useState('');
+  const [loading, setLoading] = useState(false);
   
   const [message, setMessage] = useState({ text: '', type: '' });
 
@@ -35,6 +36,7 @@ const AdminDashboardPage = () => {
   // Handle Adding Crop via backend API
   const handleAddCrop = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const newCrop = {
         name,
@@ -49,10 +51,19 @@ const AdminDashboardPage = () => {
       setMessage({ text: 'Crop added successfully!', type: 'success' });
       // Clear form
       setName(''); setPrice(''); setImage(''); setCategory('Vegetables'); setInStock(true);
+      // Auto-clear success message after 3 seconds
+      setTimeout(() => setMessage({ text: '', type: '' }), 3000);
     } catch (err) {
       setMessage({ text: 'Failed to add crop. See console.', type: 'error' });
       console.error(err);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleClearForm = () => {
+    setName(''); setPrice(''); setImage(''); setCategory('Vegetables'); setInStock(true);
+    setMessage({ text: '', type: '' });
   };
 
   return (
@@ -121,9 +132,14 @@ const AdminDashboardPage = () => {
                      className="w-full border rounded p-2 focus:ring-2 focus:ring-green-500 outline-none" placeholder="https://example.com/image.jpg"/>
             </div>
 
-            <button type="submit" className="w-full py-3 bg-green-600 text-white font-bold rounded mt-4 hover:bg-green-700 transition">
-              Save Crop to Marketplace
-            </button>
+            <div className="flex gap-3">
+              <button type="submit" disabled={loading} className="flex-1 py-3 bg-green-600 text-white font-bold rounded mt-4 hover:bg-green-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed">
+                {loading ? 'Saving...' : 'Save Crop to Marketplace'}
+              </button>
+              <button type="button" onClick={handleClearForm} disabled={loading} className="flex-1 py-3 bg-gray-300 text-gray-800 font-bold rounded mt-4 hover:bg-gray-400 transition disabled:bg-gray-200 disabled:cursor-not-allowed">
+                Clear
+              </button>
+            </div>
           </form>
         </div>
 
