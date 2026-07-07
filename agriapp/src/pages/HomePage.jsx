@@ -30,20 +30,20 @@ const HomePage = () => {
                             transition={{ delay: 0.2 }}
                             className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-agri-primary/10 text-agri-primary border border-agri-primary/20 text-sm font-bold mb-8"
                         >
-                            <Leaf size={16} /> Trusted by 75,000+ farmers and 4,200 verified buyers
+                            <Leaf size={16} /> Now helping farmers trade smarter this harvest season
                         </motion.span>
                         
                         <h1 className="text-6xl md:text-8xl font-display font-extrabold text-agri-dark dark:text-white mb-8 leading-[1.1] tracking-tight">
-                            Smarter Trade, Better Prices for <br />
-                            <span className="text-gradient">Farmers Nationwide</span>
+                            Trade Smarter. <br />
+                            <span className="text-gradient">Sell Faster. Earn More.</span>
                         </h1>
 
                         <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 mb-8 max-w-3xl mx-auto font-medium leading-relaxed">
-                            Sell directly to verified buyers with instant payouts, live mandi rates, and expert insights.
+                            Connect with verified buyers, track live mandi pricing, and receive faster payments from one simple platform.
                         </p>
 
                         <div className="flex flex-wrap items-center justify-center gap-3 max-w-2xl mx-auto mb-10">
-                            {['Fast Payouts', 'Verified Buyers', 'Direct Buyer Connect'].map((benefit, index) => (
+                            {['Instant Payouts', 'Live Mandi Prices', 'Verified Buyer Match'].map((benefit, index) => (
                                 <span key={index} className="inline-flex items-center rounded-full border border-gray-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-200 shadow-sm">
                                     {benefit}
                                 </span>
@@ -66,7 +66,7 @@ const HomePage = () => {
                                     whileTap={{ scale: 0.98 }}
                                     className="w-full sm:w-auto px-10 py-5 glass text-agri-dark dark:text-white rounded-2xl font-bold text-lg transition-all border-gray-200 dark:border-gray-800 flex items-center justify-center gap-2 group"
                                 >
-                                    <ShoppingBag size={18} className="text-agri-primary" /> Sell Produce
+                                    <ShoppingBag size={18} className="text-agri-primary" /> List Your Produce
                                 </motion.button>
                             </Link>
                         </div>
@@ -129,8 +129,41 @@ const HomePage = () => {
                 </div>
             </section>
 
+            {/* Quick Wins Strip */}
+            <section className="py-6 relative z-10 -mt-6">
+                <div className="container mx-auto px-4">
+                    <div className="glass rounded-[2rem] p-6 md:p-8 grid gap-4 md:grid-cols-3 shadow-premium">
+                        {[
+                            {
+                                title: 'List in minutes',
+                                description: 'Post produce details, photos, and pricing with a few simple steps.',
+                                icon: <Search size={18} className="text-agri-primary" />
+                            },
+                            {
+                                title: 'Trusted connections',
+                                description: 'Match with verified buyers and keep every deal transparent.',
+                                icon: <ShieldCheck size={18} className="text-agri-secondary" />
+                            },
+                            {
+                                title: 'Smarter pricing',
+                                description: 'Stay informed with live market insights and better selling decisions.',
+                                icon: <TrendingUp size={18} className="text-emerald-600" />
+                            }
+                        ].map((item, index) => (
+                            <div key={index} className="rounded-[1.5rem] border border-gray-100 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/60 p-5">
+                                <div className="w-10 h-10 rounded-2xl bg-agri-primary/10 flex items-center justify-center mb-4">
+                                    {item.icon}
+                                </div>
+                                <h3 className="text-lg font-bold text-agri-dark dark:text-white mb-2">{item.title}</h3>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{item.description}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* Stats Bar */}
-            <section className="py-20 relative z-10 -mt-10">
+            <section className="py-20 relative z-10">
                 <div className="container mx-auto px-4">
                     <div className="glass rounded-[3rem] p-12 grid grid-cols-2 lg:grid-cols-4 gap-12 shadow-premium">
                         {[
