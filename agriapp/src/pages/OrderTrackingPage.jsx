@@ -13,16 +13,21 @@ const OrderTrackingPage = () => {
     const [error, setError] = useState('');
 
     const fetchTrackingData = async (tid) => {
-        if (!tid) return;
+        if (!tid || !tid.trim()) return;
         setLoading(true);
-        setError('');
         try {
             const res = await fetch(`http://localhost:5000/api/delivery/track/${tid}`);
             if (!res.ok) {
-                throw new Error('Tracking ID not found. Please verify the ID and try again.');
+                if (res.status === 404) {
+                    throw new Error('Tracking ID not found. Please verify and try again.');
+                } else if (res.status === 500) {
+                    throw new Error('Server error. Please try again shortly.');
+                }
+                throw new Error('Unable to fetch tracking details.');
             }
             const data = await res.json();
             setOrderData(data);
+            setError('');
         } catch (err) {
             setError(err.message || 'Error fetching tracking details.');
             setOrderData(null);
@@ -39,22 +44,26 @@ const OrderTrackingPage = () => {
         }
     }, [queryTrackingId]);
 
-    // Poll for updates every 8 seconds if active tracking is on
+    // Poll for updates every 5 seconds if active tracking is on
     useEffect(() => {
         if (!trackingId) return;
         const interval = setInterval(() => {
             fetchTrackingData(trackingId);
-        }, 8000);
+        }, 5000);
         return () => clearInterval(interval);
     }, [trackingId]);
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
-        if (trackingIdInput.trim()) {
-            setTrackingId(trackingIdInput.trim());
-            setSearchParams({ id: trackingIdInput.trim() });
-            fetchTrackingData(trackingIdInput.trim());
+        const trimmedId = trackingIdInput.trim();
+        if (!trimmedId) {
+            setError('Please enter a valid tracking ID.');
+            return;
         }
+        setError('');
+        setTrackingId(trimmedId);
+        setSearchParams({ id: trimmedId });
+        fetchTrackingData(trimmedId);
     };
 
     const handleBack = () => {
