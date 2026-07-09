@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Star, MapPin, Truck, Lock, Package, ChevronLeft, 
@@ -16,6 +16,7 @@ import { api } from '../services/api';
 const ProductDetailsPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const currentLocation = useLocation();
     const { user } = useContext(AuthContext);
     const { cart, addToCart } = useCart();
 
@@ -23,7 +24,7 @@ const ProductDetailsPage = () => {
     const [loading, setLoading] = useState(true);
     const [buyLoading, setBuyLoading] = useState(false);
     const [locLoading, setLocLoading] = useState(false);
-    const [location, setLocation] = useState(() => {
+    const [deliveryLocation, setDeliveryLocation] = useState(() => {
         return localStorage.getItem('deliveryLocation') || 'Bengaluru 560001';
     });
     const [count, setCount] = useState(1);
@@ -61,7 +62,7 @@ const ProductDetailsPage = () => {
         setTimeout(() => {
             setBuyLoading(false);
             if (!user) {
-                navigate('/login', { state: { from: '/cart' } });
+                navigate('/login', { state: { from: currentLocation.pathname } });
                 return;
             }
             addToCart(crop, count);
@@ -93,7 +94,7 @@ const ProductDetailsPage = () => {
                 const pincode = data.address.postcode || "";
                 const newLoc = `${city} ${pincode}`.trim();
                 
-                setLocation(newLoc);
+                setDeliveryLocation(newLoc);
                 localStorage.setItem('deliveryLocation', newLoc);
             } catch (err) {
                 console.error("Error fetching location details:", err);
@@ -225,7 +226,7 @@ const ProductDetailsPage = () => {
                                     <div>
                                         <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Delivering to</p>
                                         <h4 className="text-lg font-black text-agri-dark dark:text-white uppercase leading-none">
-                                            {locLoading ? 'Locating...' : location}
+                                            {locLoading ? 'Locating...' : deliveryLocation}
                                         </h4>
                                     </div>
                                 </div>
@@ -255,16 +256,20 @@ const ProductDetailsPage = () => {
                                     / {crop.unit}
                                 </span>
                             </div>
-                            <div className="px-3 py-1 bg-agri-primary/10 text-agri-primary inline-block rounded-lg text-[10px] font-black uppercase tracking-widest mb-6 border border-agri-primary/20">
-                                Inclusive of all taxes
-                            </div>
-
-                            <div className="space-y-6">
-                                <div className="flex items-start gap-4">
-                                    <div className="p-3 bg-white dark:bg-slate-800 rounded-2xl text-agri-primary shadow-sm">
-                                        <Truck size={24} />
-                                    </div>
-                                    <div>
+                                    <div className="flex flex-wrap gap-4 mb-4">
+                                        <span className="px-3 py-1 bg-agri-primary/10 text-agri-primary inline-block rounded-lg text-[10px] font-black uppercase tracking-widest border border-agri-primary/20">
+                                            Inclusive of all taxes
+                                        </span>
+                                        {crop.retailPrice && crop.price && (
+                                            <span className="px-3 py-1 bg-emerald-50 text-emerald-700 inline-block rounded-lg text-[10px] font-black uppercase tracking-widest border border-emerald-200">
+                                                You save {(() => {
+                                                    const current = parseInt(crop.price.replace(/[^0-9]/g, '')) || 0;
+                                                    const retail = parseInt(crop.retailPrice.replace(/[^0-9]/g, '')) || 0;
+                                                    const savings = retail - current;
+                                                    return savings > 0 ? `₹${savings}` : '₹0';
+                                                })()}
+                                            </span>
+                                        )}
                                         <p className="text-lg font-bold text-gray-900 dark:text-white">
                                             <span className="text-emerald-600">FREE delivery</span> by {getMockDeliveryDate()}
                                         </p>
@@ -335,14 +340,14 @@ const ProductDetailsPage = () => {
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <button 
-                                        onClick={() => setCount(Math.max(0.5, count - 0.5))}
+                                        onClick={() => setCount(prev => parseFloat(Math.max(0.5, prev - 0.5).toFixed(1)))}
                                         className="w-8 h-8 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-lg text-gray-600 hover:text-agri-secondary transition-colors border border-gray-100 dark:border-slate-800"
                                     >
                                         <Minus size={12} />
                                     </button>
                                     <span className="text-xl font-display font-black text-agri-dark dark:text-white min-w-[1.5ch] text-center">{count}</span>
                                     <button 
-                                        onClick={() => setCount(count + 0.5)}
+                                        onClick={() => setCount(prev => parseFloat((prev + 0.5).toFixed(1)))}
                                         className="w-8 h-8 flex items-center justify-center bg-gray-50 dark:bg-slate-800 rounded-lg text-gray-600 hover:text-agri-primary transition-colors border border-gray-100 dark:border-slate-800"
                                     >
                                         <Plus size={12} />
