@@ -247,7 +247,7 @@ const ProductDetailsPage = () => {
                             <div className="absolute top-0 right-0 p-8 opacity-5">
                                 <TrendingUp size={120} className="text-agri-primary" />
                             </div>
-                            
+
                             <div className="flex items-baseline gap-4 mb-2">
                                 <span className="text-6xl font-display font-black text-agri-dark dark:text-white tracking-tighter">
                                     {crop.price}
@@ -256,34 +256,43 @@ const ProductDetailsPage = () => {
                                     / {crop.unit}
                                 </span>
                             </div>
-                                    <div className="flex flex-wrap gap-4 mb-4">
-                                        <span className="px-3 py-1 bg-agri-primary/10 text-agri-primary inline-block rounded-lg text-[10px] font-black uppercase tracking-widest border border-agri-primary/20">
-                                            Inclusive of all taxes
-                                        </span>
-                                        {crop.retailPrice && crop.price && (
-                                            <span className="px-3 py-1 bg-emerald-50 text-emerald-700 inline-block rounded-lg text-[10px] font-black uppercase tracking-widest border border-emerald-200">
-                                                You save {(() => {
-                                                    const current = parseInt(crop.price.replace(/[^0-9]/g, '')) || 0;
-                                                    const retail = parseInt(crop.retailPrice.replace(/[^0-9]/g, '')) || 0;
-                                                    const savings = retail - current;
-                                                    return savings > 0 ? `₹${savings}` : '₹0';
-                                                })()}
-                                            </span>
-                                        )}
+
+                            <div className="flex flex-wrap gap-4 mb-6">
+                                <span className="px-3 py-1 bg-agri-primary/10 text-agri-primary inline-block rounded-lg text-[10px] font-black uppercase tracking-widest border border-agri-primary/20">
+                                    Inclusive of all taxes
+                                </span>
+                                {crop.retailPrice && crop.price && (
+                                    <span className="px-3 py-1 bg-emerald-50 text-emerald-700 inline-block rounded-lg text-[10px] font-black uppercase tracking-widest border border-emerald-200">
+                                        You save {(() => {
+                                            const current = parseInt(crop.price.replace(/[^0-9]/g, '')) || 0;
+                                            const retail = parseInt(crop.retailPrice.replace(/[^0-9]/g, '')) || 0;
+                                            const savings = retail - current;
+                                            return savings > 0 ? `₹${savings}` : '₹0';
+                                        })()}
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="flex items-start gap-4">
+                                    <div className="p-3 bg-white dark:bg-slate-800 rounded-2xl text-agri-secondary shadow-sm">
+                                        <Truck size={24} />
+                                    </div>
+                                    <div>
                                         <p className="text-lg font-bold text-gray-900 dark:text-white">
                                             <span className="text-emerald-600">FREE delivery</span> by {getMockDeliveryDate()}
                                         </p>
                                         <p className="text-gray-500 text-sm">Fastest delivery tomorrow if ordered within 4 hours.</p>
                                     </div>
                                 </div>
+
                                 <div className="flex items-center gap-4 text-gray-600 dark:text-gray-400">
                                     <div className="p-3 bg-white dark:bg-slate-800 rounded-2xl text-agri-secondary shadow-sm">
                                         <MapPin size={24} />
                                     </div>
-                                    <p className="font-bold uppercase tracking-widest text-xs">Delivering to {location}</p>
+                                    <p className="font-bold uppercase tracking-widest text-xs">Delivering to {deliveryLocation}</p>
                                 </div>
                             </div>
-
                         </div>
 
                         {/* Amazon-style Service Badges */}
