@@ -5,6 +5,7 @@ import { Phone, Mail, MapPin, Send, MessageSquare, CheckCircle2, ChevronDown, Gl
 const ContactPage = () => {
     const [submitted, setSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submittedName, setSubmittedName] = useState('');
     const [openFaq, setOpenFaq] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
@@ -68,6 +69,7 @@ const ContactPage = () => {
         setIsSubmitting(true);
         setTimeout(() => {
             setIsSubmitting(false);
+            setSubmittedName(formData.name || '');
             setSubmitted(true);
             setFormData({ name: '', email: '', phone: '', category: 'General Inquiry', language: 'English', subject: '', message: '' });
             setTouched({});
@@ -236,13 +238,13 @@ const ContactPage = () => {
                                         <div className="w-24 h-24 bg-agri-primary/10 rounded-full flex items-center justify-center text-agri-primary mb-8 animate-bounce">
                                             <CheckCircle2 size={48} />
                                         </div>
-                                        <h2 className="text-3xl font-bold text-agri-dark dark:text-white mb-2">Message Sent, {formData.name}! 🎉</h2>
+                                        <h2 className="text-3xl font-bold text-agri-dark dark:text-white mb-2">Message Sent, {submittedName || 'there'}! 🎉</h2>
                                         <p className="text-gray-400 dark:text-gray-500 text-sm mb-4">Ticket confirmed</p>
                                         <p className="text-gray-500 dark:text-gray-400 text-lg font-medium">
                                             Our team will reach out to you within 24 hours in your preferred language.
                                         </p>
                                         <button 
-                                            onClick={() => setSubmitted(false)}
+                                            onClick={() => { setSubmitted(false); setSubmittedName(''); }}
                                             className="mt-12 py-3 px-8 bg-agri-primary text-white rounded-xl font-bold hover:bg-agri-primary/90 transition-all duration-300 shadow-sm"
                                         >
                                             Send Another Message
