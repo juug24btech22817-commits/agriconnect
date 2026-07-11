@@ -325,7 +325,7 @@ const CommunityPage = () => {
                         </div>
                         <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full shadow-sm">
                             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                            <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Live: 1.2k farmers online</span>
+                            <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Live: {formattedVerifiedCount} farmers online</span>
                         </div>
                     </div>
 
@@ -717,6 +717,13 @@ const CommunityPage = () => {
                                             </button>
                                         )}
                                         <button
+                                            type="button"
+                                            onClick={() => setIsModalOpen(true)}
+                                            className="px-6 py-3 bg-agri-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-agri-dark transition-all"
+                                        >
+                                            Start Discussion
+                                        </button>
+                                        <button
                                             onClick={() => { setActiveCategory("All Discussions"); setSearchQuery(""); }}
                                             className="px-6 py-3 bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-agri-primary hover:text-white transition-all"
                                         >
@@ -728,7 +735,7 @@ const CommunityPage = () => {
                             
                             {sortedPosts.length > 0 && (
                             <div className="pt-12 text-center">
-                                    <button className="px-12 py-6 bg-white dark:bg-slate-900 border border-agri-primary/20 text-agri-primary rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] hover:bg-agri-primary hover:text-white hover:shadow-glow transition-all active:scale-95 group shadow-xl">
+                                    <button type="button" aria-label="Load more posts" className="px-12 py-6 bg-white dark:bg-slate-900 border border-agri-primary/20 text-agri-primary rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] hover:bg-agri-primary hover:text-white hover:shadow-glow transition-all active:scale-95 group shadow-xl">
                                     <span className="flex items-center gap-3">
                                         Load More Posts
                                         <TrendingUp size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
