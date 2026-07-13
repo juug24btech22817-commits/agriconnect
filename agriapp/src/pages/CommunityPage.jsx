@@ -4,7 +4,7 @@ import {
   Users, MessageSquare, Heart, Share2, Search, 
   TrendingUp, Award, User, Clock, CheckCircle, 
   Plus, MessageCircle, Sparkles, Filter, X,
-  Bookmark, Eye, Trash2
+  Bookmark, Eye, Trash2, Flag
 } from 'lucide-react';
 
 const categoryList = [
@@ -101,6 +101,8 @@ const CommunityPage = () => {
     const [newPostTags, setNewPostTags] = useState("");
     const [showShareToast, setShowShareToast] = useState(false);
     const [newPostLocation, setNewPostLocation] = useState("");
+    const [showReportToast, setShowReportToast] = useState(false);
+    const [reportedPostTitle, setReportedPostTitle] = useState("");
 
     const handleLike = (id) => {
         setPosts(posts.map(post => {
@@ -125,6 +127,33 @@ const CommunityPage = () => {
             }
             return post;
         }));
+    };
+
+    const handleReport = (id) => {
+        let reportedTitle = "";
+        let willShowToast = false;
+        
+        setPosts(posts.map(post => {
+            if (post.id === id) {
+                reportedTitle = post.title;
+                if (!post.isReported) {
+                    willShowToast = true;
+                }
+                return {
+                    ...post,
+                    isReported: !post.isReported
+                };
+            }
+            return post;
+        }));
+
+        if (willShowToast) {
+            setReportedPostTitle(reportedTitle);
+            setShowReportToast(true);
+            setTimeout(() => {
+                setShowReportToast(false);
+            }, 3000);
+        }
     };
 
     const handleDeletePost = (id) => {
@@ -536,6 +565,15 @@ const CommunityPage = () => {
                                                 <motion.button 
                                                     whileHover={{ scale: 1.1 }}
                                                     whileTap={{ scale: 0.9 }}
+                                                    onClick={() => handleReport(post.id)}
+                                                    className={`p-3 rounded-2xl transition-all ${post.isReported ? 'bg-amber-500/10 text-amber-500 shadow-inner' : 'bg-gray-50 dark:bg-white/5 text-gray-300 hover:text-amber-500'}`}
+                                                    title={post.isReported ? "Reported for moderation" : "Report Discussion"}
+                                                >
+                                                    <Flag size={20} fill={post.isReported ? "currentColor" : "none"} />
+                                                </motion.button>
+                                                <motion.button 
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
                                                     onClick={() => handleBookmark(post.id)}
                                                     className={`p-3 rounded-2xl transition-all ${post.isBookmarked ? 'bg-agri-primary/10 text-agri-primary shadow-inner' : 'bg-gray-50 dark:bg-white/5 text-gray-300 hover:text-agri-primary'}`}
                                                 >
@@ -552,6 +590,13 @@ const CommunityPage = () => {
                                                 </motion.button>
                                             </div>
                                         </div>
+
+                                        {post.isReported && (
+                                            <div className="mb-6 px-6 py-4 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 rounded-2xl text-xs font-semibold flex items-center gap-3">
+                                                <Flag size={16} className="animate-pulse text-amber-500" />
+                                                <span>You flagged this discussion. Our moderation team will review it shortly.</span>
+                                            </div>
+                                        )}
 
                                         <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white mb-4 tracking-tight leading-tight group-hover:text-agri-primary transition-colors">
                                             {post.title}
@@ -988,27 +1033,49 @@ const CommunityPage = () => {
 
             {/* Share Link Copied Toast */}
             <AnimatePresence>
-                {showShareToast && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                        className="fixed bottom-10 left-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-agri-dark border border-emerald-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(16,185,129,0.2)] text-white"
-                    >
-                        <div className="flex gap-4 items-center">
-                            <div className="p-3 bg-emerald-500/20 rounded-xl text-emerald-400 shrink-0">
-                                <Share2 size={20} />
-                            </div>
-                            <div>
-                                <h4 className="font-black text-sm uppercase tracking-wider text-emerald-400 mb-0.5">Link Copied!</h4>
-                                <p className="text-xs text-white/60 font-medium">Discussion link has been copied to your clipboard.</p>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </div>
-    );
-};
+                                                {showShareToast && (
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                                                        className="fixed bottom-10 left-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-agri-dark border border-emerald-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(16,185,129,0.2)] text-white"
+                                                    >
+                                                        <div className="flex gap-4 items-center">
+                                                            <div className="p-3 bg-emerald-500/20 rounded-xl text-emerald-400 shrink-0">
+                                                                <Share2 size={20} />
+                                                            </div>
+                                                            <div>
+                                                                <h4 className="font-black text-sm uppercase tracking-wider text-emerald-400 mb-0.5">Link Copied!</h4>
+                                                                <p className="text-xs text-white/60 font-medium">Discussion link has been copied to your clipboard.</p>
+                                                            </div>
+                                                        </div>
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
+
+                                            {/* Report Post Toast Notification */}
+                                            <AnimatePresence>
+                                                {showReportToast && (
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                                                        className="fixed bottom-10 left-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-amber-950 border border-amber-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(245,158,11,0.2)] text-white"
+                                                    >
+                                                        <div className="flex gap-4 items-center">
+                                                            <div className="p-3 bg-amber-500/20 rounded-xl text-amber-400 shrink-0 animate-pulse">
+                                                                <Flag size={20} />
+                                                            </div>
+                                                            <div>
+                                                                <h4 className="font-black text-sm uppercase tracking-wider text-amber-400 mb-0.5">Discussion Reported</h4>
+                                                                <p className="text-xs text-white/60 font-medium">"{reportedPostTitle}" has been flagged for moderation.</p>
+                                                            </div>
+                                                        </div>
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
+                                        </div>
+                                    );
+                                };
 
 export default CommunityPage;
