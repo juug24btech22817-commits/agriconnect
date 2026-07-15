@@ -130,9 +130,15 @@ const ContactPage = () => {
                     transition={{ duration: 0.8 }}
                     className="text-center mb-20"
                 >
-                    <span className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-agri-primary/10 text-agri-primary border border-agri-primary/20 text-xs font-bold mb-6 tracking-widest uppercase shadow-sm">
-                        <Globe2 size={14} className="animate-spin-slow" /> Multi-Language Support Available
-                    </span>
+                    <div className="flex flex-wrap justify-center gap-3 mb-6">
+                        <span className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-agri-primary/10 text-agri-primary border border-agri-primary/20 text-xs font-bold tracking-widest uppercase shadow-sm">
+                            <Globe2 size={14} className="animate-spin-slow" /> Multi-Language Support Available
+                        </span>
+                        <span className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-bold tracking-widest uppercase shadow-sm">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                            Avg. Response &lt; 24 hrs
+                        </span>
+                    </div>
                     <h1 className="text-5xl md:text-8xl font-display font-black text-agri-dark dark:text-white mb-6 tracking-tight leading-tight">
                         Contact Our <span className="text-gradient">Support Team</span>
                     </h1>
@@ -193,8 +199,14 @@ const ContactPage = () => {
                                         <Clock size={20} />
                                     </div>
                                     <div>
-                                        <p className="text-sm font-bold text-agri-dark dark:text-white uppercase tracking-wider">Office Hours</p>
-                                        <p className="text-gray-500 dark:text-gray-400 font-medium">Mon - Sat: 9:00 AM - 6:00 PM</p>
+                                        <p className="text-sm font-bold text-agri-dark dark:text-white uppercase tracking-wider flex items-center gap-2">
+                                            Office Hours
+                                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-2 py-0.5 uppercase tracking-widest">
+                                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                                Live
+                                            </span>
+                                        </p>
+                                        <p className="text-gray-500 dark:text-gray-400 font-medium">Mon – Sat &nbsp;·&nbsp; 9:00 AM – 6:00 PM IST</p>
                                     </div>
                                 </div>
 
@@ -423,11 +435,11 @@ const ContactPage = () => {
                                             {isSubmitting ? (
                                                 <>
                                                     <Loader2 size={22} className="animate-spin" />
-                                                    Sending...
+                                                    Sending your message…
                                                 </>
                                             ) : (
                                                 <>
-                                                    Send Message
+                                                    Submit Request
                                                     <Send size={22} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                                 </>
                                             )}
@@ -447,8 +459,11 @@ const ContactPage = () => {
                     className="mt-40 max-w-4xl mx-auto"
                 >
                     <div className="text-center mb-16">
+                        <span className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-agri-primary/10 text-agri-primary border border-agri-primary/20 text-xs font-bold mb-4 tracking-widest uppercase">
+                            <HelpCircle size={13} /> FAQ
+                        </span>
                         <h2 className="text-4xl font-display font-bold text-agri-dark dark:text-white mb-4">Common Questions</h2>
-                        <p className="text-gray-500 dark:text-gray-400 font-medium">Quick answers to frequently asked support queries.</p>
+                        <p className="text-gray-500 dark:text-gray-400 font-medium">Quick answers to frequently asked support queries — no waiting required.</p>
                     </div>
 
                     <div className="space-y-4">
