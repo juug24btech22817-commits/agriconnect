@@ -326,7 +326,7 @@ const CommunityPage = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <header className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-10">
+                <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-10">
                     <div className="max-w-2xl">
                         <motion.div 
                             initial={{ opacity: 0, x: -20 }}
@@ -343,16 +343,13 @@ const CommunityPage = () => {
                             <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
                                 Join over {formattedVerifiedCount} verified farmers, experts, and agri-innovators sharing real advice, success stories, and market insights.
                             </p>
-                            <p className="text-sm text-gray-400 dark:text-gray-500 max-w-lg">
-                                New ideas and urgent field updates arrive instantly, so your community stays connected and ready for the season.
-                            </p>
                             <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[0.24em] text-gray-400">
                                 <span>{totalDiscussions} active community discussions</span>
                                 <span className="text-agri-primary">•</span>
                                 <span>{totalExperts} expert posts</span>
                             </div>
                         </div>
-                        <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full shadow-sm">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full shadow-sm w-fit">
                             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
                             <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Live: {formattedVerifiedCount} farmers online</span>
                         </div>
@@ -369,6 +366,35 @@ const CommunityPage = () => {
                         </button>
                     </div>
                 </header>
+
+                {/* Quick Stats Strip */}
+                <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.15 }}
+                    className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
+                >
+                    {[
+                        { label: "Total Posts", value: totalDiscussions, icon: MessageSquare, color: "text-agri-primary" },
+                        { label: "Expert Advice", value: totalExperts, icon: Sparkles, color: "text-amber-500" },
+                        { label: "Farmers Online", value: `${formattedVerifiedCount}`, icon: Users, color: "text-emerald-500" },
+                        { label: "Saved", value: posts.filter(p => p.isBookmarked).length, icon: Bookmark, color: "text-fuchsia-500" }
+                    ].map((stat, i) => (
+                        <motion.div
+                            key={i}
+                            whileHover={{ y: -4 }}
+                            className="glass rounded-[2rem] p-6 flex items-center gap-4 shadow-sm border border-agri-primary/5"
+                        >
+                            <div className={`p-3 bg-gray-50 dark:bg-white/5 rounded-xl ${stat.color} shrink-0`}>
+                                <stat.icon size={20} />
+                            </div>
+                            <div>
+                                <p className="text-xl font-black text-agri-dark dark:text-white tracking-tight">{stat.value}</p>
+                                <p className="text-[9px] font-black uppercase tracking-widest text-gray-400">{stat.label}</p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </motion.div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                     <div className="lg:col-span-3 space-y-8">
@@ -517,8 +543,8 @@ const CommunityPage = () => {
                                         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-agri-primary to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                                         
                                         {post.likes > 70 && (
-                                            <div className="absolute top-0 right-0 px-8 py-3 bg-agri-secondary text-agri-dark font-black text-[10px] uppercase tracking-widest rounded-bl-[2rem] shadow-lg">
-                                                Trending Topic
+                                            <div className="absolute top-0 right-0 px-6 py-2.5 bg-gradient-to-l from-amber-400 to-agri-secondary text-agri-dark font-black text-[9px] uppercase tracking-widest rounded-bl-[2rem] shadow-lg flex items-center gap-2">
+                                                <TrendingUp size={12} className="animate-bounce-slow" /> Trending
                                             </div>
                                         )}
                                         <div className="flex justify-between items-start mb-8">
@@ -830,14 +856,16 @@ const CommunityPage = () => {
                                 <Award size={40} />
                             </div>
                             <h4 className="text-xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter mb-2">Community Hero</h4>
-                            <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-8">Community champion of the week</p>
-                            <div className="w-16 h-16 rounded-full mx-auto mb-4 overflow-hidden shadow-xl ring-4 ring-white dark:ring-white/5 relative">
+                            <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mb-8">🏆 Champion of the week</p>
+                            <div className="w-16 h-16 rounded-full mx-auto mb-4 overflow-hidden shadow-xl ring-4 ring-agri-primary/30 dark:ring-white/5 relative">
                                 <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80" alt="Sunil Verma" className="w-full h-full object-cover" />
                             </div>
                             <p className="font-black text-agri-dark dark:text-white text-base uppercase tracking-tighter">Sunil Verma</p>
-                            <div className="mt-4 flex justify-center gap-1">
+                            <p className="text-[9px] text-gray-400 font-black uppercase tracking-widest mt-1">Rajasthan, India</p>
+                            <div className="mt-3 flex justify-center gap-1">
                                 {[1,2,3,4,5].map(i => <Sparkles key={i} size={12} className="text-agri-secondary animate-pulse" style={{ animationDelay: `${i*0.2}s` }} />)}
                             </div>
+                            <div className="mt-4 px-4 py-2 bg-agri-primary/10 rounded-xl text-[9px] font-black text-agri-primary uppercase tracking-widest inline-block">128 helpful replies</div>
                         </div>
                     </div>
                 </div>
@@ -898,10 +926,16 @@ const CommunityPage = () => {
                                                 rows="5"
                                                 value={newPostContent}
                                                 onChange={(e) => setNewPostContent(e.target.value)}
+                                                maxLength={800}
                                                 className="relative w-full bg-gray-50 dark:bg-slate-800 border-none rounded-2xl px-8 py-5 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary resize-none font-medium text-lg placeholder:text-gray-400" 
                                                 placeholder="What's happening on your farm? Ask for advice or share your success..."
                                                 required
                                             />
+                                        </div>
+                                        <div className="flex justify-end mt-1">
+                                            <span className={`text-[10px] font-black uppercase tracking-widest ${newPostContent.length > 720 ? 'text-amber-500' : 'text-gray-400'}`}>
+                                                {newPostContent.length}/800
+                                            </span>
                                         </div>
                                     </div>
 
