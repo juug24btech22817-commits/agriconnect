@@ -114,7 +114,8 @@ const ContactPage = () => {
         { q: "What are the service fees for direct trading?", a: "AgriConnect charges a nominal 2% platform fee on successful transactions. There are no registration or listing fees." },
         { q: "Is payment guaranteed for my produce?", a: "Yes, we use a secure escrow system. Payment is collected from the buyer before shipment and released to you upon delivery." },
         { q: "Can I sell in small quantities?", a: "Absolutely! Our platform supports both small-scale farmers and large commercial producers." },
-        { q: "Can I get support in my regional language?", a: "Yes — our support team offers assistance in 8+ Indian languages, including Hindi, Kannada, Telugu, Tamil, Marathi and more." }
+        { q: "Can I get support in my regional language?", a: "Yes — our support team offers assistance in 8+ Indian languages, including Hindi, Kannada, Telugu, Tamil, Marathi and more." },
+        { q: "How do I track my order or shipment?", a: "Once your produce is dispatched, you'll receive a real-time tracking link via SMS and WhatsApp. You can also monitor delivery status from your AgriConnect dashboard under 'My Orders'." }
     ];
 
     return (
