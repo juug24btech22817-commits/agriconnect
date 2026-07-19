@@ -334,14 +334,14 @@ const CommunityPage = () => {
                             className="flex items-center gap-2 text-agri-primary font-bold text-xs uppercase tracking-[0.3em] mb-4"
                         >
                             <div className="w-8 h-[2px] bg-agri-primary/30" />
-                            <Users size={16} className="animate-bounce-slow" /> Global Agri Knowledge Network
+                            <Users size={16} className="animate-bounce-slow" /> India's Largest Farmer Community
                         </motion.div>
                         <h1 className="text-4xl md:text-7xl font-display font-black text-agri-dark dark:text-white mb-6 uppercase tracking-tighter leading-none">
-                            Grow <span className="text-transparent bg-clip-text bg-gradient-to-r from-agri-primary to-emerald-600">Stronger</span>, Together
+                            Connect. Share. <span className="text-transparent bg-clip-text bg-gradient-to-r from-agri-primary to-emerald-600">Harvest.</span>
                         </h1>
                         <div className="flex flex-col gap-4 mb-6">
                             <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
-                                Join over {formattedVerifiedCount} verified farmers, experts, and agri-innovators sharing real advice, success stories, and market insights.
+                                A thriving hub of {formattedVerifiedCount} verified farmers, agri-experts &amp; innovators — sharing real insights, proven strategies, and live market intelligence.
                             </p>
                             <div className="flex flex-wrap items-center gap-3 text-xs font-black uppercase tracking-[0.24em] text-gray-400">
                                 <span>{totalDiscussions} active community discussions</span>
@@ -351,7 +351,7 @@ const CommunityPage = () => {
                         </div>
                         <div className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full shadow-sm w-fit">
                             <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-                            <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Live: {formattedVerifiedCount} farmers online</span>
+                            <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">🌾 Live: {formattedVerifiedCount} farmers active now</span>
                         </div>
                     </div>
 
