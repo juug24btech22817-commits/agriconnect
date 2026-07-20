@@ -12,6 +12,16 @@ const stats = [
 
 const stories = [
     {
+        id: 8,
+        name: "Sunita Devi",
+        farm: "Himachal Orchards, Shimla",
+        quote: "AgriConnect enabled direct sales of our premium Shimla Royal apples to top fruit retail chains. We bypassed four layers of brokers, securing 60% higher returns on our harvest.",
+        image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop",
+        videoBg: "https://images.unsplash.com/photo-1615220368123-9bb8faa5610f?q=80&w=800&auto=format&fit=crop",
+        tags: ["Organic", "Direct Sales"],
+        metrics: { profit: "+60%", savings: "35%", rating: "5.0", reviews: "28" }
+    },
+    {
         id: 7,
         name: "Devendra Hegde",
         farm: "Western Ghats Vanilla Plantation, Karnataka",
@@ -91,8 +101,8 @@ const StoriesPage = () => {
     const [sortMode, setSortMode] = useState("impact");
     
     // Likes and Views state
-    const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215, 4: 189, 5: 310, 6: 425, 7: 512 });
-    const [storyViews, setStoryViews] = useState({ 1: 1240, 2: 950, 3: 1840, 4: 1530, 5: 2200, 6: 3100, 7: 4120 });
+    const [storyLikes, setStoryLikes] = useState({ 1: 142, 2: 98, 3: 215, 4: 189, 5: 310, 6: 425, 7: 512, 8: 624 });
+    const [storyViews, setStoryViews] = useState({ 1: 1240, 2: 950, 3: 1840, 4: 1530, 5: 2200, 6: 3100, 7: 4120, 8: 5120 });
     const [likedStories, setLikedStories] = useState({});
     
     // Video playback state
