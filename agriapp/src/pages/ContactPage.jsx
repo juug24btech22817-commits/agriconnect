@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, Mail, MapPin, Send, MessageSquare, CheckCircle2, ChevronDown, Globe2, HelpCircle, Twitter, Facebook, Instagram, Linkedin, Clock, Loader2 } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, MessageSquare, CheckCircle2, ChevronDown, Globe2, HelpCircle, Twitter, Facebook, Instagram, Linkedin, Clock, Loader2, Search } from 'lucide-react';
 
 const ContactPage = () => {
     const [submitted, setSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submittedName, setSubmittedName] = useState('');
     const [openFaq, setOpenFaq] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -467,8 +468,23 @@ const ContactPage = () => {
                         <p className="text-gray-500 dark:text-gray-400 font-medium">Quick answers to frequently asked support queries — no waiting required.</p>
                     </div>
 
+                    {/* FAQ Search Bar */}
+                    <div className="mb-10 max-w-md mx-auto relative group">
+                        <input
+                            type="text"
+                            placeholder="Search frequently asked questions..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full bg-white dark:bg-slate-900 border border-gray-200 dark:border-gray-800 rounded-2xl py-4 px-6 pl-14 text-agri-dark dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-agri-primary focus:border-transparent transition-all shadow-sm group-hover:border-gray-300 dark:group-hover:border-gray-700"
+                        />
+                        <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-agri-primary transition-colors" size={20} />
+                    </div>
+
                     <div className="space-y-4">
-                        {faqs.map((faq, idx) => (
+                        {faqs.filter(faq => 
+                            faq.q.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            faq.a.toLowerCase().includes(searchQuery.toLowerCase())
+                        ).map((faq, idx) => (
                             <div key={idx} className="glass rounded-[2rem] border-white/20 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <button 
                                     onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
@@ -496,6 +512,12 @@ const ContactPage = () => {
                                 </AnimatePresence>
                             </div>
                         ))}
+                        {faqs.filter(faq => 
+                            faq.q.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            faq.a.toLowerCase().includes(searchQuery.toLowerCase())
+                        ).length === 0 && (
+                            <p className="text-center text-gray-400 py-8 font-medium">No matches found for "{searchQuery}"</p>
+                        )}
                     </div>
                 </motion.section>
             </div>
