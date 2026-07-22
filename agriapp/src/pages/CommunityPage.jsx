@@ -83,6 +83,27 @@ const CommunityPage = () => {
             tags: ["SuccessStory", "SmartIrrigation"],
             category: "Success Stories",
             isVerified: true
+        },
+        {
+            id: 4,
+            title: "Optimizing Wheat Seed Rate",
+            author: "Dr. Ramesh Patel",
+            avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80",
+            location: "Karnal, Haryana",
+            time: "2d ago",
+            content: "For late-sown wheat, increasing the seed rate by 20% helps maintain the optimum plant population. Ensure proper spacing of 20cm between rows.",
+            image: null,
+            likes: 42,
+            liked: false,
+            isBookmarked: false,
+            views: 512,
+            comments: 1,
+            commentsList: [
+                { id: 401, author: "Farmer Gurdeep", text: "Very helpful guide, doctor. Does this apply to all soil types?", time: "1d ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80", likes: 2, liked: false }
+            ],
+            tags: ["SeedRate", "WheatFarming", "BestPractices"],
+            category: "Expert Advice",
+            isExpert: true
         }
     ]);
 
@@ -103,6 +124,8 @@ const CommunityPage = () => {
     const [newPostLocation, setNewPostLocation] = useState("");
     const [showReportToast, setShowReportToast] = useState(false);
     const [reportedPostTitle, setReportedPostTitle] = useState("");
+    const [isFollowingHero, setIsFollowingHero] = useState(false);
+    const [showFollowToast, setShowFollowToast] = useState(false);
 
     const handleLike = (id) => {
         setPosts(posts.map(post => {
@@ -293,6 +316,16 @@ const CommunityPage = () => {
         setTimeout(() => {
             setShowEliteToast(false);
         }, 5000);
+    };
+
+    const handleFollowHero = () => {
+        setIsFollowingHero(!isFollowingHero);
+        if (!isFollowingHero) {
+            setShowFollowToast(true);
+            setTimeout(() => {
+                setShowFollowToast(false);
+            }, 3000);
+        }
     };
 
     const filteredPosts = posts.filter(post => {
@@ -828,14 +861,15 @@ const CommunityPage = () => {
                             </h3>
                             <div className="space-y-6">
                                 {[
-                                    { topic: "Seed Rate Best Practices", count: "1.2k posts", icon: Sparkles, color: "text-amber-500" },
-                                    { topic: "Soil Moisture Monitoring", count: "850 posts", icon: Award, color: "text-emerald-500" },
-                                    { topic: "Pest Forecast", count: "640 posts", icon: CheckCircle, color: "text-blue-500" },
-                                    { topic: "Irrigation Efficiency", count: "530 posts", icon: MessageCircle, color: "text-fuchsia-500" }
+                                    { topic: "Seed Rate Best Practices", count: "1.2k posts", icon: Sparkles, color: "text-amber-500", searchWord: "Seed Rate" },
+                                    { topic: "Soil Moisture Monitoring", count: "850 posts", icon: Award, color: "text-emerald-500", searchWord: "Moisture" },
+                                    { topic: "Pest Forecast", count: "640 posts", icon: CheckCircle, color: "text-blue-500", searchWord: "Pest" },
+                                    { topic: "Irrigation Efficiency", count: "530 posts", icon: MessageCircle, color: "text-fuchsia-500", searchWord: "Irrigation" }
                                 ].map((item, i) => (
                                     <motion.div 
                                         key={i} 
                                         whileHover={{ x: 5 }}
+                                        onClick={() => handleTagClick(item.searchWord)}
                                         className="group cursor-pointer flex items-center gap-4 p-3 rounded-2xl hover:bg-agri-primary/5 transition-all border border-transparent hover:border-agri-primary/10"
                                     >
                                         <div className={`p-3 bg-gray-50 dark:bg-white/5 rounded-xl ${item.color} group-hover:scale-110 transition-transform shadow-sm`}>
@@ -866,6 +900,16 @@ const CommunityPage = () => {
                                 {[1,2,3,4,5].map(i => <Sparkles key={i} size={12} className="text-agri-secondary animate-pulse" style={{ animationDelay: `${i*0.2}s` }} />)}
                             </div>
                             <div className="mt-4 px-4 py-2 bg-agri-primary/10 rounded-xl text-[9px] font-black text-agri-primary uppercase tracking-widest inline-block">128 helpful replies</div>
+                            <button
+                                onClick={handleFollowHero}
+                                className={`w-full mt-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-95 shadow-md ${
+                                    isFollowingHero 
+                                    ? 'bg-emerald-500 text-white hover:bg-emerald-600' 
+                                    : 'bg-agri-primary text-white hover:bg-agri-dark'
+                                }`}
+                            >
+                                {isFollowingHero ? '✓ Following Sunil' : 'Follow Sunil'}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -1103,6 +1147,28 @@ const CommunityPage = () => {
                                                             <div>
                                                                 <h4 className="font-black text-sm uppercase tracking-wider text-amber-400 mb-0.5">Discussion Reported</h4>
                                                                 <p className="text-xs text-white/60 font-medium">"{reportedPostTitle}" has been flagged for moderation.</p>
+                                                            </div>
+                                                        </div>
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
+
+                                            {/* Follow Hero Toast Notification */}
+                                            <AnimatePresence>
+                                                {showFollowToast && (
+                                                    <motion.div
+                                                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                                                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                                                        className="fixed bottom-10 right-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-emerald-950 border border-emerald-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(16,185,129,0.2)] text-white"
+                                                    >
+                                                        <div className="flex gap-4 items-center">
+                                                            <div className="p-3 bg-emerald-500/20 rounded-xl text-emerald-400 shrink-0">
+                                                                <CheckCircle size={20} />
+                                                            </div>
+                                                            <div>
+                                                                <h4 className="font-black text-sm uppercase tracking-wider text-emerald-400 mb-0.5">Following Sunil</h4>
+                                                                <p className="text-xs text-white/60 font-medium">You will now receive notifications for posts and replies by Sunil Verma.</p>
                                                             </div>
                                                         </div>
                                                     </motion.div>
