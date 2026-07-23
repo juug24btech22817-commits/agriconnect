@@ -4,7 +4,7 @@ import {
   Users, MessageSquare, Heart, Share2, Search, 
   TrendingUp, Award, User, Clock, CheckCircle, 
   Plus, MessageCircle, Sparkles, Filter, X,
-  Bookmark, Eye, Trash2, Flag
+  Bookmark, Eye, Trash2, Flag, Edit2
 } from 'lucide-react';
 
 const categoryList = [
@@ -126,6 +126,60 @@ const CommunityPage = () => {
     const [reportedPostTitle, setReportedPostTitle] = useState("");
     const [isFollowingHero, setIsFollowingHero] = useState(false);
     const [showFollowToast, setShowFollowToast] = useState(false);
+
+    const [editingPostId, setEditingPostId] = useState(null);
+    const [editPostTitle, setEditPostTitle] = useState("");
+    const [editPostContent, setEditPostContent] = useState("");
+    const [editingComment, setEditingComment] = useState({ postId: null, commentId: null });
+    const [editCommentText, setEditCommentText] = useState("");
+
+    const startEditingPost = (post) => {
+        setEditingPostId(post.id);
+        setEditPostTitle(post.title);
+        setEditPostContent(post.content);
+    };
+
+    const handleSavePost = (postId) => {
+        if (!editPostTitle.trim() || !editPostContent.trim()) return;
+        setPosts(posts.map(post => {
+            if (post.id === postId) {
+                return {
+                    ...post,
+                    title: editPostTitle,
+                    content: editPostContent
+                };
+            }
+            return post;
+        }));
+        setEditingPostId(null);
+    };
+
+    const startEditingComment = (postId, comment) => {
+        setEditingComment({ postId, commentId: comment.id });
+        setEditCommentText(comment.text);
+    };
+
+    const handleSaveComment = (postId, commentId) => {
+        if (!editCommentText.trim()) return;
+        setPosts(posts.map(post => {
+            if (post.id === postId) {
+                return {
+                    ...post,
+                    commentsList: post.commentsList.map(comment => {
+                        if (comment.id === commentId) {
+                            return {
+                                ...comment,
+                                text: editCommentText
+                            };
+                        }
+                        return comment;
+                    })
+                };
+            }
+            return post;
+        }));
+        setEditingComment({ postId: null, commentId: null });
+    };
 
     const handleLike = (id) => {
         setPosts(posts.map(post => {
@@ -611,15 +665,26 @@ const CommunityPage = () => {
                                             </div>
                                             <div className="flex gap-2">
                                                 {post.author === "Farmer Shaswat" && (
-                                                    <motion.button 
-                                                        whileHover={{ scale: 1.1 }}
-                                                        whileTap={{ scale: 0.9 }}
-                                                        onClick={() => handleDeletePost(post.id)}
-                                                        className="p-3 bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white rounded-2xl transition-all"
-                                                        title="Delete Discussion"
-                                                    >
-                                                        <Trash2 size={20} />
-                                                    </motion.button>
+                                                    <>
+                                                        <motion.button 
+                                                            whileHover={{ scale: 1.1 }}
+                                                            whileTap={{ scale: 0.9 }}
+                                                            onClick={() => startEditingPost(post)}
+                                                            className="p-3 bg-agri-primary/10 text-agri-primary hover:bg-agri-primary hover:text-white rounded-2xl transition-all"
+                                                            title="Edit Discussion"
+                                                        >
+                                                            <Edit2 size={20} />
+                                                        </motion.button>
+                                                        <motion.button 
+                                                            whileHover={{ scale: 1.1 }}
+                                                            whileTap={{ scale: 0.9 }}
+                                                            onClick={() => handleDeletePost(post.id)}
+                                                            className="p-3 bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white rounded-2xl transition-all"
+                                                            title="Delete Discussion"
+                                                        >
+                                                            <Trash2 size={20} />
+                                                        </motion.button>
+                                                    </>
                                                 )}
                                                 <motion.button 
                                                     whileHover={{ scale: 1.1 }}
@@ -657,13 +722,50 @@ const CommunityPage = () => {
                                             </div>
                                         )}
 
-                                        <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white mb-4 tracking-tight leading-tight group-hover:text-agri-primary transition-colors">
-                                            {post.title}
-                                        </h3>
+                                        {editingPostId === post.id ? (
+                                            <div className="space-y-4 mb-6">
+                                                <input 
+                                                    type="text"
+                                                    value={editPostTitle}
+                                                    onChange={(e) => setEditPostTitle(e.target.value)}
+                                                    className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-white/10 rounded-2xl px-6 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary font-black text-lg focus:outline-none"
+                                                    placeholder="Edit Title"
+                                                />
+                                                <textarea 
+                                                    rows="4"
+                                                    value={editPostContent}
+                                                    onChange={(e) => setEditPostContent(e.target.value)}
+                                                    className="w-full bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-white/10 rounded-2xl px-6 py-4 text-agri-dark dark:text-white focus:ring-2 focus:ring-agri-primary font-medium text-base resize-none focus:outline-none"
+                                                    placeholder="Edit content"
+                                                />
+                                                <div className="flex gap-2 justify-end">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setEditingPostId(null)}
+                                                        className="px-4 py-2 bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-gray-200 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-gray-300 transition-all"
+                                                    >
+                                                        Cancel
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleSavePost(post.id)}
+                                                        className="px-4 py-2 bg-agri-primary text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-agri-dark transition-all"
+                                                    >
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white mb-4 tracking-tight leading-tight group-hover:text-agri-primary transition-colors">
+                                                    {post.title}
+                                                </h3>
 
-                                        <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-6 font-medium">
-                                            {post.content}
-                                        </p>
+                                                <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-6 font-medium">
+                                                    {post.content}
+                                                </p>
+                                            </>
+                                        )}
 
                                         {post.image && (
                                             <div className="mb-8 rounded-3xl overflow-hidden max-h-[350px] border border-gray-100 dark:border-white/5 shadow-md">
@@ -747,7 +849,35 @@ const CommunityPage = () => {
                                                                         )}
                                                                         <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest ml-auto">{comment.time}</span>
                                                                     </div>
-                                                                    <p className="text-xs text-gray-600 dark:text-gray-300 font-medium leading-relaxed mb-2">{comment.text}</p>
+                                                                    {editingComment.postId === post.id && editingComment.commentId === comment.id ? (
+                                                                        <div className="flex gap-2 items-center mb-2">
+                                                                            <input
+                                                                                type="text"
+                                                                                value={editCommentText}
+                                                                                onChange={(e) => setEditCommentText(e.target.value)}
+                                                                                onKeyDown={(e) => {
+                                                                                    if (e.key === 'Enter') handleSaveComment(post.id, comment.id);
+                                                                                }}
+                                                                                className="flex-grow px-4 py-2 bg-white dark:bg-slate-800 border border-gray-200 dark:border-white/10 rounded-xl text-xs font-medium text-agri-dark dark:text-white focus:outline-none"
+                                                                            />
+                                                                            <button
+                                                                                type="button"
+                                                                                onClick={() => setEditingComment({ postId: null, commentId: null })}
+                                                                                className="px-3 py-2 bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-gray-200 rounded-xl font-black text-[9px] uppercase tracking-wider"
+                                                                            >
+                                                                                Cancel
+                                                                            </button>
+                                                                            <button
+                                                                                type="button"
+                                                                                onClick={() => handleSaveComment(post.id, comment.id)}
+                                                                                className="px-3 py-2 bg-agri-primary text-white rounded-xl font-black text-[9px] uppercase tracking-wider"
+                                                                            >
+                                                                                Save
+                                                                            </button>
+                                                                        </div>
+                                                                    ) : (
+                                                                        <p className="text-xs text-gray-600 dark:text-gray-300 font-medium leading-relaxed mb-2">{comment.text}</p>
+                                                                    )}
                                                                     <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-wider">
                                                                         <button 
                                                                             onClick={() => handleLikeComment(post.id, comment.id)}
@@ -757,13 +887,24 @@ const CommunityPage = () => {
                                                                             <span>{comment.likes || 0}</span>
                                                                         </button>
                                                                         {comment.author === "Farmer Shaswat" && (
-                                                                            <button 
-                                                                                onClick={() => handleDeleteComment(post.id, comment.id)}
-                                                                                className="text-gray-400 hover:text-rose-500 transition-colors flex items-center gap-1 ml-auto"
-                                                                            >
-                                                                                <Trash2 size={12} />
-                                                                                <span>Delete</span>
-                                                                            </button>
+                                                                            <div className="flex gap-3 ml-auto items-center">
+                                                                                <button 
+                                                                                    type="button"
+                                                                                    onClick={() => startEditingComment(post.id, comment)}
+                                                                                    className="text-gray-400 hover:text-agri-primary transition-colors flex items-center gap-1"
+                                                                                >
+                                                                                    <Edit2 size={12} />
+                                                                                    <span>Edit</span>
+                                                                                </button>
+                                                                                <button 
+                                                                                    type="button"
+                                                                                    onClick={() => handleDeleteComment(post.id, comment.id)}
+                                                                                    className="text-gray-400 hover:text-rose-500 transition-colors flex items-center gap-1"
+                                                                                >
+                                                                                    <Trash2 size={12} />
+                                                                                    <span>Delete</span>
+                                                                                </button>
+                                                                            </div>
                                                                         )}
                                                                     </div>
                                                                 </div>
