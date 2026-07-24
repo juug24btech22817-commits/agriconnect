@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Phone, Mail, MapPin, Send, MessageSquare, CheckCircle2, ChevronDown, Globe2, HelpCircle, Twitter, Facebook, Instagram, Linkedin, Clock, Loader2, Search } from 'lucide-react';
+import { Phone, Mail, MapPin, Send, MessageSquare, CheckCircle2, ChevronDown, Globe2, HelpCircle, Twitter, Facebook, Instagram, Linkedin, Youtube, Clock, Loader2, Search } from 'lucide-react';
+
 
 const ContactPage = () => {
     const [submitted, setSubmitted] = useState(false);
@@ -83,22 +84,22 @@ const ContactPage = () => {
         { 
             icon: <Phone className="text-agri-primary" />, 
             title: "Toll-Free Support", 
-            value: "1800-419-8444", 
-            link: "tel:18004198444",
+            value: "1800-102-5566", 
+            link: "tel:18001025566",
             desc: "Available in 8+ Indian languages" 
         },
         { 
             icon: <MessageSquare className="text-emerald-500" />, 
             title: "WhatsApp Support", 
-            value: "+91 99887 76655", 
-            link: "https://wa.me/919988776655",
+            value: "+91 88001 12233", 
+            link: "https://wa.me/918800112233",
             desc: "Instant chat support and updates" 
         },
         { 
             icon: <Mail className="text-agri-secondary" />, 
             title: "Email Assistance", 
-            value: "support@agriconnect.in", 
-            link: "mailto:support@agriconnect.in",
+            value: "support@agriconnect.org", 
+            link: "mailto:support@agriconnect.org",
             desc: "24/7 email help desk" 
         }
     ];
@@ -107,7 +108,8 @@ const ContactPage = () => {
         { icon: <Twitter size={20} />, label: "Twitter", color: "hover:text-blue-400", href: "https://twitter.com/agriconnect" },
         { icon: <Facebook size={20} />, label: "Facebook", color: "hover:text-blue-600", href: "https://facebook.com/agriconnect" },
         { icon: <Instagram size={20} />, label: "Instagram", color: "hover:text-pink-500", href: "https://instagram.com/agriconnect" },
-        { icon: <Linkedin size={20} />, label: "LinkedIn", color: "hover:text-blue-700", href: "https://linkedin.com/company/agriconnect" }
+        { icon: <Linkedin size={20} />, label: "LinkedIn", color: "hover:text-blue-700", href: "https://linkedin.com/company/agriconnect" },
+        { icon: <Youtube size={20} />, label: "YouTube", color: "hover:text-red-500", href: "https://youtube.com/agriconnect" }
     ];
 
     const faqs = [
@@ -182,17 +184,31 @@ const ContactPage = () => {
                         <div className="glass p-10 rounded-[3rem] border border-white/20 bg-agri-primary/5 dark:bg-agri-primary/5 relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-agri-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
                             <div className="flex flex-col gap-8 relative z-10">
-                                <div className="flex items-start gap-5">
-                                    <div className="p-4 bg-agri-primary rounded-2xl text-white shadow-glow group-hover:rotate-12 transition-transform duration-500">
-                                        <MapPin size={28} />
+                                <div className="flex flex-col gap-6">
+                                    <div className="flex items-start gap-5">
+                                        <div className="p-4 bg-agri-primary rounded-2xl text-white shadow-glow group-hover:rotate-6 transition-transform duration-500">
+                                            <MapPin size={24} />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-display font-bold text-agri-dark dark:text-white mb-1.5 tracking-tight">India Headquarters</h3>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
+                                                Level 4, Agri-Tech Park, <br />
+                                                M.G. Road, Hebbal, <br />
+                                                Bengaluru, Karnataka - 560024
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h3 className="text-2xl font-display font-bold text-agri-dark dark:text-white mb-3 tracking-tight">India Headquarters</h3>
-                                        <p className="text-lg text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
-                                            Level 4, Agri-Tech Park, <br />
-                                            M.G. Road, Hebbal, <br />
-                                            Bengaluru, Karnataka - 560024
-                                        </p>
+                                    <div className="flex items-start gap-5 pt-4 border-t border-gray-200 dark:border-gray-800">
+                                        <div className="p-4 bg-agri-secondary/10 rounded-2xl text-agri-secondary">
+                                            <MapPin size={24} />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-display font-bold text-agri-dark dark:text-white mb-1.5 tracking-tight">Regional Center</h3>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
+                                                Level 2, Seed Breeding Research Center, <br />
+                                                Pusa Road, New Delhi - 110012
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
 
