@@ -437,6 +437,77 @@ const HomePage = () => {
                 </div>
             </section>
 
+            {/* Success Stories Section */}
+            <section className="py-20 relative z-10 bg-agri-surface/50 dark:bg-slate-900/30">
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-16">
+                        <span className="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-bold mb-3 border border-emerald-500/20">
+                            <Star size={12} className="text-emerald-500 fill-emerald-500" /> Farmer Success Stories
+                        </span>
+                        <h2 className="text-4xl md:text-5xl font-display font-bold text-agri-dark dark:text-white tracking-tight">
+                            Loved by Farmers, <span className="text-agri-primary">Trusted by Buyers</span>
+                        </h2>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {[
+                            {
+                                quote: "AgriConnect changed the way we sell our harvest. I got my Basmati payment within 24 hours of trading. No middleman, no hassle!",
+                                name: "Baldev Singh",
+                                role: "Basmati Rice Farmer",
+                                location: "Karnal, Haryana",
+                                rating: 5,
+                                avatar: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?q=80&w=200&auto=format&fit=crop"
+                            },
+                            {
+                                quote: "As a wholesale distributor, finding verified organic farmers was a challenge. This platform makes discovery and logistics seamless.",
+                                name: "Rajesh Mehta",
+                                role: "Mehta Agro Traders",
+                                location: "Indore, Madhya Pradesh",
+                                rating: 5,
+                                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop"
+                            },
+                            {
+                                quote: "I was skeptical about live mandi rates at first, but the transparency here is unmatched. I got 15% higher value for my cotton crop.",
+                                name: "Suresh Hegde",
+                                role: "Cotton & Maize Cultivator",
+                                location: "Haveri, Karnataka",
+                                rating: 5,
+                                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop"
+                            }
+                        ].map((testimonial, idx) => (
+                            <motion.div
+                                key={idx}
+                                whileHover={{ y: -6 }}
+                                className="glass p-8 rounded-3xl shadow-premium border-white/20 hover:border-agri-primary/30 transition-all text-left flex flex-col justify-between"
+                            >
+                                <div>
+                                    <div className="flex gap-1 mb-4 text-amber-500">
+                                        {[...Array(testimonial.rating)].map((_, i) => (
+                                            <Star key={i} size={16} fill="currentColor" />
+                                        ))}
+                                    </div>
+                                    <p className="text-gray-600 dark:text-gray-300 italic mb-6 leading-relaxed">
+                                        "{testimonial.quote}"
+                                    </p>
+                                </div>
+                                <div className="flex items-center gap-4">
+                                    <img 
+                                        src={testimonial.avatar} 
+                                        alt={testimonial.name} 
+                                        className="w-12 h-12 rounded-full object-cover border-2 border-agri-primary/20"
+                                    />
+                                    <div>
+                                        <h4 className="font-bold text-agri-dark dark:text-white text-base">{testimonial.name}</h4>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 font-semibold">{testimonial.role} · {testimonial.location}</p>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* CTA Section */}
             <section className="py-24 container mx-auto px-4 mb-32">
                 <div className="relative rounded-[4rem] bg-agri-dark dark:bg-agri-primary/10 p-16 md:p-24 overflow-hidden border border-white/10">
