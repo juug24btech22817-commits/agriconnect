@@ -379,6 +379,38 @@ const ContactPage = () => {
                                                     </select>
                                                     <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-agri-primary transition-colors" size={20} />
                                                 </div>
+                                                <div className="flex flex-wrap gap-2 pt-1">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setFormData(prev => ({ ...prev, category: 'Sell Crops Support', subject: 'Inquiry about selling crops' }));
+                                                            setErrors(prev => ({ ...prev, subject: '' }));
+                                                        }}
+                                                        className="text-[10px] px-2.5 py-1 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider transition-colors border border-emerald-500/20"
+                                                    >
+                                                        🌾 Sell Crops
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setFormData(prev => ({ ...prev, category: 'Buyer Onboarding', subject: 'Registering as a buyer' }));
+                                                            setErrors(prev => ({ ...prev, subject: '' }));
+                                                        }}
+                                                        className="text-[10px] px-2.5 py-1 rounded-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 font-bold uppercase tracking-wider transition-colors border border-amber-500/20"
+                                                    >
+                                                        🤝 Buyer Signup
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setFormData(prev => ({ ...prev, category: 'Technical Issue', subject: 'Technical support request' }));
+                                                            setErrors(prev => ({ ...prev, subject: '' }));
+                                                        }}
+                                                        className="text-[10px] px-2.5 py-1 rounded-full bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider transition-colors border border-blue-500/20"
+                                                    >
+                                                        ⚙️ Tech Support
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div className="space-y-2 group">
                                                 <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1 group-focus-within:text-agri-primary transition-colors">Preferred Language</label>
@@ -503,17 +535,17 @@ const ContactPage = () => {
                         ).map((faq, idx) => (
                             <div key={idx} className="glass rounded-[2rem] border-white/20 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                 <button 
-                                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                                    onClick={() => setOpenFaq(openFaq === faq.q ? null : faq.q)}
                                     className="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-agri-primary/5 transition-colors group"
                                 >
                                     <span className="text-lg font-bold text-agri-dark dark:text-white flex items-center gap-3 group-hover:text-agri-primary transition-colors">
                                         <HelpCircle size={20} className="text-agri-primary opacity-50" />
                                         {faq.q}
                                     </span>
-                                    <ChevronDown className={`text-gray-400 transition-transform duration-300 ${openFaq === idx ? 'rotate-180 text-agri-primary' : ''}`} />
+                                    <ChevronDown className={`text-gray-400 transition-transform duration-300 ${openFaq === faq.q ? 'rotate-180 text-agri-primary' : ''}`} />
                                 </button>
                                 <AnimatePresence>
-                                    {openFaq === idx && (
+                                    {openFaq === faq.q && (
                                         <motion.div
                                             initial={{ height: 0, opacity: 0 }}
                                             animate={{ height: 'auto', opacity: 1 }}
