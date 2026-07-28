@@ -104,6 +104,28 @@ const CommunityPage = () => {
             tags: ["SeedRate", "WheatFarming", "BestPractices"],
             category: "Expert Advice",
             isExpert: true
+        },
+        {
+            id: 5,
+            title: "Water Conservation Techniques for Summer Crops",
+            author: "Dr. Meena Iyer",
+            avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=150&q=80",
+            location: "Nashik, Maharashtra",
+            time: "3h ago",
+            content: "With summer heat intensifying, water conservation is critical. I've implemented mulching with dry leaves around mango and pomegranate orchards — it reduces soil moisture loss by up to 35%! Combine it with drip irrigation during early morning hours for best results. Anyone else tried micro-sprinklers for small plots?",
+            image: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=800&q=80",
+            likes: 37,
+            liked: false,
+            isBookmarked: false,
+            views: 318,
+            comments: 2,
+            commentsList: [
+                { id: 501, author: "Farmer Ramesh", text: "Mulching has been a game-changer for my tomato fields too! Reduced watering frequency from daily to every 3 days.", time: "2h ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80", likes: 5, liked: false },
+                { id: 502, author: "Suresh Gowda", text: "Doctor, would this work for sugarcane fields as well? We face severe water stress every April-May.", time: "1h ago", isVerified: true, avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80", likes: 2, liked: false }
+            ],
+            tags: ["WaterConservation", "SummerCrops", "Irrigation"],
+            category: "Expert Advice",
+            isExpert: true
         }
     ]);
 
