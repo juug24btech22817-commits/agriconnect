@@ -144,10 +144,10 @@ const ContactPage = () => {
                         </span>
                     </div>
                     <h1 className="text-5xl md:text-8xl font-display font-black text-agri-dark dark:text-white mb-6 tracking-tight leading-tight">
-                        Contact Our <span className="text-gradient">Support Team</span>
+                        We're Here to <span className="text-gradient">Help You</span>
                     </h1>
                     <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-medium">
-                        Whether you're a farmer, trader, or agri-entrepreneur, our team is ready to help you move forward faster—day or night, in your preferred language.
+                        Whether you're a farmer, trader, or agri-entrepreneur, our dedicated team is ready to assist you—day or night, in your preferred language.
                     </p>
                     <p className="mt-4 text-sm text-gray-400 dark:text-gray-500 max-w-2xl mx-auto">
                         Need help fast? Select your issue and language, and we will route your request to the right specialist within 24 hours.
@@ -375,6 +375,8 @@ const ContactPage = () => {
                                                         <option>General Inquiry</option>
                                                         <option>Sell Crops Support</option>
                                                         <option>Buyer Onboarding</option>
+                                                        <option>Farmer Verification</option>
+                                                        <option>Payment Issue</option>
                                                         <option>Technical Issue</option>
                                                     </select>
                                                     <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-agri-primary transition-colors" size={20} />
@@ -410,6 +412,16 @@ const ContactPage = () => {
                                                     >
                                                         ⚙️ Tech Support
                                                     </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setFormData(prev => ({ ...prev, category: 'Farmer Verification', subject: 'Help with farmer account verification' }));
+                                                            setErrors(prev => ({ ...prev, subject: '' }));
+                                                        }}
+                                                        className="text-[10px] px-2.5 py-1 rounded-full bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-400 font-bold uppercase tracking-wider transition-colors border border-purple-500/20"
+                                                    >
+                                                        ✅ Verification
+                                                    </button>
                                                 </div>
                                             </div>
                                             <div className="space-y-2 group">
@@ -428,7 +440,9 @@ const ContactPage = () => {
                                                         <option>Tamil (தமிழ்)</option>
                                                         <option>Marathi (मराठी)</option>
                                                         <option>Bengali (বাংলা)</option>
-                                                        <option>Gujarati (ગુજરાતી)</option>
+                                                        <option>Gujarati (ગુજรાતી)</option>
+                                                        <option>Odia (ଓଡ଼ିଆ)</option>
+                                                        <option>Punjabi (ਪੰਜਾਬੀ)</option>
                                                     </select>
                                                     <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-focus-within:text-agri-primary transition-colors" size={20} />
                                                 </div>
@@ -489,7 +503,7 @@ const ContactPage = () => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    Submit Request
+                                                    Send Message
                                                     <Send size={22} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                                 </>
                                             )}
