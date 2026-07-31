@@ -102,7 +102,12 @@ const CartPage = () => {
                         <Link to="/marketplace" className="p-2 bg-white dark:bg-gray-800 rounded-xl text-gray-600 dark:text-gray-400 hover:text-agri-green transition-colors shadow-sm ring-1 ring-gray-200 dark:ring-gray-700">
                             <ArrowLeft size={24} />
                         </Link>
-                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Shopping Cart</h1>
+                        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                            Shopping Cart
+                            <span className="ml-3 inline-flex items-center justify-center px-3 py-1 text-sm font-bold bg-agri-green text-white rounded-full align-middle">
+                                {cart.length} {cart.length === 1 ? 'item' : 'items'}
+                            </span>
+                        </h1>
                     </div>
                     <button
                         onClick={clearCart}
