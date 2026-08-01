@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Check, Clock, Phone, MessageSquare, MapPin, Truck, Package, ShieldCheck, ShoppingBag, Search, ArrowLeft, RefreshCw } from 'lucide-react';
+import { Check, Clock, Phone, MessageSquare, MapPin, Truck, Package, ShieldCheck, ShoppingBag, Search, ArrowLeft, RefreshCw, Copy, CheckCheck, Star, Zap } from 'lucide-react';
 
 const OrderTrackingPage = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -11,6 +11,14 @@ const OrderTrackingPage = () => {
     const [orderData, setOrderData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [copied, setCopied] = useState(false);
+
+    const handleCopyId = () => {
+        navigator.clipboard.writeText(trackingId).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        });
+    };
 
     const fetchTrackingData = async (tid) => {
         if (!tid || !tid.trim()) return;
@@ -139,9 +147,14 @@ const OrderTrackingPage = () => {
                             </div>
                             
                             <h1 className="text-3xl font-display font-black text-agri-dark dark:text-white mb-3">Live Order Tracking</h1>
-                            <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-sm mx-auto text-sm leading-relaxed">
+                            <p className="text-gray-500 dark:text-gray-400 mb-2 max-w-sm mx-auto text-sm leading-relaxed">
                                 Enter your unique Tracking ID to see real-time updates of your harvest journey from farm to table.
                             </p>
+                            <div className="flex items-center justify-center gap-2 mb-6">
+                                <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-3 py-1.5 rounded-full">
+                                    <Zap size={10} className="fill-emerald-500" /> Real-time updates every 5s
+                                </span>
+                            </div>
 
                             <form onSubmit={handleSearchSubmit} className="space-y-4">
                                 <div className="relative">
@@ -204,11 +217,38 @@ const OrderTrackingPage = () => {
                                 <h1 className="text-3xl font-display font-black text-gray-900 dark:text-white mb-2">Track Your Produce</h1>
                                 <div className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider">
                                     <span className="text-gray-400">Tracking ID:</span>
-                                    <span className="text-agri-primary font-mono">{trackingId}</span>
+                                    <button
+                                        onClick={handleCopyId}
+                                        className="flex items-center gap-1.5 text-agri-primary font-mono hover:opacity-75 transition-opacity"
+                                        title="Copy tracking ID"
+                                    >
+                                        <span>{trackingId}</span>
+                                        {copied ? <CheckCheck size={12} className="text-emerald-500" /> : <Copy size={12} />}
+                                    </button>
                                     <span className="w-1.5 h-1.5 bg-gray-300 rounded-full"></span>
                                     <span className="text-emerald-600 dark:text-emerald-400">{orderData.partner || 'Shiprocket'}</span>
                                 </div>
                             </div>
+
+                            {/* Delivered Banner */}
+                            <AnimatePresence>
+                                {orderData.status === 'Delivered' && (
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-2xl p-4 flex items-center gap-3 shadow-lg"
+                                    >
+                                        <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center shrink-0">
+                                            <Star size={20} className="fill-white text-white" />
+                                        </div>
+                                        <div className="text-left">
+                                            <p className="font-black text-sm">Your order has been delivered! 🎉</p>
+                                            <p className="text-[10px] text-white/75 font-semibold mt-0.5">Thank you for choosing AgriConnect. Enjoy your fresh harvest!</p>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
 
                             {/* Delivery ETA Card */}
                             <motion.div
@@ -217,11 +257,30 @@ const OrderTrackingPage = () => {
                                 className="bg-gradient-to-r from-agri-primary to-emerald-700 text-white rounded-[2.5rem] p-8 text-center shadow-premium relative overflow-hidden"
                             >
                                 <div className="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-white opacity-10 rounded-full blur-2xl"></div>
+                                <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl"></div>
                                 <p className="text-emerald-100/80 text-xs font-bold uppercase tracking-widest mb-2 relative z-10">Estimated Delivery Date</p>
                                 <h2 className="text-3xl md:text-4xl font-black relative z-10">{formattedEstimatedDelivery}</h2>
                                 <p className="text-[10px] mt-4 opacity-80 relative z-10 font-bold uppercase tracking-widest bg-white/10 inline-block px-4 py-1.5 rounded-full">
                                     Status: {orderData.status}
                                 </p>
+                                {/* Progress Bar */}
+                                {(() => {
+                                    const statusKeys = ['Order Placed', 'Picked Up', 'In Transit', 'Out for Delivery', 'Delivered'];
+                                    const pct = Math.round(((statusKeys.indexOf(orderData.status) + 1) / statusKeys.length) * 100);
+                                    return (
+                                        <div className="mt-5 relative z-10">
+                                            <div className="h-1.5 bg-white/20 rounded-full overflow-hidden">
+                                                <motion.div
+                                                    initial={{ width: 0 }}
+                                                    animate={{ width: `${pct}%` }}
+                                                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                                                    className="h-full bg-white rounded-full"
+                                                />
+                                            </div>
+                                            <p className="text-[10px] text-white/60 mt-1.5 font-bold">{pct}% complete</p>
+                                        </div>
+                                    );
+                                })()}
                             </motion.div>
 
                             <div className="grid md:grid-cols-5 gap-8">
@@ -300,12 +359,21 @@ const OrderTrackingPage = () => {
                                         <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
                                             <ShoppingBag size={20} className="text-emerald-600 dark:text-emerald-400" />
                                         </div>
-                                        <div className="text-left">
+                                        <div className="text-left flex-1">
                                             <p className="font-bold text-gray-900 dark:text-white text-xs">Fresh Harvest Produce</p>
                                             <p className="text-gray-400 dark:text-gray-500 text-[10px] font-bold uppercase tracking-wider mt-0.5">
                                                 Paid via Cash on Delivery
                                             </p>
                                         </div>
+                                        <span className={`text-[9px] font-black uppercase px-2 py-1 rounded-lg shrink-0 ${
+                                            orderData.status === 'Delivered' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400' :
+                                            orderData.status === 'Out for Delivery' ? 'bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400' :
+                                            'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                                        }`}>
+                                            {orderData.status === 'Out for Delivery' ? '🚚 On Way' :
+                                             orderData.status === 'Delivered' ? '✅ Done' :
+                                             '⏳ Pending'}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
