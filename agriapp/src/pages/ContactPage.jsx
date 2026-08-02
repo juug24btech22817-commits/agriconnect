@@ -20,6 +20,24 @@ const ContactPage = () => {
     });
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
+    const [activeOffice, setActiveOffice] = useState('bengaluru');
+
+    const offices = {
+        bengaluru: {
+            id: 'bengaluru',
+            title: "India Headquarters",
+            address: "Level 4, Agri-Tech Park, M.G. Road, Hebbal, Bengaluru, Karnataka - 560024",
+            mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.0267727402087!2d77.5913217!3d13.0339598!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae17ec23fbf507%3A0x6e9f298e154f3be7!2sHebbal%2C%20Bengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin",
+            phone: "+91 80 4912 3456"
+        },
+        delhi: {
+            id: 'delhi',
+            title: "Regional Center",
+            address: "Level 2, Seed Breeding Research Center, Pusa Road, New Delhi - 110012",
+            mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.9961678125433!2d77.1687422!3d28.6304523!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d02953ab709f7%3A0xe5de52d4bd280d56!2sPusa%20Road%2C%20New%20Delhi!5e0!3m2!1sen!2sin!4v1700000000001!5m2!1sen!2sin",
+            phone: "+91 11 4105 6789"
+        }
+    };
 
     const validateField = (name, value) => {
         switch(name) {
@@ -181,36 +199,78 @@ const ContactPage = () => {
                             ))}
                         </div>
 
-                        <div className="glass p-10 rounded-[3rem] border border-white/20 bg-agri-primary/5 dark:bg-agri-primary/5 relative overflow-hidden group">
+                        <div className="glass p-8 rounded-[3rem] border border-white/20 bg-agri-primary/5 dark:bg-agri-primary/5 relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-agri-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
-                            <div className="flex flex-col gap-8 relative z-10">
-                                <div className="flex flex-col gap-6">
-                                    <div className="flex items-start gap-5">
-                                        <div className="p-4 bg-agri-primary rounded-2xl text-white shadow-glow group-hover:rotate-6 transition-transform duration-500">
-                                            <MapPin size={24} />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-display font-bold text-agri-dark dark:text-white mb-1.5 tracking-tight">India Headquarters</h3>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
-                                                Level 4, Agri-Tech Park, <br />
-                                                M.G. Road, Hebbal, <br />
-                                                Bengaluru, Karnataka - 560024
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-start gap-5 pt-4 border-t border-gray-200 dark:border-gray-800">
-                                        <div className="p-4 bg-agri-secondary/10 rounded-2xl text-agri-secondary">
-                                            <MapPin size={24} />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-display font-bold text-agri-dark dark:text-white mb-1.5 tracking-tight">Regional Center</h3>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
-                                                Level 2, Seed Breeding Research Center, <br />
-                                                Pusa Road, New Delhi - 110012
-                                            </p>
-                                        </div>
-                                    </div>
+                            <div className="flex flex-col gap-6 relative z-10">
+                                {/* Office Selection Tabs */}
+                                <div className="flex gap-2 p-1 bg-white/50 dark:bg-gray-900/50 rounded-2xl border border-gray-100 dark:border-gray-800">
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveOffice('bengaluru')}
+                                        className={`flex-1 py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-300 ${
+                                            activeOffice === 'bengaluru'
+                                                ? 'bg-agri-primary text-white shadow-md'
+                                                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
+                                        }`}
+                                    >
+                                        Bengaluru HQ
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setActiveOffice('delhi')}
+                                        className={`flex-1 py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all duration-300 ${
+                                            activeOffice === 'delhi'
+                                                ? 'bg-agri-primary text-white shadow-md'
+                                                : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100/50 dark:hover:bg-gray-800/50'
+                                        }`}
+                                    >
+                                        New Delhi Center
+                                    </button>
                                 </div>
+
+                                {/* Active Office Details & Map */}
+                                <AnimatePresence mode="wait">
+                                    <motion.div
+                                        key={activeOffice}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="space-y-6"
+                                    >
+                                        <div className="flex items-start gap-4">
+                                            <div className={`p-3 rounded-2xl text-white shadow-glow ${activeOffice === 'bengaluru' ? 'bg-agri-primary' : 'bg-agri-secondary'}`}>
+                                                <MapPin size={20} />
+                                            </div>
+                                            <div>
+                                                <h3 className="text-lg font-display font-bold text-agri-dark dark:text-white mb-1 tracking-tight">
+                                                    {offices[activeOffice].title}
+                                                </h3>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed font-medium">
+                                                    {offices[activeOffice].address}
+                                                </p>
+                                                <p className="text-xs text-agri-primary font-semibold mt-1">
+                                                    Tel: {offices[activeOffice].phone}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Embedded Google Map */}
+                                        <div className="w-full h-48 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-inner relative bg-gray-100 dark:bg-gray-900">
+                                            <iframe
+                                                title={`${offices[activeOffice].title} Map`}
+                                                src={offices[activeOffice].mapUrl}
+                                                width="100%"
+                                                height="100%"
+                                                style={{ border: 0, filter: 'contrast(1.1) opacity(0.95)' }}
+                                                allowFullScreen=""
+                                                loading="lazy"
+                                                referrerPolicy="no-referrer-when-downgrade"
+                                                className="absolute inset-0"
+                                            />
+                                        </div>
+                                    </motion.div>
+                                </AnimatePresence>
 
                                 <div className="flex items-center gap-5 pt-4 border-t border-gray-200 dark:border-gray-800">
                                     <div className="p-3 bg-agri-secondary/10 rounded-xl text-agri-secondary">
