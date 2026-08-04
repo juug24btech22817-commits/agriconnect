@@ -609,6 +609,21 @@ const CommunityPage = () => {
                                     </div>
                                 </div>
                             </div>
+                            
+                            {/* Quick Suggestion Tags */}
+                            <div className="flex flex-wrap gap-2 items-center px-2">
+                                <span className="text-[9px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mr-1">Popular:</span>
+                                {["OrganicTransition", "WeatherAlert", "WheatFarming", "SmartIrrigation", "SuccessStory"].map(tag => (
+                                    <button
+                                        key={tag}
+                                        type="button"
+                                        onClick={() => handleTagClick(tag)}
+                                        className="px-3 py-1 bg-white/50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-full text-[9px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest hover:border-agri-primary hover:text-agri-primary transition-all active:scale-95"
+                                    >
+                                        #{tag}
+                                    </button>
+                                ))}
+                            </div>
 
                         <div className="space-y-8">
                             {/* Results count */}
