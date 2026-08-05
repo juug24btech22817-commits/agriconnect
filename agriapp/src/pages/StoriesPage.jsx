@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Quote, PlayCircle, X, ArrowRight, Heart, Users, ShieldCheck, TrendingUp, Globe, Award, ChevronRight, Search, Plus, Play, Pause, MessageSquare, Star, SlidersHorizontal, Sparkles, Eye } from 'lucide-react';
+import { Quote, PlayCircle, X, ArrowRight, Heart, Users, ShieldCheck, TrendingUp, Globe, Award, ChevronRight, Search, Plus, Play, Pause, MessageSquare, Star, SlidersHorizontal, Sparkles, Eye, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const stats = [
@@ -108,6 +108,15 @@ const StoriesPage = () => {
     // Video playback state
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(65);
+    
+    // Share story state
+    const [sharedStoryId, setSharedStoryId] = useState(null);
+
+    const handleShare = (storyId) => {
+        navigator.clipboard.writeText(`${window.location.origin}/stories#story-${storyId}`);
+        setSharedStoryId(storyId);
+        setTimeout(() => setSharedStoryId(null), 2000);
+    };
     
     // Share story modal state
     const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
@@ -560,6 +569,17 @@ const StoriesPage = () => {
                                                 <Eye size={16} />
                                                 <span className="text-xs font-black">{storyViews[story.id] || 0}</span>
                                             </div>
+
+                                            <motion.button 
+                                                whileTap={{ scale: 0.8 }}
+                                                onClick={() => handleShare(story.id)}
+                                                className={`flex items-center gap-2 px-5 py-3 rounded-full border bg-white/50 dark:bg-white/5 border-white/20 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:text-agri-primary hover:border-agri-primary/20 transition-all`}
+                                            >
+                                                <Share2 size={16} />
+                                                <span className="text-xs font-black">
+                                                    {sharedStoryId === story.id ? "Copied!" : "Share"}
+                                                </span>
+                                            </motion.button>
                                         </div>
                                     </div>
                                 </div>
