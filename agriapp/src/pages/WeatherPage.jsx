@@ -121,7 +121,8 @@ const WeatherPage = () => {
                 setLoading(false);
                 // Default fallback to Bengaluru if nothing else
                 fetchWeather(12.9716, 77.5946, "Bengaluru, Karnataka");
-            }
+            },
+            { timeout: 5000 }
         );
     }, [fetchWeather]);
 
