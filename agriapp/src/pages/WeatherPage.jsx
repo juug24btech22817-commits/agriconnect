@@ -22,6 +22,12 @@ const WeatherPage = () => {
     const [error, setError] = useState(null);
     const [weather, setWeather] = useState(null);
     const [locationName, setLocationName] = useState('');
+    const [isCelsius, setIsCelsius] = useState(true);
+
+    const formatTemp = (celsius) => {
+        if (isCelsius) return `${Math.round(celsius)}°C`;
+        return `${Math.round((celsius * 9/5) + 32)}°F`;
+    };
 
     useEffect(() => {
         document.title = "Live Weather Tracker | AgriConnect";
@@ -271,11 +277,11 @@ const WeatherPage = () => {
                                         <span className="font-bold uppercase tracking-widest text-[10px]">{locationName}</span>
                                     </div>
                                     <h1 className="text-7xl sm:text-8xl font-display font-black tracking-tighter mb-2 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
-                                        {Math.round(weather.current.temperature_2m)}°
+                                        {formatTemp(weather.current.temperature_2m)}
                                     </h1>
                                     <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
                                         <span className="text-2xl font-bold bg-white/10 px-4 py-1 rounded-full backdrop-blur-md">{getConditionName(weather.current.weather_code)}</span>
-                                        <span className="text-sm text-white/60 font-medium tracking-wide">• Feels Like {Math.round(weather.current.apparent_temperature)}°</span>
+                                        <span className="text-sm text-white/60 font-medium tracking-wide">• Feels Like {formatTemp(weather.current.apparent_temperature)}</span>
                                     </div>
                                     <div className="mt-6 flex items-center justify-center sm:justify-start gap-3 text-[10px] font-black text-white/30 uppercase tracking-[0.3em]">
                                         <div className="flex items-center gap-1.5 bg-black/20 px-3 py-1.5 rounded-lg">
@@ -284,6 +290,10 @@ const WeatherPage = () => {
                                         </div>
                                         <button onClick={handleMyLocation} className="hover:text-white transition-colors">
                                             Refresh Data
+                                        </button>
+                                        <span className="text-white/20">|</span>
+                                        <button onClick={() => setIsCelsius(!isCelsius)} className="hover:text-white transition-colors text-agri-primary font-black">
+                                            Switch to {isCelsius ? '°F' : '°C'}
                                         </button>
                                     </div>
                                 </div>
@@ -298,7 +308,7 @@ const WeatherPage = () => {
                                     <div className="bg-black/20 backdrop-blur-md px-4 py-2 rounded-2xl flex flex-col items-center sm:items-end gap-1">
                                         <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">Today's Range</div>
                                         <div className="text-sm font-bold text-white">
-                                            High {Math.round(weather.daily.temperature_2m_max[0])}° <span className="text-white/20 mx-1">/</span> Low {Math.round(weather.daily.temperature_2m_min[0])}°
+                                            High {formatTemp(weather.daily.temperature_2m_max[0])} <span className="text-white/20 mx-1">/</span> Low {formatTemp(weather.daily.temperature_2m_min[0])}
                                         </div>
                                     </div>
                                     <div className="mt-4 flex gap-6 text-[10px] font-black text-white/40 uppercase tracking-tighter">
@@ -366,7 +376,7 @@ const WeatherPage = () => {
                                                 <div className="flex justify-center mb-2">
                                                     {getWeatherIcon(code, 24)}
                                                 </div>
-                                                <div className="text-sm font-black mb-1">{Math.round(temp)}°</div>
+                                                <div className="text-sm font-black mb-1">{formatTemp(temp)}</div>
                                                 {prob > 0 && (
                                                     <div className="text-[9px] text-blue-300 font-bold">{prob}% Rain</div>
                                                 )}
@@ -427,10 +437,10 @@ const WeatherPage = () => {
                                         {getWeatherIcon(weather.daily.weather_code[i], 32)}
                                     </motion.div>
                                     <div className="font-black text-xl mb-1">
-                                        {Math.round(weather.daily.temperature_2m_max[i])}°
+                                        {formatTemp(weather.daily.temperature_2m_max[i])}
                                     </div>
                                     <div className="text-[10px] font-bold text-white/30 uppercase tracking-tighter">
-                                        Low {Math.round(weather.daily.temperature_2m_min[i])}°
+                                        Low {formatTemp(weather.daily.temperature_2m_min[i])}
                                     </div>
                                 </motion.div>
                             ))}
