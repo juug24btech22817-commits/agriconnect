@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, Sun, Cloud, CloudRain, CloudLightning, 
   Wind, Droplets, MapPin, Navigation, 
-  ArrowLeft, AlertTriangle, Info, Thermometer, Clock,
+  ArrowLeft, AlertTriangle, Info, Clock,
   Sunrise, Sunset, Gauge, Cloudy
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
