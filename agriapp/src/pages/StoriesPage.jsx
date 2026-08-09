@@ -466,13 +466,15 @@ const StoriesPage = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                                className={`flex flex-col ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-16 lg:gap-24 items-center`}
+                                whileHover={{ y: -10 }}
+                                className={`flex flex-col ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-16 lg:gap-24 items-center p-8 rounded-[2.5rem] bg-white/30 dark:bg-slate-900/20 backdrop-blur-sm border border-transparent hover:border-white/40 dark:hover:border-white/5 hover:bg-white/60 dark:hover:bg-slate-900/40 hover:shadow-premium-lg transition-all duration-500`}
                             >
 
                                 <div className="w-full lg:w-1/2 relative group">
                                     <motion.div 
-                                        whileHover={{ scale: 1.02 }}
-                                        className="relative rounded-3xl overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] aspect-[4/3] border-8 border-white dark:border-white/5"
+                                        whileHover={{ scale: 1.04, rotate: idx % 2 === 0 ? 1 : -1 }}
+                                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                        className="relative rounded-3xl overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] aspect-[4/3] border-8 border-white dark:border-white/5 cursor-pointer"
                                     >
                                         <img 
                                             loading="lazy"
@@ -483,20 +485,26 @@ const StoriesPage = () => {
                                         <div className="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500"></div>
                                         
                                         {/* Video Button */}
-                                        <button
+                                        <motion.button
+                                            whileHover={{ scale: 1.15, rotate: 90 }}
+                                            whileTap={{ scale: 0.95 }}
                                             onClick={() => handleSelectStory(story)}
-                                            className="absolute inset-0 m-auto w-20 h-20 bg-white/20 backdrop-blur-3xl rounded-2xl flex items-center justify-center border border-white/30 text-white hover:bg-agri-primary hover:border-agri-primary hover:scale-110 transition-all z-10 shadow-[0_0_60px_rgba(255,255,255,0.2)] group/btn"
+                                            className="absolute inset-0 m-auto w-20 h-20 bg-white/25 backdrop-blur-3xl rounded-2xl flex items-center justify-center border border-white/40 text-white z-10 shadow-[0_0_60px_rgba(255,255,255,0.2)] group/btn hover:bg-agri-primary hover:border-agri-primary transition-all duration-300"
                                         >
                                             <PlayCircle size={42} className="group-hover/btn:fill-white/20 transition-all" />
-                                        </button>
+                                        </motion.button>
                                     </motion.div>
                                     
                                     {/* Tags */}
                                     <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-4 z-20">
                                         {story.tags.map(tag => (
-                                            <span key={tag} className="px-5 py-3 bg-white dark:bg-agri-dark/90 backdrop-blur-2xl rounded-xl text-xs font-black uppercase tracking-[0.16em] text-agri-dark dark:text-white border border-agri-primary/20 shadow-premium">
+                                            <motion.span 
+                                                key={tag} 
+                                                whileHover={{ y: -3, scale: 1.05 }}
+                                                className="px-5 py-3 bg-white dark:bg-agri-dark/95 backdrop-blur-2xl rounded-xl text-xs font-black uppercase tracking-[0.16em] text-agri-dark dark:text-white border border-agri-primary/20 shadow-premium cursor-default"
+                                            >
                                                 {tag}
-                                            </span>
+                                            </motion.span>
                                         ))}
                                     </div>
                                 </div>
@@ -504,17 +512,26 @@ const StoriesPage = () => {
                                 {/* Text Context */}
                                 <div className="w-full lg:w-1/2 space-y-12">
                                     <div className="relative">
-                                        <Quote className="text-agri-primary/20 dark:text-agri-secondary/10 w-32 h-32 absolute -top-16 -left-12 -z-10" />
-                                        <blockquote className="text-2xl md:text-4xl text-agri-dark dark:text-white font-display font-bold leading-[1.16] relative z-10 tracking-tight">
+                                        <Quote className="text-agri-primary/20 dark:text-agri-secondary/10 w-32 h-32 absolute -top-16 -left-12 -z-10 animate-pulse" />
+                                        <blockquote className="text-2xl md:text-4xl text-agri-dark dark:text-white font-display font-bold leading-[1.16] relative z-10 tracking-tight transition-colors duration-300 group-hover:text-agri-primary dark:group-hover:text-agri-secondary">
                                             "{story.quote}"
                                         </blockquote>
                                     </div>
 
                                     <div className="flex flex-wrap gap-8">
-                                        <div className="flex-1 min-w-[200px] p-6 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-3xl border border-white dark:border-white/10 shadow-premium hover:border-agri-primary/30 transition-all group/info">
+                                        <motion.div 
+                                            whileHover={{ scale: 1.02, y: -4 }}
+                                            className="flex-1 min-w-[200px] p-6 bg-white/70 dark:bg-white/5 backdrop-blur-xl rounded-3xl border border-white dark:border-white/10 shadow-premium hover:border-agri-primary/30 transition-all group/info"
+                                        >
                                             <div className="flex items-center gap-6 mb-8">
-                                                <div className="relative">
-                                                    <img loading="lazy" src={story.image} alt={story.name} className="w-20 h-20 rounded-2xl object-cover ring-4 ring-agri-primary/10 shadow-xl group-hover/info:scale-105 transition-transform" />
+                                                <div className="relative overflow-hidden rounded-2xl">
+                                                    <motion.img 
+                                                        whileHover={{ scale: 1.15 }}
+                                                        loading="lazy" 
+                                                        src={story.image} 
+                                                        alt={story.name} 
+                                                        className="w-20 h-20 rounded-2xl object-cover ring-4 ring-agri-primary/10 shadow-xl transition-transform duration-500" 
+                                                    />
                                                     <div className="absolute -bottom-2 -right-2 bg-agri-primary text-white p-2 rounded-xl shadow-xl">
                                                         <ShieldCheck size={16} />
                                                     </div>
@@ -531,16 +548,16 @@ const StoriesPage = () => {
                                             </div>
                                             
                                             <div className="grid grid-cols-2 gap-4">
-                                                <div className="bg-agri-primary/10 dark:bg-agri-primary/5 p-4 rounded-2xl">
+                                                <div className="bg-agri-primary/10 dark:bg-agri-primary/5 p-4 rounded-2xl transition-all duration-300 hover:bg-agri-primary/20">
                                                     <div className="text-agri-primary font-black text-2xl">{story.metrics.profit}</div>
                                                     <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Profit Increase</div>
                                                 </div>
-                                                <div className="bg-agri-secondary/10 dark:bg-agri-secondary/5 p-4 rounded-2xl">
+                                                <div className="bg-agri-secondary/10 dark:bg-agri-secondary/5 p-4 rounded-2xl transition-all duration-300 hover:bg-agri-secondary/20">
                                                     <div className="text-agri-secondary font-black text-2xl">{story.metrics.savings}</div>
                                                     <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Cost Savings</div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </motion.div>
                                     </div>
 
                                     <div className="flex items-center gap-4 sm:gap-6 flex-wrap">
@@ -553,7 +570,8 @@ const StoriesPage = () => {
                                         
                                         <div className="flex items-center gap-3">
                                             <motion.button 
-                                                whileTap={{ scale: 0.8 }}
+                                                whileHover={{ scale: 1.1 }}
+                                                whileTap={{ scale: 0.9 }}
                                                 onClick={() => toggleLike(story.id)}
                                                 className={`flex items-center gap-2 px-5 py-3 rounded-full border transition-all ${
                                                     likedStories[story.id]
@@ -561,7 +579,7 @@ const StoriesPage = () => {
                                                         : "bg-white/50 dark:bg-white/5 border-white/20 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:text-red-500 hover:border-red-500/20"
                                                 }`}
                                             >
-                                                <Heart size={16} className={likedStories[story.id] ? "fill-red-500" : ""} />
+                                                <Heart size={16} className={likedStories[story.id] ? "fill-red-500 animate-pulse" : ""} />
                                                 <span className="text-xs font-black">{storyLikes[story.id] || 0}</span>
                                             </motion.button>
 
@@ -571,7 +589,8 @@ const StoriesPage = () => {
                                             </div>
 
                                             <motion.button 
-                                                whileTap={{ scale: 0.8 }}
+                                                whileHover={{ scale: 1.1 }}
+                                                whileTap={{ scale: 0.9 }}
                                                 onClick={() => handleShare(story.id)}
                                                 className={`flex items-center gap-2 px-5 py-3 rounded-full border bg-white/50 dark:bg-white/5 border-white/20 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:text-agri-primary hover:border-agri-primary/20 transition-all`}
                                             >
