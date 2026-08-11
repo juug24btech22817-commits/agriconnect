@@ -148,6 +148,8 @@ const CommunityPage = () => {
     const [reportedPostTitle, setReportedPostTitle] = useState("");
     const [isFollowingHero, setIsFollowingHero] = useState(false);
     const [showFollowToast, setShowFollowToast] = useState(false);
+    const [showDeleteToast, setShowDeleteToast] = useState(false);
+    const [showNewPostToast, setShowNewPostToast] = useState(false);
 
     const [editingPostId, setEditingPostId] = useState(null);
     const [editPostTitle, setEditPostTitle] = useState("");
@@ -257,6 +259,10 @@ const CommunityPage = () => {
 
     const handleDeletePost = (id) => {
         setPosts(posts.filter(post => post.id !== id));
+        setShowDeleteToast(true);
+        setTimeout(() => {
+            setShowDeleteToast(false);
+        }, 3000);
     };
 
     const handleShare = (post) => {
@@ -313,6 +319,10 @@ const CommunityPage = () => {
         setNewPostLocation("");
         setShowImageInput(false);
         setIsModalOpen(false);
+        setShowNewPostToast(true);
+        setTimeout(() => {
+            setShowNewPostToast(false);
+        }, 3000);
     };
 
     const handleAddComment = (postId) => {
@@ -1289,71 +1299,115 @@ const CommunityPage = () => {
 
             {/* Share Link Copied Toast */}
             <AnimatePresence>
-                                                {showShareToast && (
-                                                    <motion.div
-                                                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                                                        className="fixed bottom-10 left-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-agri-dark border border-emerald-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(16,185,129,0.2)] text-white"
-                                                    >
-                                                        <div className="flex gap-4 items-center">
-                                                            <div className="p-3 bg-emerald-500/20 rounded-xl text-emerald-400 shrink-0">
-                                                                <Share2 size={20} />
-                                                            </div>
-                                                            <div>
-                                                                <h4 className="font-black text-sm uppercase tracking-wider text-emerald-400 mb-0.5">Link Copied!</h4>
-                                                                <p className="text-xs text-white/60 font-medium">Discussion link has been copied to your clipboard.</p>
-                                                            </div>
-                                                        </div>
-                                                    </motion.div>
-                                                )}
-                                            </AnimatePresence>
+                {showShareToast && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        className="fixed bottom-10 left-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-agri-dark border border-emerald-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(16,185,129,0.2)] text-white"
+                    >
+                        <div className="flex gap-4 items-center">
+                            <div className="p-3 bg-emerald-500/20 rounded-xl text-emerald-400 shrink-0">
+                                <Share2 size={20} />
+                            </div>
+                            <div>
+                                <h4 className="font-black text-sm uppercase tracking-wider text-emerald-400 mb-0.5">Link Copied!</h4>
+                                <p className="text-xs text-white/60 font-medium">Discussion link has been copied to your clipboard.</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-                                            {/* Report Post Toast Notification */}
-                                            <AnimatePresence>
-                                                {showReportToast && (
-                                                    <motion.div
-                                                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                                                        className="fixed bottom-10 left-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-amber-950 border border-amber-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(245,158,11,0.2)] text-white"
-                                                    >
-                                                        <div className="flex gap-4 items-center">
-                                                            <div className="p-3 bg-amber-500/20 rounded-xl text-amber-400 shrink-0 animate-pulse">
-                                                                <Flag size={20} />
-                                                            </div>
-                                                            <div>
-                                                                <h4 className="font-black text-sm uppercase tracking-wider text-amber-400 mb-0.5">Discussion Reported</h4>
-                                                                <p className="text-xs text-white/60 font-medium">"{reportedPostTitle}" has been flagged for moderation.</p>
-                                                            </div>
-                                                        </div>
-                                                    </motion.div>
-                                                )}
-                                            </AnimatePresence>
+            {/* Report Post Toast Notification */}
+            <AnimatePresence>
+                {showReportToast && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        className="fixed bottom-10 left-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-amber-950 border border-amber-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(245,158,11,0.2)] text-white"
+                    >
+                        <div className="flex gap-4 items-center">
+                            <div className="p-3 bg-amber-500/20 rounded-xl text-amber-400 shrink-0 animate-pulse">
+                                <Flag size={20} />
+                            </div>
+                            <div>
+                                <h4 className="font-black text-sm uppercase tracking-wider text-amber-400 mb-0.5">Discussion Reported</h4>
+                                <p className="text-xs text-white/60 font-medium">"{reportedPostTitle}" has been flagged for moderation.</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-                                            {/* Follow Hero Toast Notification */}
-                                            <AnimatePresence>
-                                                {showFollowToast && (
-                                                    <motion.div
-                                                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
-                                                        className="fixed bottom-10 right-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-emerald-950 border border-emerald-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(16,185,129,0.2)] text-white"
-                                                    >
-                                                        <div className="flex gap-4 items-center">
-                                                            <div className="p-3 bg-emerald-500/20 rounded-xl text-emerald-400 shrink-0">
-                                                                <CheckCircle size={20} />
-                                                            </div>
-                                                            <div>
-                                                                <h4 className="font-black text-sm uppercase tracking-wider text-emerald-400 mb-0.5">Following Sunil</h4>
-                                                                <p className="text-xs text-white/60 font-medium">You will now receive notifications for posts and replies by Sunil Verma.</p>
-                                                            </div>
-                                                        </div>
-                                                    </motion.div>
-                                                )}
-                                            </AnimatePresence>
-                                        </div>
-                                    );
-                                };
+            {/* Follow Hero Toast Notification */}
+            <AnimatePresence>
+                {showFollowToast && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        className="fixed bottom-10 right-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-emerald-950 border border-emerald-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(16,185,129,0.2)] text-white"
+                    >
+                        <div className="flex gap-4 items-center">
+                            <div className="p-3 bg-emerald-500/20 rounded-xl text-emerald-400 shrink-0">
+                                <CheckCircle size={20} />
+                            </div>
+                            <div>
+                                <h4 className="font-black text-sm uppercase tracking-wider text-emerald-400 mb-0.5">Following Sunil</h4>
+                                <p className="text-xs text-white/60 font-medium">You will now receive notifications for posts and replies by Sunil Verma.</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Delete Post Toast Notification */}
+            <AnimatePresence>
+                {showDeleteToast && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        className="fixed bottom-10 right-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-rose-950 border border-rose-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(244,63,94,0.2)] text-white"
+                    >
+                        <div className="flex gap-4 items-center">
+                            <div className="p-3 bg-rose-500/20 rounded-xl text-rose-400 shrink-0">
+                                <Trash2 size={20} />
+                            </div>
+                            <div>
+                                <h4 className="font-black text-sm uppercase tracking-wider text-rose-400 mb-0.5">Post Deleted</h4>
+                                <p className="text-xs text-white/60 font-medium">Your discussion post has been deleted successfully.</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* New Post Published Toast Notification */}
+            <AnimatePresence>
+                {showNewPostToast && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                        className="fixed bottom-10 right-10 z-[100] max-w-sm bg-gradient-to-r from-slate-900 to-emerald-950 border border-emerald-500/30 p-6 rounded-2xl shadow-[0_20px_50px_rgba(16,185,129,0.2)] text-white"
+                    >
+                        <div className="flex gap-4 items-center">
+                            <div className="p-3 bg-emerald-500/20 rounded-xl text-emerald-400 shrink-0">
+                                <Sparkles size={20} className="animate-pulse" />
+                            </div>
+                            <div>
+                                <h4 className="font-black text-sm uppercase tracking-wider text-emerald-400 mb-0.5">Post Published!</h4>
+                                <p className="text-xs text-white/60 font-medium">Your new discussion is now live in the community.</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
 
 export default CommunityPage;
