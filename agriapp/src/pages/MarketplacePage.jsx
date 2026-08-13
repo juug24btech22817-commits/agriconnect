@@ -60,7 +60,7 @@ const MarketplacePage = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [isFiltersOpen, setIsFiltersOpen] = useState(false);
     
-    // Fetch products from backend
+    // Fetch products — offline fallback includes Garlic
     useEffect(() => {
         const fetchCrops = async () => {
             try {
@@ -113,7 +113,7 @@ const MarketplacePage = () => {
                             <ShoppingBag size={16} /> Premium Agri Marketplace
                         </motion.div>
                         <h1 className="text-4xl md:text-6xl font-display font-black text-agri-dark dark:text-white mb-6 tracking-tight">
-                            Fresh <span className="text-agri-primary">Direct</span>
+                            Fresh & <span className="text-agri-primary">Direct</span>
                         </h1>
                         <p className="text-lg text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
                             Bypassing middlemen to deliver high-integrity produce directly from India's finest producers.
@@ -128,7 +128,7 @@ const MarketplacePage = () => {
                             <input
                                 type="text"
                                 className="block w-full pl-12 pr-12 py-5 glass dark:bg-slate-900 border-gray-200 dark:border-gray-800 rounded-2xl text-agri-dark dark:text-white shadow-premium focus:ring-2 focus:ring-agri-primary transition-all font-medium"
-                                placeholder="Search produce..."
+                                placeholder="Search crops, farmers, locations..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -145,7 +145,7 @@ const MarketplacePage = () => {
                             onClick={() => setIsFiltersOpen(true)}
                             className="flex items-center justify-center gap-3 px-8 py-5 glass dark:bg-slate-800 text-agri-dark dark:text-white rounded-2xl font-bold border border-gray-200 dark:border-gray-700 hover:border-agri-primary transition-all active:scale-95"
                         >
-                            <Filter size={18} /> Filters
+                            <SlidersHorizontal size={18} /> Refine
                         </button>
                     </div>
                 </header>
@@ -248,7 +248,7 @@ const MarketplacePage = () => {
                             onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
                             className="mt-8 text-agri-primary font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform"
                         >
-                            Reset Discovery
+                            Explore Again
                         </button>
                     </motion.div>
                 )}
