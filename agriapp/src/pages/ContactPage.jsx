@@ -102,22 +102,22 @@ const ContactPage = () => {
         { 
             icon: <Phone className="text-agri-primary" />, 
             title: "Toll-Free Support", 
-            value: "1800-102-5566", 
-            link: "tel:18001025566",
+            value: "1800-300-8899", 
+            link: "tel:18003008899",
             desc: "Available in 8+ Indian languages" 
         },
         { 
             icon: <MessageSquare className="text-emerald-500" />, 
             title: "WhatsApp Support", 
-            value: "+91 88001 12233", 
-            link: "https://wa.me/918800112233",
+            value: "+91 99999 88888", 
+            link: "https://wa.me/919999988888",
             desc: "Instant chat support and updates" 
         },
         { 
             icon: <Mail className="text-agri-secondary" />, 
             title: "Email Assistance", 
-            value: "support@agriconnect.org", 
-            link: "mailto:support@agriconnect.org",
+            value: "contact@agriconnect.org", 
+            link: "mailto:contact@agriconnect.org",
             desc: "24/7 email help desk" 
         }
     ];
