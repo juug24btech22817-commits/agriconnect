@@ -836,22 +836,41 @@ const CommunityPage = () => {
                                             ))}
                                         </div>
 
-                                        <div className="flex items-center gap-10 pt-8 border-t border-gray-100 dark:border-white/5">
+                                        <div className="flex items-center gap-6 pt-8 border-t border-gray-100 dark:border-white/5">
                                             <motion.button 
-                                                whileHover={{ scale: 1.05 }}
-                                                whileTap={{ scale: 0.95 }}
+                                                whileHover={{ scale: 1.08 }}
+                                                whileTap={{ scale: 0.92 }}
                                                 onClick={() => handleLike(post.id)}
-                                                className={`flex items-center gap-3 transition-all font-black text-[10px] uppercase tracking-[0.2em] ${post.liked ? 'text-rose-500' : 'text-gray-400 hover:text-rose-500'}`}
+                                                className={`flex items-center gap-2.5 transition-all font-black text-[10px] uppercase tracking-[0.2em] px-4 py-2.5 rounded-full ${
+                                                    post.liked 
+                                                    ? 'bg-rose-500/10 text-rose-500 shadow-sm border border-rose-500/20' 
+                                                    : 'text-gray-400 hover:text-rose-500 bg-gray-50 dark:bg-white/5 hover:bg-rose-500/5'
+                                                }`}
                                             >
-                                                <Heart size={20} fill={post.liked ? "currentColor" : "none"} className={post.liked ? "animate-bounce-slow" : ""} /> {post.likes}
+                                                <Heart size={18} fill={post.liked ? "currentColor" : "none"} className={post.liked ? "animate-pulse" : ""} /> 
+                                                <span>{post.likes}</span>
                                             </motion.button>
                                             <motion.button 
-                                                whileHover={{ scale: 1.05 }}
-                                                whileTap={{ scale: 0.95 }}
+                                                whileHover={{ scale: 1.08 }}
+                                                whileTap={{ scale: 0.92 }}
                                                 onClick={() => setExpandedCommentsPostId(expandedCommentsPostId === post.id ? null : post.id)}
-                                                className={`flex items-center gap-3 transition-all font-black text-[10px] uppercase tracking-[0.2em] ${expandedCommentsPostId === post.id ? 'text-agri-primary' : 'text-gray-400 hover:text-agri-primary'}`}
+                                                className={`flex items-center gap-2.5 transition-all font-black text-[10px] uppercase tracking-[0.2em] px-4 py-2.5 rounded-full ${
+                                                    expandedCommentsPostId === post.id 
+                                                    ? 'bg-agri-primary/10 text-agri-primary shadow-sm border border-agri-primary/20' 
+                                                    : 'text-gray-400 hover:text-agri-primary bg-gray-50 dark:bg-white/5 hover:bg-agri-primary/5'
+                                                }`}
                                             >
-                                                <MessageCircle size={20} /> {post.comments}
+                                                <MessageCircle size={18} /> 
+                                                <span>Replies</span>
+                                                {post.comments > 0 && (
+                                                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold ${
+                                                        expandedCommentsPostId === post.id
+                                                        ? 'bg-agri-primary text-white'
+                                                        : 'bg-agri-primary/25 text-agri-primary'
+                                                    }`}>
+                                                        {post.comments}
+                                                    </span>
+                                                )}
                                             </motion.button>
                                             <div className="flex items-center gap-3 text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] ml-auto">
                                                 <Eye size={18} className="text-gray-300" /> {post.views === 0 ? 'New' : post.views > 1000 ? `${(post.views / 1000).toFixed(1)}k` : post.views}
