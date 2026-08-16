@@ -12,6 +12,29 @@ const CartPage = () => {
     const [deliveryMethod, setDeliveryMethod] = React.useState('shiprocket');
     const [pinCode, setPinCode] = React.useState('');
     const [serviceable, setServiceable] = React.useState(null);
+    const [couponCode, setCouponCode] = React.useState('');
+    const [appliedCoupon, setAppliedCoupon] = React.useState('');
+    const [couponMessage, setCouponMessage] = React.useState('');
+    const [couponError, setCouponError] = React.useState(false);
+
+    const handleApplyCoupon = () => {
+        const code = couponCode.trim().toUpperCase();
+        if (code === '') {
+            setAppliedCoupon('');
+            setCouponMessage('');
+            setCouponError(false);
+            return;
+        }
+        if (['FRESH10', 'AGRI50', 'WELCOME20'].includes(code)) {
+            setAppliedCoupon(code);
+            setCouponMessage(`Coupon "${code}" applied successfully!`);
+            setCouponError(false);
+        } else {
+            setAppliedCoupon('');
+            setCouponMessage('Invalid coupon code.');
+            setCouponError(true);
+        }
+    };
 
     const subtotal = cart.reduce((acc, item) => {
         const priceStr = typeof item.price === 'string' ? item.price : String(item.price || 0);
@@ -28,7 +51,14 @@ const CartPage = () => {
     const { user } = React.useContext(AuthContext);
 
     const deliveryCharge = partners[deliveryMethod]?.cost || 0;
-    const discount = 0; // Planned: Cluster discount logic
+    let discount = 0;
+    if (appliedCoupon === 'FRESH10') {
+        discount = Math.round(subtotal * 0.10);
+    } else if (appliedCoupon === 'AGRI50') {
+        discount = Math.min(50, subtotal);
+    } else if (appliedCoupon === 'WELCOME20') {
+        discount = Math.round(subtotal * 0.20);
+    }
     const total = subtotal + deliveryCharge - discount;
 
     const handleCheckServiceability = () => {
@@ -239,6 +269,34 @@ const CartPage = () => {
                             </div>
                         </div>
 
+                        {/* Promo Code Check */}
+                        <div className="bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+                            <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-2 uppercase tracking-wide">Promo / Coupon Code</h3>
+                            <div className="space-y-3">
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text" 
+                                        value={couponCode}
+                                        onChange={(e) => setCouponCode(e.target.value)}
+                                        placeholder="e.g. FRESH10" 
+                                        className="flex-grow bg-gray-50 dark:bg-gray-700 border-none rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-agri-green transition-all uppercase"
+                                    />
+                                    <button
+                                        onClick={handleApplyCoupon}
+                                        className="bg-agri-green text-white px-4 py-2 rounded-xl text-sm font-bold"
+                                    >
+                                        Apply
+                                    </button>
+                                </div>
+                                {couponMessage && (
+                                    <p className={`text-xs ${couponError ? 'text-red-500' : 'text-green-600 font-semibold'}`}>
+                                        {couponMessage}
+                                    </p>
+                                )}
+                                <p className="text-[10px] text-gray-400">Available: FRESH10 (10% off), WELCOME20 (20% off), AGRI50 (₹50 off)</p>
+                            </div>
+                        </div>
+
                         <div className="bg-gray-900 text-white p-8 rounded-3xl shadow-xl shadow-gray-900/20 sticky top-24">
                             <h3 className="text-xl font-bold mb-6">Order Summary</h3>
                             <div className="space-y-4 mb-8">
@@ -252,7 +310,7 @@ const CartPage = () => {
                                 </div>
                                 {discount > 0 && (
                                     <div className="flex justify-between text-green-400">
-                                        <span>Cluster Discount (5%)</span>
+                                        <span>Coupon Discount ({appliedCoupon})</span>
                                         <span className="font-bold">-₹{discount}</span>
                                     </div>
                                 )}
