@@ -30,7 +30,7 @@ const HomePage = () => {
                             transition={{ delay: 0.2 }}
                             className="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-agri-primary/10 text-agri-primary border border-agri-primary/20 text-sm font-bold mb-8"
                         >
-                            <Leaf size={16} /> Now helping farmers trade smarter this harvest season
+                            <Leaf size={16} /> <span className="flex h-2 w-2 relative"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-agri-primary opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-agri-primary"></span></span> Now helping farmers trade smarter this harvest season
                         </motion.span>
                         
                         <h1 className="text-6xl md:text-8xl font-display font-extrabold text-agri-dark dark:text-white mb-8 leading-[1.1] tracking-tight">
@@ -150,13 +150,17 @@ const HomePage = () => {
                                 icon: <TrendingUp size={18} className="text-emerald-600" />
                             }
                         ].map((item, index) => (
-                            <div key={index} className="rounded-[1.5rem] border border-gray-100 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/60 p-5">
-                                <div className="w-10 h-10 rounded-2xl bg-agri-primary/10 flex items-center justify-center mb-4">
+                            <motion.div 
+                                key={index} 
+                                whileHover={{ y: -5 }}
+                                className="rounded-[1.5rem] border border-gray-100 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/60 p-5 transition-all hover:shadow-lg hover:border-agri-primary/30 cursor-pointer group"
+                            >
+                                <div className="w-10 h-10 rounded-2xl bg-agri-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                                     {item.icon}
                                 </div>
                                 <h3 className="text-lg font-bold text-agri-dark dark:text-white mb-2">{item.title}</h3>
                                 <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{item.description}</p>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
@@ -521,7 +525,7 @@ const HomePage = () => {
                         </p>
                         <div className="flex flex-wrap gap-6">
                             <Link to="/marketplace">
-                                <button className="px-10 py-5 bg-white text-agri-dark hover:bg-agri-primary hover:text-white rounded-2xl font-bold text-lg shadow-2xl transition-all active:scale-95">
+                                <button className="px-10 py-5 bg-white text-agri-dark hover:bg-gradient-to-r hover:from-agri-primary hover:to-agri-secondary hover:text-white rounded-2xl font-bold text-lg shadow-2xl transition-all active:scale-95 border border-transparent hover:border-white/20">
                                     Explore Marketplace
                                 </button>
                             </Link>
