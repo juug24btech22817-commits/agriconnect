@@ -517,8 +517,8 @@ const CommunityPage = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                     <div className="lg:col-span-3 space-y-8">
-                        <div className="glass p-10 rounded-[3rem] border-agri-primary/10 shadow-premium">
-                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-8 flex items-center gap-2">
+                        <div className="glass p-8 rounded-3xl border-agri-primary/10 shadow-lg">
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-6 flex items-center gap-2">
                                 <Filter size={12} className="text-agri-primary" /> Discovery
                             </h3>
                             <div className="space-y-3">
@@ -534,9 +534,9 @@ const CommunityPage = () => {
                                             onClick={() => setActiveCategory(cat.name)}
                                             whileHover={{ scale: 1.02, x: 5 }}
                                             whileTap={{ scale: 0.98 }}
-                                            className={`group w-full flex items-center justify-between px-6 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 ${
+                                            className={`group w-full flex items-center justify-between px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all duration-300 ${
                                                 activeCategory === cat.name 
-                                                ? 'bg-agri-primary text-white shadow-glow' 
+                                                ? 'bg-agri-primary text-white shadow-lg' 
                                                 : 'text-gray-500 hover:text-agri-dark dark:hover:text-white hover:bg-agri-primary/5'
                                             }`}
                                         >
@@ -557,7 +557,7 @@ const CommunityPage = () => {
                             </div>
                         </div>
 
-                        <div className="p-10 bg-gradient-to-br from-agri-dark via-slate-900 to-black rounded-[3rem] text-white overflow-hidden relative group border border-white/5 shadow-2xl">
+                        <div className="p-8 bg-gradient-to-br from-agri-dark via-slate-900 to-black rounded-3xl text-white overflow-hidden relative group border border-white/5 shadow-xl">
                             <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 group-hover:scale-110 group-hover:rotate-12 transition-all duration-700">
                                 <Award size={150} />
                             </div>
@@ -671,8 +671,8 @@ const CommunityPage = () => {
                                         initial={{ opacity: 0, scale: 0.98, y: 30 }}
                                         animate={{ opacity: 1, scale: 1, y: 0 }}
                                         exit={{ opacity: 0, scale: 0.98, y: -30 }}
-                                        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                                        className="glass p-10 rounded-[3.5rem] shadow-premium border-agri-primary/10 relative overflow-hidden group hover:shadow-2xl transition-all duration-500"
+                                        whileHover={{ y: -4, transition: { duration: 0.3 } }}
+                                        className="glass p-8 rounded-3xl shadow-lg border-agri-primary/10 relative overflow-hidden group hover:shadow-xl transition-all duration-500"
                                     >
                                         <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-agri-primary to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                                         
@@ -804,18 +804,18 @@ const CommunityPage = () => {
                                             </div>
                                         ) : (
                                             <>
-                                                <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white mb-4 tracking-tight leading-tight group-hover:text-agri-primary transition-colors">
+                                                <h3 className="text-xl font-black text-agri-dark dark:text-white mb-3 tracking-tight leading-tight group-hover:text-agri-primary transition-colors">
                                                     {post.title}
                                                 </h3>
 
-                                                <p className="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-6 font-medium">
+                                                <p className="text-gray-600 dark:text-gray-300 text-base leading-relaxed mb-6 font-medium">
                                                     {post.content}
                                                 </p>
                                             </>
                                         )}
 
                                         {post.image && (
-                                            <div className="mb-8 rounded-3xl overflow-hidden max-h-[350px] border border-gray-100 dark:border-white/5 shadow-md">
+                                            <div className="mb-6 rounded-2xl overflow-hidden max-h-[300px] border border-gray-100 dark:border-white/5 shadow-sm">
                                                 <img 
                                                     src={post.image} 
                                                     alt={post.title} 
@@ -1058,9 +1058,9 @@ const CommunityPage = () => {
                     </div>
 
                     <div className="lg:col-span-3 space-y-10">
-                        <div className="glass p-10 rounded-[3rem] shadow-premium relative overflow-hidden group">
+                        <div className="glass p-8 rounded-3xl shadow-lg relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-agri-primary/5 rounded-full blur-3xl pointer-events-none" />
-                            <h3 className="text-xl font-display font-black text-agri-dark dark:text-white mb-10 flex items-center gap-3 tracking-tight">
+                            <h3 className="text-lg font-black text-agri-dark dark:text-white mb-6 flex items-center gap-3 tracking-tight">
                                 <div className="p-2 bg-agri-primary/10 rounded-xl">
                                     <TrendingUp size={24} className="text-agri-primary animate-bounce-slow" /> 
                                 </div>
@@ -1091,7 +1091,7 @@ const CommunityPage = () => {
                             </div>
                         </div>
 
-                        <div className="glass p-10 rounded-[3rem] border-agri-primary/10 text-center shadow-premium relative overflow-hidden group">
+                        <div className="glass p-8 rounded-3xl border-agri-primary/10 text-center shadow-lg relative overflow-hidden group">
                             <div className="absolute -top-10 -left-10 w-32 h-32 bg-agri-secondary/10 rounded-full blur-3xl" />
                             <div className="w-20 h-20 bg-agri-secondary/10 text-agri-secondary rounded-[1.5rem] flex items-center justify-center mx-auto mb-6 shadow-inner transform group-hover:rotate-12 transition-transform duration-500">
                                 <Award size={40} />
@@ -1138,11 +1138,11 @@ const CommunityPage = () => {
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 100 }}
                             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                            className="bg-white dark:bg-slate-900 rounded-[4rem] shadow-2xl w-full max-w-2xl overflow-hidden relative z-[70] border border-white/20"
+                            className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden relative z-[70] border border-white/20"
                         >
                             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-agri-primary to-emerald-600" />
                             
-                            <form onSubmit={handleAddPost} className="p-12 md:p-16">
+                            <form onSubmit={handleAddPost} className="p-10 md:p-12">
                                 <div className="flex justify-between items-center mb-12">
                                     <div>
                                         <h2 className="text-4xl font-display font-black text-agri-dark dark:text-white uppercase tracking-tighter">Create Post</h2>
