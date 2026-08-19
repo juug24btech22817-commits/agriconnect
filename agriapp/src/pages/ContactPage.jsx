@@ -362,7 +362,6 @@ const ContactPage = () => {
                                                     aria-invalid={errors.name && touched.name}
                                                     aria-describedby={errors.name && touched.name ? 'name-error' : undefined}
                                                     aria-label="Full Name"
-                                                    autoFocus
                                                     className={`w-full bg-gray-50 dark:bg-gray-800 border-2 rounded-2xl p-4 font-medium text-agri-dark dark:text-white outline-none transition-all ${
                                                         errors.name && touched.name
                                                             ? 'border-red-500 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900'
