@@ -603,9 +603,9 @@ const DashboardPage = () => {
                                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                                         {[
                                             { label: 'Add Listing', icon: <Plus size={20}/>, action: () => setIsAddModalOpen(true), color: 'bg-agri-primary text-white shadow-glow' },
-                                            { label: 'View Orders', icon: <Package size={20}/>, action: () => {}, color: 'glass text-agri-dark dark:text-white border border-gray-100 dark:border-gray-800' },
-                                            { label: 'Earnings', icon: <TrendingUp size={20}/>, action: () => {}, color: 'glass text-agri-dark dark:text-white border border-gray-100 dark:border-gray-800' },
-                                            { label: 'Schedule', icon: <Clock size={20}/>, action: () => {}, color: 'glass text-agri-dark dark:text-white border border-gray-100 dark:border-gray-800' },
+                                            { label: 'View Orders', icon: <Package size={20}/>, action: () => navigate('/tracking'), color: 'glass text-agri-dark dark:text-white border border-gray-100 dark:border-gray-800' },
+                                            { label: 'Market Prices', icon: <TrendingUp size={20}/>, action: () => navigate('/prices'), color: 'glass text-agri-dark dark:text-white border border-gray-100 dark:border-gray-800' },
+                                            { label: 'Advisor', icon: <Clock size={20}/>, action: () => navigate('/advisor'), color: 'glass text-agri-dark dark:text-white border border-gray-100 dark:border-gray-800' },
                                         ].map((a, i) => (
                                             <motion.button
                                                 key={i}
@@ -701,7 +701,13 @@ const DashboardPage = () => {
                                                     <div className="w-16 h-16 bg-agri-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                                                         <Package size={28} className="text-agri-primary" />
                                                     </div>
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400">No inventory found for this tab yet. Switch tabs or add a new crop listing to get started.</p>
+                                                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">No inventory found for this tab yet. Switch tabs or add a new crop listing to get started.</p>
+                                                    <button
+                                                        onClick={() => setIsAddModalOpen(true)}
+                                                        className="px-5 py-3 bg-agri-primary text-white rounded-xl font-bold text-sm shadow-glow hover:bg-agri-dark transition-all"
+                                                    >
+                                                        Add Your First Listing
+                                                    </button>
                                                 </div>
                                             )}
                                         </AnimatePresence>
