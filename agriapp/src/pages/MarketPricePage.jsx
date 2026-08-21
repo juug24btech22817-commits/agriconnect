@@ -267,7 +267,7 @@ const MarketPricePage = () => {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 relative z-10">
 
-                <header className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-10">
+                <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div className="max-w-xl">
                         <motion.div 
                             initial={{ opacity: 0, x: -20 }}
@@ -323,7 +323,7 @@ const MarketPricePage = () => {
                 </header>
 
                 {/* Category Filters */}
-                <div className="flex flex-wrap gap-4 mb-12">
+                <div className="flex flex-wrap gap-3 mb-8">
                     {categories.map((cat) => (
                         <button
                             key={cat.name}
@@ -341,9 +341,9 @@ const MarketPricePage = () => {
                 </div>
 
 
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     
-                    <div className="lg:col-span-8 space-y-10">
+                    <div className="lg:col-span-8 space-y-6">
                         
                         <AnimatePresence mode="wait">
                             {searchResult ? (
@@ -352,11 +352,11 @@ const MarketPricePage = () => {
                                     initial={{ opacity: 0, scale: 0.98, y: 30 }}
                                     animate={{ opacity: 1, scale: 1, y: 0 }}
                                     exit={{ opacity: 0, scale: 0.98, y: -30 }}
-                                    className="glass p-8 rounded-[3rem] shadow-premium border-agri-primary/20 relative overflow-hidden group"
+                                    className="glass p-6 rounded-[2rem] shadow-premium border-agri-primary/20 relative overflow-hidden group"
                                 >
                                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-agri-primary to-emerald-600" />
                                     
-                                    <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
+                                    <div className="relative z-10 grid md:grid-cols-2 gap-6 items-center">
                                         <div className="space-y-6">
                                             <div>
                                                 <div className="flex flex-wrap items-center gap-4 mb-3">
@@ -430,7 +430,7 @@ const MarketPricePage = () => {
                                     key="empty"
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    className="glass p-20 rounded-[4rem] shadow-premium border-2 border-dashed border-gray-200 dark:border-white/10 flex flex-col items-center text-center space-y-8 relative overflow-hidden"
+                                    className="glass p-12 rounded-[2.5rem] shadow-premium border-2 border-dashed border-gray-200 dark:border-white/10 flex flex-col items-center text-center space-y-6 relative overflow-hidden"
                                 >
                                     <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-agri-primary/5 to-transparent pointer-events-none" />
                                     <div className="w-28 h-28 bg-agri-primary/10 rounded-[2.5rem] flex items-center justify-center text-agri-primary rotate-12 hover:rotate-0 transition-transform duration-500 shadow-xl border border-agri-primary/20">
@@ -470,9 +470,9 @@ const MarketPricePage = () => {
                             )}
                         </AnimatePresence>
 
-                        <div className="bg-agri-dark rounded-[4rem] p-12 shadow-2xl border border-white/5 relative overflow-hidden group">
+                        <div className="bg-agri-dark rounded-[2.5rem] p-6 shadow-2xl border border-white/5 relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-96 h-96 bg-agri-primary/10 rounded-full blur-[100px] pointer-events-none" />
-                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-8">
+                                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6">
                                 <div>
                                     <div className="flex items-center gap-4 mb-3">
                                         <h3 className="text-3xl font-display font-black text-white tracking-tight">Price Trajectory</h3>
@@ -528,10 +528,10 @@ const MarketPricePage = () => {
 
                     </div>
 
-                    <div className="lg:col-span-4 space-y-10">
-                        <div className="glass p-10 rounded-[3rem] shadow-premium relative overflow-hidden group">
+                    <div className="lg:col-span-4 space-y-6">
+                        <div className="glass p-6 rounded-[2rem] shadow-premium relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-agri-primary/5 rounded-full blur-3xl pointer-events-none" />
-                            <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white mb-10 flex items-center gap-3 tracking-tight">
+                            <h3 className="text-2xl font-display font-black text-agri-dark dark:text-white mb-6 flex items-center gap-3 tracking-tight">
                                 <div className="p-2 bg-agri-primary/10 rounded-xl">
                                     <TrendingUp size={24} className="text-agri-primary animate-bounce-slow" /> 
                                 </div>
@@ -561,7 +561,7 @@ const MarketPricePage = () => {
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-agri-dark to-slate-900 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden group border border-white/5">
+                        <div className="bg-gradient-to-br from-agri-dark to-slate-900 rounded-[2rem] p-6 text-white shadow-2xl relative overflow-hidden group border border-white/5">
                            <div className="absolute -top-10 -right-10 p-4 opacity-5 group-hover:opacity-10 group-hover:scale-110 transition-all duration-700">
                                 <Activity size={250} />
                            </div>
