@@ -146,7 +146,7 @@ const OrderTrackingPage = () => {
                                 <Truck size={36} className="text-agri-primary" />
                             </div>
                             
-                            <h1 className="text-3xl font-display font-black text-agri-dark dark:text-white mb-3">Live Order Tracking</h1>
+                            <h1 className="text-3xl font-display font-black text-agri-dark dark:text-white mb-3">Farm-to-Door Tracker</h1>
                             <p className="text-gray-500 dark:text-gray-400 mb-2 max-w-sm mx-auto text-sm leading-relaxed">
                                 Enter your unique Tracking ID to see real-time updates of your harvest journey from farm to table.
                             </p>
@@ -214,7 +214,7 @@ const OrderTrackingPage = () => {
                             </div>
 
                             <div className="text-center mb-8">
-                                <h1 className="text-3xl font-display font-black text-gray-900 dark:text-white mb-2">Track Your Produce</h1>
+                                <h1 className="text-3xl font-display font-black text-gray-900 dark:text-white mb-2">Your Harvest Journey</h1>
                                 <div className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider">
                                     <span className="text-gray-400">Tracking ID:</span>
                                     <button
