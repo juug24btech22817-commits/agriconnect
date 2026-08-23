@@ -372,7 +372,7 @@ const DashboardPage = () => {
                     >
                         {[
                             { label: 'Total Revenue', value: '₹1,24,450', change: '+12.4%', up: true, icon: <DollarSign size={18}/>, color: 'from-emerald-500 to-green-600' },
-                            { label: 'Active Listings', value: activeListingCount || 3, change: '+2 today', up: true, icon: <Package size={18}/>, color: 'from-blue-500 to-indigo-600' },
+                            { label: 'Active Listings', value: activeListingCount, change: '+2 today', up: true, icon: <Package size={18}/>, color: 'from-blue-500 to-indigo-600' },
                             { label: 'Pending Orders', value: '05', change: 'Needs action', up: false, icon: <Clock size={18}/>, color: 'from-amber-500 to-orange-600' },
                             { label: 'Total Views', value: totalViews.toLocaleString(), change: '+8.2% vs last week', up: true, icon: <Eye size={18}/>, color: 'from-purple-500 to-pink-600' },
                         ].map((kpi, i) => (
