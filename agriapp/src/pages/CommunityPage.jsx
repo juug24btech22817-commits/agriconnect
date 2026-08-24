@@ -455,6 +455,10 @@ const CommunityPage = () => {
                             <div className="w-8 h-[2px] bg-agri-primary/30" />
                             <Users size={16} className="animate-bounce-slow" /> India's Fastest Growing Farmer Network
                         </motion.div>
+                        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.22em] text-emerald-700 dark:text-emerald-300">
+                            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                            Community pulse • {totalDiscussions} discussions today
+                        </div>
                         <h1 className="text-4xl md:text-7xl font-display font-black text-agri-dark dark:text-white mb-6 uppercase tracking-tighter leading-none">
                             Grow Together. <span className="text-transparent bg-clip-text bg-gradient-to-r from-agri-primary to-emerald-600">Thrive Forever.</span>
                         </h1>
@@ -519,7 +523,7 @@ const CommunityPage = () => {
                     <div className="lg:col-span-3 space-y-8">
                         <div className="glass p-8 rounded-3xl border-agri-primary/10 shadow-lg">
                             <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-6 flex items-center gap-2">
-                                <Filter size={12} className="text-agri-primary" /> Discovery
+                                <Filter size={12} className="text-agri-primary" /> Explore Topics
                             </h3>
                             <div className="space-y-3">
                                 {categoryList.map((cat) => {
@@ -1046,9 +1050,9 @@ const CommunityPage = () => {
                             
                             {sortedPosts.length > 0 && (
                             <div className="pt-12 text-center">
-                                    <button type="button" aria-label="Load more posts" className="px-12 py-6 bg-white dark:bg-slate-900 border border-agri-primary/20 text-agri-primary rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] hover:bg-agri-primary hover:text-white hover:shadow-glow transition-all active:scale-95 group shadow-xl">
+                                    <button type="button" aria-label="View more discussions" className="px-12 py-6 bg-white dark:bg-slate-900 border border-agri-primary/20 text-agri-primary rounded-[1.5rem] font-black text-xs uppercase tracking-[0.3em] hover:bg-agri-primary hover:text-white hover:shadow-glow transition-all active:scale-95 group shadow-xl">
                                     <span className="flex items-center gap-3">
-                                        Load More Posts
+                                        View More Discussions
                                         <TrendingUp size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                                     </span>
                                 </button>
